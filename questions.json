@@ -1,0 +1,10 @@
+[
+  { "type": "single", "text": "Quelle est la capitale de l'Australie ?", "choices": ["Sydney", "Canberra", "Melbourne", "Perth"], "correct": 1 },
+  { "type": "single", "text": "Combien font 7 × 8 ?", "choices": ["54", "56", "58", "64"], "correct": 1 },
+  { "type": "tf", "text": "La Terre tourne autour du Soleil.", "choices": ["Vrai", "Faux"], "correct": 0 },
+  { "type": "multi", "text": "Lesquels de ces animaux sont des mammifères ?", "choices": ["Dauphin", "Requin", "Chauve-souris", "Pingouin"], "correct": [0, 2] },
+  { "type": "text", "text": "Qui a peint la Joconde ? (nom de famille)", "answers": ["de Vinci", "Vinci", "Leonard de Vinci"] },
+  { "type": "single", "text": "Quel gaz les plantes absorbent-elles pour la photosynthèse ?", "choices": ["Oxygène", "Azote", "Dioxyde de carbone", "Hydrogène"], "correct": 2, "double": true },
+  { "type": "poll", "text": "Quel est ton fruit préféré ?", "choices": ["Pomme", "Banane", "Fraise", "Mangue"] },
+  { "type": "single", "text": "En quelle année l'homme a-t-il marché sur la Lune pour la première fois ?", "choices": ["1965", "1969", "1972", "1981"], "correct": 1 }
+]

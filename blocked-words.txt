@@ -1,0 +1,100 @@
+# Mots interdits dans les pseudos (un mot par ligne, en minuscules, sans accents).
+# Modifie cette liste comme tu veux : ajoute ou retire des mots, puis relance le serveur.
+#
+# Règles :
+# - Les accents, majuscules, chiffres-lettres (4 = a, 3 = e, 0 = o...) et lettres répétées sont ignorés.
+# - Un mot de 6 lettres ou plus est interdit même au milieu d'un pseudo.
+# - Un mot de 5 lettres ou moins n'est interdit que s'il forme un mot entier du pseudo
+#   (pour ne pas bloquer par erreur des pseudos comme "Unique").
+
+# --- Français : insultes ---
+putain
+pute
+salope
+salaud
+connard
+connasse
+encule
+enculer
+enfoire
+fdp
+ntm
+nique
+niquer
+niquetamere
+batard
+merde
+merdeux
+merdique
+couille
+couilles
+bite
+branleur
+branleuse
+petasse
+ordure
+abruti
+degeneres
+tapette
+pedale
+pede
+gouine
+pd
+trouduc
+chiasse
+
+# --- Français : discrimination et haine ---
+negre
+negresse
+bamboula
+bougnoul
+bougnoule
+youpin
+chinetoque
+sale juif
+saleraciste
+nazi
+hitler
+heilhitler
+siegheil
+fachos
+
+# --- Violence, sexe ---
+violeur
+violer
+viol
+porno
+pornographie
+sexe
+sucemoi
+bandemoi
+pedophile
+pedo
+suicidetoi
+
+# --- Anglais ---
+fuck
+fucker
+fucking
+motherfucker
+shit
+shitty
+bitch
+bastard
+asshole
+cunt
+dick
+pussy
+whore
+slut
+faggot
+fag
+nigger
+nigga
+retard
+rape
+rapist
+nazi
+porn
+cock
+anus

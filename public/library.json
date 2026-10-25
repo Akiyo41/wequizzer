@@ -1,0 +1,5338 @@
+[
+ {
+  "pid": "capitales",
+  "theme": "Géographie",
+  "level": "Facile",
+  "kind": "quiz",
+  "title": "Capitales du monde",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Quelle est la capitale de l'Australie ?",
+    "image": "",
+    "choices": [
+     "Canberra",
+     "Sydney",
+     "Melbourne",
+     "Perth"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Sydney est la plus grande ville, mais la capitale est Canberra."
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la capitale du Canada ?",
+    "image": "",
+    "choices": [
+     "Toronto",
+     "Montréal",
+     "Vancouver",
+     "Ottawa"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Ottawa se trouve dans la province de l'Ontario."
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la capitale du Brésil ?",
+    "image": "",
+    "choices": [
+     "Rio de Janeiro",
+     "São Paulo",
+     "Brasilia",
+     "Salvador"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Brasilia est capitale depuis 1960, Rio l'était avant."
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la capitale du Japon ?",
+    "image": "",
+    "choices": [
+     "Kyoto",
+     "Tokyo",
+     "Osaka",
+     "Hiroshima"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Kyoto a été capitale impériale pendant plus de mille ans."
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la capitale de l'Égypte ?",
+    "image": "",
+    "choices": [
+     "Le Caire",
+     "Alexandrie",
+     "Louxor",
+     "Assouan"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Le Caire est au bord du Nil."
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la capitale de la Turquie ?",
+    "image": "",
+    "choices": [
+     "Istanbul",
+     "Izmir",
+     "Antalya",
+     "Ankara"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Istanbul est plus grande, mais Ankara est la capitale depuis 1923."
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la capitale de l'Espagne ?",
+    "image": "",
+    "choices": [
+     "Barcelone",
+     "Séville",
+     "Madrid",
+     "Valence"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Madrid est la capitale, au centre du pays."
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la capitale du Maroc ?",
+    "image": "",
+    "choices": [
+     "Casablanca",
+     "Rabat",
+     "Marrakech",
+     "Fès"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Casablanca est la plus grande ville, Rabat est la capitale."
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la capitale de la Suisse ?",
+    "image": "",
+    "choices": [
+     "Berne",
+     "Zurich",
+     "Genève",
+     "Bâle"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Berne est appelée « ville fédérale »."
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la capitale de l'Argentine ?",
+    "image": "",
+    "choices": [
+     "Córdoba",
+     "Rosario",
+     "Mendoza",
+     "Buenos Aires"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Buenos Aires est aussi la plus grande ville du pays."
+   }
+  ]
+ },
+ {
+  "pid": "animaux",
+  "theme": "Nature",
+  "level": "Facile",
+  "kind": "quiz",
+  "title": "Animaux",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Quel est le plus grand animal terrestre ?",
+    "image": "",
+    "choices": [
+     "L'éléphant d'Afrique",
+     "La girafe",
+     "Le rhinocéros",
+     "L'hippopotame"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Il peut peser plus de 6 tonnes."
+   },
+   {
+    "type": "single",
+    "text": "Combien de pattes a une araignée ?",
+    "image": "",
+    "choices": [
+     "6",
+     "10",
+     "4",
+     "8"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Les insectes en ont 6, les araignées 8."
+   },
+   {
+    "type": "single",
+    "text": "Quel animal est le plus rapide sur terre ?",
+    "image": "",
+    "choices": [
+     "Le lion",
+     "Le cheval",
+     "Le guépard",
+     "L'antilope"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Le guépard atteint environ 100 km/h en pointe."
+   },
+   {
+    "type": "single",
+    "text": "Quel animal pond des œufs ?",
+    "image": "",
+    "choices": [
+     "Le dauphin",
+     "L'ornithorynque",
+     "Le chat",
+     "La chauve-souris"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "C'est un des rares mammifères qui pondent des œufs."
+   },
+   {
+    "type": "single",
+    "text": "Comment s'appelle le petit de la chèvre ?",
+    "image": "",
+    "choices": [
+     "Le chevreau",
+     "L'agneau",
+     "Le veau",
+     "Le poulain"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Le petit de la brebis est l'agneau."
+   },
+   {
+    "type": "single",
+    "text": "Quel est le plus grand animal du monde ?",
+    "image": "",
+    "choices": [
+     "L'éléphant",
+     "Le requin-baleine",
+     "Le calmar géant",
+     "La baleine bleue"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "C'est le plus grand animal connu qui ait jamais vécu."
+   },
+   {
+    "type": "single",
+    "text": "Que mange principalement un panda géant ?",
+    "image": "",
+    "choices": [
+     "De la viande",
+     "Des fruits",
+     "Du bambou",
+     "Du poisson"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Il en mange plusieurs kilos par jour."
+   },
+   {
+    "type": "single",
+    "text": "Quel animal change de couleur pour se camoufler ?",
+    "image": "",
+    "choices": [
+     "Le lézard vert",
+     "Le caméléon",
+     "Le serpent",
+     "Le crocodile"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Il change aussi de couleur selon son humeur."
+   },
+   {
+    "type": "single",
+    "text": "Combien de cœurs a une pieuvre ?",
+    "image": "",
+    "choices": [
+     "3",
+     "1",
+     "2",
+     "4"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Deux pour les branchies, un pour le reste du corps."
+   },
+   {
+    "type": "single",
+    "text": "Quel oiseau ne sait pas voler ?",
+    "image": "",
+    "choices": [
+     "Le pigeon",
+     "L'hirondelle",
+     "Le faucon",
+     "Le manchot"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Il nage très bien grâce à ses ailes en forme de nageoires."
+   }
+  ]
+ },
+ {
+  "pid": "espace",
+  "theme": "Sciences",
+  "level": "Facile",
+  "kind": "quiz",
+  "title": "L'espace et les planètes",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Quelle est la planète la plus proche du Soleil ?",
+    "image": "",
+    "choices": [
+     "Mercure",
+     "Vénus",
+     "Mars",
+     "La Terre"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Mercure est aussi la plus petite planète du système solaire."
+   },
+   {
+    "type": "single",
+    "text": "Quelle planète est surnommée la planète rouge ?",
+    "image": "",
+    "choices": [
+     "Jupiter",
+     "Vénus",
+     "Saturne",
+     "Mars"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Sa couleur vient de l'oxyde de fer (la rouille) dans le sol."
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la plus grande planète du système solaire ?",
+    "image": "",
+    "choices": [
+     "Saturne",
+     "Neptune",
+     "Jupiter",
+     "La Terre"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "On pourrait y faire entrer plus de 1000 Terres."
+   },
+   {
+    "type": "single",
+    "text": "Quelle planète est connue pour ses anneaux ?",
+    "image": "",
+    "choices": [
+     "Mars",
+     "Saturne",
+     "Mercure",
+     "Vénus"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Jupiter, Uranus et Neptune ont aussi des anneaux, mais plus discrets."
+   },
+   {
+    "type": "single",
+    "text": "Comment s'appelle notre galaxie ?",
+    "image": "",
+    "choices": [
+     "La Voie lactée",
+     "Andromède",
+     "Le Grand Nuage",
+     "Orion"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Le Soleil est une étoile parmi des centaines de milliards."
+   },
+   {
+    "type": "single",
+    "text": "Combien y a-t-il de planètes dans le système solaire ?",
+    "image": "",
+    "choices": [
+     "9",
+     "7",
+     "10",
+     "8"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Pluton est maintenant classée « planète naine » depuis 2006."
+   },
+   {
+    "type": "single",
+    "text": "Comment s'appelle le satellite naturel de la Terre ?",
+    "image": "",
+    "choices": [
+     "Phobos",
+     "Titan",
+     "La Lune",
+     "Europe"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Elle met environ 27 jours à faire le tour de la Terre."
+   },
+   {
+    "type": "single",
+    "text": "Qui a été le premier humain dans l'espace ?",
+    "image": "",
+    "choices": [
+     "Neil Armstrong",
+     "Youri Gagarine",
+     "Buzz Aldrin",
+     "Thomas Pesquet"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "C'était en 1961, à bord de Vostok 1."
+   },
+   {
+    "type": "single",
+    "text": "Qui a marché le premier sur la Lune ?",
+    "image": "",
+    "choices": [
+     "Neil Armstrong",
+     "Youri Gagarine",
+     "Buzz Aldrin",
+     "John Glenn"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "C'était en juillet 1969, mission Apollo 11."
+   },
+   {
+    "type": "single",
+    "text": "Quelle étoile est la plus proche de la Terre ?",
+    "image": "",
+    "choices": [
+     "Proxima du Centaure",
+     "Sirius",
+     "L'étoile Polaire",
+     "Le Soleil"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "La lumière du Soleil met environ 8 minutes à nous arriver."
+   }
+  ]
+ },
+ {
+  "pid": "histoire-france",
+  "theme": "Histoire",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "Histoire de France",
+  "questions": [
+   {
+    "type": "single",
+    "text": "En quelle année a eu lieu la prise de la Bastille ?",
+    "image": "",
+    "choices": [
+     "1789",
+     "1492",
+     "1815",
+     "1914"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Le 14 juillet 1789, début de la Révolution française."
+   },
+   {
+    "type": "single",
+    "text": "Qui était le roi surnommé « le Roi-Soleil » ?",
+    "image": "",
+    "choices": [
+     "Louis XVI",
+     "François Ier",
+     "Henri IV",
+     "Louis XIV"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Il a régné 72 ans et fait construire Versailles."
+   },
+   {
+    "type": "single",
+    "text": "Qui a été sacré empereur des Français en 1804 ?",
+    "image": "",
+    "choices": [
+     "Louis XVIII",
+     "Charlemagne",
+     "Napoléon Bonaparte",
+     "Charles de Gaulle"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Il s'est couronné lui-même à Notre-Dame."
+   },
+   {
+    "type": "single",
+    "text": "Quelle héroïne a été brûlée à Rouen en 1431 ?",
+    "image": "",
+    "choices": [
+     "Marie-Antoinette",
+     "Jeanne d'Arc",
+     "Aliénor d'Aquitaine",
+     "Catherine de Médicis"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Elle a aidé Charles VII pendant la guerre de Cent Ans."
+   },
+   {
+    "type": "single",
+    "text": "En quelle année a débuté la Première Guerre mondiale ?",
+    "image": "",
+    "choices": [
+     "1914",
+     "1905",
+     "1918",
+     "1939"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Elle a duré jusqu'au 11 novembre 1918."
+   },
+   {
+    "type": "single",
+    "text": "Comment s'appelle la période de 1939 à 1945 ?",
+    "image": "",
+    "choices": [
+     "La guerre de Cent Ans",
+     "La Révolution",
+     "La Guerre froide",
+     "La Seconde Guerre mondiale"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Elle s'est terminée en Europe le 8 mai 1945."
+   },
+   {
+    "type": "single",
+    "text": "Quel roi a fait construire le château de Versailles ?",
+    "image": "",
+    "choices": [
+     "Louis XI",
+     "Charles V",
+     "Louis XIV",
+     "Napoléon III"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Louis XIII y avait seulement un pavillon de chasse."
+   },
+   {
+    "type": "single",
+    "text": "Quelle bataille a eu lieu en 1815 ?",
+    "image": "",
+    "choices": [
+     "Austerlitz",
+     "Waterloo",
+     "Verdun",
+     "Marignan"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "C'est la défaite finale de Napoléon."
+   },
+   {
+    "type": "single",
+    "text": "Qui était le premier président de la Ve République ?",
+    "image": "",
+    "choices": [
+     "Charles de Gaulle",
+     "Georges Pompidou",
+     "François Mitterrand",
+     "Valéry Giscard d'Estaing"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Élu fin 1958, en fonction en 1959, après la Constitution de 1958."
+   },
+   {
+    "type": "single",
+    "text": "Quel monument a été offert à New York par la France ?",
+    "image": "",
+    "choices": [
+     "La tour Eiffel",
+     "Le Sphinx",
+     "L'Arc de triomphe",
+     "La statue de la Liberté"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Inaugurée en 1886, elle a été conçue par Bartholdi."
+   }
+  ]
+ },
+ {
+  "pid": "corps",
+  "theme": "Sciences",
+  "level": "Facile",
+  "kind": "quiz",
+  "title": "Le corps humain",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Combien d'os a un adulte ?",
+    "image": "",
+    "choices": [
+     "206",
+     "106",
+     "306",
+     "412"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Un bébé en a environ 300, certains se soudent en grandissant."
+   },
+   {
+    "type": "single",
+    "text": "Quel organe pompe le sang dans le corps ?",
+    "image": "",
+    "choices": [
+     "Le foie",
+     "Les poumons",
+     "L'estomac",
+     "Le cœur"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Il bat environ 100 000 fois par jour."
+   },
+   {
+    "type": "single",
+    "text": "Quel est le plus grand organe du corps humain ?",
+    "image": "",
+    "choices": [
+     "Le foie",
+     "L'intestin",
+     "La peau",
+     "Le cerveau"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Elle couvre environ 2 m² chez un adulte."
+   },
+   {
+    "type": "single",
+    "text": "Combien de dents a un adulte (avec les dents de sagesse) ?",
+    "image": "",
+    "choices": [
+     "28",
+     "32",
+     "30",
+     "36"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "28 sans les dents de sagesse."
+   },
+   {
+    "type": "single",
+    "text": "Quel gaz respirons-nous pour vivre ?",
+    "image": "",
+    "choices": [
+     "L'oxygène",
+     "Le gaz carbonique",
+     "L'azote seul",
+     "L'hélium"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "L'air contient environ 21 % d'oxygène."
+   },
+   {
+    "type": "single",
+    "text": "Quel organe nous permet de penser ?",
+    "image": "",
+    "choices": [
+     "Le cœur",
+     "Le foie",
+     "Les reins",
+     "Le cerveau"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Il contient des milliards de neurones."
+   },
+   {
+    "type": "single",
+    "text": "Comment s'appelle l'os de la cuisse ?",
+    "image": "",
+    "choices": [
+     "Le tibia",
+     "L'humérus",
+     "Le fémur",
+     "Le radius"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "C'est le plus long et le plus solide os du corps."
+   },
+   {
+    "type": "single",
+    "text": "Combien de sens principaux avons-nous ?",
+    "image": "",
+    "choices": [
+     "3",
+     "5",
+     "4",
+     "7"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "La vue, l'ouïe, l'odorat, le goût et le toucher."
+   },
+   {
+    "type": "single",
+    "text": "Quel organe filtre le sang et produit l'urine ?",
+    "image": "",
+    "choices": [
+     "Les reins",
+     "Le foie",
+     "La rate",
+     "Le pancréas"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Nous avons deux reins."
+   },
+   {
+    "type": "single",
+    "text": "Dans quelle partie du corps trouve-t-on l'étrier, le plus petit os ?",
+    "image": "",
+    "choices": [
+     "Le nez",
+     "La main",
+     "Le pied",
+     "L'oreille"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Il mesure environ 3 mm."
+   }
+  ]
+ },
+ {
+  "pid": "france-geo",
+  "theme": "Géographie",
+  "level": "Facile",
+  "kind": "quiz",
+  "title": "Géographie de la France",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Quel est le plus long fleuve de France ?",
+    "image": "",
+    "choices": [
+     "La Loire",
+     "La Seine",
+     "Le Rhône",
+     "La Garonne"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Elle mesure environ 1 000 km."
+   },
+   {
+    "type": "single",
+    "text": "Quel est le point culminant de France ?",
+    "image": "",
+    "choices": [
+     "Le Puy de Dôme",
+     "Le mont Ventoux",
+     "Le Canigou",
+     "Le mont Blanc"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Il culmine à environ 4 800 m."
+   },
+   {
+    "type": "single",
+    "text": "Quelle ville est surnommée « la ville rose » ?",
+    "image": "",
+    "choices": [
+     "Montpellier",
+     "Bordeaux",
+     "Toulouse",
+     "Albi"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "À cause de ses bâtiments en briques rouges."
+   },
+   {
+    "type": "single",
+    "text": "Combien de régions compte la France métropolitaine ?",
+    "image": "",
+    "choices": [
+     "12",
+     "13",
+     "18",
+     "22"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Depuis la réforme de 2016."
+   },
+   {
+    "type": "single",
+    "text": "Quelle mer borde le sud de la France ?",
+    "image": "",
+    "choices": [
+     "La Méditerranée",
+     "La mer du Nord",
+     "La Baltique",
+     "La mer Noire"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Marseille, Nice et Montpellier sont près de cette mer."
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la plus grande ville de France après Paris ?",
+    "image": "",
+    "choices": [
+     "Lyon",
+     "Toulouse",
+     "Nice",
+     "Marseille"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Marseille est la deuxième ville de France en habitants."
+   },
+   {
+    "type": "single",
+    "text": "Quel pays n'est PAS voisin de la France ?",
+    "image": "",
+    "choices": [
+     "L'Espagne",
+     "L'Italie",
+     "Le Portugal",
+     "La Belgique"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Le Portugal est voisin de l'Espagne, pas de la France."
+   },
+   {
+    "type": "single",
+    "text": "Dans quelle ville se trouve la cathédrale Notre-Dame, rénovée après un incendie en 2019 ?",
+    "image": "",
+    "choices": [
+     "Reims",
+     "Paris",
+     "Chartres",
+     "Strasbourg"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Elle a rouvert ses portes en décembre 2024."
+   },
+   {
+    "type": "single",
+    "text": "Quelle île française est surnommée « l'île de Beauté » ?",
+    "image": "",
+    "choices": [
+     "La Corse",
+     "La Réunion",
+     "La Martinique",
+     "Belle-Île"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Elle se trouve en Méditerranée."
+   },
+   {
+    "type": "single",
+    "text": "Quel département porte le numéro 75 ?",
+    "image": "",
+    "choices": [
+     "Lyon",
+     "Marseille",
+     "Lille",
+     "Paris"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Les départements sont numérotés par ordre alphabétique à l'origine."
+   }
+  ]
+ },
+ {
+  "pid": "sciences",
+  "theme": "Sciences",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "Sciences et nature",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Quelle est la formule chimique de l'eau ?",
+    "image": "",
+    "choices": [
+     "H2O",
+     "CO2",
+     "O2",
+     "NaCl"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Deux atomes d'hydrogène et un d'oxygène."
+   },
+   {
+    "type": "single",
+    "text": "À quelle température l'eau bout-elle (au niveau de la mer) ?",
+    "image": "",
+    "choices": [
+     "90 °C",
+     "120 °C",
+     "80 °C",
+     "100 °C"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Elle gèle à 0 °C."
+   },
+   {
+    "type": "single",
+    "text": "Quel est le symbole chimique de l'or ?",
+    "image": "",
+    "choices": [
+     "Or",
+     "Ag",
+     "Au",
+     "Go"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Vient du latin « aurum »."
+   },
+   {
+    "type": "single",
+    "text": "Qu'est-ce que la photosynthèse ?",
+    "image": "",
+    "choices": [
+     "Les animaux digèrent leur nourriture",
+     "Les plantes fabriquent leur énergie avec la lumière",
+     "Les roches se transforment",
+     "Les nuages se forment"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Elles absorbent du CO2 et rejettent de l'oxygène."
+   },
+   {
+    "type": "single",
+    "text": "Quelle force nous attire vers le sol ?",
+    "image": "",
+    "choices": [
+     "La gravité",
+     "Le magnétisme",
+     "La friction",
+     "L'inertie"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Newton aurait compris la gravité en voyant tomber une pomme."
+   },
+   {
+    "type": "single",
+    "text": "Combien de continents compte-t-on généralement ?",
+    "image": "",
+    "choices": [
+     "3",
+     "9",
+     "12",
+     "5 à 7 selon les modèles"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "En France, on en compte souvent 5 ou 6."
+   },
+   {
+    "type": "single",
+    "text": "Dans quel état est l'eau en dessous de 0 °C ?",
+    "image": "",
+    "choices": [
+     "Gazeux",
+     "Liquide",
+     "Solide (glace)",
+     "Plasma"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "On parle de solidification."
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la vitesse approximative de la lumière ?",
+    "image": "",
+    "choices": [
+     "3 000 km/s",
+     "300 000 km/s",
+     "30 000 km/s",
+     "3 millions km/s"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Rien ne va plus vite dans le vide."
+   },
+   {
+    "type": "single",
+    "text": "Qui a découvert la gravitation universelle ?",
+    "image": "",
+    "choices": [
+     "Isaac Newton",
+     "Albert Einstein",
+     "Galilée",
+     "Marie Curie"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Il a publié sa théorie en 1687."
+   },
+   {
+    "type": "single",
+    "text": "Quel gaz les plantes absorbent-elles ?",
+    "image": "",
+    "choices": [
+     "L'oxygène",
+     "L'hélium",
+     "L'azote",
+     "Le dioxyde de carbone"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Elles le transforment en matière avec la lumière du soleil."
+   }
+  ]
+ },
+ {
+  "pid": "culture",
+  "theme": "Culture générale",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "Culture générale",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Qui a peint la Joconde ?",
+    "image": "",
+    "choices": [
+     "Léonard de Vinci",
+     "Michel-Ange",
+     "Raphaël",
+     "Picasso"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Elle est exposée au musée du Louvre."
+   },
+   {
+    "type": "single",
+    "text": "Combien de joueurs y a-t-il dans une équipe de football sur le terrain ?",
+    "image": "",
+    "choices": [
+     "9",
+     "10",
+     "12",
+     "11"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Gardien compris."
+   },
+   {
+    "type": "single",
+    "text": "Quel est le plus grand océan ?",
+    "image": "",
+    "choices": [
+     "L'Atlantique",
+     "L'Indien",
+     "L'océan Pacifique",
+     "L'Arctique"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Il couvre environ un tiers de la surface du globe."
+   },
+   {
+    "type": "single",
+    "text": "Dans quelle ville se trouve la tour Eiffel ?",
+    "image": "",
+    "choices": [
+     "Lyon",
+     "Paris",
+     "Londres",
+     "Rome"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Elle a été terminée en 1889."
+   },
+   {
+    "type": "single",
+    "text": "Combien de jours compte une année bissextile ?",
+    "image": "",
+    "choices": [
+     "366",
+     "365",
+     "364",
+     "367"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Le 29 février existe tous les 4 ans (en général)."
+   },
+   {
+    "type": "single",
+    "text": "Quel écrivain a écrit « Les Misérables » ?",
+    "image": "",
+    "choices": [
+     "Émile Zola",
+     "Molière",
+     "Alexandre Dumas",
+     "Victor Hugo"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Publié en 1862."
+   },
+   {
+    "type": "single",
+    "text": "Quelle langue parle-t-on au Brésil ?",
+    "image": "",
+    "choices": [
+     "L'espagnol",
+     "Le brésilien",
+     "Le portugais",
+     "L'anglais"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Le brésilien n'existe pas comme langue : c'est du portugais."
+   },
+   {
+    "type": "single",
+    "text": "Quel est le plus petit pays du monde ?",
+    "image": "",
+    "choices": [
+     "Monaco",
+     "Le Vatican",
+     "Saint-Marin",
+     "Malte"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Moins d'un demi-kilomètre carré."
+   },
+   {
+    "type": "single",
+    "text": "Combien de couleurs a l'arc-en-ciel ?",
+    "image": "",
+    "choices": [
+     "7",
+     "5",
+     "6",
+     "8"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Rouge, orange, jaune, vert, bleu, indigo, violet."
+   },
+   {
+    "type": "single",
+    "text": "Quel instrument a 88 touches ?",
+    "image": "",
+    "choices": [
+     "L'orgue",
+     "L'accordéon",
+     "Le violon",
+     "Le piano"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Il y a 52 touches blanches et 36 noires."
+   }
+  ]
+ },
+ {
+  "pid": "drapeaux",
+  "theme": "Géographie",
+  "level": "Facile",
+  "kind": "quiz",
+  "title": "Drapeaux (en émojis)",
+  "questions": [
+   {
+    "type": "single",
+    "text": "À quel pays appartient ce drapeau : 🇯🇵 ?",
+    "image": "",
+    "choices": [
+     "Le Japon",
+     "La Chine",
+     "La Corée du Sud",
+     "Le Vietnam"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Un disque rouge sur fond blanc."
+   },
+   {
+    "type": "single",
+    "text": "À quel pays appartient ce drapeau : 🇧🇷 ?",
+    "image": "",
+    "choices": [
+     "L'Argentine",
+     "Le Portugal",
+     "Le Mexique",
+     "Le Brésil"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Vert et jaune avec un globe bleu."
+   },
+   {
+    "type": "single",
+    "text": "À quel pays appartient ce drapeau : 🇨🇦 ?",
+    "image": "",
+    "choices": [
+     "La Suisse",
+     "La Pologne",
+     "Le Canada",
+     "L'Autriche"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Il porte une feuille d'érable."
+   },
+   {
+    "type": "single",
+    "text": "À quel pays appartient ce drapeau : 🇮🇹 ?",
+    "image": "",
+    "choices": [
+     "L'Irlande",
+     "L'Italie",
+     "La Hongrie",
+     "Le Mexique"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Vert, blanc, rouge à la verticale."
+   },
+   {
+    "type": "single",
+    "text": "À quel pays appartient ce drapeau : 🇪🇸 ?",
+    "image": "",
+    "choices": [
+     "L'Espagne",
+     "Le Portugal",
+     "L'Andorre",
+     "La Roumanie"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Rouge et jaune."
+   },
+   {
+    "type": "single",
+    "text": "À quel pays appartient ce drapeau : 🇩🇪 ?",
+    "image": "",
+    "choices": [
+     "La Belgique",
+     "L'Autriche",
+     "Les Pays-Bas",
+     "L'Allemagne"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Noir, rouge et or à l'horizontale."
+   },
+   {
+    "type": "single",
+    "text": "À quel pays appartient ce drapeau : 🇨🇭 ?",
+    "image": "",
+    "choices": [
+     "Le Danemark",
+     "La Géorgie",
+     "La Suisse",
+     "Malte"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Une croix blanche sur fond rouge, carré."
+   },
+   {
+    "type": "single",
+    "text": "À quel pays appartient ce drapeau : 🇦🇺 ?",
+    "image": "",
+    "choices": [
+     "La Nouvelle-Zélande",
+     "L'Australie",
+     "Le Royaume-Uni",
+     "Fidji"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Avec l'Union Jack et des étoiles."
+   },
+   {
+    "type": "single",
+    "text": "À quel pays appartient ce drapeau : 🇲🇦 ?",
+    "image": "",
+    "choices": [
+     "Le Maroc",
+     "La Turquie",
+     "La Tunisie",
+     "L'Algérie"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Rouge avec une étoile verte."
+   },
+   {
+    "type": "single",
+    "text": "À quel pays appartient ce drapeau : 🇫🇷 ?",
+    "image": "",
+    "choices": [
+     "Les Pays-Bas",
+     "La Russie",
+     "Le Luxembourg",
+     "La France"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Bleu, blanc, rouge à la verticale."
+   }
+  ]
+ },
+ {
+  "pid": "homophones",
+  "theme": "Français",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "Compléter la phrase : le bon mot",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Il _____ mangé toute la tarte.",
+    "image": "",
+    "choices": [
+     "a",
+     "à",
+     "as"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "« a » est le verbe avoir. Astuce : on peut dire « avait ».",
+    "gapSrc": "Il [a] mangé toute la tarte."
+   },
+   {
+    "type": "single",
+    "text": "Elle va _____ l'école.",
+    "image": "",
+    "choices": [
+     "à",
+     "a",
+     "as"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "« à » est une préposition. Astuce : on ne peut pas dire « avait ».",
+    "gapSrc": "Elle va [à] l'école."
+   },
+   {
+    "type": "single",
+    "text": "_____ amis sont arrivés.",
+    "image": "",
+    "choices": [
+     "Ses",
+     "Ces",
+     "C'est"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "« ses » = à lui ou à elle. Astuce : on peut dire « mes » ou « tes ».",
+    "gapSrc": "[Ses] amis sont arrivés."
+   },
+   {
+    "type": "single",
+    "text": "_____ livres sont intéressants.",
+    "image": "",
+    "choices": [
+     "Ces",
+     "Ses",
+     "S'est"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "« ces » montre quelque chose (ces livres-ci).",
+    "gapSrc": "[Ces] livres sont intéressants."
+   },
+   {
+    "type": "single",
+    "text": "Il _____ elle sont partis.",
+    "image": "",
+    "choices": [
+     "et",
+     "est",
+     "ai"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "« et » relie deux mots. Astuce : on peut dire « et puis ».",
+    "gapSrc": "Il [et] elle sont partis."
+   },
+   {
+    "type": "single",
+    "text": "Il _____ très content.",
+    "image": "",
+    "choices": [
+     "est",
+     "et",
+     "ai"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "« est » est le verbe être. Astuce : on peut dire « était ».",
+    "gapSrc": "Il [est] très content."
+   },
+   {
+    "type": "single",
+    "text": "Nous _____ arrivés hier.",
+    "image": "",
+    "choices": [
+     "sommes",
+     "sont",
+     "somme"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "« sommes » est le verbe être avec « nous ».",
+    "gapSrc": "Nous [sommes] arrivés hier."
+   },
+   {
+    "type": "single",
+    "text": "Où _____ mon cartable ?",
+    "image": "",
+    "choices": [
+     "est",
+     "et",
+     "ai"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "On peut dire « où était mon cartable ? ».",
+    "gapSrc": "Où [est] mon cartable ?"
+   }
+  ]
+ },
+ {
+  "pid": "ordre-planetes",
+  "theme": "Sciences",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "Remettre dans l'ordre",
+  "questions": [
+   {
+    "type": "order",
+    "text": "Classe les planètes de la plus proche à la plus éloignée du Soleil",
+    "image": "",
+    "choices": [
+     "Mercure",
+     "Vénus",
+     "La Terre",
+     "Mars"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Mercure, Vénus, la Terre, puis Mars."
+   },
+   {
+    "type": "order",
+    "text": "Classe ces animaux du plus petit au plus grand",
+    "image": "",
+    "choices": [
+     "La fourmi",
+     "Le chat",
+     "Le cheval",
+     "L'éléphant",
+     "La baleine bleue"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "La baleine bleue est le plus grand animal connu."
+   },
+   {
+    "type": "order",
+    "text": "Remets ces événements dans l'ordre chronologique",
+    "image": "",
+    "choices": [
+     "Prise de la Bastille",
+     "Sacre de Napoléon",
+     "Première Guerre mondiale",
+     "Seconde Guerre mondiale"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "1789, 1804, 1914, 1939."
+   },
+   {
+    "type": "order",
+    "text": "Remets les jours de la semaine dans l'ordre, en commençant par jeudi",
+    "image": "",
+    "choices": [
+     "Jeudi",
+     "Vendredi",
+     "Samedi",
+     "Dimanche",
+     "Lundi"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Jeudi, vendredi, samedi, dimanche, lundi."
+   },
+   {
+    "type": "order",
+    "text": "Classe ces unités de la plus petite à la plus grande",
+    "image": "",
+    "choices": [
+     "Le millimètre",
+     "Le centimètre",
+     "Le mètre",
+     "Le kilomètre"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "1 km = 1 000 m = 100 000 cm."
+   },
+   {
+    "type": "order",
+    "text": "Remets les étapes de la vie d'un papillon dans l'ordre",
+    "image": "",
+    "choices": [
+     "L'œuf",
+     "La chenille",
+     "La chrysalide",
+     "Le papillon"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "C'est la métamorphose."
+   }
+  ]
+ },
+ {
+  "pid": "tf-nature",
+  "theme": "Nature",
+  "level": "Facile",
+  "kind": "quiz",
+  "flavor": "tfrush",
+  "title": "Vrai ou faux : nature et sciences",
+  "questions": [
+   {
+    "type": "tf",
+    "text": "Le dauphin est un poisson.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "C'est un mammifère."
+   },
+   {
+    "type": "tf",
+    "text": "La baleine est un mammifère.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Elle respire de l'air et allaite ses petits."
+   },
+   {
+    "type": "tf",
+    "text": "Les chauves-souris sont des oiseaux.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Ce sont des mammifères."
+   },
+   {
+    "type": "tf",
+    "text": "Le soleil est une étoile.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "C'est l'étoile la plus proche de la Terre."
+   },
+   {
+    "type": "tf",
+    "text": "Les araignées sont des insectes.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Elles ont 8 pattes : ce sont des arachnides."
+   },
+   {
+    "type": "tf",
+    "text": "La Terre tourne autour du Soleil.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Un tour dure environ 365 jours."
+   },
+   {
+    "type": "tf",
+    "text": "L'eau bout à 50 °C au niveau de la mer.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Elle bout à 100 °C."
+   },
+   {
+    "type": "tf",
+    "text": "Le cœur de la crevette est dans sa tête.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Il est situé dans la partie avant du corps."
+   },
+   {
+    "type": "tf",
+    "text": "Le manchot vit au pôle Nord.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Les manchots vivent dans l'hémisphère Sud."
+   },
+   {
+    "type": "tf",
+    "text": "Un kilo de plumes pèse moins qu'un kilo de plomb.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Les deux pèsent 1 kilo !"
+   }
+  ]
+ },
+ {
+  "pid": "tf-histoire",
+  "theme": "Histoire",
+  "level": "Facile",
+  "kind": "quiz",
+  "flavor": "tfrush",
+  "title": "Vrai ou faux : histoire et monde",
+  "questions": [
+   {
+    "type": "tf",
+    "text": "Napoléon était très petit.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Il mesurait environ 1,69 m, dans la moyenne de l'époque."
+   },
+   {
+    "type": "tf",
+    "text": "La tour Eiffel se trouve à Lyon.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Elle est à Paris."
+   },
+   {
+    "type": "tf",
+    "text": "Paris est la capitale de la France.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "La Révolution française a commencé en 1789.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Avec la prise de la Bastille le 14 juillet."
+   },
+   {
+    "type": "tf",
+    "text": "Les Vikings portaient des casques à cornes.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "C'est une légende née au XIXe siècle."
+   },
+   {
+    "type": "tf",
+    "text": "Le Nil est un fleuve d'Afrique.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Il traverse notamment l'Égypte."
+   },
+   {
+    "type": "tf",
+    "text": "L'Australie est un pays et un continent.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "C'est l'un des rares dans ce cas."
+   },
+   {
+    "type": "tf",
+    "text": "Christophe Colomb est arrivé en Amérique en 1492.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Il pensait atteindre les Indes."
+   },
+   {
+    "type": "tf",
+    "text": "La Grande Muraille de Chine est visible depuis la Lune à l'œil nu.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "C'est un mythe."
+   },
+   {
+    "type": "tf",
+    "text": "Cléopâtre vivait plus près de nous que de la construction des pyramides de Gizeh.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Les pyramides ont environ 4 500 ans, Cléopâtre 2 000 ans."
+   }
+  ]
+ },
+ {
+  "pid": "paires-europe",
+  "theme": "Géographie",
+  "level": "Facile",
+  "kind": "wheel",
+  "title": "Pays et capitales d'Europe",
+  "category": "Reliez chaque pays à sa capitale",
+  "pairs": [
+   {
+    "q": "France",
+    "a": "Paris"
+   },
+   {
+    "q": "Italie",
+    "a": "Rome"
+   },
+   {
+    "q": "Espagne",
+    "a": "Madrid"
+   },
+   {
+    "q": "Allemagne",
+    "a": "Berlin"
+   },
+   {
+    "q": "Portugal",
+    "a": "Lisbonne"
+   },
+   {
+    "q": "Belgique",
+    "a": "Bruxelles"
+   },
+   {
+    "q": "Autriche",
+    "a": "Vienne"
+   },
+   {
+    "q": "Grèce",
+    "a": "Athènes"
+   },
+   {
+    "q": "Pologne",
+    "a": "Varsovie"
+   },
+   {
+    "q": "Irlande",
+    "a": "Dublin"
+   }
+  ]
+ },
+ {
+  "pid": "paires-petits",
+  "theme": "Nature",
+  "level": "Facile",
+  "kind": "wheel",
+  "title": "Les petits des animaux",
+  "category": "Reliez chaque animal à son petit",
+  "pairs": [
+   {
+    "q": "La vache",
+    "a": "Le veau"
+   },
+   {
+    "q": "Le cheval",
+    "a": "Le poulain"
+   },
+   {
+    "q": "La brebis",
+    "a": "L'agneau"
+   },
+   {
+    "q": "La chèvre",
+    "a": "Le chevreau"
+   },
+   {
+    "q": "La poule",
+    "a": "Le poussin"
+   },
+   {
+    "q": "Le chien",
+    "a": "Le chiot"
+   },
+   {
+    "q": "Le chat",
+    "a": "Le chaton"
+   },
+   {
+    "q": "Le cerf",
+    "a": "Le faon"
+   }
+  ]
+ },
+ {
+  "pid": "paires-metiers",
+  "theme": "Culture générale",
+  "level": "Facile",
+  "kind": "wheel",
+  "title": "Les métiers et leurs outils",
+  "category": "Reliez chaque métier à son outil",
+  "pairs": [
+   {
+    "q": "Le médecin",
+    "a": "Le stéthoscope"
+   },
+   {
+    "q": "Le peintre",
+    "a": "Le pinceau"
+   },
+   {
+    "q": "Le jardinier",
+    "a": "La bêche"
+   },
+   {
+    "q": "Le boulanger",
+    "a": "Le four"
+   },
+   {
+    "q": "Le pompier",
+    "a": "La lance à incendie"
+   },
+   {
+    "q": "Le coiffeur",
+    "a": "Les ciseaux"
+   },
+   {
+    "q": "L'astronome",
+    "a": "Le télescope"
+   },
+   {
+    "q": "Le maçon",
+    "a": "La truelle"
+   }
+  ]
+ },
+ {
+  "pid": "paires-nombres",
+  "theme": "Maths",
+  "level": "Facile",
+  "kind": "wheel",
+  "title": "Chiffres romains",
+  "category": "Reliez chaque chiffre romain à sa valeur",
+  "pairs": [
+   {
+    "q": "I",
+    "a": "1"
+   },
+   {
+    "q": "V",
+    "a": "5"
+   },
+   {
+    "q": "X",
+    "a": "10"
+   },
+   {
+    "q": "L",
+    "a": "50"
+   },
+   {
+    "q": "C",
+    "a": "100"
+   },
+   {
+    "q": "D",
+    "a": "500"
+   },
+   {
+    "q": "M",
+    "a": "1000"
+   },
+   {
+    "q": "IX",
+    "a": "9"
+   }
+  ]
+ },
+ {
+  "pid": "mots-fruits",
+  "theme": "Nature",
+  "level": "Moyen",
+  "kind": "letters",
+  "title": "Mots : fruits et légumes",
+  "items": [
+   {
+    "q": "Fruit jaune que mangent les singes",
+    "word": "Banane",
+    "image": ""
+   },
+   {
+    "q": "Fruit rouge qui pousse sur un fraisier",
+    "word": "Fraise",
+    "image": ""
+   },
+   {
+    "q": "Légume orange que mangent les lapins",
+    "word": "Carotte",
+    "image": ""
+   },
+   {
+    "q": "Fruit rond et rouge qui tombe de l'arbre selon Newton",
+    "word": "Pomme",
+    "image": ""
+   },
+   {
+    "q": "Légume vert en forme d'arbre miniature",
+    "word": "Brocoli",
+    "image": ""
+   },
+   {
+    "q": "Fruit qui pousse en grappes et sert à faire le vin",
+    "word": "Raisin",
+    "image": ""
+   },
+   {
+    "q": "Fruit tropical avec une couronne de feuilles",
+    "word": "Ananas",
+    "image": ""
+   },
+   {
+    "q": "Légume qui fait pleurer en le coupant",
+    "word": "Oignon",
+    "image": ""
+   }
+  ]
+ },
+ {
+  "pid": "mots-pays",
+  "theme": "Géographie",
+  "level": "Moyen",
+  "kind": "letters",
+  "title": "Mots : pays",
+  "items": [
+   {
+    "q": "Pays en forme de botte",
+    "word": "Italie",
+    "image": ""
+   },
+   {
+    "q": "Pays des kangourous",
+    "word": "Australie",
+    "image": ""
+   },
+   {
+    "q": "Pays de la tour Eiffel",
+    "word": "France",
+    "image": ""
+   },
+   {
+    "q": "Pays des pyramides",
+    "word": "Égypte",
+    "image": ""
+   },
+   {
+    "q": "Pays du soleil levant",
+    "word": "Japon",
+    "image": ""
+   },
+   {
+    "q": "Pays où se trouve le Taj Mahal",
+    "word": "Inde",
+    "image": ""
+   },
+   {
+    "q": "Pays de la samba et du carnaval de Rio",
+    "word": "Brésil",
+    "image": ""
+   },
+   {
+    "q": "Pays de la vodka et des matriochkas",
+    "word": "Russie",
+    "image": ""
+   }
+  ]
+ },
+ {
+  "pid": "fimo-conduite-repos",
+  "theme": "Transport routier (FIMO)",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "FIMO : temps de conduite et de repos",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Après combien de temps de conduite continue une pause est-elle obligatoire ?",
+    "image": "",
+    "choices": [
+     "4 h 30",
+     "3 h",
+     "5 h 30",
+     "6 h"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée de la pause à prendre après 4 h 30 de conduite ?",
+    "image": "",
+    "choices": [
+     "15 minutes",
+     "45 minutes",
+     "30 minutes",
+     "1 heure"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "La pause de 45 minutes peut être fractionnée en :",
+    "image": "",
+    "choices": [
+     "une pause de 30 min, puis une pause de 15 min",
+     "deux pauses de 22 min",
+     "une pause de 15 min, puis une pause de 30 min",
+     "trois pauses de 15 min"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée de conduite journalière normale au maximum ?",
+    "image": "",
+    "choices": [
+     "8 heures",
+     "10 heures",
+     "11 heures",
+     "9 heures"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Combien de fois par semaine peut-on porter la conduite journalière à 10 heures ?",
+    "image": "",
+    "choices": [
+     "2 fois",
+     "1 fois",
+     "3 fois",
+     "4 fois"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée de conduite maximale par semaine ?",
+    "image": "",
+    "choices": [
+     "48 heures",
+     "56 heures",
+     "60 heures",
+     "45 heures"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée de conduite maximale sur deux semaines consécutives ?",
+    "image": "",
+    "choices": [
+     "80 heures",
+     "100 heures",
+     "90 heures",
+     "112 heures"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée du repos journalier normal ?",
+    "image": "",
+    "choices": [
+     "9 heures",
+     "12 heures",
+     "8 heures",
+     "11 heures"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Le repos journalier peut être réduit à 9 heures. Combien de fois au maximum entre deux repos hebdomadaires ?",
+    "image": "",
+    "choices": [
+     "3 fois",
+     "1 fois",
+     "2 fois",
+     "5 fois"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée du repos hebdomadaire normal ?",
+    "image": "",
+    "choices": [
+     "24 heures",
+     "45 heures",
+     "36 heures",
+     "48 heures"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée minimale d'un repos hebdomadaire réduit ?",
+    "image": "",
+    "choices": [
+     "36 heures",
+     "30 heures",
+     "24 heures",
+     "20 heures"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Un repos hebdomadaire réduit doit être compensé par un repos équivalent, pris avant la fin de la troisième semaine suivante.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Le repos journalier normal peut être pris en deux périodes : 3 heures puis 9 heures.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Le temps de conduite ne compte que lorsque l'on roule sur autoroute.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "order",
+    "text": "Classe ces durées de la plus courte à la plus longue",
+    "image": "",
+    "choices": [
+     "Pause de 45 minutes",
+     "Repos journalier réduit (9 h)",
+     "Repos journalier normal (11 h)",
+     "Repos hebdomadaire normal (45 h)"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "multi",
+    "text": "Quelles limites de conduite sont exactes ?",
+    "image": "",
+    "choices": [
+     "9 h par jour (10 h deux fois par semaine)",
+     "56 h par semaine",
+     "90 h sur deux semaines",
+     "11 h par jour"
+    ],
+    "correct": [
+     0,
+     1,
+     2
+    ],
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
+ },
+ {
+  "pid": "fimo-tachygraphe",
+  "theme": "Transport routier (FIMO)",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "FIMO : tachygraphe et contrôles",
+  "questions": [
+   {
+    "type": "single",
+    "text": "À quoi sert le chronotachygraphe ?",
+    "image": "",
+    "choices": [
+     "À mesurer la consommation de carburant",
+     "À calculer la charge du véhicule",
+     "À guider le conducteur par GPS",
+     "À enregistrer les temps de conduite, de pause et de repos"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée de validité d'une carte conducteur ?",
+    "image": "",
+    "choices": [
+     "5 ans",
+     "2 ans",
+     "10 ans",
+     "1 an"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Les données de la carte conducteur doivent être téléchargées au moins tous les :",
+    "image": "",
+    "choices": [
+     "7 jours",
+     "28 jours",
+     "90 jours",
+     "6 mois"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Les données de l'unité embarquée (le véhicule) doivent être téléchargées au moins tous les :",
+    "image": "",
+    "choices": [
+     "28 jours",
+     "7 jours",
+     "90 jours",
+     "1 an"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Le tachygraphe doit faire l'objet d'un contrôle périodique au moins tous les :",
+    "image": "",
+    "choices": [
+     "5 ans",
+     "10 ans",
+     "6 mois",
+     "2 ans"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que faut-il insérer dans le tachygraphe numérique avant de commencer à conduire ?",
+    "image": "",
+    "choices": [
+     "La carte conducteur",
+     "La clé du véhicule",
+     "La carte grise",
+     "Le permis de conduire"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel symbole du tachygraphe représente le repos ?",
+    "image": "",
+    "choices": [
+     "Un volant",
+     "Un lit",
+     "Deux marteaux croisés",
+     "Un carré barré d'une diagonale"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel symbole du tachygraphe représente la conduite ?",
+    "image": "",
+    "choices": [
+     "Un lit",
+     "Deux marteaux croisés",
+     "Un volant",
+     "Un carré barré d'une diagonale"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "En cas de panne du tachygraphe, le conducteur doit :",
+    "image": "",
+    "choices": [
+     "arrêter de rouler immédiatement",
+     "ne rien noter",
+     "débrancher le tachygraphe",
+     "noter à la main ses activités (sur une feuille ou un ticket)"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Un conducteur peut prêter sa carte conducteur à un collègue.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Le tachygraphe enregistre aussi la vitesse du véhicule.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "En cas de contrôle, le conducteur peut refuser de présenter sa carte conducteur.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Le tachygraphe intelligent enregistre aussi la position du véhicule.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
+ },
+ {
+  "pid": "fimo-reglementation",
+  "theme": "Transport routier (FIMO)",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "FIMO : documents et réglementation",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Que signifie FIMO ?",
+    "image": "",
+    "choices": [
+     "Formation initiale minimale obligatoire",
+     "Formation interne du matériel obligatoire",
+     "Formation individuelle mensuelle obligatoire",
+     "Formation initiale moto obligatoire"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que signifie FCO ?",
+    "image": "",
+    "choices": [
+     "Formation complète obligatoire",
+     "Formation continue obligatoire",
+     "Formation de conduite organisée",
+     "Formation contrôlée obligatoire"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "La FCO doit être renouvelée tous les :",
+    "image": "",
+    "choices": [
+     "2 ans",
+     "3 ans",
+     "5 ans",
+     "10 ans"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée d'une FCO ?",
+    "image": "",
+    "choices": [
+     "14 heures",
+     "70 heures",
+     "7 heures",
+     "35 heures"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée de la FIMO marchandises ?",
+    "image": "",
+    "choices": [
+     "140 heures",
+     "35 heures",
+     "70 heures",
+     "280 heures"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle mention sur le permis prouve la qualification professionnelle du conducteur ?",
+    "image": "",
+    "choices": [
+     "Le code 78",
+     "Le code 95",
+     "Le code 12",
+     "Le code 10"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel document accompagne la marchandise dans un transport routier international ?",
+    "image": "",
+    "choices": [
+     "Un chèque de caution",
+     "Un certificat médical",
+     "La lettre de voiture CMR",
+     "Le carnet de santé du véhicule"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que signifie CMR ?",
+    "image": "",
+    "choices": [
+     "Contrôle mensuel du réseau routier",
+     "Carte de mise en route",
+     "Certificat de maintenance des remorques",
+     "Convention relative au contrat de transport international de marchandises par route"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "L'ADR concerne le transport de :",
+    "image": "",
+    "choices": [
+     "marchandises dangereuses",
+     "animaux vivants",
+     "denrées périssables",
+     "déménagements"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Le règlement ATP concerne le transport de :",
+    "image": "",
+    "choices": [
+     "marchandises dangereuses",
+     "denrées périssables",
+     "colis très lourds",
+     "véhicules neufs"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la limite légale maximale d'alcool dans le sang pour un conducteur de poids lourd ?",
+    "image": "",
+    "choices": [
+     "0,8 g/L",
+     "0,2 g/L",
+     "0,5 g/L",
+     "0,3 g/L"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Un salarié ne peut pas travailler plus de combien d'heures de suite sans pause ?",
+    "image": "",
+    "choices": [
+     "4 heures",
+     "8 heures",
+     "10 heures",
+     "6 heures"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle pause minimale pour un travail total compris entre 6 et 9 heures ?",
+    "image": "",
+    "choices": [
+     "30 minutes",
+     "15 minutes",
+     "45 minutes",
+     "1 heure"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Un conducteur peut conduire sans avoir son permis sur lui s'il l'a laissé au dépôt.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "multi",
+    "text": "Quels documents doit avoir le conducteur sur lui ?",
+    "image": "",
+    "choices": [
+     "Son permis de conduire",
+     "Le certificat d'immatriculation (carte grise)",
+     "La preuve de sa qualification (code 95 sur le permis)",
+     "Son diplôme du baccalauréat"
+    ],
+    "correct": [
+     0,
+     1,
+     2
+    ],
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
+ },
+ {
+  "pid": "fimo-securite",
+  "theme": "Transport routier (FIMO)",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "FIMO : sécurité et conduite",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Quelle distance de sécurité minimale faut-il respecter avec le véhicule qui précède ?",
+    "image": "",
+    "choices": [
+     "1 seconde",
+     "Au moins 2 secondes",
+     "Une demi-seconde",
+     "5 secondes"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la vitesse maximale d'un poids lourd de plus de 3,5 t sur autoroute ?",
+    "image": "",
+    "choices": [
+     "80 km/h",
+     "100 km/h",
+     "90 km/h",
+     "110 km/h"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la vitesse maximale en agglomération, en général ?",
+    "image": "",
+    "choices": [
+     "30 km/h",
+     "70 km/h",
+     "90 km/h",
+     "50 km/h"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "À 90 km/h, quelle distance parcourt-on en 1 seconde ?",
+    "image": "",
+    "choices": [
+     "25 mètres",
+     "9 mètres",
+     "50 mètres",
+     "90 mètres"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "La distance d'arrêt est égale à :",
+    "image": "",
+    "choices": [
+     "la distance de freinage seulement",
+     "la distance de réaction + la distance de freinage",
+     "la distance de réaction seulement",
+     "la distance de freinage multipliée par 2"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Un camion chargé a une distance de freinage :",
+    "image": "",
+    "choices": [
+     "plus courte qu'à vide",
+     "identique à vide",
+     "plus longue qu'à vide",
+     "nulle"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Où se trouvent les angles morts d'un poids lourd ?",
+    "image": "",
+    "choices": [
+     "Uniquement derrière",
+     "Uniquement à gauche",
+     "Il n'y en a pas avec de bons rétroviseurs",
+     "Autour du camion : surtout à droite, devant la cabine et derrière"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "En cas d'aquaplaning, il faut :",
+    "image": "",
+    "choices": [
+     "lever le pied de l'accélérateur sans freiner brusquement",
+     "freiner à fond",
+     "accélérer",
+     "donner un coup de volant"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Vous avez les paupières lourdes et vous bâillez. Que faites-vous ?",
+    "image": "",
+    "choices": [
+     "J'ouvre la fenêtre et je continue",
+     "Je m'arrête dès que possible sur une aire pour me reposer",
+     "Je monte le son de la radio",
+     "Je bois un café et je continue"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Avant de tourner à droite en agglomération, il faut surveiller en priorité :",
+    "image": "",
+    "choices": [
+     "l'autoradio",
+     "le tableau de bord",
+     "le rétroviseur droit, pour les piétons et les cyclistes",
+     "le rétroviseur intérieur"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Les feux de brouillard s'utilisent lorsque la visibilité est inférieure à :",
+    "image": "",
+    "choices": [
+     "100 mètres",
+     "200 mètres",
+     "20 mètres",
+     "50 mètres"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Les autocollants d'angle mort sont obligatoires sur les poids lourds.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Tenir son téléphone en main en conduisant est interdit.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "La ceinture de sécurité est obligatoire dans un poids lourd.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "order",
+    "text": "Panne sur la route : classe les gestes dans l'ordre",
+    "image": "",
+    "choices": [
+     "Mettre les feux de détresse",
+     "Enfiler le gilet jaune avant de sortir",
+     "Placer le triangle de présignalisation",
+     "Se mettre à l'abri derrière la glissière"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
+ },
+ {
+  "pid": "fimo-gabarits-poids",
+  "theme": "Transport routier (FIMO)",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "FIMO : gabarits et poids",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Quelle est la hauteur maximale autorisée d'un véhicule ?",
+    "image": "",
+    "choices": [
+     "4 mètres",
+     "3,5 mètres",
+     "4,5 mètres",
+     "5 mètres"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la largeur maximale d'un camion (hors frigorifique) ?",
+    "image": "",
+    "choices": [
+     "2,20 mètres",
+     "2,55 mètres",
+     "3 mètres",
+     "2,80 mètres"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la longueur maximale d'un porteur (camion seul) ?",
+    "image": "",
+    "choices": [
+     "10 mètres",
+     "15 mètres",
+     "12 mètres",
+     "18,75 mètres"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la longueur maximale d'un ensemble articulé (tracteur + semi-remorque) ?",
+    "image": "",
+    "choices": [
+     "12 mètres",
+     "18,75 mètres",
+     "20 mètres",
+     "16,50 mètres"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel est le poids total roulant autorisé d'un ensemble articulé à 5 essieux ?",
+    "image": "",
+    "choices": [
+     "40 tonnes",
+     "26 tonnes",
+     "19 tonnes",
+     "32 tonnes"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que signifie PTAC ?",
+    "image": "",
+    "choices": [
+     "Poids total à contrôler",
+     "Poids total autorisé en charge",
+     "Poids technique admis en circulation",
+     "Poids transporté au chargement"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel est le PTAC maximal d'un porteur à 2 essieux ?",
+    "image": "",
+    "choices": [
+     "26 tonnes",
+     "32 tonnes",
+     "19 tonnes",
+     "12 tonnes"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel est le PTAC maximal d'un porteur à 3 essieux ?",
+    "image": "",
+    "choices": [
+     "19 tonnes",
+     "32 tonnes",
+     "40 tonnes",
+     "26 tonnes"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "La charge utile se calcule ainsi :",
+    "image": "",
+    "choices": [
+     "PTAC − poids à vide",
+     "PTAC + poids à vide",
+     "PTRA − PTAC",
+     "poids à vide × 2"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Un camion a un PTAC de 19 t et un poids à vide de 8,5 t. Quelle est sa charge utile ?",
+    "image": "",
+    "choices": [
+     "27,5 tonnes",
+     "10,5 tonnes",
+     "8,5 tonnes",
+     "11,5 tonnes"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Le PTAC est indiqué sur :",
+    "image": "",
+    "choices": [
+     "le tableau de bord seulement",
+     "le permis de conduire",
+     "la carte grise et la plaque du constructeur",
+     "la lettre de voiture seulement"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "La charge doit être répartie pour ne pas dépasser la charge maximale par essieu.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Surcharger un véhicule n'a aucune conséquence sur le freinage.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
+ },
+ {
+  "pid": "fimo-chargement-quai",
+  "theme": "Transport routier (FIMO)",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "FIMO : chargement, arrimage et mise à quai",
+  "questions": [
+   {
+    "type": "single",
+    "text": "À quoi sert l'arrimage ?",
+    "image": "",
+    "choices": [
+     "À alourdir le véhicule",
+     "À accélérer le chargement",
+     "À protéger le chargement de la pluie",
+     "À empêcher la charge de bouger pendant le transport"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que dit le Code de la route sur le chargement ?",
+    "image": "",
+    "choices": [
+     "Il faut prendre toutes les précautions utiles pour qu'il ne cause ni dommage ni danger",
+     "Seuls les chargements de plus de 3 tonnes sont concernés",
+     "Il n'y a aucune règle",
+     "Seul le chargeur est responsable"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Dans l'arrimage par frottement, la charge est retenue par :",
+    "image": "",
+    "choices": [
+     "des cales en bois uniquement",
+     "la tension des sangles, qui la plaque contre le plancher",
+     "les ridelles uniquement",
+     "le poids du camion"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "À quoi sert un tapis antiglisse ?",
+    "image": "",
+    "choices": [
+     "À alourdir la charge",
+     "À protéger de la pluie",
+     "À augmenter le frottement entre la charge et le plancher",
+     "À remplacer les sangles"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Avant d'utiliser une sangle, il faut vérifier :",
+    "image": "",
+    "choices": [
+     "sa couleur",
+     "sa marque",
+     "son prix",
+     "qu'elle n'est ni coupée ni abîmée et que l'étiquette est lisible"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Avant de quitter le quai, il faut vérifier :",
+    "image": "",
+    "choices": [
+     "que le chargement est terminé, calé et arrimé, et les portes fermées",
+     "seulement la météo",
+     "rien, le quai s'en occupe",
+     "uniquement les rétroviseurs"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quand le camion roule, le hayon élévateur doit être :",
+    "image": "",
+    "choices": [
+     "déployé",
+     "replié et verrouillé",
+     "à moitié ouvert",
+     "en position de chargement"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Où doit-on placer une charge lourde dans la remorque ?",
+    "image": "",
+    "choices": [
+     "Tout en haut",
+     "Tout à l'arrière",
+     "Le plus bas possible et bien répartie",
+     "Contre la porte seulement"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Où est indiquée la charge maximale d'un hayon élévateur ?",
+    "image": "",
+    "choices": [
+     "Dans le journal de bord",
+     "Sur la carte grise",
+     "Nulle part",
+     "Sur une plaque fixée sur le hayon"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Le conducteur doit vérifier l'état de l'arrimage avant de partir.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Il est interdit de se placer sous la plateforme du hayon pendant sa manœuvre.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "On peut utiliser le hayon pour transporter plusieurs personnes.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "order",
+    "text": "Mise à quai : classe les gestes dans l'ordre",
+    "image": "",
+    "choices": [
+     "Approcher lentement en marche arrière",
+     "Serrer le frein de stationnement",
+     "Caler les roues ou vérifier le blocage du véhicule",
+     "Ouvrir les portes de la remorque"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "multi",
+    "text": "Quels équipements de protection porter au quai ?",
+    "image": "",
+    "choices": [
+     "Des gants",
+     "Des chaussures de sécurité",
+     "Un gilet haute visibilité",
+     "Des sandales"
+    ],
+    "correct": [
+     0,
+     1,
+     2
+    ],
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
+ },
+ {
+  "pid": "fimo-ecoconduite-mecanique",
+  "theme": "Transport routier (FIMO)",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "FIMO : éco-conduite et mécanique",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Pour économiser du carburant, le moteur doit tourner :",
+    "image": "",
+    "choices": [
+     "dans la zone verte du compte-tours",
+     "dans la zone rouge",
+     "toujours à haut régime",
+     "au ralenti"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle conduite permet d'économiser du carburant ?",
+    "image": "",
+    "choices": [
+     "Accélérer fort puis freiner tard",
+     "Anticiper et rouler en souplesse",
+     "Rouler toujours à vitesse maximale",
+     "Rouler en roue libre"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Dans une longue descente, pour éviter la surchauffe des freins, on utilise :",
+    "image": "",
+    "choices": [
+     "uniquement la pédale de frein",
+     "le point mort",
+     "le frein moteur ou le ralentisseur",
+     "l'embrayage débrayé"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "La pression des pneus se contrôle de préférence :",
+    "image": "",
+    "choices": [
+     "juste après un long trajet",
+     "à chaud",
+     "jamais",
+     "à froid"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Des pneus sous-gonflés :",
+    "image": "",
+    "choices": [
+     "consomment plus de carburant et s'usent plus vite",
+     "n'ont aucun effet",
+     "économisent du carburant",
+     "freinent mieux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "À quoi sert l'AdBlue ?",
+    "image": "",
+    "choices": [
+     "À remplacer le gazole",
+     "À réduire les oxydes d'azote (NOx) rejetés par le moteur",
+     "À refroidir le moteur",
+     "À lubrifier les freins"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Un voyant rouge s'allume en roulant. Que faut-il faire ?",
+    "image": "",
+    "choices": [
+     "L'ignorer",
+     "Accélérer",
+     "M'arrêter dès que possible, en sécurité",
+     "Attendre la fin de la journée"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Les freins d'un poids lourd fonctionnent en général à :",
+    "image": "",
+    "choices": [
+     "l'huile uniquement",
+     "un câble seul",
+     "l'électricité seule",
+     "l'air comprimé"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel élément filtre les particules de suie à l'échappement ?",
+    "image": "",
+    "choices": [
+     "Le filtre à particules (FAP)",
+     "Le radiateur",
+     "L'alternateur",
+     "Le turbo"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Avant de démarrer, il faut régler :",
+    "image": "",
+    "choices": [
+     "seulement la radio",
+     "le siège, le volant et les rétroviseurs",
+     "seulement le GPS",
+     "rien"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "L'éco-conduite permet de réduire :",
+    "image": "",
+    "choices": [
+     "seulement la vitesse",
+     "rien du tout",
+     "la consommation, le bruit et l'usure",
+     "le poids de la charge"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Laisser tourner le moteur à l'arrêt consomme du carburant pour rien.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Un camion équipé d'un limiteur de vitesse ne peut pas dépasser 90 km/h.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "multi",
+    "text": "Que vérifie-t-on lors du contrôle quotidien du véhicule ?",
+    "image": "",
+    "choices": [
+     "Le niveau d'huile",
+     "La pression et l'état des pneus",
+     "L'éclairage",
+     "La couleur de la carrosserie"
+    ],
+    "correct": [
+     0,
+     1,
+     2
+    ],
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
+ },
+ {
+  "pid": "fimo-sante-secours",
+  "theme": "Transport routier (FIMO)",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "FIMO : santé et secours",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Quel numéro d'urgence médicale (SAMU) faut-il composer ?",
+    "image": "",
+    "choices": [
+     "Le 17",
+     "Le 18",
+     "Le 114",
+     "Le 15"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel numéro faut-il composer pour joindre les pompiers ?",
+    "image": "",
+    "choices": [
+     "Le 18",
+     "Le 15",
+     "Le 17",
+     "Le 112 uniquement"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel est le numéro d'urgence européen ?",
+    "image": "",
+    "choices": [
+     "Le 110",
+     "Le 112",
+     "Le 911",
+     "Le 100"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que signifie PAS ?",
+    "image": "",
+    "choices": [
+     "Parler, Aider, Sortir",
+     "Prévenir, Appeler, Soigner",
+     "Protéger, Alerter, Secourir",
+     "Prendre, Arrêter, Stopper"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Une victime est inconsciente mais respire. Que faire ?",
+    "image": "",
+    "choices": [
+     "La laisser sur le dos",
+     "La faire boire",
+     "La relever",
+     "La mettre en position latérale de sécurité (PLS)"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Une personne saigne beaucoup. Que faire en premier ?",
+    "image": "",
+    "choices": [
+     "Appuyer fortement sur la plaie avec un linge propre",
+     "Retirer le linge régulièrement",
+     "La laisser saigner",
+     "Lui donner à boire"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Une personne est en arrêt cardiaque. Que faut-il faire ?",
+    "image": "",
+    "choices": [
+     "Attendre l'arrivée des secours sans rien faire",
+     "Faire un massage cardiaque et utiliser un défibrillateur (DAE)",
+     "Lui donner à boire",
+     "La faire marcher"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel est le bon rythme des compressions thoraciques ?",
+    "image": "",
+    "choices": [
+     "30 par minute",
+     "60 par minute",
+     "100 à 120 par minute",
+     "200 par minute"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Pour une brûlure légère, il faut :",
+    "image": "",
+    "choices": [
+     "y mettre du beurre",
+     "percer les cloques",
+     "y mettre des glaçons",
+     "l'arroser d'eau tempérée pendant au moins 10 minutes"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Pour soulever une charge, il faut :",
+    "image": "",
+    "choices": [
+     "plier les jambes et garder le dos droit",
+     "courber le dos, jambes tendues",
+     "tordre le dos",
+     "soulever d'un seul bras"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que signifie TMS ?",
+    "image": "",
+    "choices": [
+     "Troubles mentaux et sociaux",
+     "Troubles musculosquelettiques",
+     "Transport de marchandises sensibles",
+     "Traitements médicaux spécialisés"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que signifie SST ?",
+    "image": "",
+    "choices": [
+     "Service de sécurité des transports",
+     "Sécurité sur site de travail",
+     "Sauveteur secouriste du travail",
+     "Suivi de santé technique"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que faut-il faire en premier en arrivant sur un accident ?",
+    "image": "",
+    "choices": [
+     "Sortir la victime de force",
+     "Déplacer les véhicules",
+     "Prendre des photos",
+     "Sécuriser la zone pour éviter un suracident"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Il faut toujours déplacer une victime d'accident de la route.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "order",
+    "text": "Classe les gestes de secours dans l'ordre",
+    "image": "",
+    "choices": [
+     "Protéger",
+     "Alerter",
+     "Secourir"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
+ },
+ {
+  "pid": "fimo-examen-50",
+  "theme": "Transport routier (FIMO)",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "FIMO : examen blanc (50 questions)",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Avant de tourner à droite en agglomération, il faut surveiller en priorité :",
+    "image": "",
+    "choices": [
+     "l'autoradio",
+     "le tableau de bord",
+     "le rétroviseur droit, pour les piétons et les cyclistes",
+     "le rétroviseur intérieur"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Le tachygraphe intelligent enregistre aussi la position du véhicule.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Après combien de temps de conduite continue une pause est-elle obligatoire ?",
+    "image": "",
+    "choices": [
+     "4 h 30",
+     "3 h",
+     "5 h 30",
+     "6 h"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "La FCO doit être renouvelée tous les :",
+    "image": "",
+    "choices": [
+     "2 ans",
+     "3 ans",
+     "5 ans",
+     "10 ans"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "multi",
+    "text": "Quels équipements de protection porter au quai ?",
+    "image": "",
+    "choices": [
+     "Des gants",
+     "Des chaussures de sécurité",
+     "Un gilet haute visibilité",
+     "Des sandales"
+    ],
+    "correct": [
+     0,
+     1,
+     2
+    ],
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Le tachygraphe enregistre aussi la vitesse du véhicule.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel est le PTAC maximal d'un porteur à 3 essieux ?",
+    "image": "",
+    "choices": [
+     "19 tonnes",
+     "32 tonnes",
+     "40 tonnes",
+     "26 tonnes"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "À quoi sert un tapis antiglisse ?",
+    "image": "",
+    "choices": [
+     "À alourdir la charge",
+     "À protéger de la pluie",
+     "À augmenter le frottement entre la charge et le plancher",
+     "À remplacer les sangles"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que faut-il faire en premier en arrivant sur un accident ?",
+    "image": "",
+    "choices": [
+     "Sortir la victime de force",
+     "Déplacer les véhicules",
+     "Prendre des photos",
+     "Sécuriser la zone pour éviter un suracident"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Dans l'arrimage par frottement, la charge est retenue par :",
+    "image": "",
+    "choices": [
+     "des cales en bois uniquement",
+     "la tension des sangles, qui la plaque contre le plancher",
+     "les ridelles uniquement",
+     "le poids du camion"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Laisser tourner le moteur à l'arrêt consomme du carburant pour rien.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "order",
+    "text": "Classe les gestes de secours dans l'ordre",
+    "image": "",
+    "choices": [
+     "Protéger",
+     "Alerter",
+     "Secourir"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que signifie PAS ?",
+    "image": "",
+    "choices": [
+     "Parler, Aider, Sortir",
+     "Prévenir, Appeler, Soigner",
+     "Protéger, Alerter, Secourir",
+     "Prendre, Arrêter, Stopper"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "À quoi sert l'AdBlue ?",
+    "image": "",
+    "choices": [
+     "À remplacer le gazole",
+     "À réduire les oxydes d'azote (NOx) rejetés par le moteur",
+     "À refroidir le moteur",
+     "À lubrifier les freins"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "On peut utiliser le hayon pour transporter plusieurs personnes.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la vitesse maximale en agglomération, en général ?",
+    "image": "",
+    "choices": [
+     "30 km/h",
+     "70 km/h",
+     "90 km/h",
+     "50 km/h"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Les freins d'un poids lourd fonctionnent en général à :",
+    "image": "",
+    "choices": [
+     "l'huile uniquement",
+     "un câble seul",
+     "l'électricité seule",
+     "l'air comprimé"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "En cas de panne du tachygraphe, le conducteur doit :",
+    "image": "",
+    "choices": [
+     "arrêter de rouler immédiatement",
+     "ne rien noter",
+     "débrancher le tachygraphe",
+     "noter à la main ses activités (sur une feuille ou un ticket)"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que faut-il insérer dans le tachygraphe numérique avant de commencer à conduire ?",
+    "image": "",
+    "choices": [
+     "La carte conducteur",
+     "La clé du véhicule",
+     "La carte grise",
+     "Le permis de conduire"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "L'éco-conduite permet de réduire :",
+    "image": "",
+    "choices": [
+     "seulement la vitesse",
+     "rien du tout",
+     "la consommation, le bruit et l'usure",
+     "le poids de la charge"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle mention sur le permis prouve la qualification professionnelle du conducteur ?",
+    "image": "",
+    "choices": [
+     "Le code 78",
+     "Le code 95",
+     "Le code 12",
+     "Le code 10"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Combien de fois par semaine peut-on porter la conduite journalière à 10 heures ?",
+    "image": "",
+    "choices": [
+     "2 fois",
+     "1 fois",
+     "3 fois",
+     "4 fois"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel document accompagne la marchandise dans un transport routier international ?",
+    "image": "",
+    "choices": [
+     "Un chèque de caution",
+     "Un certificat médical",
+     "La lettre de voiture CMR",
+     "Le carnet de santé du véhicule"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que dit le Code de la route sur le chargement ?",
+    "image": "",
+    "choices": [
+     "Il faut prendre toutes les précautions utiles pour qu'il ne cause ni dommage ni danger",
+     "Seuls les chargements de plus de 3 tonnes sont concernés",
+     "Il n'y a aucune règle",
+     "Seul le chargeur est responsable"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Les données de la carte conducteur doivent être téléchargées au moins tous les :",
+    "image": "",
+    "choices": [
+     "7 jours",
+     "28 jours",
+     "90 jours",
+     "6 mois"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "À 90 km/h, quelle distance parcourt-on en 1 seconde ?",
+    "image": "",
+    "choices": [
+     "25 mètres",
+     "9 mètres",
+     "50 mètres",
+     "90 mètres"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Le repos journalier normal peut être pris en deux périodes : 3 heures puis 9 heures.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Le temps de conduite ne compte que lorsque l'on roule sur autoroute.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la longueur maximale d'un porteur (camion seul) ?",
+    "image": "",
+    "choices": [
+     "10 mètres",
+     "15 mètres",
+     "12 mètres",
+     "18,75 mètres"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée d'une FCO ?",
+    "image": "",
+    "choices": [
+     "14 heures",
+     "70 heures",
+     "7 heures",
+     "35 heures"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Un camion a un PTAC de 19 t et un poids à vide de 8,5 t. Quelle est sa charge utile ?",
+    "image": "",
+    "choices": [
+     "27,5 tonnes",
+     "10,5 tonnes",
+     "8,5 tonnes",
+     "11,5 tonnes"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "multi",
+    "text": "Quelles limites de conduite sont exactes ?",
+    "image": "",
+    "choices": [
+     "9 h par jour (10 h deux fois par semaine)",
+     "56 h par semaine",
+     "90 h sur deux semaines",
+     "11 h par jour"
+    ],
+    "correct": [
+     0,
+     1,
+     2
+    ],
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Des pneus sous-gonflés :",
+    "image": "",
+    "choices": [
+     "consomment plus de carburant et s'usent plus vite",
+     "n'ont aucun effet",
+     "économisent du carburant",
+     "freinent mieux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Où se trouvent les angles morts d'un poids lourd ?",
+    "image": "",
+    "choices": [
+     "Uniquement derrière",
+     "Uniquement à gauche",
+     "Il n'y en a pas avec de bons rétroviseurs",
+     "Autour du camion : surtout à droite, devant la cabine et derrière"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée du repos journalier normal ?",
+    "image": "",
+    "choices": [
+     "9 heures",
+     "12 heures",
+     "8 heures",
+     "11 heures"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel est le poids total roulant autorisé d'un ensemble articulé à 5 essieux ?",
+    "image": "",
+    "choices": [
+     "40 tonnes",
+     "26 tonnes",
+     "19 tonnes",
+     "32 tonnes"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la limite légale maximale d'alcool dans le sang pour un conducteur de poids lourd ?",
+    "image": "",
+    "choices": [
+     "0,8 g/L",
+     "0,2 g/L",
+     "0,5 g/L",
+     "0,3 g/L"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "order",
+    "text": "Mise à quai : classe les gestes dans l'ordre",
+    "image": "",
+    "choices": [
+     "Approcher lentement en marche arrière",
+     "Serrer le frein de stationnement",
+     "Caler les roues ou vérifier le blocage du véhicule",
+     "Ouvrir les portes de la remorque"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Un conducteur peut prêter sa carte conducteur à un collègue.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Le règlement ATP concerne le transport de :",
+    "image": "",
+    "choices": [
+     "marchandises dangereuses",
+     "denrées périssables",
+     "colis très lourds",
+     "véhicules neufs"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la hauteur maximale autorisée d'un véhicule ?",
+    "image": "",
+    "choices": [
+     "4 mètres",
+     "3,5 mètres",
+     "4,5 mètres",
+     "5 mètres"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Avant de démarrer, il faut régler :",
+    "image": "",
+    "choices": [
+     "seulement la radio",
+     "le siège, le volant et les rétroviseurs",
+     "seulement le GPS",
+     "rien"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la vitesse maximale d'un poids lourd de plus de 3,5 t sur autoroute ?",
+    "image": "",
+    "choices": [
+     "80 km/h",
+     "100 km/h",
+     "90 km/h",
+     "110 km/h"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Le tachygraphe doit faire l'objet d'un contrôle périodique au moins tous les :",
+    "image": "",
+    "choices": [
+     "5 ans",
+     "10 ans",
+     "6 mois",
+     "2 ans"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée de conduite journalière normale au maximum ?",
+    "image": "",
+    "choices": [
+     "8 heures",
+     "10 heures",
+     "11 heures",
+     "9 heures"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que signifie SST ?",
+    "image": "",
+    "choices": [
+     "Service de sécurité des transports",
+     "Sécurité sur site de travail",
+     "Sauveteur secouriste du travail",
+     "Suivi de santé technique"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel est le PTAC maximal d'un porteur à 2 essieux ?",
+    "image": "",
+    "choices": [
+     "26 tonnes",
+     "32 tonnes",
+     "19 tonnes",
+     "12 tonnes"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Pour soulever une charge, il faut :",
+    "image": "",
+    "choices": [
+     "plier les jambes et garder le dos droit",
+     "courber le dos, jambes tendues",
+     "tordre le dos",
+     "soulever d'un seul bras"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel numéro d'urgence médicale (SAMU) faut-il composer ?",
+    "image": "",
+    "choices": [
+     "Le 17",
+     "Le 18",
+     "Le 114",
+     "Le 15"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Vous avez les paupières lourdes et vous bâillez. Que faites-vous ?",
+    "image": "",
+    "choices": [
+     "J'ouvre la fenêtre et je continue",
+     "Je m'arrête dès que possible sur une aire pour me reposer",
+     "Je monte le son de la radio",
+     "Je bois un café et je continue"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
+ },
+ {
+  "pid": "fimo-examen-40",
+  "theme": "Transport routier (FIMO)",
+  "level": "Moyen",
+  "kind": "quiz",
+  "title": "FIMO : examen blanc 2 (40 questions)",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Quelle est la durée du repos hebdomadaire normal ?",
+    "image": "",
+    "choices": [
+     "24 heures",
+     "45 heures",
+     "36 heures",
+     "48 heures"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que signifie PTAC ?",
+    "image": "",
+    "choices": [
+     "Poids total à contrôler",
+     "Poids total autorisé en charge",
+     "Poids technique admis en circulation",
+     "Poids transporté au chargement"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel symbole du tachygraphe représente le repos ?",
+    "image": "",
+    "choices": [
+     "Un volant",
+     "Un lit",
+     "Deux marteaux croisés",
+     "Un carré barré d'une diagonale"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "La distance d'arrêt est égale à :",
+    "image": "",
+    "choices": [
+     "la distance de freinage seulement",
+     "la distance de réaction + la distance de freinage",
+     "la distance de réaction seulement",
+     "la distance de freinage multipliée par 2"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Où est indiquée la charge maximale d'un hayon élévateur ?",
+    "image": "",
+    "choices": [
+     "Dans le journal de bord",
+     "Sur la carte grise",
+     "Nulle part",
+     "Sur une plaque fixée sur le hayon"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "En cas d'aquaplaning, il faut :",
+    "image": "",
+    "choices": [
+     "lever le pied de l'accélérateur sans freiner brusquement",
+     "freiner à fond",
+     "accélérer",
+     "donner un coup de volant"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que signifie FCO ?",
+    "image": "",
+    "choices": [
+     "Formation complète obligatoire",
+     "Formation continue obligatoire",
+     "Formation de conduite organisée",
+     "Formation contrôlée obligatoire"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Avant d'utiliser une sangle, il faut vérifier :",
+    "image": "",
+    "choices": [
+     "sa couleur",
+     "sa marque",
+     "son prix",
+     "qu'elle n'est ni coupée ni abîmée et que l'étiquette est lisible"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle distance de sécurité minimale faut-il respecter avec le véhicule qui précède ?",
+    "image": "",
+    "choices": [
+     "1 seconde",
+     "Au moins 2 secondes",
+     "Une demi-seconde",
+     "5 secondes"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée de validité d'une carte conducteur ?",
+    "image": "",
+    "choices": [
+     "5 ans",
+     "2 ans",
+     "10 ans",
+     "1 an"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que signifie CMR ?",
+    "image": "",
+    "choices": [
+     "Contrôle mensuel du réseau routier",
+     "Carte de mise en route",
+     "Certificat de maintenance des remorques",
+     "Convention relative au contrat de transport international de marchandises par route"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Un salarié ne peut pas travailler plus de combien d'heures de suite sans pause ?",
+    "image": "",
+    "choices": [
+     "4 heures",
+     "8 heures",
+     "10 heures",
+     "6 heures"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "La ceinture de sécurité est obligatoire dans un poids lourd.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Les autocollants d'angle mort sont obligatoires sur les poids lourds.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel symbole du tachygraphe représente la conduite ?",
+    "image": "",
+    "choices": [
+     "Un lit",
+     "Deux marteaux croisés",
+     "Un volant",
+     "Un carré barré d'une diagonale"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "order",
+    "text": "Classe ces durées de la plus courte à la plus longue",
+    "image": "",
+    "choices": [
+     "Pause de 45 minutes",
+     "Repos journalier réduit (9 h)",
+     "Repos journalier normal (11 h)",
+     "Repos hebdomadaire normal (45 h)"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée minimale d'un repos hebdomadaire réduit ?",
+    "image": "",
+    "choices": [
+     "36 heures",
+     "30 heures",
+     "24 heures",
+     "20 heures"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "La pause de 45 minutes peut être fractionnée en :",
+    "image": "",
+    "choices": [
+     "une pause de 30 min, puis une pause de 15 min",
+     "deux pauses de 22 min",
+     "une pause de 15 min, puis une pause de 30 min",
+     "trois pauses de 15 min"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Le conducteur doit vérifier l'état de l'arrimage avant de partir.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Pour une brûlure légère, il faut :",
+    "image": "",
+    "choices": [
+     "y mettre du beurre",
+     "percer les cloques",
+     "y mettre des glaçons",
+     "l'arroser d'eau tempérée pendant au moins 10 minutes"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "order",
+    "text": "Panne sur la route : classe les gestes dans l'ordre",
+    "image": "",
+    "choices": [
+     "Mettre les feux de détresse",
+     "Enfiler le gilet jaune avant de sortir",
+     "Placer le triangle de présignalisation",
+     "Se mettre à l'abri derrière la glissière"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Que signifie TMS ?",
+    "image": "",
+    "choices": [
+     "Troubles mentaux et sociaux",
+     "Troubles musculosquelettiques",
+     "Transport de marchandises sensibles",
+     "Traitements médicaux spécialisés"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Une personne est en arrêt cardiaque. Que faut-il faire ?",
+    "image": "",
+    "choices": [
+     "Attendre l'arrivée des secours sans rien faire",
+     "Faire un massage cardiaque et utiliser un défibrillateur (DAE)",
+     "Lui donner à boire",
+     "La faire marcher"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Il faut toujours déplacer une victime d'accident de la route.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Tenir son téléphone en main en conduisant est interdit.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "La pression des pneus se contrôle de préférence :",
+    "image": "",
+    "choices": [
+     "juste après un long trajet",
+     "à chaud",
+     "jamais",
+     "à froid"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel est le bon rythme des compressions thoraciques ?",
+    "image": "",
+    "choices": [
+     "30 par minute",
+     "60 par minute",
+     "100 à 120 par minute",
+     "200 par minute"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la largeur maximale d'un camion (hors frigorifique) ?",
+    "image": "",
+    "choices": [
+     "2,20 mètres",
+     "2,55 mètres",
+     "3 mètres",
+     "2,80 mètres"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle pause minimale pour un travail total compris entre 6 et 9 heures ?",
+    "image": "",
+    "choices": [
+     "30 minutes",
+     "15 minutes",
+     "45 minutes",
+     "1 heure"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Un voyant rouge s'allume en roulant. Que faut-il faire ?",
+    "image": "",
+    "choices": [
+     "L'ignorer",
+     "Accélérer",
+     "M'arrêter dès que possible, en sécurité",
+     "Attendre la fin de la journée"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel élément filtre les particules de suie à l'échappement ?",
+    "image": "",
+    "choices": [
+     "Le filtre à particules (FAP)",
+     "Le radiateur",
+     "L'alternateur",
+     "Le turbo"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "En cas de contrôle, le conducteur peut refuser de présenter sa carte conducteur.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Le PTAC est indiqué sur :",
+    "image": "",
+    "choices": [
+     "le tableau de bord seulement",
+     "le permis de conduire",
+     "la carte grise et la plaque du constructeur",
+     "la lettre de voiture seulement"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Où doit-on placer une charge lourde dans la remorque ?",
+    "image": "",
+    "choices": [
+     "Tout en haut",
+     "Tout à l'arrière",
+     "Le plus bas possible et bien répartie",
+     "Contre la porte seulement"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Un camion chargé a une distance de freinage :",
+    "image": "",
+    "choices": [
+     "plus courte qu'à vide",
+     "identique à vide",
+     "plus longue qu'à vide",
+     "nulle"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Pour économiser du carburant, le moteur doit tourner :",
+    "image": "",
+    "choices": [
+     "dans la zone verte du compte-tours",
+     "dans la zone rouge",
+     "toujours à haut régime",
+     "au ralenti"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle conduite permet d'économiser du carburant ?",
+    "image": "",
+    "choices": [
+     "Accélérer fort puis freiner tard",
+     "Anticiper et rouler en souplesse",
+     "Rouler toujours à vitesse maximale",
+     "Rouler en roue libre"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Une personne saigne beaucoup. Que faire en premier ?",
+    "image": "",
+    "choices": [
+     "Appuyer fortement sur la plaie avec un linge propre",
+     "Retirer le linge régulièrement",
+     "La laisser saigner",
+     "Lui donner à boire"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Un conducteur peut conduire sans avoir son permis sur lui s'il l'a laissé au dépôt.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la durée de la FIMO marchandises ?",
+    "image": "",
+    "choices": [
+     "140 heures",
+     "35 heures",
+     "70 heures",
+     "280 heures"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
+ }
+]

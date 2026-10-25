@@ -1,0 +1,2430 @@
+<!doctype html>
+<html lang="fr" data-theme="wequizzer">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WeQuizzer – Animateur</title>
+  <link rel="stylesheet" href="/icons/tabler-icons.min.css">
+  <link rel="stylesheet" href="/icons.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="with-tabs">
+  <!-- Barre de l'animateur pendant la partie -->
+  <div id="hostBar" class="hostbar hidden">
+    <button id="quitBtn" class="btn ghost mini" title="Quitter le quiz en cours"><i class="ti ti-logout"></i> <span class="lbl">Quitter</span></button>
+    <span>
+      <button id="pauseBtn" class="btn ghost mini"><i class="ti ti-player-pause"></i> <span class="lbl">Pause</span></button>
+      <button id="playersBtn" class="btn ghost mini"><i class="ti ti-users"></i> <span id="barCount">0</span></button>
+    </span>
+  </div>
+
+  <nav id="tabbar" class="tabbar" aria-label="Menu principal">
+    <button id="tabJouer" class="on" type="button"><i class="ti ti-player-play"></i><span>Jouer</span></button>
+    <button id="tabQuiz" type="button"><i class="ti ti-books"></i><span>Mes quiz</span></button>
+  </nav>
+
+  <!-- Accueil de l'animateur : deux onglets (Jouer / Mes quiz) -->
+  <div id="lobby" class="screen">
+    <div class="logo"><span data-logo></span></div>
+    <div id="quizError" class="error"></div>
+
+    <!-- Onglet JOUER -->
+    <div id="paneJouer" class="pane">
+      <div class="card join-box pop">
+        <span data-mascot="accueil" data-size="md" class="join-mascot"></span>
+        <div class="join-main">
+          <h2 class="join-title"><i class="ti ti-qrcode"></i> Scanne le QR code pour jouer</h2>
+          <img id="qr" class="qr hidden" alt="QR code pour rejoindre la partie">
+          <p class="join-or">ou va sur <span class="url" id="joinUrl">…</span></p>
+          <p class="join-code">Code : <span class="pin" id="pin">······</span></p>
+          <div class="invite-row">
+            <button id="invShare" class="btn mini" type="button"><i class="ti ti-share"></i> Partager…</button>
+            <button id="invCopy" class="btn ghost mini" type="button"><i class="ti ti-link"></i> Copier le lien</button>
+          </div>
+          <div id="lanNote" class="note hidden"><i class="ti ti-wifi"></i> En test sur ton ordi : les joueurs doivent être sur le même Wi-Fi que toi. Sur wequizzer.onrender.com, ils peuvent jouer de n'importe où.</div>
+        </div>
+      </div>
+
+      <div class="card pop" style="margin-top:18px">
+        <h2><i class="ti ti-list-details"></i> Quiz à jouer</h2>
+        <select id="quizSelect" class="wide"></select>
+        <p class="hint" id="quizInfo"></p>
+      </div>
+
+      <div class="card settings pop" style="margin-top:18px">
+        <h2><i class="ti ti-settings"></i> Réglages de la partie</h2>
+
+        <div class="row"><i class="ti ti-sword"></i><div class="rl">Mode de jeu<small>Seul, en équipes, par élimination ou en pendu</small></div>
+          <select data-key="mode">
+            <option value="standard">Quiz standard</option>
+            <option value="teams">Mode équipes</option>
+            <option value="elimination">Mode élimination</option>
+            <option value="hangman">Mode pendu (en équipe)</option>
+          </select></div>
+        <div class="row sub" data-if="teamish"><i class="ti ti-users-group"></i><div class="rl">Nombre d'équipes<small id="teamNote">Pendu : 6 erreurs et l'équipe est éliminée</small></div>
+          <select data-key="teamCount"><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+        <div class="row sub" data-if="teamish"><i class="ti ti-arrows-shuffle"></i><div class="rl">Répartition des équipes<small>Au hasard, ou c'est toi qui choisis</small></div>
+          <select data-key="teamAssign"><option value="random">Au hasard</option><option value="manual">Choisie par l'animateur</option></select></div>
+        <div class="row sub" data-if="teamish" style="flex-wrap:wrap"><i class="ti ti-tag"></i><div class="rl">Noms des équipes<small>Vide = nom de couleur</small></div>
+          <div id="teamNames" style="display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-top:6px"></div></div>
+        <div class="row sub" data-if="teamManual" style="flex-wrap:wrap"><i class="ti ti-users"></i><div class="rl">Qui va avec qui ?<small>Sans choix, le joueur rejoint la plus petite équipe</small></div>
+          <div id="teamAssignBox" style="display:flex;flex-direction:column;gap:6px;width:100%;margin-top:6px"></div></div>
+
+        <div class="row" id="rowPairsView"><i class="ti ti-arrows-left-right"></i><div class="rl">Façon de jouer les paires<small>La roue, ou relier chaque élément à sa réponse</small></div>
+          <select data-key="pairsView"><option value="wheel">La roue</option><option value="match">Relier</option></select></div>
+
+        <div class="row"><i class="ti ti-clock"></i><div class="rl">Chrono<small>Chaque question a un temps limité</small></div>
+          <label class="sw"><input type="checkbox" data-key="limitTime"><span class="knob"></span></label></div>
+        <div class="row sub" data-if="limitTime"><i class="ti ti-hourglass-high"></i><div class="rl">Temps par question</div>
+          <select data-key="time">
+            <option value="10">10 s</option><option value="15">15 s</option><option value="20">20 s</option><option value="25">25 s</option>
+            <option value="30">30 s</option><option value="40">40 s</option><option value="50">50 s</option><option value="60">60 s</option>
+          </select></div>
+
+        <div class="row" id="rowExplain"><i class="ti ti-bulb"></i><div class="rl">Montrer l'explication<small>Après chaque question, une phrase explique la bonne réponse</small></div>
+          <label class="sw"><input type="checkbox" data-key="showExplain"><span class="knob"></span></label></div>
+
+        <button id="openAdv" class="btn ghost mini" type="button" style="margin-top:10px"><i class="ti ti-settings-2"></i> Réglages avancés</button>
+        <p class="hint" style="margin-top:10px"><i class="ti ti-device-floppy"></i> Tes réglages sont enregistrés automatiquement.</p>
+      </div>
+
+      <div class="card pop" style="margin-top:18px;text-align:center">
+        <h2><i class="ti ti-users"></i> <span id="count">0 joueur</span></h2>
+        <div id="players" class="players"><span class="empty">En attente des joueurs…</span></div>
+        <small>Touche un joueur pour l'exclure.</small><br>
+        <button id="startBtn" class="btn big" disabled><i class="ti ti-player-play"></i> Lancer le quiz</button>
+        <p class="hint" id="startHint"></p>
+      </div>
+    </div>
+
+    <!-- Onglet MES QUIZ -->
+    <div id="paneQuiz" class="pane hidden">
+      <div class="card pop">
+        <h2><i class="ti ti-books"></i> Mes quiz</h2>
+        <div class="quiz-pick">
+          <select id="quizSelect2" class="wide"></select>
+          <button id="deleteQuiz" class="btn ghost mini" title="Supprimer ce quiz" aria-label="Supprimer ce quiz"><i class="ti ti-trash"></i></button>
+        </div>
+        <p class="hint" id="quizInfo2"></p>
+        <div class="lib-row">
+          <button id="editQuiz" class="btn mini"><i class="ti ti-edit"></i> Modifier</button>
+          <button id="testQuiz" class="btn ghost mini"><i class="ti ti-eye-check"></i> Tester</button>
+          <button id="openStats" class="btn ghost mini"><i class="ti ti-chart-bar"></i> Stats</button>
+          <span class="more-wrap">
+            <button id="moreBtn" class="btn ghost mini" title="Plus d'actions" aria-label="Plus d'actions"><i class="ti ti-dots"></i></button>
+            <div id="moreMenu" class="more-menu hidden">
+              <button id="exportQuiz" class="btn ghost mini"><i class="ti ti-download"></i> Enregistrer ce quiz dans un fichier</button>
+              <button id="importQuiz" class="btn ghost mini"><i class="ti ti-upload"></i> Ouvrir un quiz depuis un fichier</button>
+            </div>
+          </span>
+        </div>
+        <div class="lib-row" style="margin-top:14px">
+          <button id="openCreate" class="btn"><i class="ti ti-plus"></i> Créer un quiz</button>
+          <button id="openLib" class="btn ghost" title="La Bibliothèque des quiz" aria-label="La Bibliothèque des quiz"><i class="ti ti-books"></i> Bibliothèque</button>
+        </div>
+        <input type="file" id="importFile" accept=".json,application/json" class="hidden">
+        <input type="file" id="csvFile" accept=".csv,.tsv,.txt,text/csv,text/plain" class="hidden">
+      </div>
+    </div>
+  </div>
+
+  <!-- Créer un quiz : on choisit le type -->
+  <div id="createPage" class="screen editor hidden">
+    <h1><i class="ti ti-plus"></i> Créer un quiz</h1>
+    <p class="hint" style="margin-top:6px">Quel genre de quiz veux-tu faire ?</p>
+    <div class="create-grid">
+      <button id="newQuiz" class="card create-card" type="button"><i class="ti ti-list-check"></i><b>Quiz classique</b><small>Questions à choix, vrai/faux, remettre dans l'ordre, compléter la phrase…</small></button>
+      <button id="newWheel" class="card create-card" type="button"><i class="ti ti-chart-donut-3"></i><b>Roue</b><small>Relier des questions courtes à leurs réponses.</small></button>
+      <button id="newLetters" class="card create-card" type="button"><i class="ti ti-abc"></i><b>Jeu de mots</b><small>Deviner un mot à partir d'une définition.</small></button>
+      <button id="openAi" class="card create-card" type="button"><i class="ti ti-sparkles"></i><b>Avec une IA</b><small>Ton IA écrit les questions pour toi.</small></button>
+    </div>
+    <div><button id="createBack" class="btn ghost big"><i class="ti ti-arrow-left"></i> Retour</button></div>
+  </div>
+
+  <!-- Réglages avancés -->
+  <div id="advPage" class="screen editor hidden">
+    <h1><i class="ti ti-settings-2"></i> Réglages avancés</h1>
+    <div class="card settings" style="margin-top:14px">
+      <h3 class="set-sec"><i class="ti ti-clock"></i> Temps</h3>
+      <div class="row" id="rowBonus"><i class="ti ti-bolt"></i><div class="rl">Compter les points selon la vitesse<small>Éteint : 1 point par bonne réponse. Allumé : de 500 à 1000 points, plus on répond vite plus on en gagne.</small></div>
+        <label class="sw"><input type="checkbox" data-key="speedBonus"><span class="knob"></span></label></div>
+      <div class="row"><i class="ti ti-book"></i><div class="rl">Délai de lecture<small>La question seule, puis les réponses</small></div>
+        <label class="sw"><input type="checkbox" data-key="readDelay"><span class="knob"></span></label></div>
+      <div class="row sub" data-if="readDelay"><i class="ti ti-hourglass"></i><div class="rl">Durée de lecture</div>
+        <select data-key="readSeconds"><option value="3">3 s</option><option value="5">5 s</option><option value="8">8 s</option><option value="10">10 s</option></select></div>
+      <div class="row"><i class="ti ti-player-track-next"></i><div class="rl">Enchaîner automatiquement<small>Sinon, tu cliques sur « Suivante »</small></div>
+        <label class="sw"><input type="checkbox" data-key="autoNext"><span class="knob"></span></label></div>
+      <div class="row sub" data-if="autoNext"><i class="ti ti-hourglass"></i><div class="rl">Pause avant la question suivante</div>
+        <select data-key="autoDelay"><option value="5">5 s</option><option value="8">8 s</option><option value="10">10 s</option><option value="15">15 s</option></select></div>
+    </div>
+
+    <div class="card settings">
+      <h3 class="set-sec"><i class="ti ti-adjustments-horizontal"></i> Règles</h3>
+      <div class="row" id="rowHearts"><i class="ti ti-heart"></i><div class="rl">Cœurs<small>Une erreur = un cœur perdu. Plus de cœur : éliminé</small></div>
+        <label class="sw"><input type="checkbox" data-key="hearts"><span class="knob"></span></label></div>
+      <div class="row sub" data-if="hearts"><i class="ti ti-heart-plus"></i><div class="rl">Nombre de cœurs</div>
+        <select data-key="lives"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div>
+      <div class="row" id="rowBonusQ"><i class="ti ti-star"></i><div class="rl">Questions à points doubles<small>Les questions marquées valent le double</small></div>
+        <label class="sw"><input type="checkbox" data-key="bonusQuestions"><span class="knob"></span></label></div>
+      <div class="row"><i class="ti ti-arrow-back-up"></i><div class="rl">Changer sa réponse<small>Le joueur peut changer d'avis avant la fin de la question</small></div>
+        <label class="sw"><input type="checkbox" data-key="changeAnswer"><span class="knob"></span></label></div>
+      <div class="row"><i class="ti ti-arrows-shuffle"></i><div class="rl">Mélanger les questions<small>Un ordre différent à chaque partie</small></div>
+        <label class="sw"><input type="checkbox" data-key="shuffleQuestions"><span class="knob"></span></label></div>
+      <div class="row"><i class="ti ti-list-numbers"></i><div class="rl">Nombre de questions à jouer<small>Utile pour les longs quiz : avec « Mélanger », tu en tires de nouvelles à chaque partie</small></div>
+        <select data-key="count"><option value="0">Toutes</option></select></div>
+    </div>
+
+    <div class="card settings">
+      <h3 class="set-sec"><i class="ti ti-eye"></i> Ce que voient les joueurs</h3>
+      <div class="row"><i class="ti ti-eye-off"></i><div class="rl">Cacher le classement jusqu'à la fin<small>Après chaque question, on voit qui a bon et qui a faux, mais le classement n'apparaît qu'à la fin</small></div>
+        <label class="sw"><input type="checkbox" data-key="showAnswers"><span class="knob"></span></label></div>
+      <div class="row"><i class="ti ti-notes"></i><div class="rl">Revoir ses erreurs<small>À la fin, chacun revoit ses erreurs sur son téléphone</small></div>
+        <label class="sw"><input type="checkbox" data-key="reviewErrors"><span class="knob"></span></label></div>
+      <div class="row"><i class="ti ti-device-tv"></i><div class="rl">Où s'affichent les questions ?<small>Chez tout le monde, ou seulement sur ton écran</small></div>
+        <select data-key="display">
+          <option value="both">Animateur + joueurs</option>
+          <option value="host">Animateur seulement</option>
+        </select></div>
+      <div class="row"><i class="ti ti-letter-case"></i><div class="rl">Repérer les réponses avec<small>Sur les boutons et dans les résultats</small></div>
+        <select data-key="labels">
+          <option value="letters">Lettres</option>
+          <option value="numbers">Chiffres</option>
+        </select></div>
+    </div>
+    <div><button id="advBack" class="btn ghost big"><i class="ti ti-arrow-left"></i> Retour</button></div>
+  </div>
+
+  <!-- Éditeur de quiz -->
+  <div id="editor" class="screen editor hidden">
+    <h1><i class="ti ti-edit"></i> <span id="edHead">Nouveau quiz</span></h1>
+    <div class="card" style="margin-top:14px">
+      <input id="edTitle" maxlength="60" placeholder="Titre du quiz">
+    </div>
+    <div id="edQuestions" style="width:100%"></div>
+    <button id="addQ" class="btn ghost"><i class="ti ti-plus"></i> Ajouter une question</button>
+    <div id="edError" class="error"></div>
+    <div>
+      <button id="edSave" class="btn big"><i class="ti ti-device-floppy"></i> Enregistrer le quiz</button>
+      <button id="edTest" class="btn ghost big"><i class="ti ti-eye-check"></i> Tester</button>
+      <button id="edCancel" class="btn ghost big">Annuler</button>
+    </div>
+  </div>
+
+  <!-- Éditeur de roue -->
+  <div id="wheelEditor" class="screen editor hidden">
+    <h1><i class="ti ti-chart-donut-3"></i> <span id="weHead">Nouvelle roue</span></h1>
+    <div class="card" style="margin-top:14px">
+      <p class="hint" style="margin-top:0"><b>1. Donne un titre à ta roue</b> (il sert à la retrouver dans ta liste).</p>
+      <input id="weTitle" maxlength="60" placeholder="Ex : Capitales d'Europe">
+      <p class="hint" style="margin-top:12px"><b>2. Écris le mot du centre.</b> C'est le petit texte écrit au milieu de la roue (le thème).</p>
+      <input id="weCategory" maxlength="80" placeholder="Ex : Capitales">
+      <p class="hint" style="margin-top:12px"><b>3. Écris tes questions.</b> Pour chaque question : la question, la bonne réponse, et 1 à 3 fausses réponses sur le même sujet. Si tu n'écris pas de fausses réponses, le jeu en choisit tout seul.</p>
+      <div id="weRows"></div>
+      <div style="margin-top:10px">
+        <button id="weAdd" class="btn ghost mini" type="button"><i class="ti ti-plus"></i> Ajouter une question</button>
+        <button id="weExample" class="btn ghost mini" type="button"><i class="ti ti-bulb"></i> Remplir avec un exemple</button>
+      </div>
+      <p class="hint"><b>À savoir :</b> il faut au moins 3 questions (100 au maximum), chaque bonne réponse doit être différente des autres. Une question fait 60 lettres au maximum et une réponse 25 : c'est un quiz, pas un livre. <span id="weCount" style="font-weight:800"></span></p>
+      <details style="margin-top:8px">
+        <summary class="hint" style="cursor:pointer">Tu as déjà tes questions dans un tableur ou dans une IA ? Clique ici pour les coller d'un coup.</summary>
+        <p class="hint">Colle une ligne par question, avec des « ; » entre les morceaux : <b>question ; bonne réponse ; fausse 1 ; fausse 2 ; fausse 3</b></p>
+        <textarea id="wePaste" rows="6" style="width:100%" placeholder="Quelle est la capitale de l'Italie ? ; Rome ; Milan ; Naples ; Venise"></textarea>
+        <button id="wePasteGo" class="btn ghost mini" type="button"><i class="ti ti-table-import"></i> Ajouter ces lignes à ma roue</button>
+      </details>
+    </div>
+    <div id="weError" class="error"></div>
+    <div>
+      <button id="weSave" class="btn big"><i class="ti ti-device-floppy"></i> Enregistrer la roue</button>
+      <button id="weCancel" class="btn ghost big">Annuler</button>
+    </div>
+  </div>
+
+  <!-- Éditeur de jeu de mots -->
+  <div id="lettersEditor" class="screen editor hidden">
+    <h1><i class="ti ti-abc"></i> <span id="leHead">Nouveau jeu de mots</span></h1>
+    <div class="card" style="margin-top:14px">
+      <p class="hint" style="margin-top:0"><b>1. Donne un titre à ton jeu</b> (il sert à le retrouver dans ta liste).</p>
+      <input id="leTitle" maxlength="60" placeholder="Ex : Les animaux">
+      <p class="hint" style="margin-top:12px"><b>2. Écris tes mots.</b> Pour chaque mot : une question, et le mot à trouver. Les joueurs voient la question et remettent les lettres du mot dans le bon ordre.</p>
+      <div id="leRows"></div>
+      <div style="margin-top:10px">
+        <button id="leAdd" class="btn ghost mini" type="button"><i class="ti ti-plus"></i> Ajouter un mot</button>
+        <button id="leExample" class="btn ghost mini" type="button"><i class="ti ti-bulb"></i> Remplir avec un exemple</button>
+      </div>
+      <p class="hint"><b>À savoir :</b> le mot fait de 3 à 14 lettres (les espaces et les tirets sont placés tout seuls). 100 mots au maximum. <span id="leCount" style="font-weight:800"></span></p>
+      <details style="margin-top:8px">
+        <summary class="hint" style="cursor:pointer">Tu as déjà tes mots dans un tableur ou dans une IA ? Clique ici pour les coller d'un coup.</summary>
+        <p class="hint">Colle une ligne par mot, avec des « ; » entre les morceaux : <b>question ; mot ; lien de l'image (facultatif)</b></p>
+        <textarea id="lePaste" rows="6" style="width:100%" placeholder="Quel animal miaule ? ; Chat"></textarea>
+        <button id="lePasteGo" class="btn ghost mini" type="button"><i class="ti ti-table-import"></i> Ajouter ces lignes à mon jeu</button>
+        <button id="leFile" class="btn ghost mini" type="button"><i class="ti ti-file-import"></i> Charger un fichier (CSV / texte)</button>
+        <input type="file" id="leFileInput" accept=".csv,.tsv,.txt,text/csv,text/plain" class="hidden">
+      </details>
+    </div>
+    <div id="leError" class="error"></div>
+    <div>
+      <button id="leSave" class="btn big"><i class="ti ti-device-floppy"></i> Enregistrer</button>
+      <button id="leCancel" class="btn ghost big">Annuler</button>
+    </div>
+  </div>
+
+  <!-- Créer avec une IA -->
+  <div id="aiPage" class="screen editor hidden">
+    <h1><i class="ti ti-sparkles"></i> Créer un quiz avec une IA</h1>
+    <p class="hint" style="margin-top:6px">Tu utilises ChatGPT, Claude, Gemini ou une autre IA ? Elle écrit les questions pour toi, et WeQuizzer les transforme en quiz. 3 petites étapes :</p>
+    <div class="card" style="margin-top:14px">
+      <p style="margin:0 0 8px"><b>1. Dis ce que tu veux</b></p>
+      <input id="aiTheme" maxlength="120" placeholder="Le thème. Ex : Les volcans, La Révolution française, Les fractions…">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+        <label class="hint" style="margin:0">Combien de questions ?<br><input id="aiCount" type="number" min="3" max="100" value="10" style="width:90px"></label>
+        <label class="hint" style="margin:0">Niveau<br><select id="aiLevel"><option>facile</option><option selected>moyen</option><option>difficile</option></select></label>
+        <label class="hint" style="margin:0;flex:1;min-width:150px">Pour qui ?<br><input id="aiPublic" maxlength="60" placeholder="Ex : élèves de 6e, adultes…"></label>
+      </div>
+      <input id="aiTitle" maxlength="60" placeholder="Nom du quiz (si tu laisses vide, on prend le thème)" style="margin-top:8px">
+      <p class="hint" style="margin-top:10px">Quels types de questions ? (coche ce que tu veux)</p>
+      <div id="aiTypes"></div>
+    </div>
+    <div class="card">
+      <p style="margin:0 0 8px"><b>2. Copie ce texte et colle-le dans ton IA</b></p>
+      <textarea id="aiPrompt" rows="14" readonly style="width:100%"></textarea>
+      <button id="aiCopy" class="btn big" type="button" style="margin-top:8px"><i class="ti ti-copy"></i> Copier le texte</button>
+      <p class="hint">Ensuite, ouvre ton IA, colle ce texte, et envoie. Elle te répond avec un tableau.</p>
+    </div>
+    <div class="card">
+      <p style="margin:0 0 8px"><b>3. Colle ici la réponse de l'IA</b></p>
+      <textarea id="aiReply" rows="8" style="width:100%" placeholder="Colle ici tout ce que l'IA t'a répondu. Pas besoin de nettoyer, on s'occupe du reste."></textarea>
+      <div style="margin-top:8px">
+        <button id="aiGo" class="btn big" type="button"><i class="ti ti-wand"></i> Créer mon quiz</button>
+        <button id="aiFile" class="btn ghost mini" type="button"><i class="ti ti-file-upload"></i> Ou choisir un fichier</button>
+        <button id="aiTemplate" class="btn ghost mini" type="button"><i class="ti ti-file-download"></i> Télécharger un modèle de tableur</button>
+      </div>
+      <div id="aiErr" class="error" style="margin-top:8px"></div>
+      <div id="aiErrBox" class="hidden"><button id="aiErrCopy" class="btn ghost mini" type="button"><i class="ti ti-copy"></i> Copier ce message pour l'IA</button><p class="hint">Colle-le dans ta IA : elle corrigera son tableau. Puis colle sa nouvelle réponse ci-dessus.</p></div>
+      <div id="aiOk" class="hidden" style="margin-top:8px;padding:12px;border-radius:12px;background:#e8fff0;border:2px solid #1fb35a;color:#0b5a2b"></div>
+    </div>
+    <div><button id="aiBack" class="btn ghost big"><i class="ti ti-arrow-left"></i> Retour</button></div>
+  </div>
+
+  <!-- Bibliothèque de quiz prêts à l'emploi -->
+  <div id="libPage" class="screen editor hidden">
+    <h1><i class="ti ti-books"></i> Bibliothèque de quiz</h1>
+    <p class="hint" style="margin-top:6px">Des quiz prêts à jouer. « Ajouter » en met une copie dans tes quiz (tu pourras la modifier).</p>
+    <div id="libList" style="margin-top:12px"></div>
+    <div><button id="libBack" class="btn ghost big"><i class="ti ti-arrow-left"></i> Retour</button></div>
+  </div>
+
+  <!-- Statistiques d'un quiz -->
+  <div id="statsPage" class="screen editor hidden">
+    <h1><i class="ti ti-chart-bar"></i> Statistiques</h1>
+    <div class="card" style="margin-top:14px">
+      <select id="statsSelect" class="wide"></select>
+      <p class="hint" id="statsInfo" style="margin-top:8px"></p>
+      <div id="statsList" style="margin-top:8px"></div>
+      <button id="statsReset" class="btn ghost mini" type="button"><i class="ti ti-trash"></i> Effacer les statistiques de ce quiz</button>
+    </div>
+    <div><button id="statsBack" class="btn ghost big"><i class="ti ti-arrow-left"></i> Retour</button></div>
+  </div>
+
+  <!-- Éditeur Vrai/Faux en rafale -->
+  <div id="tfEditor" class="screen editor hidden">
+    <h1><i class="ti ti-bolt"></i> <span id="tfHead">Nouveau Vrai/Faux en rafale</span></h1>
+    <div class="card" style="margin-top:14px">
+      <input id="tfTitle" maxlength="60" placeholder="Titre (ex. Vrai ou faux : les animaux)">
+      <textarea id="tfItems" rows="12" style="margin-top:10px;width:100%" placeholder="Une ligne par affirmation : affirmation ; vrai ou faux&#10;Le dauphin est un poisson ; faux&#10;Paris est la capitale de la France ; vrai"></textarea>
+      <p class="hint">Une ligne par affirmation : <b>affirmation ; vrai</b> (ou <b>faux</b>). Tout le monde répond en même temps, sans choix à lire : ça va vite ! Dans les réglages, <b>limite le temps</b> (5 ou 8 secondes) et coche le <b>passage automatique</b> pour une vraie rafale. C'est toi qui décides du temps.</p>
+    </div>
+    <div id="tfError" class="error"></div>
+    <div>
+      <button id="tfSave" class="btn big"><i class="ti ti-device-floppy"></i> Enregistrer</button>
+      <button id="tfCancel" class="btn ghost big">Annuler</button>
+    </div>
+  </div>
+
+  <!-- Test du quiz (aperçu sans joueurs) -->
+  <div id="preview" class="screen hidden">
+    <div class="topbar">
+      <span class="pill"><i class="ti ti-eye-check"></i> Test du quiz — <span id="pvInfo"></span></span>
+      <button id="pvQuit" class="btn ghost mini"><i class="ti ti-x"></i> Terminer le test</button>
+    </div>
+    <div class="qtext" id="pvText"></div>
+    <img id="pvImg" class="qimg hidden" alt="">
+    <div id="pvChoices" class="choices"></div>
+    <p class="hint" id="pvHint"></p>
+    <div>
+      <button id="pvPrev" class="btn ghost"><i class="ti ti-arrow-left"></i> Précédente</button>
+      <button id="pvReveal" class="btn ghost"><i class="ti ti-eye"></i> Voir la réponse</button>
+      <button id="pvNext" class="btn">Suivante <i class="ti ti-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- Compte à rebours -->
+  <div id="countdown" class="screen countdown hidden">
+    <div class="hostlogo"><span data-logo></span></div>
+    <span data-mascot="chrono" data-size="lg"></span>
+    <div class="count-label" id="cdLabel"></div>
+    <div class="count-num" id="cdNum">3</div>
+    <div class="count-label">Prépare-toi !</div>
+  </div>
+
+  <!-- Lecture de la question -->
+  <div id="reading" class="screen hidden">
+    <div class="hostlogo"><span data-logo></span></div>
+    <span class="cornermascot" data-mascot="reflexion" data-size="lg"></span>
+    <div class="topbar">
+      <span class="pill"><i class="ti ti-book"></i> <span id="rdInfo"></span></span>
+      <span class="pill" id="rdBonus"><i class="ti ti-star"></i> Question bonus ×2</span>
+    </div>
+    <div class="timer"><div id="rdBar"></div></div>
+    <div class="qtext" id="rdText"></div>
+    <img id="rdImg" class="qimg hidden" alt="">
+    <p>Lis bien la question… les réponses arrivent !</p>
+  </div>
+
+  <!-- Question -->
+  <div id="question" class="screen hidden">
+    <div class="hostlogo"><span data-logo></span></div>
+    <span class="cornermascot" data-mascot="reflexion" data-size="lg"></span>
+    <div class="topbar">
+      <span class="pill"><i class="ti ti-help-circle"></i> <span id="qInfo"></span></span>
+      <span class="pill hidden" id="qBonus"><i class="ti ti-star"></i> Bonus ×2</span>
+      <span class="pill" id="timePill"><i class="ti ti-clock"></i> <span id="timeLeft"></span></span>
+    </div>
+    <div class="timer" id="timer"><div id="bar"></div></div>
+    <div class="qtext" id="qText"></div>
+    <img id="qImg" class="qimg hidden" alt="">
+    <div id="qNote" class="note hidden"></div>
+    <div id="choices" class="choices"></div>
+    <div id="qMatch" class="matchview hidden"></div>
+    <div class="footer-row">
+      <span class="pill"><i class="ti ti-check"></i> <span id="answered">0 / 0</span> ont répondu</span>
+      <button id="skipBtn" class="btn ghost"><i class="ti ti-player-skip-forward"></i> Voir le résultat</button>
+    </div>
+    <div id="pendingBox" class="pending hidden">
+      <small><i class="ti ti-hourglass-empty"></i> Pas encore répondu :</small>
+      <div id="pendingList" class="players small"></div>
+    </div>
+  </div>
+
+  <!-- Résultats -->
+  <div id="results" class="screen hidden">
+    <div class="hostlogo"><span data-logo></span></div>
+    <span class="cornermascot" id="resMascot" data-mascot="bravo" data-size="lg"></span>
+    <div class="qtext" id="rText"></div>
+    <div class="note ok" id="rCorrect"></div>
+    <div class="note" id="rExplain" style="margin-top:8px"></div>
+    <div class="pill" id="rScore" style="margin-top:8px"></div>
+    <div id="rChoices" class="choices"></div>
+    <div id="rOut" class="note bad hidden"></div>
+    <div id="rHang" class="hangrow hidden"></div>
+    <div id="answersCard" class="card" style="margin-top:18px">
+      <div class="cols" id="colsBox">
+        <div><h3 class="good" id="goodHead"><i class="ti ti-circle-check"></i> Bonne réponse</h3><div id="goodList" class="players"></div></div>
+        <div id="badCol"><h3 class="bad"><i class="ti ti-circle-x"></i> Mauvaise réponse</h3><div id="badList" class="players"></div></div>
+      </div>
+    </div>
+    <button id="nextBtn" class="btn big"><i class="ti ti-arrow-right"></i> <span id="nextLabel">Question suivante</span></button>
+  </div>
+
+  <!-- Fin -->
+  <div id="end" class="screen hidden" style="text-align:center">
+    <div class="hostlogo"><span data-logo></span></div>
+    <span data-mascot="bravo" data-size="lg"></span>
+    <h1><i class="ti ti-trophy"></i> <span id="endHead">Podium final</span></h1>
+    <div id="teamBoard" class="teamboard hidden"></div>
+    <div id="podium" class="podium"></div>
+    <ol id="rest" class="board"></ol>
+    <div id="titlesBox" class="card hidden" style="margin-top:10px">
+      <h2><i class="ti ti-medal"></i> Les titres de la partie</h2>
+      <div id="titles" class="titles"></div>
+    </div>
+    <div>
+      <button id="shareBtn" class="btn ghost big"><i class="ti ti-share"></i> Image des résultats</button>
+      <button id="replayBtn" class="btn big"><i class="ti ti-refresh"></i> Rejouer ce quiz</button>
+      <button id="replayMissedBtn" class="btn purple big hidden"><i class="ti ti-target-arrow"></i> <span id="missedLabel">Rejouer les questions ratées</span></button>
+      <button id="otherBtn" class="btn ghost big"><i class="ti ti-list-details"></i> Nouvelle partie</button>
+    </div>
+    <p class="hint">Les joueurs restent connectés avec le même code PIN.</p>
+  </div>
+
+  <!-- Liste des joueurs (pendant la partie) -->
+  <div id="drawer" class="drawer hidden">
+    <div class="qhead"><span><i class="ti ti-users"></i> Joueurs</span><button id="drawerClose" class="btn ghost mini" aria-label="Fermer"><i class="ti ti-x"></i></button></div>
+    <p class="hint">Tu peux exclure un joueur à tout moment.</p>
+    <div id="drawerList"></div>
+  </div>
+
+  <!-- Pause -->
+  <div id="kickDlg" class="overlay hidden" style="z-index:60">
+    <h2>Exclure <span id="kickName"></span> ?</h2>
+    <p>Pendant combien de temps ne peut-il pas revenir ?</p>
+    <div>
+      <button class="btn ghost" data-kick="5">5 minutes</button>
+      <button class="btn ghost" data-kick="15">15 minutes</button>
+      <button class="btn ghost" data-kick="60">1 heure</button>
+      <button class="btn" data-kick="0">Sans limite</button>
+    </div>
+    <button id="kickCancel" class="btn ghost mini">Annuler</button>
+  </div>
+
+  <div id="pauseOv" class="overlay hidden">
+    <div class="big-emoji">⏸️</div>
+    <h1>Partie en pause</h1>
+    <p id="pauseMsg"></p>
+    <button id="resumeBtn" class="btn big"><i class="ti ti-player-play"></i> Reprendre</button>
+  </div>
+
+  <div id="reactLayer" class="react-layer"></div>
+  <div id="connBanner" class="conn hidden"><span id="connMascot" data-size="md"></span><b>Oups, la connexion a coupé !</b><small>Je la répare. Ne ferme pas cette page : ta partie est conservée.</small></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="brand.js"></script>
+  <script src="hangman.js"></script>
+  <script src="fx.js"></script>
+  <script src="ui.js"></script>
+  <script src="share.js"></script>
+  <script>
+    const socket = io();
+    const $ = (id) => document.getElementById(id);
+    const screens = ['lobby', 'editor', 'wheelEditor', 'lettersEditor', 'tfEditor', 'createPage', 'advPage', 'aiPage', 'libPage', 'statsPage', 'preview', 'countdown', 'reading', 'question', 'results', 'end'];
+    const LETTERS = ['A', 'B', 'C', 'D'];
+    const TYPE_LABEL = {
+      single: 'Choix unique',
+      gap: 'Compléter la phrase',
+      order: 'Remettre dans l\'ordre',
+      tf: 'Vrai / Faux',
+      multi: 'Plusieurs bonnes réponses',
+      text: 'Réponse à écrire',
+      poll: 'Sondage (pas de bonne réponse)',
+    };
+    const TITLE_EMOJI = {
+      'Le plus rapide': '⚡', 'La meilleure série': '🔥', 'Le sans-faute': '🎯',
+      'Le plus réfléchi': '💡', 'Le plus expressif': '😄', 'Le dernier survivant': '🛡️',
+    };
+    let currentQ = null;
+    let timerInt = null;
+    let autoInt = null;
+    let readInt = null;
+    let playerCount = 0;
+    let lastPlayers = [];
+    let quizReady = false;
+    let replayPending = false;
+    let isPaused = false;
+    let autoLeft = null;
+    let autoBase = '';
+    let lastEnd = null;
+    let labelMode = 'letters';
+    const lab = (i) => (labelMode === 'numbers' ? String(i + 1) : LETTERS[i]);
+
+    function show(id) {
+      screens.forEach((s) => $(s).classList.toggle('hidden', s !== id));
+      const inGame = ['countdown', 'reading', 'question', 'results'].includes(id);
+      $('hostBar').classList.toggle('hidden', !inGame);
+      $('tabbar').classList.toggle('hidden', id !== 'lobby');
+      document.body.classList.toggle('with-tabs', id === 'lobby');
+      document.body.classList.toggle('with-bar', inGame);
+      window.scrollTo(0, 0);
+    }
+    function el(tag, cls, text) {
+      const e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text !== undefined) e.textContent = text;
+      return e;
+    }
+    const uid = () => 'q' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+    FX.keepAwake();
+
+    // ----- Stockage dans le navigateur (quiz + paramètres) -----
+    const LS = {
+      get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+      set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* stockage indisponible */ } },
+      del(k) { try { localStorage.removeItem(k); } catch (e) { /* rien */ } },
+    };
+    let library = LS.get('wequizzer.quizzes', []);
+    let selectedId = LS.get('wequizzer.lastQuiz', null);
+    const saveLibrary = () => { LS.set('wequizzer.quizzes', library); LS.set('wequizzer.lastQuiz', selectedId); };
+    const currentQuiz = () => library.find((q) => q.id === selectedId) || null;
+
+    // ----- Paramètres -----
+    function readSettings() {
+      const s = {};
+      document.querySelectorAll('[data-key]').forEach((input) => {
+        const k = input.dataset.key;
+        if (input.type === 'checkbox') s[k] = input.checked;
+        else s[k] = input.value !== '' && !isNaN(input.value) ? Number(input.value) : input.value;
+      });
+      s.theme = 'wequizzer';
+      s.reactions = false; // masqué pour l'instant
+      s.sounds = true; // le son est un réglage personnel (bouton 🔊), plus un réglage de partie
+      s.teamNames = [0, 1, 2, 3].map((i) => (teamNameInputs[i] ? teamNameInputs[i].value : ''));
+      return s;
+    }
+    const teamNameInputs = [];
+    const TEAM_DEF = ['Rouge', 'Bleu', 'Vert', 'Jaune'];
+    function buildTeamNames() {
+      const box = $('teamNames');
+      for (let i = 0; i < 4; i++) {
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.maxLength = 14;
+        inp.placeholder = TEAM_DEF[i];
+        inp.style.cssText = 'flex:1 1 90px;min-width:80px';
+        inp.addEventListener('change', () => { pushSettings(); renderTeamAssign(); });
+        teamNameInputs.push(inp);
+        box.appendChild(inp);
+      }
+    }
+    buildTeamNames();
+    function renderTeamAssign() {
+      const box = $('teamAssignBox');
+      if (!box) return;
+      const cur = readSettings();
+      const n = cur.teamCount;
+      box.innerHTML = '';
+      (lastPlayers || []).filter((p) => !p.queued).forEach((p) => {
+        const r = el('div', 'prow');
+        r.appendChild(el('span', 'av', p.avatar));
+        r.appendChild(el('span', 'nm', p.name));
+        const sel = document.createElement('select');
+        sel.style.marginLeft = 'auto';
+        sel.appendChild(new Option('— au hasard —', ''));
+        for (let t = 0; t < n; t++) sel.appendChild(new Option(teamNameInputs[t].value.trim() || TEAM_DEF[t], String(t)));
+        sel.value = Number.isInteger(p.team) && p.team < n ? String(p.team) : '';
+        sel.onchange = () => socket.emit('host:team', { pid: p.pid, team: sel.value === '' ? null : Number(sel.value) });
+        r.appendChild(sel);
+        box.appendChild(r);
+      });
+      if (!box.children.length) box.appendChild(el('span', 'empty', 'Les joueurs apparaîtront ici.'));
+    }
+    let wantCount = 0;
+    function applySettings(s) {
+      if (s && 'count' in s) wantCount = Number(s.count) || 0;
+      if (s && Array.isArray(s.teamNames)) s.teamNames.forEach((v, i) => { if (teamNameInputs[i]) teamNameInputs[i].value = v || ''; });
+      document.querySelectorAll('[data-key]').forEach((input) => {
+        const k = input.dataset.key;
+        if (!(k in s)) return;
+        if (input.type === 'checkbox') input.checked = !!s[k];
+        else input.value = s[k];
+      });
+      applyScoring();
+      const cur = readSettings();
+      cur.teamish = cur.mode === 'teams' || cur.mode === 'hangman';
+      cur.teamManual = cur.teamish && cur.teamAssign === 'manual';
+      teamNameInputs.forEach((inp, i) => inp.classList.toggle('hidden', i >= cur.teamCount));
+      $('teamNote').textContent = cur.mode === 'hangman' ? 'Pendu : chaque mauvaise réponse ajoute une partie au pendu de l\'équipe. 6 erreurs : pendu complet, l\'équipe est éliminée' : 'Les équipes s\'additionnent : la moyenne des points de chaque équipe compte';
+      renderTeamAssign();
+      document.querySelectorAll('[data-if]').forEach((row) => {
+        const [k, v] = row.dataset.if.split(':');
+        const ok = v === undefined ? !!cur[k] : String(cur[k]) === v;
+        row.classList.toggle('hidden', !ok);
+      });
+      labelMode = cur.labels || 'letters';
+      if (typeof applyKind === 'function' && typeof library !== 'undefined') applyKind();
+    }
+    function pushSettings() {
+      const s = readSettings();
+      LS.set('wequizzer.settings', s);
+      socket.emit('host:settings', s);
+    }
+    document.querySelectorAll('[data-key]').forEach((input) => {
+      const evt = input.type === 'range' ? 'input' : 'change';
+      input.addEventListener(evt, () => {
+        if (input.dataset.key === 'limitTime' && input.checked) document.querySelector('[data-key="speedBonus"]').checked = true;
+        if (input.dataset.key === 'count') wantCount = Number(input.value) || 0;
+        const now = readSettings();
+        applySettings(now);
+        pushSettings();
+      });
+      if (input.type === 'range') input.addEventListener('change', () => FX.click());
+      else input.addEventListener('change', () => FX.click());
+    });
+    socket.on('host:settings', applySettings);
+
+    // ----- Connexion, création de la partie, retour après coupure -----
+    const SESSION_KEY = 'wequizzer.hostSession';
+    if (!LS.get(SESSION_KEY, null)) Brand.intro();
+    // Connexion perdue : le professeur répare le câble (affiché seulement si la coupure dure plus d'1,5 s)
+    let connTimer = null;
+    // On charge l'image du professeur « réparation » tant qu'on est en ligne : une fois coupé, il serait trop tard
+    let connImg = null;
+    setTimeout(() => { connImg = Brand.preload('reparation', 'md'); }, 1200);
+    function connShow() {
+      clearTimeout(connTimer);
+      connTimer = setTimeout(() => {
+        if (!$('connMascot').firstChild) $('connMascot').appendChild(connImg || Brand.preload('reparation', 'md'));
+        $('connBanner').classList.remove('hidden');
+      }, 1500);
+    }
+    function connHide() { clearTimeout(connTimer); $('connBanner').classList.add('hidden'); }
+    socket.on('connect', () => {
+      connHide();
+      const sess = LS.get(SESSION_KEY, null);
+      if (sess && sess.pin && sess.key) socket.emit('host:rejoin', sess);
+      else socket.emit('host:create', { origin: location.origin });
+    });
+    socket.on('disconnect', connShow);
+    socket.on('host:rejoin:error', () => {
+      LS.del(SESSION_KEY);
+      socket.emit('host:create', { origin: location.origin });
+    });
+    // ----- Inviter des joueurs (menu de partage du téléphone, copier le lien) -----
+    let inviteUrl = '';
+    if (!navigator.share) $('invShare').classList.add('hidden');
+    $('invShare').onclick = () => { if (inviteUrl) navigator.share({ title: 'WeQuizzer', text: "🎓 Le Professeur Quizzo t'attend ! Rejoins mon quiz WeQuizzer :", url: inviteUrl }).catch(() => {}); };
+    $('invCopy').onclick = () => { if (inviteUrl) copyText(inviteUrl, $('invCopy')); };
+    socket.on('host:created', async (d) => {
+      LS.set(SESSION_KEY, { pin: d.pin, key: d.key });
+      $('pin').textContent = d.pin;
+      $('joinUrl').textContent = d.joinUrl.replace(/^https?:\/\//, '');
+      inviteUrl = d.joinUrl + '?pin=' + d.pin;
+      if (d.qr) { $('qr').src = d.qr; $('qr').classList.remove('hidden'); }
+      $('lanNote').classList.toggle('hidden', !d.lanOnly);
+      if (d.rejoined) {
+        applySettings(d.settings);
+      } else {
+        const saved = LS.get('wequizzer.settings', null);
+        applySettings(saved ? Object.assign({}, d.settings, saved) : d.settings);
+        if (saved) pushSettings();
+      }
+      await initLibrary();
+    });
+
+    // ----- Bibliothèque de quiz -----
+    function normQ(q) {
+      let type = ['single', 'tf', 'multi', 'text', 'poll', 'order'].includes(q.type) ? q.type : 'single';
+      if (type === 'single' && q.gapSrc) type = 'gap';
+      let choices = (q.choices || []).slice(0, type === 'order' ? 6 : 4).map(String);
+      if (type === 'tf') choices = ['Vrai', 'Faux'];
+      let correct = q.correct;
+      if (type === 'multi') correct = Array.isArray(correct) ? correct.filter(Number.isInteger) : Number.isInteger(correct) ? [correct] : [];
+      else if (Array.isArray(correct)) correct = correct.length ? correct[0] : 0;
+      else if (!Number.isInteger(correct)) correct = 0;
+      if (type === 'gap') {
+        // en édition : phrase avec ___, bonne réponse dans la case 1, mauvaises réponses dans les cases 2 à 4
+        const src = String(q.gapSrc || '');
+        const mm = src.match(/\[([^\[\]]+)\]/);
+        return { type, text: mm ? src.replace(mm[0], '___') : src, image: q.image || '', choices: [mm ? mm[1].trim() : '', ...choices.filter((c, i) => i !== (Number.isInteger(q.correct) ? q.correct : 0)).slice(0, 3)], correct: 0, answers: [], double: q.double === true, explain: String(q.explain || '') };
+      }
+      return {
+        type,
+        text: String(q.text || ''),
+        image: q.image || '',
+        choices,
+        correct,
+        answers: Array.isArray(q.answers) ? q.answers.map(String) : [],
+        double: q.double === true,
+        explain: String(q.explain || ''),
+      };
+    }
+    function validateQ(q) {
+      if (!q.text.trim()) return 'le texte est vide';
+      if (q.type === 'text') return q.answers.some((a) => a.trim()) ? null : 'écris au moins une réponse acceptée';
+      if (q.type === 'tf') return q.correct === 0 || q.correct === 1 ? null : 'choisis Vrai ou Faux';
+      if (q.choices.length < 2 || q.choices.some((c) => !c.trim())) return 'il faut au moins 2 réponses remplies';
+      if (q.type === 'single' && (q.correct < 0 || q.correct >= q.choices.length)) return 'la bonne réponse est invalide';
+      if (q.type === 'multi' && (!q.correct.length || q.correct.some((c) => c < 0 || c >= q.choices.length))) return 'coche au moins une bonne réponse';
+      return null;
+    }
+    async function initLibrary() {
+      if (library.length === 0) {
+        try {
+          const r = await fetch('/api/sample-quiz');
+          const q = await r.json();
+          library.push({ id: uid(), title: q.title, questions: q.questions.map(normQ) });
+        } catch (e) { /* pas d'exemple */ }
+      }
+      // Roues d'exemple, ajoutées une seule fois (si tu les supprimes, elles ne reviennent pas)
+      if (!LS.get('wequizzer.wheelSeed', false)) {
+        const mk = (title, category, text) => ({ id: uid(), kind: 'wheel', title, category, questions: [], pairs: text.split('\n').map((l) => { const [q, a] = l.split(';'); return { q: q.trim(), a: a.trim() }; }) });
+        library.push(mk('Chiffres romains', 'Reliez les chiffres romains et arabes', '3 ; III\n4 ; IV\n10 ; X\n1 ; I\n50 ; L\n5 ; V\n9 ; IX\n40 ; XL'));
+        library.push(mk('Capitales', 'Reliez chaque pays à sa capitale', 'France ; Paris\nItalie ; Rome\nEspagne ; Madrid\nAllemagne ; Berlin\nPortugal ; Lisbonne\nBelgique ; Bruxelles\nJapon ; Tokyo\nCanada ; Ottawa'));
+        LS.set('wequizzer.wheelSeed', true);
+      }
+      if (!LS.get('wequizzer.lettersSeed', false)) {
+        const mkL = (title, text) => ({ id: uid(), kind: 'letters', title, questions: [], items: text.split('\n').map((l) => { const [q, w] = l.split(';'); return { q: q.trim(), word: w.trim(), image: '' }; }) });
+        library.push(mkL('Mots : Capitales', 'Quelle est la capitale de la Grèce ? ; Athènes\nQuelle est la capitale de l\'Italie ? ; Rome\nQuelle est la capitale de l\'Espagne ? ; Madrid\nQuelle est la capitale de l\'Allemagne ? ; Berlin\nQuelle est la capitale du Portugal ? ; Lisbonne\nQuelle est la capitale de la Belgique ? ; Bruxelles'));
+        library.push(mkL('Mots : Animaux', 'Quel animal miaule ? ; Chat\nQuel animal aboie ? ; Chien\nQuel est le roi de la savane ? ; Lion\nQuel animal a une trompe ? ; Éléphant\nQuel animal saute avec une poche ventrale ? ; Kangourou\nQuel oiseau ne vole pas et vit en Antarctique ? ; Manchot'));
+        LS.set('wequizzer.lettersSeed', true);
+      }
+      if (!LS.get('wequizzer.tfSeed', false)) {
+        const mkT = (title, text) => ({ id: uid(), flavor: 'tfrush', title, questions: text.split('\n').map((l) => { const [t, v] = l.split(';'); return { type: 'tf', text: t.trim(), image: '', choices: ['Vrai', 'Faux'], correct: v.trim() === 'vrai' ? 0 : 1, answers: [], double: false }; }) });
+        library.push(mkT('Vrai ou faux : animaux', 'Le dauphin est un poisson ; faux\nLa baleine est un mammifère ; vrai\nLes chauves-souris sont des oiseaux ; faux\nLe kangourou vit en Australie ; vrai\nLes araignées ont six pattes ; faux\nLe manchot vit au pôle Nord ; faux\nLe cœur de la crevette est dans sa tête ; vrai\nLes éléphants sont les seuls animaux qui ne savent pas sauter ; faux'));
+        LS.set('wequizzer.tfSeed', true);
+      }
+      if (!currentQuiz() && library.length) selectedId = library[0].id;
+      saveLibrary();
+      renderQuizSelect();
+      pushQuiz();
+    }
+    function renderQuizSelect() {
+      [$('quizSelect'), $('quizSelect2')].forEach((sel) => {
+        sel.innerHTML = '';
+        library.forEach((q) => {
+          const n = q.kind === 'wheel' ? q.pairs.length : q.kind === 'letters' ? q.items.length : q.questions.length;
+          const o = el('option', '', (q.kind === 'wheel' ? '🎡 ' : q.kind === 'letters' ? '🔤 ' : '') + q.title + ' (' + n + (q.kind === 'wheel' ? ' paire' : q.kind === 'letters' ? ' mot' : ' question') + (n > 1 ? 's' : '') + ')');
+          o.value = q.id;
+          sel.appendChild(o);
+        });
+        if (selectedId) sel.value = selectedId;
+      });
+      const has = library.length > 0;
+      ['editQuiz', 'testQuiz', 'exportQuiz', 'deleteQuiz'].forEach((id) => { $(id).disabled = !has; });
+      $('testQuiz').disabled = !has || !!(currentQuiz() && currentQuiz().kind);
+      applyKind();
+    }
+    const setInfo = (t) => { $('quizInfo').textContent = t; $('quizInfo2').textContent = t; };
+    function quizPayload(q) {
+      if (q.kind === 'wheel') return { kind: 'wheel', title: q.title, category: q.category, pairs: q.pairs };
+      if (q.kind === 'letters') return { kind: 'letters', title: q.title, items: q.items };
+      return {
+        title: q.title,
+        questions: q.questions.map((x) => ({
+          type: x.type, text: x.text, image: x.image || '', choices: x.choices, correct: x.correct, answers: x.answers, double: x.double, explain: x.explain || '',
+        })),
+      };
+    }
+    function pushQuiz() {
+      const q = currentQuiz();
+      $('quizError').textContent = '';
+      if (!q) { quizReady = false; setInfo('Crée ton premier quiz dans l\'onglet « Mes quiz ».'); updateStart(); return; }
+      socket.emit('host:quiz', quizPayload(q));
+    }
+    socket.on('host:quiz:ok', ({ title, count, kind }) => {
+      quizReady = true;
+      setInfo('« ' + title + ' » : ' + count + (kind === 'wheel' ? ' paire' : kind === 'letters' ? ' mot' : ' question') + (count > 1 ? 's' : '') + '. Enregistré dans ce navigateur.');
+      updateStart();
+    });
+    socket.on('host:quiz:error', (msg) => {
+      quizReady = false;
+      $('quizError').textContent = msg;
+      updateStart();
+    });
+    const onPick = (sel) => () => {
+      selectedId = sel.value; saveLibrary();
+      $('quizSelect').value = selectedId; $('quizSelect2').value = selectedId;
+      applyKind(); $('testQuiz').disabled = !!(currentQuiz() && currentQuiz().kind); pushQuiz(); pushSettings();
+    };
+    $('quizSelect').onchange = onPick($('quizSelect'));
+    $('quizSelect2').onchange = onPick($('quizSelect2'));
+
+    $('deleteQuiz').onclick = async () => {
+      const q = currentQuiz();
+      if (!q) return;
+      const ok = await UI.confirm({ title: 'Supprimer ce quiz ?', name: '« ' + q.title + ' »', text: 'Tu ne pourras pas le récupérer.', ok: 'Supprimer', cancel: 'Annuler', pose: 'desole' });
+      if (!ok) return;
+      library = library.filter((x) => x.id !== q.id);
+      selectedId = library.length ? library[0].id : null;
+      saveLibrary();
+      renderQuizSelect();
+      pushQuiz();
+    };
+    function download(name, text, type) {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([text], { type }));
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+    }
+    $('exportQuiz').onclick = () => {
+      const q = currentQuiz();
+      if (!q) return;
+      const out = q.kind === 'wheel' ? { kind: 'wheel', title: q.title, category: q.category, pairs: q.pairs } : q.kind === 'letters' ? { kind: 'letters', title: q.title, items: q.items } : { title: q.title, questions: q.questions };
+      download((q.title.replace(/[^\w\-]+/g, '_') || 'quiz') + '.json', JSON.stringify(out, null, 2), 'application/json');
+    };
+    function addImported(title, qs) {
+      const bad = qs.findIndex((q) => validateQ(q));
+      if (bad !== -1) throw new Error('Question ' + (bad + 1) + ' : ' + validateQ(qs[bad]));
+      const quiz = { id: uid(), title: String(title || 'Quiz importé').slice(0, 60), questions: qs };
+      library.push(quiz);
+      selectedId = quiz.id;
+      saveLibrary();
+      renderQuizSelect();
+      pushQuiz();
+    }
+    $('importQuiz').onclick = () => $('importFile').click();
+    $('importFile').onchange = () => {
+      const f = $('importFile').files[0];
+      $('importFile').value = '';
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = () => {
+        try {
+          let data = JSON.parse(r.result);
+          if (data && data.kind === 'wheel' && Array.isArray(data.pairs) && data.pairs.length) {
+            const w = { id: uid(), kind: 'wheel', title: String(data.title || 'Roue importée').slice(0, 60), category: String(data.category || '').slice(0, 80), pairs: data.pairs.map((p) => (Array.isArray(p.w) && p.w.length ? { q: String(p.q || ''), a: String(p.a || ''), w: p.w.map(String).slice(0, 3) } : { q: String(p.q || ''), a: String(p.a || '') })), questions: [] };
+            library.push(w); selectedId = w.id; saveLibrary(); renderQuizSelect(); pushQuiz();
+            return;
+          }
+          if (data && data.kind === 'letters' && Array.isArray(data.items) && data.items.length) {
+            const w = { id: uid(), kind: 'letters', title: String(data.title || 'Jeu de mots importé').slice(0, 60), items: data.items.map((p) => ({ q: String(p.q || ''), word: String(p.word || ''), image: String(p.image || '') })), questions: [] };
+            library.push(w); selectedId = w.id; saveLibrary(); renderQuizSelect(); pushQuiz();
+            return;
+          }
+          if (Array.isArray(data)) data = { title: f.name.replace(/\.json$/i, ''), questions: data };
+          if (!data || !Array.isArray(data.questions) || data.questions.length === 0) throw new Error('Fichier vide.');
+          addImported(data.title, data.questions.map(normQ));
+        } catch (e) {
+          $('quizError').textContent = e.message && e.message.startsWith('Question') ? e.message : "Ce fichier n'est pas un quiz valide.";
+        }
+      };
+      r.readAsText(f);
+    };
+
+    // ----- Créer avec une IA (tableur CSV) -----
+    const CSV_HEAD = ['Type', 'Question', 'Réponse A', 'Réponse B', 'Réponse C', 'Réponse D', 'Bonne(s) réponse(s)', 'Bonus', 'Explication'];
+    const AI_TYPES = [
+      { id: 'choix', label: 'Choix unique : 1 bonne réponse parmi 4', on: true,
+        rule: 'choix : une question, 4 réponses (colonnes A à D), et la lettre de la bonne réponse (A, B, C ou D).',
+        ex: ['choix', 'Quelle est la capitale de la France ?', 'Lyon', 'Paris', 'Marseille', 'Nice', 'B', '', 'Paris est la capitale de la France depuis des siècles.'] },
+      { id: 'vrai/faux', label: 'Vrai ou faux', on: true,
+        rule: 'vrai/faux : une affirmation (pas une question), colonnes A à D vides, et « vrai » ou « faux » dans la colonne des bonnes réponses.',
+        ex: ['vrai/faux', 'Le Soleil est une étoile.', '', '', '', '', 'vrai', '', 'Le Soleil est bien une étoile, la plus proche de la Terre.'] },
+      { id: 'multiple', label: 'Plusieurs bonnes réponses', on: false,
+        rule: 'multiple : une question, 4 réponses, et les lettres des bonnes réponses séparées par une virgule (ex : A,C). Il y a 2 ou 3 bonnes réponses.',
+        ex: ['multiple', 'Quels animaux sont des mammifères ?', 'Dauphin', 'Requin', 'Chauve-souris', 'Pingouin', 'A,C', '', 'Le dauphin et la chauve-souris allaitent leurs petits.'] },
+      { id: 'texte', label: 'Réponse à écrire', on: false,
+        rule: 'texte : une question dont la réponse est un mot ou un nombre. Colonnes A à D vides. Dans la colonne des bonnes réponses, écris toutes les façons acceptées de répondre, séparées par le signe | (ex : Pacifique|Océan Pacifique).',
+        ex: ['texte', 'Quel est le plus grand océan ?', '', '', '', '', 'Pacifique|Océan Pacifique', '', 'Le Pacifique couvre presque un tiers de la planète.'] },
+      { id: 'ordre', label: 'Remettre dans l\'ordre', on: false,
+        rule: 'ordre : une consigne, colonnes A à D vides, et dans la colonne des bonnes réponses les 2 à 6 éléments DANS LE BON ORDRE, séparés par le signe | (ex : Lever|Déjeuner|Travailler). Chaque élément fait 80 lettres au maximum.',
+        ex: ['ordre', 'Range ces planètes de la plus proche à la plus lointaine du Soleil.', '', '', '', '', 'Mercure|Vénus|Terre|Mars', '', 'Mercure est la plus proche du Soleil.'] },
+      { id: 'completer', label: 'Compléter la phrase', on: false,
+        rule: 'completer : une phrase avec trois tirets du bas ___ à la place du mot manquant (une seule fois). Dans la colonne des bonnes réponses, écris le mot qui manque. Dans les colonnes Réponse A, B et C, écris 1 à 3 MAUVAIS mots (colonne D vide).',
+        ex: ['completer', 'Le ___ miaule dans le jardin.', 'chien', 'cheval', '', '', 'chat', '', 'C\'est le chat qui miaule.'] },
+      { id: 'roue', label: 'Roue : question courte, réponse courte', on: false,
+        rule: 'roue : une question COURTE (60 lettres au maximum). Colonne Réponse A = la BONNE réponse (25 lettres au maximum), colonnes B, C, D = 1 à 3 fausses réponses du même genre (25 lettres au maximum). Colonne des bonnes réponses vide. Chaque bonne réponse doit être différente des autres.',
+        ex: ['roue', 'Capitale de l\'Italie ?', 'Rome', 'Milan', 'Naples', 'Venise', '', '', ''] },
+      { id: 'mot', label: 'Jeu de mots : deviner un mot', on: false,
+        rule: 'mot : Question = une définition ou une devinette. Colonne Réponse A = le mot à trouver (un seul mot, de 3 à 14 lettres, sans espace). Les autres colonnes restent vides.',
+        ex: ['mot', 'Animal qui miaule et chasse les souris', 'chat', '', '', '', '', '', ''] },
+    ];
+    // exemple complet pour le modèle de tableur (une ligne par type)
+    const CSV_SAMPLE = AI_TYPES.map((t) => t.ex).concat([['sondage', 'Ton fruit préféré ?', 'Pomme', 'Banane', 'Fraise', 'Mangue', '', '', '']]);
+
+    function parseCsv(text) {
+      text = text.replace(/^﻿/, '');
+      const first = text.split(/\r?\n/)[0] || '';
+      const counts = { ';': 0, ',': 0, '\t': 0 };
+      let inQ = false;
+      for (const ch of first) { if (ch === '"') inQ = !inQ; else if (!inQ && ch in counts) counts[ch]++; }
+      const delim = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
+      const rows = [];
+      let row = [];
+      let cell = '';
+      inQ = false;
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        if (inQ) {
+          if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else inQ = false; } else cell += ch;
+        } else if (ch === '"') inQ = true;
+        else if (ch === delim) { row.push(cell); cell = ''; }
+        else if (ch === '\n' || ch === '\r') {
+          if (ch === '\r' && text[i + 1] === '\n') i++;
+          row.push(cell); cell = '';
+          rows.push(row); row = [];
+        } else cell += ch;
+      }
+      if (cell !== '' || row.length) { row.push(cell); rows.push(row); }
+      return rows.filter((r) => r.some((c) => String(c).trim() !== ''));
+    }
+    const plain = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+
+    // Garde seulement le tableau dans la réponse de l'IA (enlève les phrases autour et les ```)
+    function aiExtract(text) {
+      let t = String(text || '').replace(/^﻿/, '').replace(/\r\n?/g, '\n');
+      const fence = t.match(/```[^\n]*\n([\s\S]*?)```/);
+      t = fence ? fence[1] : t.replace(/```[^\n]*/g, '');
+      const lines = t.split('\n');
+      const isHead = (l) => /^["']?type["']?\s*[;,\t]\s*["']?question/.test(plain(l));
+      let start = lines.findIndex(isHead);
+      const hasHead = start !== -1;
+      if (!hasHead) start = lines.findIndex((l) => l.trim() !== '');
+      if (start === -1) return { rows: [], hasHead: false };
+      let kept = lines.slice(start);
+      const hasDelim = (l) => /[;\t]/.test(l) || (l.match(/,/g) || []).length >= 3;
+      while (kept.length && !hasDelim(kept[kept.length - 1])) kept.pop();
+      return { rows: parseCsv(kept.join('\n')), hasHead };
+    }
+
+    const AI_TYPE_NAMES = 'choix, multiple, vrai/faux, texte, ordre, completer, roue, mot ou sondage';
+    // Transforme les lignes en quiz. Tout ou rien : s'il y a une seule erreur, rien n'est créé.
+    function aiBuild(rows, hasHead) {
+      const out = { normal: [], pairs: [], items: [], errors: [] };
+      if (hasHead) rows = rows.slice(1);
+      if (!rows.length) { out.errors.push('Je ne trouve aucune question dans ce que tu as collé.'); return out; }
+      const first = hasHead ? 2 : 1;
+      const answersSeen = {};
+      rows.forEach((r, i) => {
+        const line = i + first;
+        const err = (m) => out.errors.push('Ligne ' + line + ' : ' + m);
+        const cell = (k) => String(r[k] === undefined ? '' : r[k]).trim();
+        const choices = [cell(2), cell(3), cell(4), cell(5)];
+        const filled = choices.filter(Boolean);
+        const corr = cell(6);
+        const pc = plain(corr);
+        const t = plain(cell(0));
+        const text = cell(1);
+        const explain = cell(8).slice(0, 300);
+        let type;
+        if (/^(vrai|tf|v\/f)/.test(t)) type = 'tf';
+        else if (/^(multi|plusieurs)/.test(t)) type = 'multi';
+        else if (/^(compl|trou|phrase|texte a trou)/.test(t)) type = 'gap';
+        else if (/^(text|ecri|libre|saisie)/.test(t)) type = 'text';
+        else if (/^(sond|poll|avis)/.test(t)) type = 'poll';
+        else if (/^(ordre|order|class|remett|chrono)/.test(t)) type = 'order';
+        else if (/^(roue|wheel|relier|paire)/.test(t)) type = 'wheel';
+        else if (/^(mot|lettre|pendu|jeu)/.test(t)) type = 'word';
+        else if (/^(choix|single|unique|qcm|simple)/.test(t)) type = 'single';
+        else if (!t) type = filled.length >= 2 ? 'single' : 'text';
+        else return err('je ne connais pas le type « ' + cell(0) + ' ». Les types possibles : ' + AI_TYPE_NAMES + '.');
+        if (!text) return err('la question est vide.');
+        const idx = (s) => {
+          const v = plain(s);
+          if (/^[a-d]$/.test(v)) return v.charCodeAt(0) - 97;
+          if (/^[1-4]$/.test(v)) return Number(v) - 1;
+          return -1;
+        };
+        const tooLong = (arr, max) => arr.some((x) => Array.from(x).length > max);
+
+        if (type === 'wheel') {
+          const w = [cell(3), cell(4), cell(5)].filter(Boolean);
+          if (!cell(2)) return err('il manque la bonne réponse (colonne « Réponse A »).');
+          if (Array.from(text).length > 60) return err('la question est trop longue (60 lettres au maximum) : « ' + text.slice(0, 40) + '… »');
+          if (tooLong([cell(2), ...w], 25)) return err('une réponse est trop longue (25 lettres au maximum).');
+          if (w.some((x) => plain(x) === plain(cell(2)))) return err('une fausse réponse est la même que la bonne.');
+          if (new Set(w.map(plain)).size !== w.length) return err('deux fausses réponses sont identiques.');
+          const key = plain(cell(2));
+          if (answersSeen[key]) return err('la bonne réponse « ' + cell(2) + ' » existe déjà à la ligne ' + answersSeen[key] + ' : chaque bonne réponse de la roue doit être différente.');
+          answersSeen[key] = line;
+          out.pairs.push(w.length ? { q: text, a: cell(2), w } : { q: text, a: cell(2) });
+          return;
+        }
+        if (type === 'word') {
+          const word = cell(2);
+          const image = cell(3);
+          const letters = Array.from(word).filter((c) => /[\p{L}\p{N}]/u.test(c)).length;
+          if (!word) return err('il manque le mot à trouver (colonne « Réponse A »).');
+          if (letters < 3 || letters > 14) return err('le mot « ' + word + ' » doit avoir entre 3 et 14 lettres.');
+          if (image && !/^https?:\/\//i.test(image)) return err('le lien de l\'image doit commencer par http (ou laisser la case vide).');
+          out.items.push({ q: text, word, image });
+          return;
+        }
+        if (Array.from(text).length > 200) return err('la question est trop longue (200 lettres au maximum).');
+        const q = { type, text, image: '', choices: [], correct: 0, answers: [], double: /^(oui|yes|x|1|vrai|bonus)$/.test(plain(cell(7))), explain };
+        if (type === 'tf') {
+          q.choices = ['Vrai', 'Faux'];
+          if (/^(vrai|v|true|oui|1)$/.test(pc)) q.correct = 0;
+          else if (/^(faux|f|false|non|0)$/.test(pc)) q.correct = 1;
+          else return err('écris « vrai » ou « faux » dans la colonne des bonnes réponses.');
+        } else if (type === 'text') {
+          q.answers = corr.split('|').map((x) => x.trim()).filter(Boolean).slice(0, 8);
+          if (!q.answers.length) return err('écris la ou les réponses acceptées (séparées par « | »).');
+        } else if (type === 'order') {
+          let items = corr.split(/\s*(?:\||→)\s*/).map((x) => x.trim()).filter(Boolean);
+          if (items.length < 2 && !corr && filled.length >= 2) items = filled;
+          if (items.length < 2 || items.length > 6) return err('il faut 2 à 6 éléments dans le bon ordre, séparés par « | ».');
+          if (tooLong(items, 80)) return err('un élément est trop long (80 lettres au maximum).');
+          if (new Set(items.map(plain)).size !== items.length) return err('deux éléments sont identiques.');
+          q.choices = items;
+          q.double = false;
+        } else if (type === 'gap') {
+          let sentence = text;
+          let word = corr;
+          let wrongs = filled;
+          const br = sentence.match(/\[([^\[\]]+)\]/);
+          if (br && !/_{2,}/.test(sentence)) { sentence = sentence.replace(br[0], '___'); if (!word) word = br[1].trim(); }
+          const k = idx(corr);
+          if (k !== -1 && choices[k] && corr.length === 1) { word = choices[k]; wrongs = choices.filter((c, j) => c && j !== k); }
+          wrongs = wrongs.filter((w) => plain(w) !== plain(word));
+          const blanks = sentence.match(/_{2,}/g) || [];
+          if (blanks.length !== 1) return err('la phrase doit contenir ___ (trois tirets du bas) une seule fois, à la place du mot manquant.');
+          if (!word) return err('il manque le mot qui va à la place du ___ (colonne des bonnes réponses).');
+          if (!wrongs.length) return err('il faut au moins 1 mauvaise réponse (colonnes « Réponse A » à « Réponse C »).');
+          if (wrongs.length > 3) return err('il faut 3 mauvaises réponses au maximum.');
+          if (tooLong([word, ...wrongs], 100)) return err('une réponse est trop longue (100 lettres au maximum).');
+          q.type = 'single';
+          q.gapSrc = sentence.replace(blanks[0], '[' + word + ']');
+          q.text = sentence.replace(blanks[0], '_____');
+          q.choices = [word, ...wrongs];
+          q.correct = 0;
+          q.double = false;
+        } else {
+          const map = {};
+          const kept = [];
+          choices.forEach((c, k) => { if (c) { map[k] = kept.length; kept.push(c); } });
+          q.choices = kept;
+          if (kept.length < 2) return err('il faut au moins 2 réponses.');
+          if (tooLong(kept, 100)) return err('une réponse est trop longue (100 lettres au maximum).');
+          if (type === 'single') {
+            const k = idx(corr);
+            if (k === -1 || map[k] === undefined) return err('la bonne réponse est invalide (écris A, B, C ou D, et la case doit être remplie).');
+            q.correct = map[k];
+          } else if (type === 'multi') {
+            const list = corr.split(/[,+;&|\s]+/).map(idx).filter((k) => k !== -1 && map[k] !== undefined).map((k) => map[k]);
+            if (!list.length) return err('écris les bonnes réponses, par exemple « A,C ».');
+            q.correct = Array.from(new Set(list)).sort();
+          } else { q.double = false; q.explain = explain; }
+        }
+        const bad = validateQ(q);
+        if (bad) return err(bad + '.');
+        out.normal.push(q);
+      });
+      if (out.normal.length > 100) out.errors.push('Il y a ' + out.normal.length + ' questions de quiz : 100 au maximum.');
+      if (out.pairs.length && out.pairs.length < 3) out.errors.push('La roue a besoin d\'au moins 3 questions (il y en a ' + out.pairs.length + ').');
+      if (out.pairs.length > 100) out.errors.push('Une roue peut avoir 100 questions au maximum.');
+      if (out.items.length > 100) out.errors.push('Un jeu de mots peut avoir 100 mots au maximum.');
+      return out;
+    }
+    // Compatibilité : ancien nom utilisé par les tests
+    function csvToQuestions(rows) {
+      const hasHead = rows.length && plain(rows[0][0]) === 'type';
+      const o = aiBuild(rows, hasHead);
+      if (o.errors.length) throw new Error(o.errors[0]);
+      return o.normal;
+    }
+
+    const plural = (n, one, many) => n + ' ' + (n > 1 ? many : one);
+    // Crée les quiz à partir de la réponse de l'IA. Renvoie { ok, message } ou { ok:false, errors }
+    function aiCreate(replyText, titleIn, themeIn) {
+      const { rows, hasHead } = aiExtract(replyText);
+      const o = aiBuild(rows, hasHead);
+      if (o.errors.length) return { ok: false, errors: o.errors };
+      const base = String(titleIn || themeIn || 'Quiz IA').trim().slice(0, 60) || 'Quiz IA';
+      const kinds = [o.normal.length > 0, o.pairs.length > 0, o.items.length > 0].filter(Boolean).length;
+      const made = [];
+      const parts = [];
+      if (o.normal.length) {
+        made.push({ id: uid(), title: base, questions: o.normal });
+        parts.push(plural(o.normal.length, 'question ajoutée', 'questions ajoutées') + ' au quiz « ' + base + ' »');
+      }
+      if (o.pairs.length) {
+        const title = (kinds > 1 ? base.slice(0, 52) + ' (roue)' : base);
+        made.push({ id: uid(), kind: 'wheel', title, category: base.slice(0, 80), pairs: o.pairs, questions: [] });
+        parts.push('une roue de ' + plural(o.pairs.length, 'question', 'questions') + ' créée : « ' + title + ' »');
+      }
+      if (o.items.length) {
+        const title = (kinds > 1 ? base.slice(0, 51) + ' (mots)' : base);
+        made.push({ id: uid(), kind: 'letters', title, items: o.items, questions: [] });
+        parts.push('un jeu de mots de ' + plural(o.items.length, 'mot', 'mots') + ' créé : « ' + title + ' »');
+      }
+      made.forEach((m) => library.push(m));
+      selectedId = made[0].id;
+      saveLibrary();
+      renderQuizSelect();
+      pushQuiz();
+      const msg = parts.join(' ; ');
+      return { ok: true, message: msg.charAt(0).toUpperCase() + msg.slice(1) + '.' };
+    }
+
+    function aiPromptText() {
+      const theme = $('aiTheme').value.trim() || '(ton thème ici)';
+      const n = Math.max(3, Math.min(100, parseInt($('aiCount').value, 10) || 10));
+      const level = $('aiLevel').value;
+      const pub = $('aiPublic').value.trim() || 'tout public';
+      const chosen = AI_TYPES.filter((t) => $('aiT_' + t.id.replace(/\W/g, '')).checked);
+      const types = chosen.length ? chosen : [AI_TYPES[0]];
+      const L = [];
+      L.push('Tu prépares des questions pour WeQuizzer, un quiz de révision en direct.');
+      L.push('Thème : ' + theme + '.');
+      L.push('Nombre de questions : ' + n + '. Niveau : ' + level + '. Public : ' + pub + '.');
+      L.push('');
+      L.push('FORMAT (très important) :');
+      L.push('- Réponds avec UN SEUL bloc de code, sans aucune phrase avant ni après.');
+      L.push('- Les colonnes sont séparées par un point-virgule ( ; ). N\'écris jamais de point-virgule dans le texte d\'une case.');
+      L.push('- La première ligne est EXACTEMENT :');
+      L.push(CSV_HEAD.join(';'));
+      L.push('- Ensuite, une ligne par question, avec toujours 9 colonnes (laisse vide ce qui ne sert pas).');
+      L.push('- Colonne Bonus : toujours vide.');
+      L.push('- Colonne Explication : une phrase courte (200 lettres au maximum) qui explique la bonne réponse.');
+      L.push('- Les questions doivent être exactes, claires et adaptées au public. Place les bonnes réponses à des endroits variés.');
+      L.push('');
+      L.push(types.length > 1 ? 'TYPES DE QUESTIONS (répartis les ' + n + ' questions entre ces types) :' : 'TYPE DE QUESTION (toutes les questions sont de ce type) :');
+      types.forEach((t) => L.push('- ' + t.rule));
+      L.push('');
+      L.push('EXEMPLE DE LIGNES :');
+      types.forEach((t) => L.push(t.ex.join(';')));
+      return L.join('\n');
+    }
+    function copyText(text, btn) {
+      const done = () => {
+        const old = btn.innerHTML;
+        btn.innerHTML = '<i class="ti ti-check"></i> Copié !';
+        setTimeout(() => { btn.innerHTML = old; }, 1800);
+      };
+      const fallback = () => {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) { /* rien */ }
+        ta.remove();
+      };
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, fallback);
+      else fallback();
+    }
+    function aiRefresh() { $('aiPrompt').value = aiPromptText(); }
+    (function aiInit() {
+      $('aiTypes').innerHTML = AI_TYPES.map((t) => '<label style="display:block;margin:4px 0"><input type="checkbox" id="aiT_' + t.id.replace(/\W/g, '') + '"' + (t.on ? ' checked' : '') + '> ' + t.label + '</label>').join('');
+      ['aiTheme', 'aiCount', 'aiLevel', 'aiPublic'].forEach((id) => { $(id).oninput = aiRefresh; $(id).onchange = aiRefresh; });
+      AI_TYPES.forEach((t) => { $('aiT_' + t.id.replace(/\W/g, '')).onchange = aiRefresh; });
+      aiRefresh();
+    })();
+    let aiErrText = '';
+    $('openAi').onclick = () => {
+      $('aiErr').textContent = ''; $('aiErrBox').classList.add('hidden'); $('aiOk').classList.add('hidden');
+      aiRefresh();
+      show('aiPage');
+    };
+    $('aiBack').onclick = () => show('lobby');
+    $('aiCopy').onclick = () => { if (!$('aiTheme').value.trim()) { $('aiTheme').focus(); $('aiErr').textContent = 'Écris d\'abord le thème de ton quiz (étape 1).'; return; } $('aiErr').textContent = ''; copyText($('aiPrompt').value, $('aiCopy')); };
+    $('aiGo').onclick = () => {
+      $('aiErr').textContent = ''; $('aiErrBox').classList.add('hidden'); $('aiOk').classList.add('hidden');
+      if (!$('aiReply').value.trim()) { $('aiErr').textContent = 'Colle d\'abord la réponse de l\'IA dans la grande case.'; return; }
+      let res;
+      try { res = aiCreate($('aiReply').value, $('aiTitle').value, $('aiTheme').value); } catch (e) { res = { ok: false, errors: [e.message || 'Je n\'arrive pas à lire ce tableau.'] }; }
+      if (!res.ok) {
+        const list = res.errors.slice(0, 10).map((e) => '• ' + e);
+        if (res.errors.length > 10) list.push('• … et ' + (res.errors.length - 10) + ' autre(s) erreur(s).');
+        $('aiErr').style.whiteSpace = 'pre-wrap';
+        $('aiErr').textContent = 'Rien n\'a été créé, car il y a ' + (res.errors.length > 1 ? res.errors.length + ' erreurs' : 'une erreur') + ' dans le tableau :\n' + list.join('\n');
+        aiErrText = 'Ton tableau contient des erreurs, rien n\'a pu être importé :\n' + list.join('\n') + '\nCorrige-les et renvoie-moi le tableau COMPLET, dans un seul bloc de code, avec exactement le même format (9 colonnes, séparées par des points-virgules).';
+        $('aiErrBox').classList.remove('hidden');
+        return;
+      }
+      $('aiOk').innerHTML = '<b>✔ C\'est fait !</b> ' + res.message.replace(/</g, '&lt;') + '<br><button id="aiSee" class="btn mini" type="button" style="margin-top:8px">Voir mes quiz</button>';
+      $('aiOk').classList.remove('hidden');
+      $('aiSee').onclick = () => show('lobby');
+      $('aiReply').value = '';
+    };
+    $('aiErrCopy').onclick = () => copyText(aiErrText, $('aiErrCopy'));
+    $('aiFile').onclick = () => $('csvFile').click();
+    $('csvFile').onchange = () => {
+      const f = $('csvFile').files[0];
+      $('csvFile').value = '';
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = () => { $('aiReply').value = String(r.result); if (!$('aiTitle').value.trim()) $('aiTitle').value = f.name.replace(/\.[^.]+$/, '').slice(0, 60); };
+      r.readAsText(f);
+    };
+    $('aiTemplate').onclick = () => {
+      const esc = (c) => '"' + String(c).replace(/"/g, '""') + '"';
+      const csv = [CSV_HEAD, ...CSV_SAMPLE].map((r) => r.map(esc).join(';')).join('\r\n');
+      download('modele-wequizzer.csv', '﻿' + csv, 'text/csv');
+    };
+
+
+    // ----- Onglets (Jouer / Mes quiz) et pages de l'accueil -----
+    let tab = 'jouer';
+    function setTab(t) {
+      tab = t;
+      $('paneJouer').classList.toggle('hidden', t !== 'jouer');
+      $('paneQuiz').classList.toggle('hidden', t !== 'quiz');
+      $('tabJouer').classList.toggle('on', t === 'jouer');
+      $('tabQuiz').classList.toggle('on', t === 'quiz');
+      $('moreMenu').classList.add('hidden');
+      window.scrollTo(0, 0);
+    }
+    $('tabJouer').onclick = () => setTab('jouer');
+    $('tabQuiz').onclick = () => setTab('quiz');
+    $('openCreate').onclick = () => show('createPage');
+    $('createBack').onclick = () => show('lobby');
+    $('openAdv').onclick = () => show('advPage');
+    $('advBack').onclick = () => show('lobby');
+    $('moreBtn').onclick = (e) => { e.stopPropagation(); $('moreMenu').classList.toggle('hidden'); };
+    $('moreMenu').addEventListener('click', () => $('moreMenu').classList.add('hidden'));
+    document.addEventListener('click', (e) => { if (!$('moreMenu').contains(e.target) && e.target !== $('moreBtn')) $('moreMenu').classList.add('hidden'); });
+    UI.soundButton();
+
+    // ----- Éditeur de quiz -----
+    let editing = null;
+    const blankQ = () => ({ type: 'single', text: '', image: '', choices: ['', '', '', ''], correct: 0, answers: [], double: false, explain: '' });
+    function openEditor(quiz) {
+      editing = quiz
+        ? {
+            id: quiz.id,
+            title: quiz.title,
+            questions: quiz.questions.map((q) => {
+              const n = normQ(q);
+              if (n.type === 'tf') n.choices = ['', '', '', ''];
+              while (n.choices.length < (n.type === 'order' ? 6 : 4)) n.choices.push('');
+              return n;
+            }),
+          }
+        : { id: uid(), title: '', questions: [blankQ()] };
+      $('edHead').textContent = quiz ? 'Modifier le quiz' : 'Nouveau quiz';
+      $('edTitle').value = editing.title;
+      $('edError').textContent = '';
+      renderEditor();
+      show('editor');
+    }
+    function miniBtn(icon, fn, label) {
+      const b = el('button', 'btn ghost mini');
+      b.type = 'button';
+      b.title = label;
+      b.setAttribute('aria-label', label);
+      b.appendChild(el('i', 'ti ' + icon));
+      b.onclick = fn;
+      return b;
+    }
+    function textField(value, placeholder, onInput) {
+      const i = el('input');
+      i.type = 'text';
+      i.value = value;
+      i.placeholder = placeholder;
+      i.maxLength = 200;
+      i.oninput = () => onInput(i.value);
+      return i;
+    }
+    function switchType(q, type) {
+      q.type = type;
+      if (type === 'multi') q.correct = Array.isArray(q.correct) ? q.correct : [Number.isInteger(q.correct) ? q.correct : 0];
+      else if (type === 'tf') q.correct = Array.isArray(q.correct) ? 0 : q.correct === 1 ? 1 : 0;
+      else q.correct = Array.isArray(q.correct) ? (q.correct[0] || 0) : (Number.isInteger(q.correct) ? q.correct : 0);
+      if (type === 'poll') q.double = false;
+      if (type === 'order') { q.correct = 0; while (q.choices.length < 6) q.choices.push(''); }
+      else if (q.choices.length > 4) q.choices = q.choices.slice(0, 4);
+      if (type === 'gap') { q.choices = ['', q.choices[1] || '', q.choices[2] || '', q.choices[3] || '']; q.correct = 0; }
+    }
+    // Image envoyée depuis l'ordinateur : réduite et compressée avant d'être gardée
+    function pickImage(q, done) {
+      const inp = document.createElement('input');
+      inp.type = 'file';
+      inp.accept = 'image/*';
+      inp.onchange = () => {
+        const f = inp.files[0];
+        if (!f) return;
+        const img = new Image();
+        const url = URL.createObjectURL(f);
+        img.onload = () => {
+          const k = Math.min(1, 520 / Math.max(img.width, img.height));
+          const c = document.createElement('canvas');
+          c.width = Math.max(1, Math.round(img.width * k));
+          c.height = Math.max(1, Math.round(img.height * k));
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          URL.revokeObjectURL(url);
+          q.image = c.toDataURL('image/jpeg', 0.72);
+          done();
+        };
+        img.onerror = () => { URL.revokeObjectURL(url); $('edError').textContent = "Cette image n'a pas pu être lue."; };
+        img.src = url;
+      };
+      inp.click();
+    }
+    function renderEditor() {
+      const box = $('edQuestions');
+      box.innerHTML = '';
+      editing.questions.forEach((q, i) => {
+        const card = el('div', 'qcard');
+        const head = el('div', 'qhead');
+        head.appendChild(el('span', '', 'Question ' + (i + 1)));
+        const tools = el('span');
+        tools.appendChild(miniBtn('ti-arrow-up', () => moveQ(i, -1), 'Monter'));
+        tools.appendChild(miniBtn('ti-arrow-down', () => moveQ(i, 1), 'Descendre'));
+        tools.appendChild(miniBtn('ti-trash', () => removeQ(i), 'Supprimer la question'));
+        head.appendChild(tools);
+        card.appendChild(head);
+
+        const typeRow = el('div', 'ans');
+        typeRow.appendChild(el('i', 'ti ti-category'));
+        typeRow.appendChild(el('span', '', 'Type :'));
+        const sel = el('select');
+        Object.keys(TYPE_LABEL).forEach((k) => {
+          const o = el('option', '', TYPE_LABEL[k]);
+          o.value = k;
+          sel.appendChild(o);
+        });
+        sel.value = q.type;
+        sel.onchange = () => { switchType(q, sel.value); renderEditor(); };
+        typeRow.appendChild(sel);
+        card.appendChild(typeRow);
+
+        let gapPreview = null;
+        const gapRefresh = () => {
+          if (!gapPreview) return;
+          const parts = (q.text || '').split(/_{2,}/);
+          const answers = q.choices.map((c) => (c || '').trim()).filter(Boolean);
+          gapPreview.textContent = '👀 Les joueurs verront : « ' + (q.text ? q.text.replace(/_{2,}/, '_____') : '…') + ' »' + (answers.length ? '  avec ces choix mélangés : ' + answers.join(' / ') : '') + (parts.length === 2 ? '' : '  (il manque le ___ dans ta phrase)');
+        };
+        if (q.type === 'gap') card.appendChild(el('p', 'hint', '1. Écris ta phrase. À la place du mot qui manque, tape ___ (trois fois le tiret du bas). Exemple : Le ___ miaule'));
+        card.appendChild(textField(q.text, q.type === 'gap' ? 'Ex : Le ___ miaule' : 'Écris ta question', (v) => { q.text = v; gapRefresh(); }));
+        const imRow = el('div', 'ans');
+        if ((q.image || '').startsWith('data:')) {
+          const th = el('img');
+          th.src = q.image;
+          th.style.cssText = 'height:48px;border-radius:8px';
+          imRow.appendChild(th);
+          imRow.appendChild(el('span', '', 'Image envoyée'));
+          imRow.appendChild(miniBtn('ti-x', () => { q.image = ''; renderEditor(); }, "Retirer l'image"));
+        } else {
+          imRow.appendChild(textField(q.image, "Image : adresse internet (facultatif)", (v) => { q.image = v; }));
+          const up = el('button', 'btn ghost mini');
+          up.type = 'button';
+          up.innerHTML = '<i class="ti ti-photo-up"></i> Depuis mon ordinateur';
+          up.onclick = () => pickImage(q, renderEditor);
+          imRow.appendChild(up);
+        }
+        card.appendChild(imRow);
+
+        if (q.type === 'tf') {
+          card.appendChild(el('p', 'hint', 'Coche la bonne réponse :'));
+          ['Vrai', 'Faux'].forEach((label, k) => {
+            const row = el('div', 'ans');
+            const radio = el('input');
+            radio.type = 'radio';
+            radio.name = 'correct' + i;
+            radio.checked = q.correct === k;
+            radio.onchange = () => { q.correct = k; };
+            row.appendChild(radio);
+            row.appendChild(el('span', 'badge c' + (k === 0 ? 3 : 0), k === 0 ? '✔' : '✖'));
+            row.appendChild(el('span', '', label));
+            card.appendChild(row);
+          });
+        } else if (q.type === 'gap') {
+          card.appendChild(el('p', 'hint', '2. Écris la BONNE réponse, celle qui va à la place du ___ (un seul mot ou quelques mots) :'));
+          const good = el('div', 'ans');
+          good.appendChild(el('span', 'badge c3', '✔'));
+          good.appendChild(textField(q.choices[0], 'Ex : chat', (v) => { q.choices[0] = v; gapRefresh(); }));
+          card.appendChild(good);
+          card.appendChild(el('p', 'hint', '3. Écris 1 à 3 MAUVAISES réponses (un seul mot par case, pas de phrase) :'));
+          for (let k = 1; k < 4; k++) {
+            const row = el('div', 'ans');
+            row.appendChild(el('span', 'badge c0', '✖'));
+            row.appendChild(textField(q.choices[k], k === 1 ? 'Ex : chien' : k === 2 ? 'Ex : cheval (facultatif)' : 'Ex : lion (facultatif)', (v) => { q.choices[k] = v; gapRefresh(); }));
+            card.appendChild(row);
+          }
+          gapPreview = el('p', 'hint');
+          gapPreview.style.fontWeight = '800';
+          card.appendChild(gapPreview);
+          gapRefresh();
+        } else if (q.type === 'order') {
+          card.appendChild(el('p', 'hint', 'Écris les éléments dans le BON ordre, du premier au dernier (2 à 6). Les joueurs les verront mélangés et devront les remettre dans l\'ordre. Ex : 1. Lever, 2. Petit-déjeuner, 3. Travail :'));
+          for (let k = 0; k < 6; k++) {
+            const row = el('div', 'ans');
+            row.appendChild(el('span', 'badge c' + (k % 4), String(k + 1)));
+            row.appendChild(textField(q.choices[k], 'Élément ' + (k + 1) + (k >= 2 ? ' (facultatif)' : ''), (v) => { q.choices[k] = v; }));
+            card.appendChild(row);
+          }
+        } else if (q.type === 'text') {
+          card.appendChild(el('p', 'hint', 'Écris la bonne réponse. Si plusieurs réponses sont acceptées, sépare-les par un point-virgule « ; ». Les accents, majuscules et petites fautes sont tolérés :'));
+          card.appendChild(textField(q.answers.join('; '), 'Ex : Pacifique; Océan Pacifique', (v) => { q.answers = v.split(';'); }));
+        } else {
+          const hintTxt = q.type === 'single' ? 'Coche la bonne réponse (2 réponses minimum) :'
+            : q.type === 'multi' ? 'Coche toutes les bonnes réponses (2 réponses minimum) :'
+              : '2 réponses minimum :';
+          card.appendChild(el('p', 'hint', hintTxt));
+          for (let k = 0; k < 4; k++) {
+            const row = el('div', 'ans');
+            if (q.type === 'single') {
+              const radio = el('input');
+              radio.type = 'radio';
+              radio.name = 'correct' + i;
+              radio.checked = q.correct === k;
+              radio.onchange = () => { q.correct = k; };
+              row.appendChild(radio);
+            } else if (q.type === 'multi') {
+              const cb = el('input');
+              cb.type = 'checkbox';
+              cb.checked = q.correct.includes(k);
+              cb.onchange = () => {
+                q.correct = cb.checked ? Array.from(new Set([...q.correct, k])) : q.correct.filter((x) => x !== k);
+              };
+              row.appendChild(cb);
+            }
+            row.appendChild(el('span', 'badge c' + k, LETTERS[k]));
+            row.appendChild(textField(q.choices[k], 'Réponse ' + LETTERS[k] + (k >= 2 ? ' (facultatif)' : ''), (v) => { q.choices[k] = v; }));
+            card.appendChild(row);
+          }
+        }
+        const ex = textField(q.explain || '', 'Explication après la réponse (facultatif)', (v) => { q.explain = v; });
+        ex.maxLength = 300;
+        card.appendChild(ex);
+        if (q.type !== 'poll') {
+          const bonus = el('label', 'ans bonus');
+          const cb = el('input');
+          cb.type = 'checkbox';
+          cb.checked = q.double;
+          cb.onchange = () => { q.double = cb.checked; };
+          bonus.appendChild(cb);
+          bonus.appendChild(el('i', 'ti ti-star'));
+          bonus.appendChild(el('span', '', 'Question bonus (points doublés)'));
+          card.appendChild(bonus);
+        }
+        box.appendChild(card);
+      });
+    }
+    function moveQ(i, d) {
+      const j = i + d;
+      if (j < 0 || j >= editing.questions.length) return;
+      [editing.questions[i], editing.questions[j]] = [editing.questions[j], editing.questions[i]];
+      renderEditor();
+    }
+    function removeQ(i) {
+      if (editing.questions.length === 1) { $('edError').textContent = 'Un quiz doit avoir au moins une question.'; return; }
+      editing.questions.splice(i, 1);
+      renderEditor();
+    }
+    $('addQ').onclick = () => { editing.questions.push(blankQ()); renderEditor(); window.scrollTo(0, document.body.scrollHeight); };
+    $('newQuiz').onclick = () => openEditor(null);
+    $('editQuiz').onclick = () => { const q = currentQuiz(); if (q) (q.kind === 'wheel' ? openWheelEditor(q) : q.kind === 'letters' ? openLettersEditor(q) : q.flavor === 'tfrush' ? openTfEditor(q) : openEditor(q)); };
+
+    // ----- Formulaire à lignes (roue et jeu de mots) : une carte par question, une case par information -----
+    function buildRows(box, rows, defs, what, onChange, blank) {
+      box.innerHTML = '';
+      rows.forEach((r, i) => {
+        const card = el('div', 'card');
+        card.style.marginTop = '10px';
+        const head = el('div');
+        head.style.cssText = 'display:flex;justify-content:space-between;align-items:center';
+        head.appendChild(el('b', '', what + ' ' + (i + 1)));
+        head.appendChild(miniBtn('ti-trash', () => { rows.splice(i, 1); if (!rows.length) rows.push(blank()); buildRows(box, rows, defs, what, onChange, blank); onChange(); }, 'Supprimer'));
+        card.appendChild(head);
+        defs.forEach((d) => {
+          card.appendChild(el('p', 'hint', d.label));
+          const row = el('div', 'ans');
+          if (d.badge) row.appendChild(el('span', 'badge ' + d.badge[0], d.badge[1]));
+          const inp = textField(r[d.k], d.ph, (v) => { r[d.k] = v; onChange(); });
+          inp.maxLength = d.max;
+          row.appendChild(inp);
+          card.appendChild(row);
+        });
+        box.appendChild(card);
+      });
+    }
+    const splitLine = (line) => line.split(/\t|;/).map((x) => x.trim());
+
+    // ----- Éditeur de roue -----
+    let wheelEditing = null;
+    const weBlank = () => ({ q: '', a: '', w1: '', w2: '', w3: '' });
+    let weRows = [];
+    const weDefs = [
+      { k: 'q', label: 'La question :', ph: 'Ex : Quelle est la capitale de l\'Italie ?', max: 60 },
+      { k: 'a', label: 'La BONNE réponse :', ph: 'Ex : Rome', max: 25, badge: ['c3', '✔'] },
+      { k: 'w1', label: 'Une FAUSSE réponse :', ph: 'Ex : Milan', max: 25, badge: ['c0', '✖'] },
+      { k: 'w2', label: 'Une autre fausse réponse (facultatif) :', ph: 'Ex : Naples', max: 25, badge: ['c0', '✖'] },
+      { k: 'w3', label: 'Une dernière fausse réponse (facultatif) :', ph: 'Ex : Venise', max: 25, badge: ['c0', '✖'] },
+    ];
+    const weUsed = () => weRows.filter((r) => r.q.trim() || r.a.trim() || r.w1.trim() || r.w2.trim() || r.w3.trim());
+    const weCount = () => { const n = weUsed().length; $('weCount').textContent = '(' + n + ' question' + (n > 1 ? 's' : '') + ' sur 100)'; $('weCount').style.color = n > 100 ? '#ff6b6b' : ''; };
+    const weDraw = () => { buildRows($('weRows'), weRows, weDefs, 'Question', weCount, weBlank); weCount(); };
+    function openWheelEditor(q) {
+      wheelEditing = q;
+      $('weHead').textContent = q ? 'Modifier la roue' : 'Nouvelle roue';
+      $('weTitle').value = q ? q.title : '';
+      $('weCategory').value = q ? q.category : '';
+      weRows = q ? q.pairs.map((p) => ({ q: p.q, a: p.a, w1: (p.w || [])[0] || '', w2: (p.w || [])[1] || '', w3: (p.w || [])[2] || '' })) : [weBlank(), weBlank(), weBlank()];
+      $('wePaste').value = '';
+      $('weError').textContent = '';
+      weDraw();
+      show('wheelEditor');
+    }
+    $('newWheel').onclick = () => openWheelEditor(null);
+    $('weCancel').onclick = () => show('lobby');
+    $('weAdd').onclick = () => { if (weRows.length >= 100) { $('weError').textContent = '100 questions au maximum.'; return; } weRows.push(weBlank()); weDraw(); };
+    $('weExample').onclick = () => {
+      if (weUsed().length) { $('weError').textContent = "Il y a déjà des questions : supprime-les d'abord si tu veux mettre l'exemple."; return; }
+      $('weError').textContent = '';
+      weRows = [
+        { q: "Quelle est la capitale de l'Italie ?", a: 'Rome', w1: 'Milan', w2: 'Naples', w3: 'Venise' },
+        { q: "Quelle est la capitale de l'Espagne ?", a: 'Madrid', w1: 'Barcelone', w2: 'Séville', w3: 'Valence' },
+        { q: 'Quelle est la capitale du Portugal ?', a: 'Lisbonne', w1: 'Porto', w2: 'Faro', w3: 'Braga' },
+      ];
+      if (!$('weCategory').value.trim()) $('weCategory').value = 'Capitales';
+      if (!$('weTitle').value.trim()) $('weTitle').value = "Capitales d'Europe";
+      weDraw();
+    };
+    $('wePasteGo').onclick = () => {
+      const add = [];
+      for (const line of $('wePaste').value.split(/\r?\n/)) {
+        if (!line.trim()) continue;
+        const m = splitLine(line);
+        if (m.length < 2 || !m[0] || !m[1]) { $('weError').textContent = 'Ligne incorrecte : « ' + line.trim().slice(0, 60) + ' » (il faut au moins : question ; bonne réponse).'; return; }
+        if (m.length > 5) { $('weError').textContent = 'Trop de morceaux : « ' + line.trim().slice(0, 50) + '… » (une question, une bonne réponse et 3 fausses réponses au maximum).'; return; }
+        add.push({ q: m[0], a: m[1], w1: m[2] || '', w2: m[3] || '', w3: m[4] || '' });
+      }
+      if (!add.length) { $('weError').textContent = 'Il n\'y a rien à ajouter : colle d\'abord tes lignes.'; return; }
+      weRows = weUsed().concat(add);
+      $('wePaste').value = '';
+      $('weError').textContent = weRows.length > 100 ? '100 questions au maximum : enlève-en.' : 'Lignes ajoutées en bas de ta liste. Vérifie-les, puis enregistre.';
+      weDraw();
+    };
+    $('weSave').onclick = () => {
+      const err = (m) => { $('weError').textContent = m; };
+      const title = $('weTitle').value.trim() || 'Roue sans titre';
+      const category = $('weCategory').value.trim();
+      const pairs = [];
+      const used = weUsed();
+      for (let i = 0; i < used.length; i++) {
+        const r = used[i];
+        const n = i + 1;
+        const q = r.q.trim(); const a = r.a.trim();
+        if (!q) return err('Question ' + n + ' : écris la question.');
+        if (!a) return err('Question ' + n + ' : écris la bonne réponse.');
+        if (q.length > 60) return err('Question ' + n + ' : la question est trop longue (60 lettres au maximum). Raccourcis-la.');
+        const w = [r.w1, r.w2, r.w3].map((x) => x.trim()).filter(Boolean);
+        if ([a, ...w].some((x) => x.length > 25)) return err('Question ' + n + ' : une réponse est trop longue (25 lettres au maximum). Raccourcis-la.');
+        if (w.some((x) => x.toLowerCase() === a.toLowerCase())) return err('Question ' + n + ' : une fausse réponse est la même que la bonne réponse.');
+        if (new Set(w.map((x) => x.toLowerCase())).size !== w.length) return err('Question ' + n + ' : deux fausses réponses sont identiques.');
+        pairs.push(w.length ? { q, a, w } : { q, a });
+      }
+      if (!category) return err('Écris le mot du centre (étape 2).');
+      if (pairs.length < 3) return err('Il faut au moins 3 questions.');
+      if (pairs.length > 100) return err('100 questions au maximum.');
+      const seen = new Set();
+      for (const p of pairs) {
+        if (seen.has(p.a.toLowerCase())) return err('La bonne réponse « ' + p.a + ' » est écrite deux fois : chaque bonne réponse doit être différente.');
+        seen.add(p.a.toLowerCase());
+      }
+      if (wheelEditing) Object.assign(wheelEditing, { title, category, pairs });
+      else {
+        const w = { id: uid(), kind: 'wheel', title, category, pairs, questions: [] };
+        library.push(w);
+        selectedId = w.id;
+      }
+      saveLibrary();
+      renderQuizSelect();
+      pushQuiz();
+      show('lobby');
+    };
+
+    // ----- Éditeur de jeu de mots -----
+    let lettersEditing = null;
+    const leBlank = () => ({ q: '', word: '', image: '' });
+    let leRows = [];
+    const leDefs = [
+      { k: 'q', label: 'La question :', ph: 'Ex : Quel animal miaule ?', max: 200 },
+      { k: 'word', label: 'Le mot à trouver (3 à 14 lettres) :', ph: 'Ex : Chat', max: 30, badge: ['c3', '✔'] },
+      { k: 'image', label: 'Une image (facultatif, lien internet) :', ph: 'Ex : https://…', max: 500 },
+    ];
+    const leUsed = () => leRows.filter((r) => r.q.trim() || r.word.trim() || r.image.trim());
+    const leCount = () => { const n = leUsed().length; $('leCount').textContent = '(' + n + ' mot' + (n > 1 ? 's' : '') + ' sur 100)'; $('leCount').style.color = n > 100 ? '#ff6b6b' : ''; };
+    const leDraw = () => { buildRows($('leRows'), leRows, leDefs, 'Mot', leCount, leBlank); leCount(); };
+    function openLettersEditor(q) {
+      lettersEditing = q;
+      $('leHead').textContent = q ? 'Modifier le jeu de mots' : 'Nouveau jeu de mots';
+      $('leTitle').value = q ? q.title : '';
+      leRows = q ? q.items.map((it) => ({ q: it.q, word: it.word, image: it.image || '' })) : [leBlank(), leBlank(), leBlank()];
+      $('lePaste').value = '';
+      $('leError').textContent = '';
+      leDraw();
+      show('lettersEditor');
+    }
+    $('newLetters').onclick = () => openLettersEditor(null);
+    $('leCancel').onclick = () => show('lobby');
+    $('leAdd').onclick = () => { if (leRows.length >= 100) { $('leError').textContent = '100 mots au maximum.'; return; } leRows.push(leBlank()); leDraw(); };
+    $('leFile').onclick = () => $('leFileInput').click();
+    $('leFileInput').onchange = () => {
+      const f = $('leFileInput').files[0];
+      $('leFileInput').value = '';
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = () => {
+        const t = String(r.result).replace(/^﻿/, '').replace(/"/g, '');
+        const lines = t.split(/\r?\n/);
+        if (lines.length && /^question\b/i.test(lines[0].trim())) lines.shift();
+        $('lePaste').value = lines.filter((l) => l.trim()).join('\n');
+        $('lePasteGo').click();
+      };
+      r.readAsText(f);
+    };
+    $('lePasteGo').onclick = () => {
+      const add = [];
+      for (const line of $('lePaste').value.split(/\r?\n/)) {
+        if (!line.trim()) continue;
+        const m = splitLine(line);
+        if (m.length < 2 || !m[0] || !m[1]) { $('leError').textContent = 'Ligne incorrecte : « ' + line.trim().slice(0, 60) + ' » (il faut : question ; mot).'; return; }
+        add.push({ q: m[0], word: m[1], image: m[2] && /^https?:\/\//i.test(m[2]) ? m[2] : '' });
+      }
+      if (!add.length) { $('leError').textContent = "Il n'y a rien à ajouter : colle d'abord tes lignes."; return; }
+      leRows = leUsed().concat(add);
+      $('lePaste').value = '';
+      $('leError').textContent = leRows.length > 100 ? '100 mots au maximum : enlève-en.' : 'Lignes ajoutées en bas de ta liste. Vérifie-les, puis enregistre.';
+      leDraw();
+    };
+    $('leExample').onclick = () => {
+      if (leUsed().length) { $('leError').textContent = "Il y a déjà des mots : supprime-les d'abord si tu veux mettre l'exemple."; return; }
+      $('leError').textContent = '';
+      leRows = [{ q: 'Quel animal miaule ?', word: 'Chat', image: '' }, { q: 'Quel animal aboie ?', word: 'Chien', image: '' }, { q: 'Quelle est la capitale de la Grèce ?', word: 'Athènes', image: '' }];
+      if (!$('leTitle').value.trim()) $('leTitle').value = 'Mon premier jeu de mots';
+      leDraw();
+    };
+    $('leSave').onclick = () => {
+      const err = (m) => { $('leError').textContent = m; };
+      const title = $('leTitle').value.trim() || 'Jeu de mots sans titre';
+      const items = [];
+      const used = leUsed();
+      for (let i = 0; i < used.length; i++) {
+        const r = used[i];
+        const n = i + 1;
+        const q = r.q.trim(); const word = r.word.trim(); const image = r.image.trim();
+        if (!q) return err('Mot ' + n + ' : écris la question.');
+        if (!word) return err('Mot ' + n + ' : écris le mot à trouver.');
+        const letters = Array.from(word).filter((c) => /[\p{L}\p{N}]/u.test(c)).length;
+        if (letters < 3 || letters > 14) return err('Mot ' + n + ' : « ' + word + ' » doit avoir entre 3 et 14 lettres.');
+        if (image && !/^https?:\/\//i.test(image)) return err('Mot ' + n + ' : le lien de l\'image doit commencer par http (ou laisse la case vide).');
+        items.push({ q, word, image });
+      }
+      if (!items.length) return err('Ajoute au moins un mot.');
+      if (items.length > 100) return err('100 mots au maximum.');
+      if (lettersEditing) Object.assign(lettersEditing, { title, items });
+      else {
+        const w = { id: uid(), kind: 'letters', title, items, questions: [] };
+        library.push(w);
+        selectedId = w.id;
+      }
+      saveLibrary();
+      renderQuizSelect();
+      pushQuiz();
+      show('lobby');
+    };
+
+    // ----- Bibliothèque de quiz prêts à l'emploi -----
+    const KIND_ICON = { quiz: 'ti-help-hexagon', wheel: 'ti-chart-donut-3', letters: 'ti-abc' };
+    let libPacks = null;
+    async function openLibPage() {
+      show('libPage');
+      if (!libPacks) {
+        try { libPacks = await (await fetch('/library.json')).json(); }
+        catch (e) { $('libList').textContent = 'La bibliothèque ne peut pas être chargée.'; return; }
+      }
+      const added = LS.get('wequizzer.libAdded', {});
+      const box = $('libList');
+      box.innerHTML = '';
+      let theme = '';
+      libPacks.slice().sort((a, b) => a.theme.localeCompare(b.theme, 'fr')).forEach((p) => {
+        if (p.theme !== theme) { theme = p.theme; box.appendChild(el('h3', '', theme)); }
+        const n = p.kind === 'wheel' ? p.pairs.length : p.kind === 'letters' ? p.items.length : p.questions.length;
+        const kindTxt = p.kind === 'wheel' ? 'paires' : p.kind === 'letters' ? 'mots' : p.flavor === 'tfrush' ? 'affirmations' : 'questions';
+        const row = el('div', 'prow');
+        row.appendChild(el('i', 'ti ' + (p.flavor === 'tfrush' ? 'ti-bolt' : KIND_ICON[p.kind])));
+        const nm = el('span', 'nm', p.title + ' · ' + n + ' ' + kindTxt + ' · ' + p.level);
+        row.appendChild(nm);
+        const b = el('button', 'btn ghost mini');
+        b.type = 'button';
+        const label = () => (added[p.pid] ? '<i class="ti ti-check"></i> Ajouté (en rajouter une copie)' : '<i class="ti ti-plus"></i> Ajouter');
+        b.innerHTML = label();
+        b.onclick = () => {
+          const copy = JSON.parse(JSON.stringify(p));
+          delete copy.pid; delete copy.theme; delete copy.level;
+          copy.id = uid();
+          if (copy.kind === 'quiz') delete copy.kind;
+          copy.title = p.title;
+          library.push(copy);
+          selectedId = copy.id;
+          added[p.pid] = true;
+          LS.set('wequizzer.libAdded', added);
+          saveLibrary();
+          renderQuizSelect();
+          pushQuiz();
+          b.innerHTML = label();
+        };
+        row.appendChild(b);
+        box.appendChild(row);
+      });
+    }
+    $('openLib').onclick = openLibPage;
+    $('libBack').onclick = () => show('lobby');
+
+    // ----- Statistiques : gardées dans ce navigateur, par quiz -----
+    const STATS_KEY = 'wequizzer.stats';
+    function recordStats(d) {
+      if (!d.qstats || !d.qstats.length || !selectedId) return;
+      const all = LS.get(STATS_KEY, {});
+      const st = all[selectedId] || { games: 0, players: 0, qs: {} };
+      st.games += 1;
+      st.players += d.total || 0;
+      d.qstats.forEach((q) => {
+        const c = st.qs[q.label] || { ok: 0, total: 0 };
+        c.ok += q.ok;
+        c.total += q.total;
+        st.qs[q.label] = c;
+      });
+      all[selectedId] = st;
+      LS.set(STATS_KEY, all);
+    }
+    function renderStats() {
+      const all = LS.get(STATS_KEY, {});
+      const id = $('statsSelect').value;
+      const st = all[id];
+      const box = $('statsList');
+      box.innerHTML = '';
+      if (!st) { $('statsInfo').textContent = 'Pas encore de partie terminée avec ce quiz.'; return; }
+      $('statsInfo').textContent = st.games + ' partie' + (st.games > 1 ? 's' : '') + ' jouée' + (st.games > 1 ? 's' : '') + ' · les questions les plus ratées en premier';
+      Object.keys(st.qs)
+        .map((k) => ({ label: k, pct: st.qs[k].total ? Math.round((100 * st.qs[k].ok) / st.qs[k].total) : 0, total: st.qs[k].total }))
+        .sort((a, b) => a.pct - b.pct)
+        .forEach((q) => {
+          const row = el('div', 'srow');
+          row.appendChild(el('div', 'slabel', q.label));
+          const bar = el('div', 'sbar');
+          const fill = el('div', 'sfill');
+          fill.style.width = q.pct + '%';
+          fill.style.background = q.pct >= 70 ? '#2fbf71' : q.pct >= 40 ? '#f2b705' : '#e5484d';
+          bar.appendChild(fill);
+          row.appendChild(bar);
+          row.appendChild(el('div', 'spct', q.pct + ' % de bonnes réponses (' + q.total + ' réponse' + (q.total > 1 ? 's' : '') + ')'));
+          box.appendChild(row);
+        });
+    }
+    $('openStats').onclick = () => {
+      const sel = $('statsSelect');
+      sel.innerHTML = '';
+      library.forEach((q) => { const o = new Option(q.title, q.id); sel.appendChild(o); });
+      if (selectedId) sel.value = selectedId;
+      renderStats();
+      show('statsPage');
+    };
+    $('statsSelect').onchange = renderStats;
+    $('statsReset').onclick = () => { const all = LS.get(STATS_KEY, {}); delete all[$('statsSelect').value]; LS.set(STATS_KEY, all); renderStats(); };
+    $('statsBack').onclick = () => show('lobby');
+
+    // ----- Éditeur Vrai/Faux en rafale (c'est un quiz normal, fait de questions Vrai/Faux) -----
+    let tfEditing = null;
+    function openTfEditor(q) {
+      tfEditing = q;
+      $('tfHead').textContent = q ? 'Modifier le Vrai/Faux en rafale' : 'Nouveau Vrai/Faux en rafale';
+      $('tfTitle').value = q ? q.title : '';
+      $('tfItems').value = q ? q.questions.map((x) => x.text + ' ; ' + (x.correct === 0 ? 'vrai' : 'faux')).join('\n') : '';
+      $('tfError').textContent = '';
+      show('tfEditor');
+    }
+    $('tfCancel').onclick = () => show('lobby');
+    $('tfSave').onclick = () => {
+      const title = $('tfTitle').value.trim() || 'Vrai/Faux sans titre';
+      const questions = [];
+      for (const line of $('tfItems').value.split(/\r?\n/)) {
+        if (!line.trim()) continue;
+        const i = line.lastIndexOf(';');
+        const text = i < 0 ? '' : line.slice(0, i).trim();
+        const v = i < 0 ? '' : line.slice(i + 1).trim().toLowerCase();
+        if (!text || !['vrai', 'faux', 'v', 'f', 'true', 'false'].includes(v)) { $('tfError').textContent = 'Ligne incorrecte : « ' + line.trim() + ' » (écris : affirmation ; vrai  ou  affirmation ; faux).'; return; }
+        questions.push({ type: 'tf', text, image: '', choices: ['Vrai', 'Faux'], correct: ['vrai', 'v', 'true'].includes(v) ? 0 : 1, answers: [], double: false });
+      }
+      if (questions.length < 2) { $('tfError').textContent = 'Ajoute au moins 2 affirmations.'; return; }
+      if (questions.length > 100) { $('tfError').textContent = '100 affirmations au maximum.'; return; }
+      if (tfEditing) Object.assign(tfEditing, { title, questions });
+      else {
+        const w = { id: uid(), flavor: 'tfrush', title, questions };
+        library.push(w);
+        selectedId = w.id;
+      }
+      saveLibrary();
+      renderQuizSelect();
+      pushQuiz();
+      show('lobby');
+    };
+
+    // Affiche seulement les réglages utiles au quiz choisi
+    function applyKind() {
+      const q = currentQuiz();
+      const wheel = !!(q && q.kind);
+      const rowOf = (k) => document.querySelector('[data-key="' + k + '"]').closest('.row');
+      $('rowPairsView').classList.toggle('hidden', !(q && q.kind === 'wheel'));
+      ['readDelay', 'readSeconds', 'changeAnswer', 'bonusQuestions', 'display', 'labels'].forEach((k) => rowOf(k).classList.toggle('nokind', wheel));
+      // l'explication et les points doubles n'ont de sens que si le quiz en contient
+      const qs = q && !q.kind ? q.questions : [];
+      $('rowExplain').classList.toggle('hidden', !qs.some((x) => (x.explain || '').trim()));
+      $('rowBonusQ').classList.toggle('hidden', !qs.some((x) => x.double));
+      // « Nombre de questions » : les choix s'adaptent à la taille du quiz
+      const n = q ? (q.kind === 'wheel' ? q.pairs.length : q.kind === 'letters' ? q.items.length : q.questions.length) : 0;
+      const sel = document.querySelector('[data-key="count"]');
+      sel.innerHTML = '';
+      sel.appendChild(new Option('Toutes' + (n ? ' (' + n + ')' : ''), '0'));
+      [3, 5, 10, 15, 20, 30, 40, 50, 75].filter((v) => v < n).forEach((v) => sel.appendChild(new Option(String(v), String(v))));
+      sel.value = wantCount > 0 && wantCount < n ? String(wantCount) : '0';
+    }
+    // Score : la vitesse a besoin du chrono ; les cœurs n'existent pas en élimination / pendu. On cache ce qui ne s'applique pas.
+    function applyScoring() {
+      const g = (k) => document.querySelector('[data-key="' + k + '"]');
+      const limit = g('limitTime').checked;
+      const elim = g('mode').value === 'elimination' || g('mode').value === 'hangman';
+      if (!limit) g('speedBonus').checked = false;
+      if (elim) g('hearts').checked = false;
+      $('rowBonus').classList.toggle('hidden', !limit);
+      $('rowHearts').classList.toggle('hidden', elim);
+    }
+    $('edCancel').onclick = () => show('lobby');
+
+    // Vérifie l'éditeur et renvoie le quiz propre, ou null (avec un message d'erreur)
+    function buildFromEditor() {
+      const fail = (m) => { $('edError').textContent = m; return null; };
+      const title = $('edTitle').value.trim();
+      if (!title) return fail('Donne un titre à ton quiz.');
+      const out = [];
+      for (let i = 0; i < editing.questions.length; i++) {
+        const q = editing.questions[i];
+        const pre = 'Question ' + (i + 1) + ' : ';
+        const text = q.text.trim();
+        if (!text) return fail(pre + (q.type === 'gap' ? 'écris ta phrase (avec ___ à la place du mot manquant). Ex : Le ___ miaule.' : 'écris la question.'));
+        const image = (q.image || '').trim();
+        if (image && !/^https?:\/\//i.test(image) && !image.startsWith('data:image/')) return fail(pre + "l'adresse de l'image doit commencer par http.");
+        const clean = { type: q.type, text, image, choices: [], correct: 0, answers: [], double: q.type === 'poll' ? false : q.double, explain: (q.explain || '').trim() };
+        if (q.type === 'gap') {
+          if (/[\[\]]/.test(text)) return fail(pre + 'enlève les crochets [ ] de ta phrase : tape ___ à la place du mot manquant, et écris le mot dans la case « bonne réponse ».');
+          const blanks = text.match(/_{2,}/g) || [];
+          if (blanks.length !== 1) return fail(pre + 'il faut écrire ___ (trois tirets du bas) une seule fois dans ta phrase, à la place du mot manquant. Ex : Le ___ miaule.');
+          const word = (q.choices[0] || '').trim();
+          if (!word) return fail(pre + 'écris la bonne réponse (le mot qui va à la place du ___).');
+          const wrongs = q.choices.slice(1).map((c) => c.trim()).filter(Boolean);
+          if (!wrongs.length) return fail(pre + 'ajoute au moins une mauvaise réponse.');
+          if (wrongs.some((w) => w.toLowerCase() === word.toLowerCase())) return fail(pre + 'une mauvaise réponse est identique à la bonne réponse.');
+          clean.type = 'single';
+          clean.gapSrc = text.replace(blanks[0], '[' + word + ']');
+          clean.text = text.replace(blanks[0], '_____');
+          clean.choices = [word, ...wrongs];
+          clean.correct = 0;
+        } else if (q.type === 'order') {
+          const items = q.choices.map((c) => c.trim()).filter(Boolean);
+          if (items.length < 2) return fail(pre + 'mets au moins 2 éléments à remettre dans l\'ordre.');
+          if (new Set(items.map((c) => c.toLowerCase())).size !== items.length) return fail(pre + 'deux éléments sont identiques.');
+          clean.choices = items;
+          clean.correct = 0;
+        } else if (q.type === 'tf') {
+          clean.choices = ['Vrai', 'Faux'];
+          clean.correct = q.correct === 1 ? 1 : 0;
+        } else if (q.type === 'text') {
+          clean.answers = q.answers.map((a) => a.trim()).filter(Boolean);
+          if (!clean.answers.length) return fail(pre + 'écris au moins une réponse acceptée.');
+        } else {
+          const filled = q.choices.map((c, k) => ({ c: c.trim(), k })).filter((x) => x.c);
+          if (filled.length < 2) return fail(pre + 'mets au moins 2 réponses.');
+          clean.choices = filled.map((x) => x.c);
+          if (q.type === 'single') {
+            const ci = filled.findIndex((x) => x.k === q.correct);
+            if (ci === -1) return fail(pre + 'coche la bonne réponse (elle doit être remplie).');
+            clean.correct = ci;
+          } else if (q.type === 'multi') {
+            const list = filled.map((x, ci) => (q.correct.includes(x.k) ? ci : -1)).filter((x) => x !== -1);
+            if (!list.length) return fail(pre + 'coche au moins une bonne réponse (remplie).');
+            clean.correct = list;
+          }
+        }
+        out.push(clean);
+      }
+      $('edError').textContent = '';
+      return { id: editing.id, title, questions: out };
+    }
+    $('edSave').onclick = () => {
+      const quiz = buildFromEditor();
+      if (!quiz) return;
+      const idx = library.findIndex((x) => x.id === quiz.id);
+      if (idx === -1) library.push(quiz); else library[idx] = quiz;
+      selectedId = quiz.id;
+      saveLibrary();
+      renderQuizSelect();
+      pushQuiz();
+      show('lobby');
+    };
+    $('edTest').onclick = () => {
+      const quiz = buildFromEditor();
+      if (quiz) startPreview(quiz, 'editor');
+    };
+    $('testQuiz').onclick = () => { const q = currentQuiz(); if (q) startPreview(q, 'lobby'); };
+
+    // ----- Test du quiz (aperçu, sans joueurs) -----
+    let pv = null;
+    function startPreview(quiz, back) {
+      // comme dans une vraie partie : les réponses sont mélangées
+      const mixed = { ...quiz, questions: quiz.questions.map((q) => {
+        if (!['single', 'multi', 'poll'].includes(q.type)) return q;
+        const order = q.choices.map((_, i) => i).sort(() => Math.random() - 0.5);
+        const out = { ...q, choices: order.map((i) => q.choices[i]) };
+        if (q.type === 'single') out.correct = order.indexOf(q.correct);
+        if (q.type === 'multi') out.correct = q.correct.map((c) => order.indexOf(c)).sort((a, b) => a - b);
+        return out;
+      }) };
+      pv = { quiz: mixed, i: 0, back, shown: false };
+      renderPreview();
+      show('preview');
+    }
+    function renderPreview() {
+      const q = pv.quiz.questions[pv.i];
+      const n = pv.quiz.questions.length;
+      $('pvInfo').textContent = 'question ' + (pv.i + 1) + ' / ' + n;
+      $('pvText').textContent = q.text + (q.double ? '  ⚡ ×2' : '');
+      if (q.image) { $('pvImg').src = q.image; $('pvImg').classList.remove('hidden'); } else $('pvImg').classList.add('hidden');
+      const box = $('pvChoices');
+      box.innerHTML = '';
+      const correctSet = q.type === 'multi' ? q.correct : q.type === 'single' || q.type === 'tf' ? [q.correct] : [];
+      if (q.type === 'order') {
+        const d = el('div', 'textbox');
+        d.textContent = pv.shown ? 'Bon ordre : ' + q.choices.join(' → ') : 'Les joueurs remettent ces ' + q.choices.length + ' éléments dans l\'ordre';
+        box.appendChild(d);
+      } else if (q.type === 'text') {
+        const d = el('div', 'textbox');
+        d.appendChild(el('i', 'ti ti-pencil'));
+        d.appendChild(document.createTextNode(pv.shown ? ' Réponses acceptées : ' + q.answers.join(' / ') : ' Les joueurs écrivent leur réponse'));
+        box.appendChild(d);
+      } else {
+        q.choices.forEach((c, k) => {
+          const d = el('div', 'choice c' + (k % 4));
+          d.appendChild(el('span', 'badge', lab(k)));
+          d.appendChild(el('span', 'ct', c));
+          if (pv.shown && q.type !== 'poll') {
+            if (correctSet.includes(k)) { d.classList.add('ok'); d.appendChild(el('i', 'ti ti-check')); } else d.classList.add('dim');
+          }
+          box.appendChild(d);
+        });
+      }
+      $('pvHint').textContent = pv.shown && q.explain ? '💡 ' + q.explain : q.type === 'multi' ? 'Plusieurs bonnes réponses : le joueur doit toutes les cocher.' : q.type === 'poll' ? 'Sondage : pas de bonne réponse, pas de points.' : '';
+      $('pvPrev').disabled = pv.i === 0;
+      $('pvNext').disabled = pv.i === n - 1;
+      $('pvReveal').classList.toggle('hidden', q.type === 'poll');
+      $('pvReveal').innerHTML = pv.shown ? '<i class="ti ti-eye-off"></i> Masquer la réponse' : '<i class="ti ti-eye"></i> Voir la réponse';
+    }
+    $('pvReveal').onclick = () => { pv.shown = !pv.shown; renderPreview(); };
+    $('pvPrev').onclick = () => { pv.i--; pv.shown = false; renderPreview(); };
+    $('pvNext').onclick = () => { pv.i++; pv.shown = false; renderPreview(); };
+    $('pvQuit').onclick = () => { const back = pv.back; pv = null; show(back); };
+
+    // ----- Joueurs -----
+    function updateStart() {
+      $('startBtn').disabled = !(quizReady && playerCount > 0);
+      $('startHint').textContent = !quizReady ? 'Choisis ou crée un quiz.' : playerCount === 0 ? 'Attends au moins un joueur.' : '';
+    }
+    let kickTarget = null;
+    function openKick(p) { kickTarget = p; $('kickName').textContent = p.name; $('kickDlg').classList.remove('hidden'); }
+    function kick(p) {
+      openKick(p);
+    }
+    socket.on('host:players', (list) => {
+      lastPlayers = list;
+      renderTeamAssign();
+      const box = $('players');
+      box.innerHTML = '';
+      const inRoom = list.filter((p) => !p.queued);
+      if (list.length === 0) box.appendChild(el('span', 'empty', 'En attente des joueurs…'));
+      list.forEach((p) => {
+        const chip = el('span', 'chip' + (p.connected ? '' : ' faded'));
+        chip.title = 'Exclure ' + p.name;
+        chip.appendChild(el('span', 'av', p.avatar));
+        chip.appendChild(document.createTextNode(p.name));
+        if (!p.connected) chip.appendChild(el('small', '', 'hors ligne'));
+        if (p.queued) chip.appendChild(el('small', '', 'prochaine partie'));
+        chip.onclick = () => kick(p);
+        box.appendChild(chip);
+      });
+      playerCount = inRoom.length;
+      $('count').textContent = list.length + (list.length > 1 ? ' joueurs' : ' joueur');
+      $('barCount').textContent = String(list.length);
+      updateStart();
+      renderDrawer();
+    });
+    function renderDrawer() {
+      const box = $('drawerList');
+      box.innerHTML = '';
+      lastPlayers.forEach((p) => {
+        const row = el('div', 'prow');
+        row.appendChild(el('span', 'dot' + (p.connected ? '' : ' off')));
+        row.appendChild(el('span', 'av', p.avatar));
+        const nm = el('span', 'nm', p.name);
+        row.appendChild(nm);
+        const tags = [];
+        if (!p.connected) tags.push('hors ligne');
+        if (p.queued) tags.push('en attente');
+        if (p.eliminated) tags.push('éliminé');
+        if (tags.length) row.appendChild(el('small', '', tags.join(' · ')));
+        const b = miniBtn('ti-user-x', () => kick(p), 'Exclure ' + p.name);
+        row.appendChild(b);
+        box.appendChild(row);
+      });
+      if (!lastPlayers.length) box.appendChild(el('span', 'empty', 'Aucun joueur'));
+    }
+    document.querySelectorAll('[data-kick]').forEach((b) => {
+      b.onclick = () => { if (kickTarget) socket.emit('host:kick', { pid: kickTarget.pid, minutes: Number(b.dataset.kick) }); kickTarget = null; $('kickDlg').classList.add('hidden'); };
+    });
+    $('kickCancel').onclick = () => { kickTarget = null; $('kickDlg').classList.add('hidden'); };
+    $('playersBtn').onclick = () => { renderDrawer(); $('drawer').classList.toggle('hidden'); };
+    $('drawerClose').onclick = () => $('drawer').classList.add('hidden');
+
+    $('startBtn').onclick = () => { FX.unlock(); FX.go(); socket.emit('host:start'); };
+    $('skipBtn').onclick = () => socket.emit('host:skip');
+    $('quitBtn').onclick = async () => {
+      const ok = await UI.confirm({ title: 'Quitter le quiz en cours ?', text: "Les scores seront effacés. Les joueurs restent connectés et reviennent dans la salle d'attente.", ok: 'Quitter le quiz', cancel: 'Continuer', pose: 'question' });
+      if (!ok) return;
+      replayPending = false;
+      socket.emit('host:reset');
+    };
+    $('pauseBtn').onclick = () => socket.emit('host:pause', !isPaused);
+    $('resumeBtn').onclick = () => socket.emit('host:pause', false);
+    $('nextBtn').onclick = () => { FX.click(); socket.emit('host:next'); };
+    $('replayBtn').onclick = () => { replayPending = true; socket.emit('host:reset'); };
+    $('replayMissedBtn').onclick = () => { replayPending = true; socket.emit('host:replayMissed'); };
+    // Le nouveau quiz des questions ratées est gardé dans la bibliothèque
+    socket.on('host:replayQuiz', (q) => {
+      const entry = q.kind === 'wheel'
+        ? { id: uid(), kind: 'wheel', title: q.title, category: q.category, pairs: q.pairs, questions: [] }
+        : q.kind === 'letters'
+        ? { id: uid(), kind: 'letters', title: q.title, items: q.items, questions: [] }
+        : { id: uid(), title: q.title, questions: q.questions.map(normQ) };
+      library.push(entry);
+      selectedId = entry.id;
+      saveLibrary();
+      renderQuizSelect();
+    });
+    $('otherBtn').onclick = () => { replayPending = false; socket.emit('host:reset'); };
+    socket.on('lobby', () => {
+      setTab('jouer');
+      clearInterval(timerInt);
+      clearInterval(autoInt);
+      clearInterval(readInt);
+      isPaused = false;
+      $('pauseOv').classList.add('hidden');
+      $('drawer').classList.add('hidden');
+      if (pv) return; // un test est en cours : on ne le coupe pas
+      show('lobby');
+      if (replayPending) { replayPending = false; socket.emit('host:start'); }
+    });
+
+    // ----- Pause -----
+    socket.on('paused', ({ paused, reason, left }) => {
+      isPaused = paused;
+      $('pauseOv').classList.toggle('hidden', !paused);
+      $('pauseBtn').innerHTML = paused ? '<i class="ti ti-player-play"></i> <span class="lbl">Reprendre</span>' : '<i class="ti ti-player-pause"></i> <span class="lbl">Pause</span>';
+      $('pauseMsg').textContent = reason === 'hostLost' ? "Tu as été déconnecté : la partie s'est mise en pause automatiquement." : 'Les joueurs voient que la partie est en pause.';
+      if (paused) {
+        clearInterval(timerInt);
+        clearInterval(autoInt);
+      } else {
+        if (currentQ && currentQ.time && left !== null && left !== undefined && !$('question').classList.contains('hidden')) startTimer(currentQ.time, left);
+        if (autoLeft !== null && !$('results').classList.contains('hidden')) startAuto(autoLeft);
+      }
+    });
+
+    // ----- Compte à rebours -----
+    socket.on('countdown', ({ seconds, index, total }) => {
+      clearInterval(autoInt);
+      clearInterval(readInt);
+      $('cdLabel').textContent = 'Question ' + (index + 1) + ' sur ' + total;
+      show('countdown');
+      let n = seconds;
+      const tick = () => {
+        $('cdNum').textContent = n;
+        $('cdNum').style.animation = 'none';
+        void $('cdNum').offsetWidth;
+        $('cdNum').style.animation = '';
+        FX.count();
+        n--;
+        if (n >= 0) setTimeout(tick, 1000);
+      };
+      tick();
+    });
+
+    // ----- Lecture -----
+    socket.on('reading', (q) => {
+      $('rdInfo').textContent = 'Question ' + (q.index + 1) + ' / ' + q.total;
+      $('rdBonus').classList.toggle('hidden', !q.double);
+      $('rdText').textContent = q.text;
+      if (q.image) { $('rdImg').src = q.image; $('rdImg').classList.remove('hidden'); } else $('rdImg').classList.add('hidden');
+      show('reading');
+      FX.go();
+      clearInterval(readInt);
+      const start = Date.now();
+      const upd = () => {
+        const left = Math.max(0, q.seconds - (Date.now() - start) / 1000);
+        $('rdBar').style.width = (left / q.seconds) * 100 + '%';
+        if (left <= 0) clearInterval(readInt);
+      };
+      upd();
+      readInt = setInterval(upd, 100);
+    });
+
+    // ----- Question -----
+    function renderChoices(box, q, opts) {
+      box.innerHTML = '';
+      if (q.type === 'text') {
+        const d = el('div', 'textbox');
+        d.appendChild(el('i', 'ti ti-pencil'));
+        d.appendChild(document.createTextNode(' Les joueurs écrivent leur réponse sur leur téléphone'));
+        box.appendChild(d);
+        return;
+      }
+      const correctSet = q.type === 'multi' ? q.correct : q.type === 'single' || q.type === 'tf' ? [q.correct] : [];
+      q.choices.forEach((c, i) => {
+        const d = el('div', 'choice c' + (i % 4));
+        d.appendChild(el('span', 'badge', lab(i)));
+        d.appendChild(el('span', 'ct', c));
+        if (opts && opts.counts) {
+          const total = opts.counts.reduce((a, b) => a + b, 0) || 1;
+          d.style.setProperty('--pct', Math.round((opts.counts[i] / total) * 100));
+          d.appendChild(el('span', 'bar'));
+          d.appendChild(el('span', 'n', String(opts.counts[i])));
+          if (q.type !== 'poll') {
+            if (correctSet.includes(i)) { d.classList.add('ok'); d.appendChild(el('i', 'ti ti-check')); }
+            else d.classList.add('dim');
+          }
+        }
+        box.appendChild(d);
+      });
+    }
+
+    function startTimer(total, left) {
+      clearInterval(timerInt);
+      $('timePill').innerHTML = '<i class="ti ti-clock"></i> <span id="timeLeft"></span> s';
+      const start = Date.now();
+      let last = null;
+      const update = () => {
+        const l = Math.max(0, left - (Date.now() - start) / 1000);
+        $('bar').style.width = (l / total) * 100 + '%';
+        const sec = Math.ceil(l);
+        $('timeLeft').textContent = sec;
+        $('timer').classList.toggle('low', l <= 5);
+        if (sec !== last && sec <= 5 && sec > 0) FX.tick();
+        last = sec;
+        if (l <= 0) clearInterval(timerInt);
+      };
+      update();
+      timerInt = setInterval(update, 250);
+    }
+
+    socket.on('question', (q) => {
+      currentQ = q;
+      labelMode = q.labels || 'letters';
+      clearInterval(readInt);
+      $('qInfo').textContent = 'Question ' + (q.index + 1) + ' / ' + q.total;
+      $('qBonus').classList.toggle('hidden', !q.double);
+      $('qText').textContent = q.wheel ? q.category + ' : ' + q.text : q.text;
+      $('qMatch').classList.toggle('hidden', !q.match && !q.order);
+      if (q.image) { $('qImg').src = q.image; $('qImg').classList.remove('hidden'); }
+      else $('qImg').classList.add('hidden');
+      const note = q.order ? 'Sur leur téléphone, les joueurs touchent les éléments dans le bon ordre (tout est bon ou rien).' : q.match ? 'Sur leur téléphone, les joueurs relient chaque élément à sa réponse (tout est bon ou rien).' : q.letters ? 'Les joueurs reconstituent le mot de ' + q.slots.filter((x) => x === '').length + ' lettres avec les lettres mélangées.' : q.wheel ? 'Sur ton téléphone, choisis parmi les ' + q.choices.length + ' réponses de la roue puis appuie sur « Répondre ».' : q.type === 'multi' ? 'Plusieurs bonnes réponses : il faut toutes les trouver.' : q.type === 'poll' ? 'Sondage : pas de bonne réponse.' : q.changeAnswer ? 'Les joueurs peuvent changer leur réponse jusqu\'à la fin.' : '';
+      $('qNote').textContent = note;
+      $('qNote').classList.toggle('hidden', !note);
+      $('answered').textContent = '0 / 0';
+      $('pendingBox').classList.add('hidden');
+      if (q.order) {
+        $('choices').innerHTML = '';
+        const box = $('qMatch');
+        box.innerHTML = '';
+        const c = el('div', 'mcol');
+        q.choices.forEach((t) => c.appendChild(el('div', 'mitem alt', t)));
+        box.appendChild(c);
+      } else if (q.match) {
+        $('choices').innerHTML = '';
+        const box = $('qMatch');
+        box.innerHTML = '';
+        const l = el('div', 'mcol'), r = el('div', 'mcol');
+        q.left.forEach((t) => l.appendChild(el('div', 'mitem', t)));
+        q.choices.forEach((t) => r.appendChild(el('div', 'mitem alt', t)));
+        box.appendChild(l); box.appendChild(el('div', 'marrow', '⇄')); box.appendChild(r);
+      } else if (q.wheel || q.letters) $('choices').innerHTML = '';
+      else renderChoices($('choices'), q);
+      if (q.letters) {
+        const row = el('div', 'lt-row');
+        q.slots.forEach((c) => row.appendChild(el('span', c ? 'lt-fixed' : 'lt-slot', c || '')));
+        $('choices').appendChild(row);
+      }
+      show('question');
+      FX.go();
+      clearInterval(timerInt);
+      const unlimited = !q.time;
+      $('timer').classList.toggle('hidden', unlimited);
+      if (unlimited) {
+        $('timePill').innerHTML = '<i class="ti ti-infinity"></i> Sans limite';
+        return;
+      }
+      startTimer(q.time, q.left === null || q.left === undefined ? q.time : q.left);
+    });
+
+    socket.on('progress', ({ answered, total, pending }) => {
+      $('answered').textContent = answered + ' / ' + total;
+      const box = $('pendingList');
+      box.innerHTML = '';
+      pending.forEach((p) => {
+        const chip = el('span', 'chip static small' + (p.offline ? ' faded' : ''));
+        chip.appendChild(el('span', 'av', p.avatar));
+        chip.appendChild(document.createTextNode(p.name));
+        if (p.offline) chip.appendChild(el('small', '', 'hors ligne'));
+        box.appendChild(chip);
+      });
+      $('pendingBox').classList.toggle('hidden', pending.length === 0);
+    });
+
+    // ----- Résultats -----
+    function renderStatus(r) {
+      const good = $('goodList');
+      const bad = $('badList');
+      good.innerHTML = '';
+      bad.innerHTML = '';
+      const poll = r.type === 'poll';
+      $('badCol').classList.toggle('hidden', poll);
+      $('colsBox').classList.toggle('one', poll);
+      $('goodHead').innerHTML = poll ? '<i class="ti ti-chart-bar"></i> Ont voté' : '<i class="ti ti-circle-check"></i> Bonne réponse';
+      $('goodHead').className = poll ? '' : 'good';
+      r.players.forEach((p) => {
+        const chip = el('span', 'chip static' + (p.status === 'none' ? ' faded' : ''));
+        chip.appendChild(el('span', 'av', p.avatar));
+        chip.appendChild(document.createTextNode(p.name));
+        if (p.shown !== null && p.shown !== undefined) {
+          const first = (r.type === 'text' || r.wheel) ? -1 : (r.labels === 'numbers' ? Number(p.shown[0]) - 1 : LETTERS.indexOf(p.shown[0]));
+          chip.appendChild(el('span', 'ansbadge' + (first >= 0 ? ' c' + (first % 4) : ' txt'), p.shown));
+        }
+        if (p.status === 'none') chip.appendChild(el('small', '', 'pas de réponse'));
+        if (p.out) chip.appendChild(el('small', '', '💀 éliminé'));
+        else if (p.hearts !== null && p.hearts !== undefined) chip.appendChild(el('small', '', '❤️' + p.hearts));
+        ((p.status === 'correct' || p.status === 'voted') ? good : bad).appendChild(chip);
+      });
+      const nOk = r.players.filter((p) => p.status === 'correct' || p.status === 'voted').length;
+      Brand.setPose($('resMascot'), nOk * 2 >= r.players.length ? 'bravo' : 'desole');
+      if (!good.children.length) good.appendChild(el('span', 'empty', 'Personne'));
+      if (!bad.children.length) bad.appendChild(el('span', 'empty', 'Personne'));
+    }
+    function startAuto(n) {
+      clearInterval(autoInt);
+      autoLeft = n;
+      $('nextLabel').textContent = autoBase + ' (' + n + ')';
+      autoInt = setInterval(() => {
+        autoLeft--;
+        if (autoLeft >= 0) $('nextLabel').textContent = autoBase + ' (' + autoLeft + ')';
+        else clearInterval(autoInt);
+      }, 1000);
+    }
+
+    socket.on('results', (r) => {
+      clearInterval(timerInt);
+      clearInterval(autoInt);
+      labelMode = r.labels || labelMode;
+      const q = { type: r.type, choices: r.choices, correct: r.correct };
+      $('rText').textContent = r.text || (currentQ ? currentQ.text : '');
+      const ct = r.order ? 'Bon ordre : ' + r.correctText : r.match ? 'Bonnes liaisons : ' + r.correctText : r.type === 'text' ? 'Réponse(s) acceptée(s) : ' + r.correctText : r.correctText ? 'Bonne réponse : ' + r.correctText : 'Voici les votes';
+      $('rCorrect').textContent = ct;
+      $('rExplain').classList.toggle('hidden', !r.explain);
+      $('rExplain').textContent = r.explain ? '💡 ' + r.explain : '';
+      if (r.explain) Brand.setPose($('resMascot'), 'explication');
+      $('rScore').classList.toggle('hidden', r.type === 'poll' || !r.partCount);
+      $('rScore').innerHTML = '<i class="ti ti-circle-check"></i> ' + r.okCount + ' / ' + r.partCount + ' ont bien répondu';
+      if (r.wheel || r.match || r.order) $('rChoices').innerHTML = '';
+      else renderChoices($('rChoices'), q, r.type === 'text' ? null : { counts: r.counts });
+      if (r.type === 'text' || r.type === 'match' || r.type === 'order') {
+        const box = $('rChoices');
+        box.innerHTML = '';
+        const d = el('div', 'textbox');
+        d.textContent = '✅ ' + r.counts[0] + ' bonne(s) réponse(s)   ·   ❌ ' + r.counts[1] + ' mauvaise(s)';
+        box.appendChild(d);
+      }
+      const out = r.outNow && r.outNow.length;
+      $('rOut').classList.toggle('hidden', !out && r.survivors === null);
+      if (out || r.survivors !== null) {
+        $('rOut').textContent = (out ? '💀 Éliminé(s) : ' + r.outNow.join(', ') + '.  ' : 'Personne n\'est éliminé.  ') + 'Il reste ' + r.survivors + ' joueur' + (r.survivors > 1 ? 's' : '') + ' en jeu.';
+      }
+      const rh = $('rHang');
+      rh.innerHTML = '';
+      rh.classList.toggle('hidden', !r.hang);
+      if (r.hang) r.hang.forEach((t) => {
+        const c = el('div', 'hangcell' + (t.out ? ' out' : ''));
+        c.style.setProperty('--tc', t.color);
+        c.innerHTML = Hangman.svg(t.errors, t.color, 84);
+        c.appendChild(el('b', '', t.icon + ' ' + t.name));
+        c.appendChild(el('small', '', t.out ? 'Pendu complet !' : t.errors + ' / ' + r.hangMax + ' erreurs'));
+        rh.appendChild(c);
+      });
+      $('answersCard').classList.toggle('hidden', !r.players);
+      if (r.players) renderStatus(r);
+      autoBase = r.last ? 'Voir le podium' : 'Question suivante';
+      $('nextLabel').textContent = autoBase;
+      autoLeft = null;
+      show('results');
+      if (r.autoIn && !isPaused) startAuto(r.autoIn);
+      else if (r.autoIn) autoLeft = r.autoIn;
+    });
+
+    // ----- Réactions -----
+    socket.on('reaction', ({ emoji, name }) => {
+      const d = el('div', 'react');
+      d.style.left = 6 + Math.random() * 84 + '%';
+      d.appendChild(document.createTextNode(emoji));
+      d.appendChild(el('small', '', name));
+      $('reactLayer').appendChild(d);
+      setTimeout(() => d.remove(), 3400);
+    });
+
+    // ----- Fin -----
+    function scoreText(p, d) {
+      if (d.scoreMode === 'points' || d.hasDouble) return p.score + ' pts';
+      return p.score + ' / ' + d.questions;
+    }
+    const aliveText = (p) => (p.hearts ? '❤️'.repeat(p.hearts) : 'Survivant');
+    socket.on('end', (d) => {
+      recordStats(d);
+      $('replayMissedBtn').classList.toggle('hidden', !(d.missedCount > 0));
+      $('missedLabel').textContent = 'Rejouer les questions ratées (' + d.missedCount + ')';
+      lastEnd = d;
+      clearInterval(autoInt);
+      clearInterval(timerInt);
+      const board = d.board;
+      const teamy = d.mode === 'teams' || d.mode === 'hangman';
+      const elim = d.mode === 'elimination' || (d.heartsMode && !teamy);
+      $('endHead').textContent = teamy ? 'Les équipes' : elim ? 'Les survivants' : 'Podium final';
+      // équipes
+      const tb = $('teamBoard');
+      tb.innerHTML = '';
+      tb.classList.toggle('hidden', !d.teams);
+      if (d.teams) {
+        d.teams.forEach((t, i) => {
+          const row = el('div', 'trow' + (i === 0 ? ' win' : ''));
+          row.style.setProperty('--tc', t.color);
+          row.appendChild(el('span', 'rk', String(i + 1)));
+          row.appendChild(el('span', 'ti-ic', t.icon));
+          row.appendChild(el('span', 'nm', 'Équipe ' + t.name + ' (' + t.members + ')'));
+          if (d.mode === 'hangman') {
+            const hv = el('span', 'hangmini');
+            hv.innerHTML = Hangman.svg(t.errors, t.color, 56);
+            row.appendChild(hv);
+            row.appendChild(el('span', '', t.out ? '💀 pendue (' + t.errors + ')' : '✅ en vie (' + t.errors + ' erreur' + (t.errors > 1 ? 's' : '') + ')'));
+          } else row.appendChild(el('span', '', 'moyenne : ' + t.score + (d.scoreMode === 'points' || d.hasDouble ? ' pts' : '')));
+          tb.appendChild(row);
+        });
+      }
+      const pod = $('podium');
+      pod.innerHTML = '';
+      [1, 0, 2].forEach((idx) => {
+        const p = board[idx];
+        if (!p) return;
+        const dd = el('div', 'pod p' + (idx + 1));
+        if (idx === 0) dd.appendChild(el('i', 'ti ti-crown crown'));
+        dd.appendChild(el('div', 'av', p.avatar));
+        dd.appendChild(el('div', 'who', p.name));
+        dd.appendChild(el('div', 'sc', elim ? (p.alive ? aliveText(p) : scoreText(p, d)) : scoreText(p, d)));
+        dd.appendChild(el('div', 'blk', String(idx + 1)));
+        pod.appendChild(dd);
+      });
+      const rest = $('rest');
+      rest.innerHTML = '';
+      board.slice(3).forEach((p, i) => {
+        const li = el('li');
+        li.style.animationDelay = i * 0.08 + 's';
+        li.appendChild(el('span', 'rk', String(i + 4)));
+        li.appendChild(el('span', 'av', p.avatar));
+        li.appendChild(el('span', 'nm', p.name));
+        li.appendChild(el('span', '', elim && p.alive ? aliveText(p) : scoreText(p, d)));
+        rest.appendChild(li);
+      });
+      const tbox = $('titles');
+      tbox.innerHTML = '';
+      $('titlesBox').classList.toggle('hidden', !d.titles.length);
+      d.titles.forEach((t) => {
+        const c = el('div', 'title-card');
+        c.appendChild(el('i', 'ti ' + t.icon));
+        c.appendChild(el('b', '', t.title));
+        c.appendChild(el('span', '', t.avatar + ' ' + t.name));
+        tbox.appendChild(c);
+      });
+      $('drawer').classList.add('hidden');
+      show('end');
+      setTimeout(() => { FX.fanfare(); FX.confetti(90); }, 1500);
+    });
+    $('shareBtn').onclick = () => {
+      if (!lastEnd) return;
+      const d = lastEnd;
+      const top = d.board[0];
+      const elim = d.mode === 'elimination' || (d.heartsMode && d.mode !== 'teams' && d.mode !== 'hangman');
+      const rows = d.board.slice(0, 5).map((p, i) => ({ left: String(i + 1), mid: p.avatar + ' ' + p.name, right: elim && p.alive ? aliveText(p) : scoreText(p, d) }));
+      const badges = d.titles.map((t) => (TITLE_EMOJI[t.title] || '🏅') + ' ' + t.title + ' : ' + t.name);
+      let headline = top ? top.avatar + ' ' + top.name : 'Résultats';
+      let sub = 'a gagné la partie !';
+      if (d.teams && d.teams[0]) { headline = d.teams[0].icon + ' Équipe ' + d.teams[0].name; sub = 'remporte la partie !'; }
+      Share.share({ quiz: d.quizTitle, emoji: '🏆', headline, sub, rows, badges }, 'wequizzer-resultats.png');
+    };
+  </script>
+</body>
+</html>

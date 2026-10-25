@@ -1,0 +1,9 @@
+# Réglages pour Render (offre gratuite). Render les lit automatiquement.
+services:
+  - type: web
+    name: wequizzer
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /

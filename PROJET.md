@@ -1,0 +1,205 @@
+# WeQuizzer — fiche projet
+
+Quiz en temps réel façon Kahoot!, gratuit, pour apprendre et jouer entre amis.
+Mascotte : **Professeur Quizzo** (scientifique original). Le nom de l'appli est défini UNIQUEMENT dans `public/brand.js`.
+Ancien nom « QuizFlash » : ne plus jamais l'utiliser.
+
+## Règles de travail avec l'utilisateur (français, tutoiement, informel)
+- Ne coder qu'après un « go » clair. Si on discute, on ne code pas.
+- Quiz pour APPRENDRE : pas d'atouts, indices, « passer », pièces, étoiles. Pas de système d'amis pour l'instant.
+- Appli 100 % gratuite.
+- Ton du professeur : tutoiement, drôle et encourageant. Les textes ne sont pas encore reformulés (à faire plus tard).
+- Utilisateur : PC Windows + téléphone Android. Il teste sur son téléphone.
+
+## Technique
+- Node.js ≥ 18, Express, Socket.IO, qrcode, @tabler/icons-webfont (servi sur `/icons`). Aucune base de données.
+- Les quiz, réglages et sessions sont dans le `localStorage` du navigateur de l'ANIMATEUR (clés `wequizzer.quizzes`, `.lastQuiz`, `.settings`, `.hostSession`, `.player`, `.device`, `.avatar`, `.name`). Migration automatique depuis `quizflash.*` dans `brand.js`.
+- Le serveur garde les parties en mémoire : `games[pin]` (perdu au redémarrage).
+- Hébergement : GitHub `Akiyo41/wequizzer` + Render gratuit « wequizzer » (Frankfurt, build `npm install`, start `node server.js`) → https://wequizzer.onrender.com (animateur `/host.html`, joueurs `/play.html`). Mise à jour : remplacer les fichiers sur GitHub, Render redéploie.
+- Limites Render gratuit : s'endort après 15 min (réveil ~1 min), 750 h/mois, plafond de bande passante, disque éphémère, 512 Mo.
+
+## Fichiers
+- `server.js` (~1500 lignes) : tout le serveur.
+- `public/host.html` : écran animateur (lobby, éditeurs, jeu, résultats, fin, suivi de course).
+- `public/play.html` : écran joueur (rejoindre, attente, question, roue, résultat, fin).
+- `public/index.html` : page d'accueil. `public/brand.js` : nom, logo, mascotte, intro, décor. `public/fx.js` : sons WebAudio, vibration, confettis, wake lock. `public/share.js` : image de partage (canvas). `public/wheel.js` : composant Roue. `public/style.css` : tout le style.
+- `public/img/` : bg-wide/bg-tall, cloud, star, desk, obj-*, logo, prof-{base,accueil,question,reflexion,bravo,desole} (.webp).
+- `questions.json` (quiz d'exemple, route `/api/sample-quiz`), `blocked-words.txt` (filtre de pseudos), `render.yaml`, `.gitignore`, `package.json`.
+
+## Serveur : fonctionnement
+- États d'une partie : `lobby → countdown (3 s) → [reading] → question → results → … → end`. `reset` renvoie au lobby.
+- Fonctions clés : `sanitize` (réglages), `cleanQuiz` / `cleanWheel`, `buildQuestions`, `beginRound → startReading → startQuestion → endQuestion → advance → endGame`, `isCorrect`, `cleanAnswer`, `rankedPlayers`, `computeTitles`, `sendPlayerState` / `sendHostState` (reprise après coupure).
+- Événements animateur : `host:create / rejoin / quiz / settings / kick / start / pause / skip / next / reset / close`. Joueur : `player:join / rejoin / answer / react / leave`. Serveur → clients : `lobby, countdown, reading, question, progress, results, result, end, paused, answer:ack, game:settings, join:ok, queued, kicked, host:left`.
+- Identité stable des joueurs (pid + token) ; l'animateur revient avec `hostKey`. Pause automatique si l'animateur est déconnecté ; salle supprimée après 15 min sans animateur. Max 200 joueurs. Bannissement par appareil + IP. File d'attente pour les arrivées tardives.
+- Types de questions : single, tf, multi, text (tolérance de fautes, Levenshtein), poll. Max 100 questions, 2 à 4 réponses.
+
+## Règles de jeu
+- Points (seulement si temps limité ET bonus de rapidité) : `500 + 500 × (1 − temps_de_réponse / durée)` ; sinon 1 point par bonne réponse. Question bonus : ×2.
+- Classement : score décroissant, puis temps cumulé croissant. Pas de classement avant la fin.
+- Élimination : une mauvaise réponse = éliminé (si tout le monde se trompe, personne n'est éliminé). Classement : survivants, puis éliminés par durée de survie.
+- Équipes (2 à 4) : répartition au hasard, score d'équipe = moyenne.
+- Titres de fin : sans-faute, plus rapide, meilleure série, plus réfléchi, plus expressif, dernier survivant.
+
+## Roue = un TYPE de jeu (brouillon, sans décor)
+- Un quiz est soit « carrés » (A B C D), soit « roue » (`kind:'wheel'`) : titre + catégorie (centre) + 3 à 100 paires `question ; bonne ; fausse1 ; fausse2 ; fausse3` (réponses uniques ; question 60 car. max, réponse 25 max ; Relier utilise les mêmes limites). La roue marche avec TOUTES les règles (standard, équipes, élimination, cœurs, points bonus). La variante « course » a été abandonnée.
+- Côté serveur, chaque paire devient une question de type single (`wheel:true`) ; la roue montre 4 réponses comme un quiz normal : la bonne + jusqu'à 3 mauvaises réponses écrites par l'animateur dans le thème (`w`, ligne `question ; bonne ; fausse 1 ; fausse 2 ; fausse 3`) ; s'il en manque, complétées avec des réponses d'autres paires. Les réponses ne sont plus éliminées. Tout le moteur est réutilisé.
+- Joueur : anneau intérieur qui tourne (glisser ou ◀ ▶), réponse = celle en bas face à la question verte, bouton « Répondre ».
+- Deux roues d'exemple (Chiffres romains, Capitales) sont ajoutées une fois à la bibliothèque.
+
+## Jeu de mots (type de jeu `kind:'letters'`, brouillon)
+- Un jeu = titre + liste de lignes `question ; mot ; image (lien, facultatif)`. Mot de 3 à 14 lettres (les espaces, tirets et apostrophes sont placés tout seuls), 100 mots max.
+- Côté serveur chaque ligne devient une question `type:'text'` avec `letters:true`, `tiles` (lettres mélangées en MAJUSCULES, accents conservés) et `slots` (cases : '' = lettre à placer, sinon caractère fixe). Réponse exacte aux accents près (pas de tolérance de fautes), insensible à la casse.
+- Joueur : il tape les lettres pour remplir les cases, tape une case pour la vider, « Effacer », puis « Valider ». Pas de pièces ni d'aides.
+- Animateur : bouton « Nouveau jeu de mots », éditeur texte + chargement d'un fichier CSV/texte, export/import JSON, deux exemples (Mots : Capitales, Mots : Animaux). Toutes les règles et « rejouer les questions ratées » marchent.
+
+## Score : bonus de rapidité OU cœurs (deux interrupteurs `speedBonus` et `hearts`, + `lives` 1 à 5)
+- Interrupteurs comme les autres réglages ; ceux qui ne s'appliquent pas sont GRISÉS avec une phrase d'explication (pas de liste déroulante).
+- Bonus de rapidité : grisé si le temps est illimité ou si les cœurs sont cochés. Activer « Limiter le temps » recoche le bonus (sauf si les cœurs sont cochés).
+- Cœurs : grisés en mode élimination (l'élimination fonctionne comme avant, sans cœurs, avec bonus possible) ou si le bonus est coché. Pour utiliser les cœurs : décocher le bonus.
+- Cœurs : mauvaise réponse ou pas de réponse = −1 cœur ; 0 = éliminé. Si tout le monde tomberait à 0 en même temps, personne ne sort (sécurité). Classement : vivants (plus de cœurs, puis bonnes réponses, puis temps), puis éliminés par durée de survie. Marche avec le temps illimité.
+
+## Résultat après chaque question
+- Animateur : « X / Y ont bien répondu » (pas pour les sondages). Joueur : seulement SON nombre de bonnes réponses (« Tes bonnes réponses : 5 / 7 »), jamais de classement ni le score des autres avant la fin.
+
+## Erreurs : revoir et rejouer
+- Réglage `reviewErrors` (coché par défaut) « Revoir les erreurs à la fin ». Le serveur garde pour chaque joueur la liste de ses erreurs (`p.mistakes` : question, sa réponse, bonne réponse) et pour la partie `g.missed` (index → nombre d'erreurs).
+- Joueur : à la fin, bouton « Revoir mes erreurs (n) » → écran « Mes erreurs » (si 0 erreur : « Aucune erreur, bravo ! »). Désactivé = rien n'est envoyé.
+- Animateur : bouton « Rejouer les questions ratées (n) » → événement `host:replayMissed` : crée un nouveau quiz (ou roue) avec les questions ratées par au moins un joueur, l'enregistre dans la bibliothèque (« Questions ratées - titre »), remet la salle en attente et relance la partie. Roue : il faut au moins 3 paires, complétées au besoin.
+
+## Design (thème « wequizzer »)
+- Variables CSS dans `style.css` : fond bleu nuit étoilé (images bg-wide/bg-tall), `--accent #ff9f1c`, réponses A–D = rouge `#ff4d5e`, vert `#2fd36b`, bleu `#2f8cff`, jaune `#ffc92e`. Boutons 3D orange / vert / violet, ruban bleu. Police Nunito.
+- Écran d'intro (logo, mascotte, « Commencer »), décor sur les côtés des grands écrans, mascotte avec 6 poses selon l'écran.
+- Images générées par IA (ChatGPT) puis détourées par script (fond vert → transparent) et converties en webp.
+
+## Équipes, Pendu, Relier, Vrai/Faux rafale (ajoutés)
+- **Équipes** (modes `teams` et `hangman`) : réglages `teamCount` (2–4), `teamAssign` (`random` ou `manual`), `teamNames` (4 noms, 14 car. max, filtre de mots). Mode manuel : l'animateur affecte chaque joueur dans la salle (événement `host:team {pid, team}`, stocké dans `g.teamOf`) ; un joueur sans équipe rejoint la plus petite.
+- **Pendu** (mode `hangman`, équipes seulement) : chaque mauvaise réponse (ou absence) d'un membre ajoute une partie au pendu de son équipe (`g.hang[t]`). 6 erreurs (`HANG_MAX`, non modifiable) = pendu complet = équipe éliminée (ses membres deviennent spectateurs). Si toutes les équipes en vie tombaient en même temps, personne n'est éliminé. Fin quand il reste ≤ 1 équipe. Classement : équipes en vie d'abord (moins d'erreurs), puis éliminées (dernière éliminée devant). Cœurs désactivés. Dessin : `public/hangman.js` (SVG).
+- **Relier** : le jeu de paires (roue) se joue en Roue ou en Relier (réglage `pairsView` : `wheel`/`match`, visible quand un jeu de paires est choisi). Question `type:'match'` : groupes de 2 à 4 paires, le joueur relie chaque élément à sa réponse (`player:answer {links:[...]}`), tout juste ou rien.
+- **Vrai/Faux en rafale** : quiz normal de questions Vrai/Faux (`flavor:'tfrush'` dans la bibliothèque), éditeur « affirmation ; vrai|faux ». L'animateur règle le temps et le passage automatique dans les réglages habituels.
+
+## Explication, Compléter la phrase, Remettre dans l'ordre, images, stats, bibliothèque (ajoutés)
+- **Explication** : champ facultatif `explain` (300 car.) par question ; réglage animateur `showExplain` (par défaut oui) ; affichée chez l'animateur (`#rExplain`) et chez le joueur (`#resExplain`) après la réponse.
+- **Compléter la phrase** : type d'éditeur `gap` (phrase avec le mot manquant entre [crochets] + 1 à 3 mauvais mots) ; enregistré comme question à choix unique avec `_____` et `gapSrc` pour pouvoir la rééditer.
+- **Remettre dans l'ordre** : type `order` (2 à 6 éléments saisis dans le bon ordre, mélangés au lancement). Réponse `player:answer {order:[...]}`, tout juste ou rien. Écran joueur `#orderBox`.
+- **Images** : lien internet ou envoi depuis l'ordinateur (réduit à 520 px, JPEG, gardé en `data:` dans le navigateur ; `cleanImage` côté serveur, 150 000 car. max). `maxHttpBufferSize` du serveur : 8 Mo.
+- **Statistiques** : le serveur renvoie `qstats` (bonnes réponses par question) à la fin ; l'animateur les cumule par quiz dans `wequizzer.stats` (son navigateur). Écran « Statistiques » : questions les plus ratées en premier.
+- **Bibliothèque** : `public/library.json` (19 quiz, généré par `tools/make_library.py`) ; écran « Bibliothèque de quiz », bouton Ajouter = copie dans la bibliothèque de l'animateur.
+- Descriptions des réglages raccourcies.
+- **Roue sans flèches** : on touche une réponse ou on fait glisser le doigt pour la mettre en bas.
+- **Limites de la roue et de Relier** (mêmes données, volontairement courtes : c'est un quiz, pas un livre) : 100 paires max, question 60 caractères max, réponse 25 max (refus avec message, rien n'est coupé ni ne défile).
+- **Roue** : chaque question a 4 réponses (`WHEEL_MAX`) : la bonne + mauvaises réponses de l'animateur (complétées par d'autres paires s'il en manque). Décor flottant (étoiles, nuages, objets, bureau) supprimé : il ne reste que le fond d'écran, le logo et la mascotte (affichée aussi sur les écrans d'attente du téléphone).
+
+## Déjà fait
+Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre de pseudos, reconnexion, file d'attente, titres, partage en image, bibliothèque (éditeur, test, JSON, CSV), thème et intro, hébergement en ligne, Roue (type de jeu), points bonus / cœurs.
+
+## À ajouter (chacun attend un « go »)
+1. Page d'entrée « Tu es ? » (Animateur / Joueur), animateur d'abord.
+2. Barre d'onglets en bas côté animateur : Jeu (QR + PIN en premier, choix du quiz et du mode, gros bouton Lancer), Questions, Paramètres ; Compte et Groupe grisés « Bientôt ». Mise en page moins basique (cadre central, décor sur les bords).
+3. Professeur qui parle (bulles sur tous les écrans, textes dans un seul fichier, ton tutoiement drôle et encourageant).
+4. (fait) Cœurs / points bonus.
+5. Écran animateur plus intuitif : choix clair « Quiz carrés » / « Roue » au départ, création plus visible.
+6. Bouton d'invitation (WhatsApp, copier le lien, partager ; lien `play.html?pin=XXXXXX`, PIN constant pendant la session de l'animateur).
+7. Côté joueur : réglages (son, vibration, pseudo, avatar) ; classement entre questions optionnel, choisi par l'animateur (masqué par défaut).
+8. Tutoriel facultatif (bulles du professeur + visite guidée).
+9. Roue et jeu de mots : décor/design, version solo (avec les comptes), test depuis l'éditeur, cas de la dernière question à une seule réponse.
+10. Import CSV plus souple : accepter aussi les fichiers séparés par des virgules, sans colonne « Type » (colonnes question, reponse_a…d, bonne_reponse), car d'autres IA les produisent ainsi. Pour l'instant : consigne à donner = en-tête exact `Type;Question;Réponse A;Réponse B;Réponse C;Réponse D;Bonne(s) réponse(s);Bonus`, séparateur `;`, UTF-8.
+11. Génération de quiz par IA. Option gratuite d'abord : bouton « Créer avec une IA » qui fournit un texte à copier (thème + nombre de questions + format CSV exact) à coller dans Claude/ChatGPT, puis on colle le résultat dans le jeu. Plus tard, quand il y aura des dons ou un financement : connexion directe à l'API de Claude (clé API sur le serveur Render, jamais côté navigateur, avec limite d'usage ; quelques centimes par quiz). Décision : reporté.
+12. (fait) Relier, Vrai/Faux en rafale, Pendu, équipes choisies/nommées. Autres idées en attente : partage de quiz, « cliquer sur la carte », duel (avec les comptes).
+13. (mis de côté, décision de l'utilisateur) Comptes, groupes, conditions d'utilisation, RGPD :
+   - Hébergement : l'utilisateur pense à une petite machine toujours allumée chez lui ; sécurité à étudier (tunnel type Cloudflare Tunnel plutôt que port ouvert, HTTPS, pare-feu, sauvegardes, mises à jour). Alternative : petit serveur loué.
+   - Connexion par compte Google (pas de mot de passe stocké) ; Facebook plus lourd (validation de l'appli), Discord/Apple possibles plus tard. « Google Play » n'est pas une connexion web.
+   - Suppression de compte avec confirmation et conséquences claires (groupes créés, quiz partagés, délai éventuel). Base de données nécessaire.
+   - Textes à rédiger puis à faire relire : mentions légales, confidentialité, conditions d'utilisation, bandeau d'information.
+   - Refaire tous les textes/descriptions (ton du professeur, un seul fichier).
+14. Plus tard : comptes et groupes (lien permanent), appli installable (PWA), musique, reformulation finale des textes.
+
+## Lancer en local
+`npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`.
+- **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
+- **Éditeur « Compléter la phrase »** (refait pour être clair pour tout le monde) : 1) la phrase avec ___ à la place du mot manquant, 2) la bonne réponse (case ✔), 3) 1 à 3 mauvaises réponses (cases ✖), aperçu « Les joueurs verront ». Les crochets ne sont plus utilisés dans l'éditeur ; le stockage garde `gapSrc` (avec [mot]) donc les anciens quiz et la bibliothèque marchent toujours. Principe : tout doit être compréhensible par n'importe qui, comme pour des enfants.
+- **Éditeurs refaits « pour des enfants »** : roue et jeu de mots en étapes numérotées (1 titre, 2 mot du centre, 3 lignes), exemple affiché, bouton « Remplir avec un exemple » (seulement si la zone est vide), « À savoir » ; textes d'aide plus clairs pour Ordre et Texte libre.
+- **Éditeurs roue et jeu de mots en formulaire** (une carte par question, une case par information : question / ✔ bonne réponse / ✖ fausses réponses ; mot / image), limites bloquées dans les cases, messages d'erreur « Question 3 : … ». L'ancienne saisie par lignes « ; » reste disponible dans un bloc replié « coller d'un coup » (tableur / IA), avec le chargement de fichier CSV pour les mots.
+- **Nouvelles poses du Professeur** (fond transparent, ~80 Ko chacune, chargées seulement quand elles s'affichent grâce au chargement paresseux) : `reparation` (panneau « Connexion perdue », affiché si la coupure dure plus de 1,5 s, côté joueur et animateur), `recherche` (file d'attente), `danse` (attente du lancement), `chrono` (compte à rebours 3-2-1), `explication` (écran de résultat quand une explication existe). Déclarées dans `public/brand.js`. Vraies animations (GIF/Lottie) reportées : on garde le jeu léger.
+
+## Sujets reportés (décidés avec l'utilisateur, à reprendre plus tard)
+- **Licence** : il veut que le code puisse être copié mais JAMAIS commercialisé. Attention : « open source » autorise toujours le commercial ; pour l'interdire il faut une licence non commerciale (ex. PolyForm Noncommercial pour le code, CC BY-NC-SA pour textes/images) = « code visible », pas « open source ». Le nom WeQuizzer et la mascotte restent à lui. Vérifier les conditions du générateur d'images. Voir un juriste avant mise en ligne.
+- **Dons / partenariats** : bouton discret « Soutenir le projet » (Tipeee, Buy Me a Coffee, Ko-fi, Liberapay…) et partenariats écoles / centres de formation, une fois le jeu fini ; son but n'est pas un salaire, seulement de couvrir l'hébergement ; vérifier les règles de déclaration. Idée d'association 1901 possible.
+- **Badge « 100 % gratuit »** : plus tard, sans écrire « sans limite » ni « groupes » tant que ce n'est pas vrai ; « sans publicité » seulement s'il s'y engage.
+- **Autres** : écran « Tu es ? » + onglets, bulles de parole du professeur, réécriture des textes, import CSV (explication, ordre, phrase à compléter, roue), comptes / groupes / CGU / RGPD / auto-hébergement, vraies animations (GIF/Lottie) seulement si légères.
+- **Correctif « connexion perdue »** : l'image du professeur « réparation » est préchargée en ligne (1,2 s après l'ouverture) puis gardée prête, sinon elle ne pouvait plus se charger une fois la connexion coupée (icône cassée). Toute image de mascotte introuvable se cache au lieu d'afficher une icône cassée (`Brand.preload`).
+
+## Créer avec une IA (remplace « Importer un tableur » + « Modèle de tableur »)
+- Un seul bouton « Créer avec une IA » (écran `aiPage`) : 1) thème, nombre, niveau, public, nom, types cochés ; 2) prompt généré à copier ; 3) coller la réponse de l'IA → « Créer mon quiz ».
+- Colonnes : `Type;Question;Réponse A;Réponse B;Réponse C;Réponse D;Bonne(s) réponse(s);Bonus;Explication`.
+- Types : choix, multiple, vrai/faux, texte, sondage, ordre (éléments dans le bon ordre dans « Bonne(s) », séparés par `|`), completer (`___`, bon mot en « Bonne(s) », mauvais mots en A–C), roue (A = bonne, B–D = fausses ; 60/25 lettres, 3–100), mot (A = mot 3–14 lettres, B = image http optionnelle).
+- Lecture tolérante (```, phrases autour, `;` `,` tab). Tout ou rien : liste d'erreurs avec numéros de ligne + bouton « Copier ce message pour l'IA ».
+- Mélange de types → quiz séparés : normal, « (roue) », « (mots) ». Fonctions : `aiExtract`, `aiBuild`, `aiCreate`, `aiPromptText`.
+- Bouton « Vrai/Faux rafale » retiré du menu (l'éditeur reste pour les anciens quiz).
+
+## Réorganisation du menu animateur — DÉCISIONS (en discussion, PAS ENCORE CODÉ, attendre le « go »)
+Principe : clair pour tout le monde, peu de texte, une chose à la fois, bouton Retour partout.
+- **Onglets EN BAS** (PC et téléphone). En haut : nom WeQuizzer + Professeur Quizzo. Barre masquée pendant une partie.
+- **3 onglets** : Jouer | Mes quiz | Idées (bibliothèque). Pas d'onglet Stats seul.
+- **Mes quiz** : liste avec **poubelle à droite de la liste** ; boutons Modifier, Tester, **Stats** (nom raccourci, lié au quiz choisi) ; menu « ⋯ » (Exporter, Importer) ; un seul bouton « + Créer un quiz ».
+- **Créer un quiz** = page de choix : Quiz classique / Roue / Jeu de mots / Avec une IA (une phrase chacun). Nouveau, Nouvelle roue, Nouveau jeu de mots = des types de création.
+- **Statistiques** sortent de la carte Quiz. Raccourci « Voir les stats » en fin de partie possible en plus.
+- **Confirmations** : remplacer les 3 confirm() du navigateur (supprimer un quiz, quitter le quiz en cours [host], quitter la partie [play]) par une belle fenêtre au style du jeu (Professeur Quizzo, titre clair, nom du quiz, Annuler mis en avant + Supprimer rouge).
+- **Onglet Jouer** (à trier, proposition non validée) : ~15 réglages trop chargés → groupes repliables : Essentiel (mode, limiter le temps) / Règles (cœurs, bonus, changer sa réponse, mélanger, nombre de questions) / Affichage (délai de lecture, afficher les questions, repérage des réponses, voir qui a bon/faux) / Ambiance (réactions, sons). À valider avec l'utilisateur.
+- Reste de « Sujets reportés » inchangé (page « Tu es ? », bulles du professeur, textes, badge gratuit, dons, licence…).
+- **(décidé 17h)** Mes quiz : ligne 1 = [liste ▾][✏️ Modifier][🗑] ; ligne 2 = Tester | Stats | ⋯. Menu ⋯ : « Enregistrer ce quiz dans un fichier » (export) / « Ouvrir un quiz depuis un fichier » (import).
+- **(proposé par l'utilisateur)** Bibliothèque = PAS d'onglet : une icône livre 📖 qui ouvre la page « La Bibliothèque des quiz » (19 quiz prêts : 13 quiz, 4 roues, 2 jeux de mots). Emplacement de l'icône à valider. Donc **2 onglets** seulement : Jouer | Mes quiz.
+- **(décidé 17h40)** Icône 📖 Bibliothèque placée dans « Mes quiz », à côté du bouton « + Créer un quiz ».
+
+## Carte « Rejoins la partie » — DÉCISIONS (pas encore codé)
+- Inspiration : visuel IA fourni par l'utilisateur (Professeur à gauche qui montre le QR du doigt). On NE reprend PAS l'image (QR faux, style pixel/manette) ; on refait en HTML avec la vraie pose du Professeur (ex. prof-accueil).
+- **Version simple** seulement (pas d'écran plein écran pour projecteur pour l'instant).
+- **QR code = élément principal** (les joueurs scannent surtout). **Code PIN PAS énorme** : lisible mais secondaire.
+- Texte « Rejoins la partie sur 192.168…/play.html » raccourci : « Scanne le QR code » en vedette, adresse en petit.
+- Note Wi-Fi (affichée seulement en test local) réécrite : « En test sur ton ordi : les joueurs doivent être sur le même Wi-Fi que toi. Sur wequizzer.onrender.com, ils peuvent jouer de n'importe où. »
+
+## Réglages de partie — DÉCISIONS (pas encore codé)
+- Page **Jouer** = réglages courants (Mode de jeu + sous-réglages équipes, Limiter le temps + durée, explication). Tous les autres dans une **roue crantée ⚙️** (page avec Retour, titres Règles / Affichage / Ambiance). Liste complète des réglages avancés : Bonus de rapidité, Cœurs, Délai de lecture, Enchaîner auto, Changer sa réponse, Questions bonus, Voir qui a bon/faux, Revoir les erreurs, Afficher les questions, Repérer les réponses, Réactions, Mélanger les questions, Nombre de questions, Sons. (découpage à confirmer)
+- **Explication** : le réglage « Afficher les explications » renommé « Montrer l'explication 💡 » (« Après chaque question, une phrase explique la bonne réponse »). Réellement : affiche une ligne 💡 (joueurs + animateur) + pose « explication » du Professeur. 
+- L'utilisateur veut que **le Professeur PARLE** (bulle de dialogue) pour l'explication → on avance les bulles du Professeur au moins pour ça (sinon texte seul).
+- Le réglage doit dépendre **du quiz sélectionné** : affiché seulement si le quiz a des explications (à préciser : réglage mémorisé par quiz ou simple affichage conditionnel).
+- **(décidé 18h05)** Explication = **option A** : réglage affiché seulement si le quiz choisi a des explications, allumé par défaut, sinon caché. Rien de mémorisé par quiz.
+- **(décidé 18h14)** Réglages de **temps regroupés** dans ⚙️ (section « ⏱ Temps » : bonus de rapidité, délai de lecture, enchaînement auto + pause) ; « Chrono » (limiter le temps + durée) reste sur la page Jouer (proposition, à confirmer).
+- **(décidé 18h14)** **Cœurs + bonus de rapidité compatibles** (option 1) : plus de blocage mutuel. Les cœurs décident qui reste en jeu, le bonus de rapidité sert au score/départage. À coder : retirer `!heartsOn(g)` de `speedBonusOn` (server.js ~510), revoir le tri du classement (~941), retirer le grisage/notes croisés dans host.html (~1745). Cœurs ↔ mode élimination : question ouverte (blocage conservé pour l'instant).
+- **(décidé 18h17)** En **mode élimination**, le réglage « Cœurs » **n'apparaît pas** (caché, pas grisé). « Chrono » sur la page Jouer, reste du temps dans ⚙️ : confirmé.
+- **(décidé 18h30)** Noms : « Bonus de rapidité » → **« Compter les points selon la vitesse » ⚡** (éteint : 1 point par bonne réponse ; allumé : 500 à 1000 points selon la vitesse ; visible seulement si Chrono allumé). « Questions bonus » → **« Questions à points doubles » ⭐** (indépendant du chrono ; visible seulement si le quiz a au moins une question marquée points doubles). Barème : normale 1 pt / double 2 pts ; avec vitesse 500–1000 / 1000–2000.
+- **FAQ à créer plus tard** (demandé par l'utilisateur) : expliquer le barème des points, les explications, les points doubles, les cœurs, les modes, etc. avec des mots simples pour tout le monde.
+- **(décidé 18h33)** ⚙️ « Règles de réponse » : **Changer sa réponse** (gardé, éteint par défaut ; des joueurs s'en plaignaient sur Kahoot) ; **Mélanger les questions** 🔀 « Un ordre différent à chaque partie » ; **Jouer seulement… questions** 🔢 « Utile pour les longs quiz : avec Mélanger, tu en tires de nouvelles à chaque partie » — les choix proposés doivent s'adapter au quiz choisi (« Toutes (50) / 10 / 20 », pas de choix supérieur au nombre de questions). Mélanger + Nombre rapprochés dans ⚙️.
+- **(décidé 18h37)** ⚙️ « Ce que les joueurs voient » : **Cacher le classement jusqu'à la fin** (ex « Voir qui a bon et qui a faux », nom à confirmer) ; **Revoir ses erreurs** (allumé par défaut) ; **Où s'affichent les questions ?** (Animateur + joueurs / Animateur seulement) ; **Repérer les réponses avec** : « Lettres » / « Chiffres » (sans les parenthèses), sous-titre « Sur les boutons et dans les résultats ».
+- Section « Ambiance » ⚙️ : Réactions des joueurs, Sons (en cours de validation).
+- **(décidé 18h44)** **Réactions des joueurs : masquées** (code gardé, réglage caché de l'interface pour l'instant, éteint par défaut ; peut revenir plus tard).
+- **(décidé 18h44)** **Sons = réglage personnel**, plus dans les paramètres de partie : un bouton 🔊 sur chaque appareil (animateur et joueurs), mémorisé dans le navigateur, avec **deux barres de volume : Bruitages et Musique** (musique créée par IA, plus tard ; pour l'instant seulement Bruitages). Le réglage `sounds`/`volume` envoyé par l'animateur disparaît.
+
+## ✅ Réorganisation CODÉE (v. du 25/10 soir)
+- Onglets en bas **Jouer | Mes quiz** (barre masquée hors accueil). Jouer = carte « Scanne le QR code » (QR grand, Professeur accueil à gauche, code petit, adresse en petit, note Wi-Fi réécrite), « Quiz à jouer », réglages courants (Mode + équipes, Chrono + durée, Montrer l'explication si le quiz en a, paires si roue), bouton « Réglages avancés », joueurs + Lancer.
+- Mes quiz = liste + 🗑, Modifier / Tester / Stats / ⋯ (Enregistrer ce quiz dans un fichier / Ouvrir un quiz depuis un fichier), « Créer un quiz » (page de 4 choix : Quiz classique, Roue, Jeu de mots, Avec une IA) et « Bibliothèque ».
+- Réglages avancés (page avec Retour) : Temps (vitesse si chrono, délai de lecture, enchaînement), Règles (cœurs cachés en élimination/pendu, points doubles si le quiz en a, changer sa réponse, mélanger, nombre de questions adapté au quiz), Ce que voient les joueurs (cacher le classement, revoir ses erreurs, où s'affichent les questions, lettres/chiffres).
+- Cœurs + vitesse compatibles (server.js `bonusOn`). Réactions : masquées, `reactions:false` par défaut (serveur) et forcé côté animateur.
+- Son personnel : `public/ui.js` (bouton 🔊 en haut à droite, volume « Bruitages » mémorisé dans `wequizzer.sfx`, musique plus tard). `UI.confirm` = belle fenêtre (supprimer un quiz, quitter le quiz en cours, quitter la partie côté joueur).
+- Reste à faire : FAQ, bulles du Professeur (explication), musique IA, « Tu es ? », etc.
+- **Correctif 19h13** : le bouton 🔊 gênait la fermeture du panneau « Joueurs » (même coin) → le panneau passe au-dessus du bouton (z-index 48 > 45).
+
+## Invitation WhatsApp / réseaux — DÉCISIONS (pas encore codé, attend « go »)
+- Bouton « Inviter » dans la carte « Scanne le QR code » : **WhatsApp**, **Partager…** (menu du téléphone, couvre les autres réseaux), **Copier le lien**. Pas de boutons séparés par réseau.
+- Lien `…/play.html?pin=XXXXXX` (code déjà rempli chez le joueur).
+- Message choisi (A) : « 🎓 Le Professeur Quizzo t'attend ! Rejoins mon quiz WeQuizzer : [lien] ».
+- **✅ Codé (19h20)** Invitation : boutons WhatsApp / Partager… (masqué si le navigateur n'a pas de menu de partage, ex. PC) / Copier le lien, dans la carte « Scanne le QR code ». Lien `…/play.html?pin=XXXXXX` (la page joueur préremplit déjà le code). À tester en ligne et sur téléphone.
+- **(19h25)** Bouton WhatsApp **supprimé** (inutile sur PC, et « Partager… » couvre WhatsApp sur téléphone). Restent : Partager… (téléphone) et Copier le lien.
+- **✅ Codé (19h40)** Réglages du joueur : bouton ⚙️ à côté du bouton quitter (côté joueur) → fenêtre : pseudo, avatar, vibration (défaut éteinte, `wequizzer.vibrate`), son (barre Bruitages). Pseudo/avatar modifiables seulement hors question (serveur : `player:profile`, mêmes contrôles que l'entrée : filtre, pseudo et avatar uniques). Le bouton 🔊 flottant n'existe plus côté joueur (reste côté animateur).
+- **(19h36)** Disposition des réponses : **on garde** carré 2×2 sur grand écran (animateur) et colonne sur téléphone (option 1, choix final). Ordre et couleurs sont identiques sur les deux écrans.
+
+## Bibliothèque FIMO (19h50)
+- 8 quiz ajoutés dans `public/library.json`, thème « Transport routier (FIMO) », niveau Moyen, **sans explication** (demande de l'utilisateur), 115 questions : temps de conduite et de repos (16), tachygraphe (13), documents et réglementation (15), sécurité et conduite (15), gabarits et poids (13), chargement/arrimage/mise à quai (14), éco-conduite et mécanique (14), santé et secours (15).
+- Questions ORIGINALES (pas les vraies de l'examen). Chiffres de conduite/repos/temps de travail vérifiés sur ecologie.gouv.fr (règlement CE 561/2006) ; arrimage vérifié sur la DREAL Normandie ; le reste = connaissances générales du programme FIMO → **à relire avec le support de cours** avant usage réel (durées FIMO/FCO, limites de poids/gabarit, limite d'alcool, délais de téléchargement du tachygraphe).
+- Générateur : fichier de travail hors projet (scratchpad) ; pour modifier, éditer directement library.json.
+- **(19h55)** + 2 « examens blancs » FIMO tirés des 8 quiz (sans doublon entre eux) : 50 questions et 40 questions, mélange de tous les thèmes. Avec « Mélanger » + « Nombre de questions » on en tire des variantes.
+
+## Icônes cartoon (décision + ✅ codée)
+- 48 icônes générées par l'IA d'images du user (3 planches sur fond vert), découpées en WebP 128 px dans `public/ico/`.
+- `public/icons.css` remplace les icônes Tabler par les cartoon via `i.ti-xxx::before` (aucun changement dans le HTML/JS). Les icônes sans équivalent restent en Tabler (flèches droite/haut/bas, pause, gomme, étiquette, volume, IA/baguette, couronne, etc.).
+- Pour changer une icône : remplacer le fichier dans `public/ico/` (même nom). Pour en ajouter : une ligne dans `icons.css`.
+- Reste à générer si voulu (4e planche) : flèche droite/haut/bas, pause, gomme, IA/étincelles, couronne, volume, étiquette, catégorie, exclure un joueur, wifi.

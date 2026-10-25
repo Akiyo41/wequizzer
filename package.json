@@ -1,0 +1,19 @@
+{
+  "name": "wequizzer",
+  "version": "1.0.0",
+  "description": "Quiz en temps réel avec code PIN, scores et classement",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@tabler/icons-webfont": "^3.49.0",
+    "express": "^4.19.2",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.7.5"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "private": true
+}
