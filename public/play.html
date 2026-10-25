@@ -727,7 +727,7 @@
         box.classList.toggle('compact', hidden);
         if (q.mine !== null && q.mine !== undefined) selected = Array.isArray(q.mine) ? q.mine.slice() : [q.mine];
         choices.forEach((c, i) => {
-          const b = el('button', 'choice c' + (i % 4));
+          const b = el('button', 'choice c' + (q.type === 'tf' ? (i === 0 ? 1 : 0) : i % 4));
           b.appendChild(el('span', 'badge', lab(q, i)));
           b.appendChild(el('span', 'ct', c));
           b.onclick = () => {

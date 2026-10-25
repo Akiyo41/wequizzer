@@ -1957,7 +1957,7 @@
         box.appendChild(d);
       } else {
         q.choices.forEach((c, k) => {
-          const d = el('div', 'choice c' + (k % 4));
+          const d = el('div', 'choice c' + (q.type === 'tf' ? (k === 0 ? 1 : 0) : k % 4));
           d.appendChild(el('span', 'badge', lab(k)));
           d.appendChild(el('span', 'ct', c));
           if (pv.shown && q.type !== 'poll') {
@@ -2141,7 +2141,7 @@
       }
       const correctSet = q.type === 'multi' ? q.correct : q.type === 'single' || q.type === 'tf' ? [q.correct] : [];
       q.choices.forEach((c, i) => {
-        const d = el('div', 'choice c' + (i % 4));
+        const d = el('div', 'choice c' + (q.type === 'tf' ? (i === 0 ? 1 : 0) : i % 4));
         d.appendChild(el('span', 'badge', lab(i)));
         d.appendChild(el('span', 'ct', c));
         if (opts && opts.counts) {
@@ -2257,7 +2257,7 @@
         chip.appendChild(document.createTextNode(p.name));
         if (p.shown !== null && p.shown !== undefined) {
           const first = (r.type === 'text' || r.wheel) ? -1 : (r.labels === 'numbers' ? Number(p.shown[0]) - 1 : LETTERS.indexOf(p.shown[0]));
-          chip.appendChild(el('span', 'ansbadge' + (first >= 0 ? ' c' + (first % 4) : ' txt'), p.shown));
+          chip.appendChild(el('span', 'ansbadge' + (first >= 0 ? ' c' + (r.type === 'tf' ? (first === 0 ? 1 : 0) : first % 4) : ' txt'), p.shown));
         }
         if (p.status === 'none') chip.appendChild(el('small', '', 'pas de réponse'));
         if (p.out) chip.appendChild(el('small', '', '💀 éliminé'));

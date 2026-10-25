@@ -203,3 +203,5 @@ Principe : clair pour tout le monde, peu de texte, une chose à la fois, bouton 
 - `public/icons.css` remplace les icônes Tabler par les cartoon via `i.ti-xxx::before` (aucun changement dans le HTML/JS). Les icônes sans équivalent restent en Tabler (flèches droite/haut/bas, pause, gomme, étiquette, volume, IA/baguette, couronne, etc.).
 - Pour changer une icône : remplacer le fichier dans `public/ico/` (même nom). Pour en ajouter : une ligne dans `icons.css`.
 - Reste à générer si voulu (4e planche) : flèche droite/haut/bas, pause, gomme, IA/étincelles, couronne, volume, étiquette, catégorie, exclure un joueur, wifi.
+
+- **Vrai/Faux** : Vrai en vert, Faux en rouge (host.html + play.html) ; les autres questions gardent rouge/vert/bleu/jaune par position. ✅ codée
