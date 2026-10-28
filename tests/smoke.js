@@ -1,0 +1,239 @@
+// Test de bout en bout : lance le serveur, crée une partie, fait jouer deux joueurs.
+// Lancer avec : npm test
+const { spawn } = require('child_process');
+const path = require('path');
+const assert = require('assert');
+const { io } = require('socket.io-client');
+
+const PORT = 3999;
+const URL = `http://localhost:${PORT}`;
+
+function startServer() {
+  return new Promise((resolve, reject) => {
+    const srv = spawn(process.execPath, [path.join(__dirname, '..', 'server.js')], {
+      env: { ...process.env, PORT: String(PORT) },
+      stdio: ['ignore', 'pipe', 'inherit'],
+    });
+    srv.stdout.on('data', (d) => {
+      if (String(d).includes('lancé')) resolve(srv);
+    });
+    srv.on('exit', (code) => reject(new Error('Le serveur s\'est arrêté (code ' + code + ')')));
+  });
+}
+
+const connect = () => io(URL, { transports: ['websocket'], forceNew: true });
+function once(sock, ev, ms = 8000) {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error('Rien reçu pour « ' + ev + ' »')), ms);
+    sock.once(ev, (data) => {
+      clearTimeout(t);
+      resolve(data);
+    });
+  });
+}
+
+async function setupGame(settings, quiz) {
+  const host = connect();
+  const created = once(host, 'host:created');
+  host.emit('host:create', { origin: URL });
+  const { pin } = await created;
+  const sOk = once(host, 'host:settings');
+  host.emit('host:settings', settings);
+  await sOk;
+  const qOk = Promise.race([once(host, 'host:quiz:ok'), once(host, 'host:quiz:error').then((e) => { throw new Error(e); })]);
+  host.emit('host:quiz', quiz);
+  const info = await qOk;
+  const players = [];
+  for (const name of ['Alice', 'Bob']) {
+    const s = connect();
+    const ok = once(s, 'join:ok');
+    s.emit('player:join', { pin, name, device: 'test-' + name });
+    s.info = await ok;
+    players.push(s);
+  }
+  return { host, players, pin, info };
+}
+
+// Joue toutes les questions : answerFor(question, joueur) renvoie la réponse à envoyer (ou null)
+async function play(game, answerFor) {
+  const { host, players } = game;
+  const end = once(host, 'end', 60000);
+  const endPlayers = players.map((p) => once(p, 'end', 60000));
+  host.emit('host:start');
+  const results = [];
+  for (;;) {
+    const q = await once(host, 'question');
+    const res = once(host, 'results');
+    players.forEach((p, i) => {
+      const a = answerFor(q, i);
+      if (a) p.emit('player:answer', a);
+    });
+    results.push(await res);
+    if (results[results.length - 1].last) {
+      host.emit('host:next');
+      break;
+    }
+    host.emit('host:next');
+  }
+  return { results, end: await end, endPlayers: await Promise.all(endPlayers) };
+}
+
+function close(game) {
+  game.host.emit('host:close');
+  game.players.forEach((p) => p.close());
+  setTimeout(() => game.host.close(), 100);
+}
+
+const QUIZ = {
+  title: 'Test',
+  questions: [
+    { type: 'single', text: 'Capitale de la France ?', choices: ['Paris', 'Lyon', 'Nice'], correct: 0 },
+    { type: 'multi', text: 'Mammifères ?', choices: ['Chat', 'Truite', 'Chien'], correct: [0, 2] },
+    { type: 'text', text: 'Peintre de la Joconde ?', answers: ['Vinci'] },
+    { type: 'order', text: 'Du plus petit au plus grand', choices: ['1', '2', '3'] },
+    { type: 'poll', text: 'Tu aimes ?', choices: ['Oui', 'Non'] },
+  ],
+};
+
+// Alice répond toujours juste, Bob toujours faux
+function quizAnswer(q, i) {
+  const good = i === 0;
+  if (q.type === 'single') return { index: good ? q.choices.indexOf('Paris') : q.choices.indexOf('Lyon') };
+  if (q.type === 'multi') return { indexes: good ? [q.choices.indexOf('Chat'), q.choices.indexOf('Chien')] : [q.choices.indexOf('Truite')] };
+  if (q.type === 'text') return { text: good ? 'vinci' : 'Picasso' };
+  if (q.type === 'order') return { order: good ? ['1', '2', '3'].map((c) => q.choices.indexOf(c)) : ['3', '2', '1'].map((c) => q.choices.indexOf(c)) };
+  if (q.type === 'poll') return { index: 0 };
+  return null;
+}
+
+const tests = {
+  async 'quiz classique (5 types de questions)'() {
+    const game = await setupGame({ mode: 'standard', limitTime: false }, QUIZ);
+    assert.strictEqual(game.info.count, 5);
+    const { results, end, endPlayers } = await play(game, quizAnswer);
+    assert.deepStrictEqual(results.map((r) => r.okCount), [1, 1, 1, 1, 0]);
+    assert.strictEqual(end.questions, 4);
+    assert.deepStrictEqual(end.board.map((b) => [b.name, b.score]), [['Alice', 4], ['Bob', 0]]);
+    assert.strictEqual(end.missedCount, 4);
+    assert.strictEqual(endPlayers[0].rank, 1);
+    assert.strictEqual(endPlayers[1].mistakes.length, 4);
+    const replay = once(game.host, 'host:replayQuiz');
+    game.host.emit('host:replayMissed');
+    assert.strictEqual((await replay).questions.length, 4);
+    close(game);
+  },
+
+  async 'élimination'() {
+    const game = await setupGame({ mode: 'elimination' }, QUIZ);
+    const { results, end } = await play(game, quizAnswer);
+    assert.deepStrictEqual(results[0].outNow, ['Bob']);
+    assert.strictEqual(results[0].last, true); // un seul survivant : fin de partie
+    assert.deepStrictEqual(end.board.map((b) => [b.name, b.alive]), [['Alice', true], ['Bob', false]]);
+    close(game);
+  },
+
+  async 'cœurs et temps limité'() {
+    const game = await setupGame({ limitTime: true, time: 20, speedBonus: false, hearts: true, lives: 2 }, QUIZ);
+    const { results, endPlayers } = await play(game, quizAnswer);
+    assert.strictEqual(results.length, 2); // Bob perd ses 2 cœurs en 2 questions
+    assert.strictEqual(endPlayers[1].alive, false);
+    assert.strictEqual(endPlayers[0].hearts, 2);
+    close(game);
+  },
+
+  async 'bonus de rapidité'() {
+    const game = await setupGame({ limitTime: true, time: 20, speedBonus: true }, QUIZ);
+    const { end } = await play(game, quizAnswer);
+    assert.strictEqual(end.scoreMode, 'points');
+    assert.ok(end.board[0].score > 3500 && end.board[0].score <= 4000, 'score Alice : ' + end.board[0].score);
+    close(game);
+  },
+
+  async 'roue'() {
+    const pairs = [['I', 'un'], ['II', 'deux'], ['III', 'trois'], ['IV', 'quatre']].map(([q, a]) => ({ q, a }));
+    const game = await setupGame({ pairsView: 'wheel' }, { kind: 'wheel', title: 'Romains', category: 'Chiffres', pairs });
+    assert.strictEqual(game.info.kind, 'wheel');
+    const ans = (q, i) => {
+      const good = pairs.find((p) => p.q === q.text).a;
+      return { index: i === 0 ? q.choices.indexOf(good) : q.choices.findIndex((c) => c !== good) };
+    };
+    const { results, end } = await play(game, ans);
+    assert.strictEqual(results.length, 4);
+    assert.ok(results.every((r) => r.wheel && r.okCount === 1));
+    assert.deepStrictEqual(end.board.map((b) => b.score), [4, 0]);
+    close(game);
+  },
+
+  async 'relier'() {
+    const pairs = [['I', 'un'], ['II', 'deux'], ['III', 'trois']].map(([q, a]) => ({ q, a }));
+    const game = await setupGame({ pairsView: 'match' }, { kind: 'wheel', title: 'Romains', category: 'Chiffres', pairs });
+    const ans = (q, i) => {
+      const links = q.left.map((l) => q.choices.indexOf(pairs.find((p) => p.q === l).a));
+      return { links: i === 0 ? links : links.slice().reverse() };
+    };
+    const { results } = await play(game, ans);
+    assert.strictEqual(results.length, 1);
+    assert.strictEqual(results[0].okCount, 1);
+    close(game);
+  },
+
+  async 'jeu de mots'() {
+    const game = await setupGame({}, { kind: 'letters', title: 'Mots', items: [{ q: 'Capitale ?', word: 'Paris' }, { q: 'Animal ?', word: 'Chat' }] });
+    const words = { 'Capitale ?': 'PARIS', 'Animal ?': 'CHAT' };
+    const { results, end } = await play(game, (q, i) => ({ text: i === 0 ? words[q.text] : 'zzzz' }));
+    assert.deepStrictEqual(results.map((r) => r.okCount), [1, 1]);
+    assert.deepStrictEqual(end.board.map((b) => b.score), [2, 0]);
+    close(game);
+  },
+
+  async 'équipes'() {
+    const game = await setupGame({ mode: 'teams', teamCount: 2 }, QUIZ);
+    const { end, endPlayers } = await play(game, quizAnswer);
+    assert.strictEqual(end.teams.length, 2);
+    assert.notStrictEqual(endPlayers[0].team, endPlayers[1].team);
+    assert.deepStrictEqual(end.teams.map((t) => t.score), [4, 0]);
+    close(game);
+  },
+
+  async 'reconnexion d\'un joueur'() {
+    const game = await setupGame({}, QUIZ);
+    const { host, players } = game;
+    host.emit('host:start');
+    await once(host, 'question');
+    const { pin, pid, token } = players[1].info;
+    players[1].close();
+    const again = connect();
+    const back = once(again, 'question');
+    again.emit('player:rejoin', { pin, pid, token });
+    const q = await back;
+    assert.strictEqual(q.index, 0);
+    assert.strictEqual(q.text, 'Capitale de la France ?');
+    players[1] = again;
+    close(game);
+  },
+
+  async 'PIN inconnu'() {
+    const s = connect();
+    const e1 = once(s, 'join:error');
+    s.emit('player:join', { pin: '000000', name: 'Test' });
+    assert.strictEqual(await e1, 'Code PIN introuvable.');
+    s.close();
+  },
+};
+
+(async () => {
+  const srv = await startServer();
+  let failed = 0;
+  for (const [name, fn] of Object.entries(tests)) {
+    try {
+      await fn();
+      console.log('  ok   ' + name);
+    } catch (e) {
+      failed++;
+      console.log('  ÉCHEC ' + name + ' : ' + e.message);
+    }
+  }
+  srv.kill();
+  console.log(failed ? `\n${failed} test(s) en échec` : '\nTous les tests passent');
+  process.exit(failed ? 1 : 0);
+})();
