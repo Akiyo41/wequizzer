@@ -1,0 +1,3 @@
+# Garder des fins de ligne Unix (LF) partout, comme sur Render
+* text=auto eol=lf
+*.webp binary
