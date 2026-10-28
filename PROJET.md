@@ -15,13 +15,21 @@ Ancien nom « QuizFlash » : ne plus jamais l'utiliser.
 - Node.js ≥ 18, Express, Socket.IO, qrcode, @tabler/icons-webfont (servi sur `/icons`). Aucune base de données.
 - Les quiz, réglages et sessions sont dans le `localStorage` du navigateur de l'ANIMATEUR (clés `wequizzer.quizzes`, `.lastQuiz`, `.settings`, `.hostSession`, `.player`, `.device`, `.avatar`, `.name`). Migration automatique depuis `quizflash.*` dans `brand.js`.
 - Le serveur garde les parties en mémoire : `games[pin]` (perdu au redémarrage).
-- Hébergement : GitHub `Akiyo41/wequizzer` + Render gratuit « wequizzer » (Frankfurt, build `npm install`, start `node server.js`) → https://wequizzer.onrender.com (animateur `/host.html`, joueurs `/play.html`). Mise à jour : remplacer les fichiers sur GitHub, Render redéploie.
+- Hébergement : GitHub `Akiyo41/wequizzer` + Render gratuit « wequizzer » (Frankfurt, build `npm install`, start `node server.js`) → https://wequizzer.onrender.com (animateur `/host.html`, joueurs `/play.html`). Mise à jour : `git add -A`, `git commit -m "…"`, `git push` (le dossier local est un dépôt git relié à GitHub), Render redéploie.
 - Limites Render gratuit : s'endort après 15 min (réveil ~1 min), 750 h/mois, plafond de bande passante, disque éphémère, 512 Mo.
 
 ## Fichiers
-- `server.js` (~1500 lignes) : tout le serveur.
-- `public/host.html` : écran animateur (lobby, éditeurs, jeu, résultats, fin, suivi de course).
-- `public/play.html` : écran joueur (rejoindre, attente, question, roue, résultat, fin).
+- `server.js` : point d'entrée (Express, Socket.IO, lancement). La logique du jeu est dans `src/` :
+  - `config.js` : constantes et réglages par défaut (`DEFAULTS`).
+  - `utils.js` : `shuffle`, `rid`, `lanUrl`. `names.js` : filtre de pseudos. `settings.js` : `sanitize`.
+  - `quiz.js` : vérification des quiz (`cleanQuiz`, roue, jeu de mots), `buildQuestions`, `missedQuiz`.
+  - `answers.js` : `isCorrect`, `cleanAnswer`, textes des réponses, `mistakeEntry`.
+  - `rules.js` : modes, cœurs, équipes, classement (`rankedPlayers`, `computeTitles`, `teamBoard`).
+  - `game.js` : `games[pin]`, envoi des messages, minuterie et pause, déroulement des questions, fin, reprise après coupure, exclusions.
+  - `sockets.js` : tous les événements `host:*` et `player:*`, nettoyage des salles.
+- `tests/smoke.js` (`npm test`) : lance le serveur et joue des parties complètes (animateur + 2 joueurs). À lancer après chaque modification du serveur.
+- `public/host.html` + `public/host.js` : écran animateur (lobby, éditeurs, jeu, résultats, fin, suivi de course).
+- `public/play.html` + `public/play.js` : écran joueur (rejoindre, attente, question, roue, résultat, fin).
 - `public/index.html` : page d'accueil. `public/brand.js` : nom, logo, mascotte, intro, décor. `public/fx.js` : sons WebAudio, vibration, confettis, wake lock. `public/share.js` : image de partage (canvas). `public/wheel.js` : composant Roue. `public/style.css` : tout le style.
 - `public/img/` : bg-wide/bg-tall, cloud, star, desk, obj-*, logo, prof-{base,accueil,question,reflexion,bravo,desole} (.webp).
 - `questions.json` (quiz d'exemple, route `/api/sample-quiz`), `blocked-words.txt` (filtre de pseudos), `render.yaml`, `.gitignore`, `package.json`.
@@ -114,7 +122,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 14. Plus tard : comptes et groupes (lien permanent), appli installable (PWA), musique, reformulation finale des textes.
 
 ## Lancer en local
-`npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`.
+`npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
 - **Éditeur « Compléter la phrase »** (refait pour être clair pour tout le monde) : 1) la phrase avec ___ à la place du mot manquant, 2) la bonne réponse (case ✔), 3) 1 à 3 mauvaises réponses (cases ✖), aperçu « Les joueurs verront ». Les crochets ne sont plus utilisés dans l'éditeur ; le stockage garde `gapSrc` (avec [mot]) donc les anciens quiz et la bibliothèque marchent toujours. Principe : tout doit être compréhensible par n'importe qui, comme pour des enfants.
 - **Éditeurs refaits « pour des enfants »** : roue et jeu de mots en étapes numérotées (1 titre, 2 mot du centre, 3 lignes), exemple affiché, bouton « Remplir avec un exemple » (seulement si la zone est vide), « À savoir » ; textes d'aide plus clairs pour Ordre et Texte libre.

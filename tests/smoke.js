@@ -36,7 +36,7 @@ async function setupGame(settings, quiz) {
   const host = connect();
   const created = once(host, 'host:created');
   host.emit('host:create', { origin: URL });
-  const { pin } = await created;
+  const { pin, key } = await created;
   const sOk = once(host, 'host:settings');
   host.emit('host:settings', settings);
   await sOk;
@@ -51,7 +51,7 @@ async function setupGame(settings, quiz) {
     s.info = await ok;
     players.push(s);
   }
-  return { host, players, pin, info };
+  return { host, players, pin, info, hostKey: key };
 }
 
 // Joue toutes les questions : answerFor(question, joueur) renvoie la réponse à envoyer (ou null)
@@ -209,6 +209,46 @@ const tests = {
     assert.strictEqual(q.index, 0);
     assert.strictEqual(q.text, 'Capitale de la France ?');
     players[1] = again;
+    close(game);
+  },
+
+  async 'profil, pause, retour de l\'animateur, exclusion, salle d\'attente'() {
+    const game = await setupGame({}, QUIZ);
+    const { players } = game;
+    const prof = once(players[0], 'profile:ok');
+    players[0].emit('player:profile', { name: 'Alicia', avatar: players[0].info.avatar });
+    assert.strictEqual((await prof).name, 'Alicia');
+
+    game.host.emit('host:start');
+    await once(game.host, 'question');
+    const paused = once(players[0], 'paused');
+    game.host.emit('host:pause', true);
+    assert.strictEqual((await paused).paused, true);
+
+    // L'animateur perd la connexion puis revient avec sa clé
+    const { pin } = game;
+    const key = await new Promise((resolve) => {
+      const h = connect();
+      h.emit('host:rejoin', { pin, key: 'mauvaise' });
+      h.once('host:rejoin:error', () => { h.close(); resolve(null); });
+    });
+    assert.strictEqual(key, null);
+    game.host.close();
+    const host2 = connect();
+    const created = once(host2, 'host:created');
+    const back = once(host2, 'question');
+    host2.emit('host:rejoin', { pin, key: game.hostKey });
+    assert.strictEqual((await created).rejoined, true);
+    assert.strictEqual((await back).index, 0);
+    game.host = host2;
+
+    const kicked = once(players[1], 'kicked');
+    host2.emit('host:kick', { pid: players[1].info.pid, minutes: 5 });
+    assert.ok((await kicked).message.includes('5 min'));
+
+    const lobby = once(players[0], 'lobby');
+    host2.emit('host:reset');
+    assert.strictEqual((await lobby).name, 'Alicia');
     close(game);
   },
 
