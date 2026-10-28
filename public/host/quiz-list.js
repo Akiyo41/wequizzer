@@ -95,7 +95,6 @@ function renderQuizSelect() {
   });
   const has = library.length > 0;
   ['editQuiz', 'testQuiz', 'exportQuiz', 'deleteQuiz'].forEach((id) => { $(id).disabled = !has; });
-  $('testQuiz').disabled = !has || !!(currentQuiz() && currentQuiz().kind);
   applyKind();
 }
 const setInfo = (t) => { $('quizInfo').textContent = t; $('quizInfo2').textContent = t; };
@@ -128,7 +127,7 @@ socket.on('host:quiz:error', (msg) => {
 const onPick = (sel) => () => {
   selectedId = sel.value; saveLibrary();
   $('quizSelect').value = selectedId; $('quizSelect2').value = selectedId;
-  applyKind(); $('testQuiz').disabled = !!(currentQuiz() && currentQuiz().kind); pushQuiz(); pushSettings();
+  applyKind(); pushQuiz(); pushSettings();
 };
 $('quizSelect').onchange = onPick($('quizSelect'));
 $('quizSelect2').onchange = onPick($('quizSelect2'));

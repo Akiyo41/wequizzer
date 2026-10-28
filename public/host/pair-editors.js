@@ -54,8 +54,9 @@ $('wePasteGo').onclick = () => {
   $('weError').textContent = weRows.length > 100 ? '100 questions au maximum : enlève-en.' : 'Lignes ajoutées en bas de ta liste. Vérifie-les, puis enregistre.';
   weDraw();
 };
-$('weSave').onclick = () => {
-  const err = (m) => { $('weError').textContent = m; };
+// Vérifie le formulaire de la roue : renvoie { title, category, pairs }, ou null (avec un message d'erreur)
+function weBuild() {
+  const err = (m) => { $('weError').textContent = m; return null; };
   const title = $('weTitle').value.trim() || 'Roue sans titre';
   const category = $('weCategory').value.trim();
   const pairs = [];
@@ -81,6 +82,17 @@ $('weSave').onclick = () => {
     if (seen.has(p.a.toLowerCase())) return err('La bonne réponse « ' + p.a + ' » est écrite deux fois : chaque bonne réponse doit être différente.');
     seen.add(p.a.toLowerCase());
   }
+  $('weError').textContent = '';
+  return { title, category, pairs };
+}
+$('weTest').onclick = () => {
+  const w = weBuild();
+  if (w) startPreview({ kind: 'wheel', ...w }, 'wheelEditor');
+};
+$('weSave').onclick = () => {
+  const built = weBuild();
+  if (!built) return;
+  const { title, category, pairs } = built;
   if (wheelEditing) Object.assign(wheelEditing, { title, category, pairs });
   else {
     const w = { id: uid(), kind: 'wheel', title, category, pairs, questions: [] };
@@ -154,8 +166,9 @@ $('leExample').onclick = () => {
   if (!$('leTitle').value.trim()) $('leTitle').value = 'Mon premier jeu de mots';
   leDraw();
 };
-$('leSave').onclick = () => {
-  const err = (m) => { $('leError').textContent = m; };
+// Vérifie le formulaire du jeu de mots : renvoie { title, items }, ou null (avec un message d'erreur)
+function leBuild() {
+  const err = (m) => { $('leError').textContent = m; return null; };
   const title = $('leTitle').value.trim() || 'Jeu de mots sans titre';
   const items = [];
   const used = leUsed();
@@ -172,6 +185,17 @@ $('leSave').onclick = () => {
   }
   if (!items.length) return err('Ajoute au moins un mot.');
   if (items.length > 100) return err('100 mots au maximum.');
+  $('leError').textContent = '';
+  return { title, items };
+}
+$('leTest').onclick = () => {
+  const l = leBuild();
+  if (l) startPreview({ kind: 'letters', ...l }, 'lettersEditor');
+};
+$('leSave').onclick = () => {
+  const l = leBuild();
+  if (!l) return;
+  const { title, items } = l;
   if (lettersEditing) Object.assign(lettersEditing, { title, items });
   else {
     const w = { id: uid(), kind: 'letters', title, items, questions: [] };

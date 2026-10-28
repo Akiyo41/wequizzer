@@ -1,17 +1,43 @@
 // Test du quiz sans joueurs
 // ----- Test du quiz (aperçu, sans joueurs) -----
 let pv = null;
-function startPreview(quiz, back) {
-  // comme dans une vraie partie : les réponses sont mélangées
-  const mixed = { ...quiz, questions: quiz.questions.map((q) => {
+function mixList(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+// Questions du test, comme dans une vraie partie : réponses et lettres mélangées
+function previewQuestions(quiz) {
+  if (quiz.kind === 'wheel') {
+    // une question par paire : la bonne réponse + les fausses, complétées avec les réponses des autres paires
+    return quiz.pairs.map((p, i) => {
+      const wrongs = (p.w || []).slice(0, 3);
+      const filler = mixList(quiz.pairs.filter((x, j) => j !== i).map((x) => x.a).filter((t) => !wrongs.includes(t)));
+      while (wrongs.length < 3 && filler.length) wrongs.push(filler.shift());
+      const choices = mixList([p.a, ...wrongs]);
+      return { type: 'single', category: quiz.category, text: p.q, image: '', choices, correct: choices.indexOf(p.a) };
+    });
+  }
+  if (quiz.kind === 'letters') {
+    return quiz.items.map((it) => ({
+      type: 'letters', text: it.q, image: it.image || '', word: it.word,
+      tiles: mixList(Array.from(it.word).filter((c) => /[\p{L}\p{N}]/u.test(c)).map((c) => c.toLocaleUpperCase('fr'))),
+    }));
+  }
+  return quiz.questions.map((q) => {
     if (!['single', 'multi', 'poll'].includes(q.type)) return q;
-    const order = q.choices.map((_, i) => i).sort(() => Math.random() - 0.5);
+    const order = mixList(q.choices.map((_, i) => i));
     const out = { ...q, choices: order.map((i) => q.choices[i]) };
     if (q.type === 'single') out.correct = order.indexOf(q.correct);
     if (q.type === 'multi') out.correct = q.correct.map((c) => order.indexOf(c)).sort((a, b) => a - b);
     return out;
-  }) };
-  pv = { quiz: mixed, i: 0, back, shown: false };
+  });
+}
+function startPreview(quiz, back) {
+  pv = { quiz: { ...quiz, questions: previewQuestions(quiz) }, i: 0, back, shown: false };
   renderPreview();
   show('preview');
 }
@@ -19,12 +45,17 @@ function renderPreview() {
   const q = pv.quiz.questions[pv.i];
   const n = pv.quiz.questions.length;
   $('pvInfo').textContent = 'question ' + (pv.i + 1) + ' / ' + n;
-  $('pvText').textContent = q.text + (q.double ? '  ⚡ ×2' : '');
+  $('pvText').textContent = (q.category ? q.category + ' : ' : '') + q.text + (q.double ? '  ⚡ ×2' : '');
   if (q.image) { $('pvImg').src = q.image; $('pvImg').classList.remove('hidden'); } else $('pvImg').classList.add('hidden');
   const box = $('pvChoices');
   box.innerHTML = '';
   const correctSet = q.type === 'multi' ? q.correct : q.type === 'single' || q.type === 'tf' ? [q.correct] : [];
-  if (q.type === 'order') {
+  if (q.type === 'letters') {
+    const row = el('div', 'lt-row');
+    q.tiles.forEach((c) => row.appendChild(el('span', 'lt-tile', c)));
+    box.appendChild(row);
+    if (pv.shown) box.appendChild(el('div', 'textbox', 'Le mot : ' + q.word));
+  } else if (q.type === 'order') {
     const d = el('div', 'textbox');
     d.textContent = pv.shown ? 'Bon ordre : ' + q.choices.join(' → ') : 'Les joueurs remettent ces ' + q.choices.length + ' éléments dans l\'ordre';
     box.appendChild(d);
