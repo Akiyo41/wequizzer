@@ -1,19 +1,23 @@
 // Compte à rebours, question et mini-jeux (roue, jeu de mots, ordre, relier)
 // ----- Compte à rebours, lecture -----
+// Le compte à rebours s'arrête pendant une pause (voir « paused ») et reprend au même chiffre
+let cdTimer = null;
+let cdLeft = -1;
+function cdTick() {
+  $('cdNum').textContent = cdLeft;
+  $('cdNum').style.animation = 'none';
+  void $('cdNum').offsetWidth;
+  $('cdNum').style.animation = '';
+  FX.count();
+  cdLeft--;
+  if (cdLeft >= 0) cdTimer = setTimeout(cdTick, 1000);
+}
 socket.on('countdown', ({ seconds, index, total }) => {
   $('cdLabel').textContent = 'Question ' + (index + 1) + ' sur ' + total;
   show('countdown');
-  let n = seconds;
-  const tick = () => {
-    $('cdNum').textContent = n;
-    $('cdNum').style.animation = 'none';
-    void $('cdNum').offsetWidth;
-    $('cdNum').style.animation = '';
-    FX.count();
-    n--;
-    if (n >= 0) setTimeout(tick, 1000);
-  };
-  tick();
+  clearTimeout(cdTimer);
+  cdLeft = seconds;
+  cdTick();
 });
 socket.on('reading', (q) => {
   $('rdInfo').textContent = (q.index + 1) + ' / ' + q.total;

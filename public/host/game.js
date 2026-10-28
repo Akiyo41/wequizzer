@@ -107,29 +107,34 @@ socket.on('paused', ({ paused, reason, left }) => {
   if (paused) {
     clearInterval(timerInt);
     clearInterval(autoInt);
+    clearTimeout(cdTimer);
   } else {
     if (currentQ && currentQ.time && left !== null && left !== undefined && !$('question').classList.contains('hidden')) startTimer(currentQ.time, left);
     if (autoLeft !== null && !$('results').classList.contains('hidden')) startAuto(autoLeft);
+    if (cdLeft >= 0 && !$('countdown').classList.contains('hidden')) cdTimer = setTimeout(cdTick, 1000);
   }
 });
 
-// ----- Compte à rebours -----
+// ----- Compte à rebours (s'arrête pendant une pause et reprend au même chiffre) -----
+let cdTimer = null;
+let cdLeft = -1;
+function cdTick() {
+  $('cdNum').textContent = cdLeft;
+  $('cdNum').style.animation = 'none';
+  void $('cdNum').offsetWidth;
+  $('cdNum').style.animation = '';
+  FX.count();
+  cdLeft--;
+  if (cdLeft >= 0) cdTimer = setTimeout(cdTick, 1000);
+}
 socket.on('countdown', ({ seconds, index, total }) => {
   clearInterval(autoInt);
   clearInterval(readInt);
   $('cdLabel').textContent = 'Question ' + (index + 1) + ' sur ' + total;
   show('countdown');
-  let n = seconds;
-  const tick = () => {
-    $('cdNum').textContent = n;
-    $('cdNum').style.animation = 'none';
-    void $('cdNum').offsetWidth;
-    $('cdNum').style.animation = '';
-    FX.count();
-    n--;
-    if (n >= 0) setTimeout(tick, 1000);
-  };
-  tick();
+  clearTimeout(cdTimer);
+  cdLeft = seconds;
+  cdTick();
 });
 
 // ----- Lecture -----
@@ -327,7 +332,9 @@ socket.on('results', (r) => {
   const out = r.outNow && r.outNow.length;
   $('rOut').classList.toggle('hidden', !out && r.survivors === null);
   if (out || r.survivors !== null) {
-    $('rOut').textContent = (out ? '💀 Éliminé(s) : ' + r.outNow.join(', ') + '.  ' : 'Personne n\'est éliminé.  ') + 'Il reste ' + r.survivors + ' joueur' + (r.survivors > 1 ? 's' : '') + ' en jeu.';
+    // au pendu, le serveur n'envoie pas de nombre de survivants (ce sont les équipes qui comptent)
+    const left = r.survivors === null ? '' : 'Il reste ' + r.survivors + ' joueur' + (r.survivors > 1 ? 's' : '') + ' en jeu.';
+    $('rOut').textContent = (out ? '💀 Éliminé(s) : ' + r.outNow.join(', ') + '.  ' : 'Personne n\'est éliminé.  ') + left;
   }
   const rh = $('rHang');
   rh.innerHTML = '';

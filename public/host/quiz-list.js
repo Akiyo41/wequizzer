@@ -1,7 +1,8 @@
 // Mes quiz : lecture, enregistrement, choix du quiz
 // ----- Bibliothèque de quiz -----
+// Question enregistrée → question de l'éditeur (« Compléter la phrase » devient le type 'gap')
 function normQ(q) {
-  let type = ['single', 'tf', 'multi', 'text', 'poll', 'order'].includes(q.type) ? q.type : 'single';
+  let type = ['single', 'tf', 'multi', 'text', 'poll', 'order', 'gap'].includes(q.type) ? q.type : 'single';
   if (type === 'single' && q.gapSrc) type = 'gap';
   let choices = (q.choices || []).slice(0, type === 'order' ? 6 : 4).map(String);
   if (type === 'tf') choices = ['Vrai', 'Faux'];
@@ -9,6 +10,10 @@ function normQ(q) {
   if (type === 'multi') correct = Array.isArray(correct) ? correct.filter(Number.isInteger) : Number.isInteger(correct) ? [correct] : [];
   else if (Array.isArray(correct)) correct = correct.length ? correct[0] : 0;
   else if (!Number.isInteger(correct)) correct = 0;
+  if (type === 'gap' && !q.gapSrc) {
+    // déjà au format de l'éditeur (anciens imports) : phrase avec ___, bonne réponse en premier
+    return { type, text: String(q.text || ''), image: q.image || '', choices, correct: 0, answers: [], double: q.double === true, explain: String(q.explain || '') };
+  }
   if (type === 'gap') {
     // en édition : phrase avec ___, bonne réponse dans la case 1, mauvaises réponses dans les cases 2 à 4
     const src = String(q.gapSrc || '');
@@ -25,6 +30,13 @@ function normQ(q) {
     double: q.double === true,
     explain: String(q.explain || ''),
   };
+}
+// Question de l'éditeur → question enregistrée : « Compléter la phrase » devient un choix unique avec gapSrc
+function savedQ(n) {
+  if (n.type !== 'gap') return n;
+  const word = n.choices[0];
+  const wrongs = n.choices.slice(1).filter((c) => c.trim());
+  return { ...n, type: 'single', gapSrc: n.text.replace(/_{2,}/, '[' + word + ']'), text: n.text.replace(/_{2,}/, '_____'), choices: [word, ...wrongs], correct: 0 };
 }
 function validateQ(q) {
   if (!q.text.trim()) return 'le texte est vide';
@@ -61,6 +73,10 @@ async function initLibrary() {
     library.push(mkT('Vrai ou faux : animaux', 'Le dauphin est un poisson ; faux\nLa baleine est un mammifère ; vrai\nLes chauves-souris sont des oiseaux ; faux\nLe kangourou vit en Australie ; vrai\nLes araignées ont six pattes ; faux\nLe manchot vit au pôle Nord ; faux\nLe cœur de la crevette est dans sa tête ; vrai\nLes éléphants sont les seuls animaux qui ne savent pas sauter ; faux'));
     LS.set('wequizzer.tfSeed', true);
   }
+  // Répare les « Compléter la phrase » importés avant la correction (restés au format de l'éditeur)
+  library.forEach((quiz) => {
+    if (!quiz.kind && quiz.questions.some((q) => q.type === 'gap')) quiz.questions = quiz.questions.map((q) => (q.type === 'gap' ? savedQ(normQ(q)) : q));
+  });
   if (!currentQuiz() && library.length) selectedId = library[0].id;
   saveLibrary();
   renderQuizSelect();
@@ -146,7 +162,7 @@ $('exportQuiz').onclick = () => {
 function addImported(title, qs) {
   const bad = qs.findIndex((q) => validateQ(q));
   if (bad !== -1) throw new Error('Question ' + (bad + 1) + ' : ' + validateQ(qs[bad]));
-  const quiz = { id: uid(), title: String(title || 'Quiz importé').slice(0, 60), questions: qs };
+  const quiz = { id: uid(), title: String(title || 'Quiz importé').slice(0, 60), questions: qs.map(savedQ) };
   library.push(quiz);
   selectedId = quiz.id;
   saveLibrary();

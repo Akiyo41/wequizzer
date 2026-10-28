@@ -137,6 +137,14 @@ $('leaveBtn').onclick = async () => {
 socket.on('paused', ({ paused, reason, left }) => {
   $('pauseOv').classList.toggle('hidden', !paused);
   $('pauseMsg').textContent = reason === 'hostLost' ? "L'animateur a perdu la connexion. La partie reprendra bientôt." : "L'animateur a mis la partie en pause.";
-  if (paused) clearInterval(timerInt);
-  else if (curQ && curQ.time && left !== null && left !== undefined && curScreen === 'question') startTimer(curQ.time, left);
+  if (paused) {
+    clearInterval(timerInt);
+    clearTimeout(cdTimer);
+  } else {
+    if (curQ && curQ.time && left !== null && left !== undefined) {
+      if (curScreen === 'question') startTimer(curQ.time, left);
+      else if (curScreen === 'wheel') wheelTimer(curQ.time, left); // roue, relier, jeu de mots, ordre
+    }
+    if (curScreen === 'countdown' && cdLeft >= 0) cdTimer = setTimeout(cdTick, 1000);
+  }
 });
