@@ -154,7 +154,7 @@ function questionPayload(g, p, left) {
     wheel: !!q.wheel,
     match: !!q.match,
     order: q.type === 'order',
-    left: q.match ? q.left : null,
+    matchLeft: q.match ? q.left : null, // éléments à relier (`left` est le temps restant)
     category: q.wheel || q.match ? q.category : null,
     letters: !!q.letters,
     tiles: q.letters ? q.tiles : null,

@@ -1719,7 +1719,7 @@ socket.on('question', (q) => {
     const box = $('qMatch');
     box.innerHTML = '';
     const l = el('div', 'mcol'), r = el('div', 'mcol');
-    q.left.forEach((t) => l.appendChild(el('div', 'mitem', t)));
+    q.matchLeft.forEach((t) => l.appendChild(el('div', 'mitem', t)));
     q.choices.forEach((t) => r.appendChild(el('div', 'mitem alt', t)));
     box.appendChild(l); box.appendChild(el('div', 'marrow', '⇄')); box.appendChild(r);
   } else if (q.wheel || q.letters) $('choices').innerHTML = '';

@@ -458,9 +458,9 @@ socket.on('question', (q) => {
     } else if (q.match) {
       $('wQ').textContent = q.category;
       $('wImg').classList.add('hidden');
-      mt.left = q.left.slice();
+      mt.left = q.matchLeft.slice();
       mt.choices = q.choices.slice();
-      mt.links = q.left.map(() => null);
+      mt.links = q.matchLeft.map(() => null);
       mt.sel = 0;
       paintMatch();
     } else if (q.letters) {

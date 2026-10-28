@@ -168,7 +168,7 @@ const tests = {
     const pairs = [['I', 'un'], ['II', 'deux'], ['III', 'trois']].map(([q, a]) => ({ q, a }));
     const game = await setupGame({ pairsView: 'match' }, { kind: 'wheel', title: 'Romains', category: 'Chiffres', pairs });
     const ans = (q, i) => {
-      const links = q.left.map((l) => q.choices.indexOf(pairs.find((p) => p.q === l).a));
+      const links = q.matchLeft.map((l) => q.choices.indexOf(pairs.find((p) => p.q === l).a));
       return { links: i === 0 ? links : links.slice().reverse() };
     };
     const { results } = await play(game, ans);
@@ -250,6 +250,28 @@ const tests = {
     host2.emit('host:reset');
     assert.strictEqual((await lobby).name, 'Alicia');
     close(game);
+  },
+
+  async 'chrono gardé après reconnexion (quiz et relier)'() {
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const pairs = [['I', 'un'], ['II', 'deux'], ['III', 'trois']].map(([q, a]) => ({ q, a }));
+    for (const quiz of [QUIZ, { kind: 'wheel', title: 'Romains', category: 'Chiffres', pairs }]) {
+      const game = await setupGame({ limitTime: true, time: 20, pairsView: 'match' }, quiz);
+      game.host.emit('host:start');
+      const first = await once(game.host, 'question');
+      assert.strictEqual(first.left, 20);
+      await wait(1500);
+      const { pin, pid, token } = game.players[1].info;
+      game.players[1].close();
+      const again = connect();
+      const back = once(again, 'question');
+      again.emit('player:rejoin', { pin, pid, token });
+      const q = await back;
+      assert.ok(typeof q.left === 'number' && q.left < 19 && q.left > 15, 'temps restant reçu : ' + JSON.stringify(q.left));
+      if (quiz.kind) assert.strictEqual(q.matchLeft.length, 3);
+      game.players[1] = again;
+      close(game);
+    }
   },
 
   async 'PIN inconnu'() {
