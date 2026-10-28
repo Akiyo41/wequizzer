@@ -485,3 +485,14 @@ body.has-snd .screen.editor { padding-top: 54px; }
 .say-bubble::before { content: ''; position: absolute; left: -10px; top: 50%; transform: translateY(-50%); border: 10px solid transparent; border-left: 0; border-right-color: #fff; }
 @media (max-width: 640px) { .say .mascot { height: 80px; } .say-bubble { font-size: .98rem; } }
 @media (min-width: 900px) { .say .mascot { height: 130px; } .say-bubble { font-size: 1.3rem; padding: 14px 20px; } }
+
+/* Aide (FAQ) : questions dépliables + petits « ? » à côté des réglages */
+.faq { margin-top: 14px; text-align: left; }
+.faq details { border-top: 1px solid var(--line); padding: 4px 0; }
+.faq details:first-of-type { border-top: 0; }
+.faq summary { cursor: pointer; font-weight: 800; padding: 10px 4px; list-style: none; display: flex; align-items: center; gap: 10px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before { content: '+'; flex: 0 0 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #14213d; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; }
+.faq details[open] summary::before { content: '–'; }
+.faq details p { margin: 0 0 10px 40px; line-height: 1.45; color: var(--text); }
+.faq-q { width: 22px; height: 22px; border-radius: 50%; border: 0; background: var(--accent); color: #14213d; font-weight: 900; font-size: .8rem; font-family: inherit; cursor: pointer; vertical-align: middle; margin-left: 4px; padding: 0; line-height: 22px; }

@@ -2,7 +2,7 @@
 // Connexion ouverte seulement à la fin de host/game.js, quand tous les fichiers sont chargés
 const socket = io({ autoConnect: false });
 const $ = (id) => document.getElementById(id);
-const screens = ['lobby', 'editor', 'wheelEditor', 'lettersEditor', 'tfEditor', 'createPage', 'advPage', 'aiPage', 'libPage', 'statsPage', 'preview', 'countdown', 'reading', 'question', 'results', 'end'];
+const screens = ['lobby', 'editor', 'wheelEditor', 'lettersEditor', 'tfEditor', 'createPage', 'advPage', 'faqPage', 'aiPage', 'libPage', 'statsPage', 'preview', 'countdown', 'reading', 'question', 'results', 'end'];
 const LETTERS = ['A', 'B', 'C', 'D'];
 const TYPE_LABEL = {
   single: 'Choix unique',

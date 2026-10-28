@@ -54,7 +54,7 @@
       <div class="card settings pop" style="margin-top:18px">
         <h2><i class="ti ti-settings"></i> Réglages de la partie</h2>
 
-        <div class="row"><i class="ti ti-sword"></i><div class="rl">Mode de jeu<small>Seul, en équipes, par élimination ou en pendu</small></div>
+        <div class="row"><i class="ti ti-sword"></i><div class="rl">Mode de jeu <button class="faq-q" type="button" data-faq="faq-modes" aria-label="Aide : les modes de jeu">?</button><small>Seul, en équipes, par élimination ou en pendu</small></div>
           <select data-key="mode">
             <option value="standard">Quiz standard</option>
             <option value="teams">Mode équipes</option>
@@ -85,6 +85,7 @@
           <label class="sw"><input type="checkbox" data-key="showExplain"><span class="knob"></span></label></div>
 
         <button id="openAdv" class="btn ghost mini" type="button" style="margin-top:10px"><i class="ti ti-settings-2"></i> Réglages avancés</button>
+        <button id="openFaq" class="btn ghost mini" type="button" style="margin-top:10px"><i class="ti ti-help-circle"></i> Aide</button>
         <p class="hint" style="margin-top:10px"><i class="ti ti-device-floppy"></i> Tes réglages sont enregistrés automatiquement.</p>
       </div>
 
@@ -146,7 +147,7 @@
     <h1><i class="ti ti-settings-2"></i> Réglages avancés</h1>
     <div class="card settings" style="margin-top:14px">
       <h3 class="set-sec"><i class="ti ti-clock"></i> Temps</h3>
-      <div class="row" id="rowBonus"><i class="ti ti-bolt"></i><div class="rl">Compter les points selon la vitesse<small>Éteint : 1 point par bonne réponse. Allumé : de 500 à 1000 points, plus on répond vite plus on en gagne.</small></div>
+      <div class="row" id="rowBonus"><i class="ti ti-bolt"></i><div class="rl">Compter les points selon la vitesse <button class="faq-q" type="button" data-faq="faq-vitesse" aria-label="Aide : les points selon la vitesse">?</button><small>Éteint : 1 point par bonne réponse. Allumé : de 500 à 1000 points, plus on répond vite plus on en gagne.</small></div>
         <label class="sw"><input type="checkbox" data-key="speedBonus"><span class="knob"></span></label></div>
       <div class="row"><i class="ti ti-book"></i><div class="rl">Délai de lecture<small>La question seule, puis les réponses</small></div>
         <label class="sw"><input type="checkbox" data-key="readDelay"><span class="knob"></span></label></div>
@@ -160,11 +161,11 @@
 
     <div class="card settings">
       <h3 class="set-sec"><i class="ti ti-adjustments-horizontal"></i> Règles</h3>
-      <div class="row" id="rowHearts"><i class="ti ti-heart"></i><div class="rl">Cœurs<small>Une erreur = un cœur perdu. Plus de cœur : éliminé</small></div>
+      <div class="row" id="rowHearts"><i class="ti ti-heart"></i><div class="rl">Cœurs <button class="faq-q" type="button" data-faq="faq-coeurs" aria-label="Aide : les cœurs">?</button><small>Une erreur = un cœur perdu. Plus de cœur : éliminé</small></div>
         <label class="sw"><input type="checkbox" data-key="hearts"><span class="knob"></span></label></div>
       <div class="row sub" data-if="hearts"><i class="ti ti-heart-plus"></i><div class="rl">Nombre de cœurs</div>
         <select data-key="lives"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div>
-      <div class="row" id="rowBonusQ"><i class="ti ti-star"></i><div class="rl">Questions à points doubles<small>Les questions marquées valent le double</small></div>
+      <div class="row" id="rowBonusQ"><i class="ti ti-star"></i><div class="rl">Questions à points doubles <button class="faq-q" type="button" data-faq="faq-doubles" aria-label="Aide : les points doubles">?</button><small>Les questions marquées valent le double</small></div>
         <label class="sw"><input type="checkbox" data-key="bonusQuestions"><span class="knob"></span></label></div>
       <div class="row"><i class="ti ti-arrow-back-up"></i><div class="rl">Changer sa réponse<small>Le joueur peut changer d'avis avant la fin de la question</small></div>
         <label class="sw"><input type="checkbox" data-key="changeAnswer"><span class="knob"></span></label></div>
@@ -192,6 +193,77 @@
         </select></div>
     </div>
     <div><button id="advBack" class="btn ghost big"><i class="ti ti-arrow-left"></i> Retour</button></div>
+  </div>
+
+  <!-- Aide (FAQ) : chaque question se déplie ; les « ? » des réglages ouvrent directement la bonne (data-faq="id") -->
+  <div id="faqPage" class="screen editor hidden">
+    <h1><i class="ti ti-help-circle"></i> Aide</h1>
+    <p class="hint" style="margin-top:6px">Touche une question pour lire la réponse.</p>
+
+    <div class="card faq">
+      <h3 class="set-sec"><i class="ti ti-trophy"></i> Les points</h3>
+      <details id="faq-points"><summary>Comment on gagne des points ?</summary>
+        <p>De base, c'est simple : <b>1 bonne réponse = 1 point</b>. Une mauvaise réponse ne fait rien perdre.</p>
+        <p>Les sondages ne rapportent rien : il n'y a pas de bonne réponse, on donne juste son avis.</p></details>
+      <details id="faq-vitesse"><summary>« Compter les points selon la vitesse », ça change quoi ?</summary>
+        <p>Si le <b>Chrono</b> est allumé, tu peux récompenser les plus rapides : une bonne réponse rapporte alors <b>de 500 à 1 000 points</b>. Répondre tout de suite = 1 000 ; répondre à la dernière seconde = 500.</p>
+        <p>Sans chrono, ce réglage n'existe pas (on ne peut pas mesurer la vitesse si le temps est illimité).</p></details>
+      <details id="faq-doubles"><summary>C'est quoi, les questions à points doubles ?</summary>
+        <p>Dans l'éditeur, tu peux cocher « Question bonus » sur une question : elle vaut <b>le double</b> (2 points au lieu de 1, ou 1 000 à 2 000 avec la vitesse). Les joueurs voient « ⭐ Bonus ×2 » pour les prévenir.</p>
+        <p>Le réglage « Questions à points doubles » apparaît seulement si ton quiz en contient. Éteins-le pour que toutes les questions comptent pareil.</p></details>
+      <details id="faq-classement"><summary>Et si deux joueurs ont le même score ?</summary>
+        <p>Le plus rapide gagne : on additionne le temps mis pour chaque bonne réponse, et le plus petit total passe devant.</p>
+        <p>Pendant le quiz, personne ne voit de classement : tout le monde le découvre à la fin, sur le podium.</p></details>
+    </div>
+
+    <div class="card faq">
+      <h3 class="set-sec"><i class="ti ti-sword"></i> Les modes de jeu</h3>
+      <details id="faq-modes"><summary>Quelle différence entre les modes ?</summary>
+        <p><b>Quiz standard</b> : chacun pour soi, le meilleur score gagne.</p>
+        <p><b>Équipes</b> : les joueurs sont répartis en 2 à 4 équipes (au hasard, ou c'est toi qui choisis). Le score d'une équipe est la <b>moyenne</b> de ses joueurs : une petite équipe n'est donc pas désavantagée.</p>
+        <p><b>Élimination</b> : une mauvaise réponse (ou pas de réponse) et tu sors ! Le dernier en jeu gagne. Si tout le monde se trompe sur la même question, personne n'est éliminé (sinon, la partie s'arrêterait d'un coup).</p>
+        <p><b>Pendu (en équipe)</b> : chaque mauvaise réponse d'un joueur ajoute un morceau au pendu de son équipe. À 6 morceaux, l'équipe est pendue et éliminée. La dernière équipe encore debout gagne.</p></details>
+      <details id="faq-coeurs"><summary>Comment marchent les cœurs ?</summary>
+        <p>Chaque joueur commence avec 1 à 5 cœurs (c'est toi qui choisis). Une mauvaise réponse, ou pas de réponse, fait perdre <b>un cœur</b>. Plus de cœur : éliminé, mais il peut encore regarder la partie.</p>
+        <p>Si tout le monde devait tomber à zéro en même temps, personne ne sort : on garde la partie en vie.</p>
+        <p>Les cœurs ne s'utilisent pas en mode Élimination ni au Pendu (ces modes ont déjà leurs propres règles). Ils marchent avec « Compter les points selon la vitesse » : les cœurs décident qui reste en jeu, les points servent à départager.</p></details>
+    </div>
+
+    <div class="card faq">
+      <h3 class="set-sec"><i class="ti ti-pencil"></i> Les questions</h3>
+      <details id="faq-ecrites"><summary>Les réponses écrites : et les fautes d'orthographe ?</summary>
+        <p>Le Professeur est indulgent ! Les <b>accents</b>, les <b>majuscules</b> et la ponctuation ne comptent pas. Les petites fautes de frappe sont pardonnées : <b>1 faute</b> pour un mot de 5 lettres ou plus, <b>2 fautes</b> à partir de 10 lettres. Et « coeur » vaut « cœur ».</p>
+        <p>Si plusieurs réponses sont bonnes (« Pacifique » ou « Océan Pacifique »), écris-les toutes dans l'éditeur, séparées par un point-virgule « ; ».</p></details>
+      <details id="faq-explications"><summary>Comment ajouter une explication ?</summary>
+        <p>Dans l'éditeur, sous chaque question, remplis la case « Explication après la réponse ». Après la question, le Professeur l'explique dans sa bulle, sur ton écran et sur les téléphones.</p>
+        <p>Le réglage « Montrer l'explication » apparaît seulement si ton quiz en a au moins une.</p></details>
+      <details id="faq-roue"><summary>La roue, Relier, le jeu de mots : c'est quoi ?</summary>
+        <p><b>La roue</b> : une liste de petites questions avec leurs réponses. Sur son téléphone, le joueur fait tourner la roue pour mettre la bonne réponse face à la question, puis valide. Tu peux écrire jusqu'à 3 fausses réponses par question ; s'il en manque, on prend les réponses des autres questions.</p>
+        <p><b>Relier</b> : les mêmes questions, mais par groupes de 2 à 4 à relier chacune à sa réponse. Tout doit être juste pour gagner le point. Tu choisis entre roue et Relier dans « Façon de jouer les paires ».</p>
+        <p><b>Le jeu de mots</b> : une question, et les lettres du mot en désordre. Le joueur les remet dans l'ordre. Les espaces et les tirets se placent tout seuls.</p></details>
+    </div>
+
+    <div class="card faq">
+      <h3 class="set-sec"><i class="ti ti-player-play"></i> Pendant la partie</h3>
+      <details id="faq-pause"><summary>Je peux faire une pause ?</summary>
+        <p>Oui : le bouton « Pause » en haut arrête le chrono pour tout le monde. Les joueurs voient que la partie est en pause. « Reprendre » relance tout là où c'était.</p></details>
+      <details id="faq-changer"><summary>Un joueur peut changer sa réponse ?</summary>
+        <p>Seulement si tu allumes « Changer sa réponse » dans les Réglages avancés. Alors la question ne se termine plus toute seule quand tout le monde a répondu : c'est toi qui passes à la suite, ou le chrono.</p></details>
+      <details id="faq-retard"><summary>Et si quelqu'un arrive en retard ?</summary>
+        <p>Il peut entrer le code pendant la partie : il attend dans la file d'attente et joue dès la partie suivante (« Rejouer ce quiz » ou « Nouvelle partie »). Tout le monde garde le même code.</p></details>
+      <details id="faq-exclure"><summary>Comment exclure un joueur ?</summary>
+        <p>Touche son nom dans la liste des joueurs (ou dans le bouton des joueurs en haut pendant la partie), puis choisis pour combien de temps : 5 minutes, 15 minutes, 1 heure, ou sans limite (jusqu'à ce que tu fermes la salle).</p></details>
+      <details id="faq-coupure"><summary>Et si je perds la connexion ?</summary>
+        <p>Pas de panique : la partie se met en <b>pause toute seule</b> et la salle t'attend <b>15 minutes</b>. Recharge la page (sur le même navigateur) et tu retrouves ta partie. Pour les joueurs, c'est pareil : ils reviennent tout seuls.</p></details>
+    </div>
+
+    <div class="card faq">
+      <h3 class="set-sec"><i class="ti ti-books"></i> Mes quiz</h3>
+      <details id="faq-sauvegarde"><summary>Où sont enregistrés mes quiz ?</summary>
+        <p>Dans <b>ce navigateur</b>, sur cet ordinateur. Sur un autre ordinateur, ou dans un autre navigateur, tu ne les retrouveras pas : utilise toujours le même.</p>
+        <p>Pour en garder une copie (ou les emporter ailleurs), va dans « Mes quiz », bouton ⋯ puis « Enregistrer ce quiz dans un fichier ». Pour le récupérer : « Ouvrir un quiz depuis un fichier ».</p></details>
+    </div>
+    <div><button id="faqBack" class="btn ghost big"><i class="ti ti-arrow-left"></i> Retour</button></div>
   </div>
 
   <!-- Éditeur de quiz -->
@@ -495,6 +567,7 @@
   <script src="host/tf-editor.js"></script>
   <script src="host/editor-check.js"></script>
   <script src="host/preview.js"></script>
+  <script src="host/faq.js"></script>
   <script src="host/game.js"></script>
 </body>
 </html>
