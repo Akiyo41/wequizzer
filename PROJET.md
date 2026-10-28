@@ -28,7 +28,9 @@ Ancien nom « QuizFlash » : ne plus jamais l'utiliser.
   - `game.js` : `games[pin]`, envoi des messages, minuterie et pause, déroulement des questions, fin, reprise après coupure, exclusions.
   - `sockets.js` : tous les événements `host:*` et `player:*`, nettoyage des salles.
 - `tests/smoke.js` (`npm test`) : lance le serveur et joue des parties complètes (animateur + 2 joueurs). À lancer après chaque modification du serveur.
-- `public/host.html` + `public/host.js` : écran animateur (lobby, éditeurs, jeu, résultats, fin, suivi de course).
+- `public/host.html` : écran animateur (lobby, éditeurs, jeu, résultats, fin, suivi de course). Son code est dans `public/host/`, chargé dans cet ordre (chaque fichier peut utiliser ce que les précédents définissent ; même portée globale qu'un seul fichier) :
+  `base.js` (outils, stockage, paramètres) → `connection.js` (connexion, création de la partie, invitation) → `quiz-list.js` (mes quiz) → `ai-import.js` (IA / CSV) → `editor.js` (onglets, éditeur de quiz) → `pair-editors.js` (roue, jeu de mots) → `library-stats.js` (bibliothèque, statistiques) → `tf-editor.js` (Vrai/Faux en rafale) → `editor-check.js` (réglages selon le quiz, vérification de l'éditeur) → `preview.js` (tester un quiz) → `game.js` (déroulement de la partie).
+  La connexion au serveur (`socket.connect()`) se fait à la fin de `game.js`, une fois tout chargé : ne pas la déplacer. Un nouveau fichier doit être ajouté dans `host.html` au bon endroit.
 - `public/play.html` + `public/play.js` : écran joueur (rejoindre, attente, question, roue, résultat, fin).
 - `public/index.html` : page d'accueil. `public/brand.js` : nom, logo, mascotte, intro, décor. `public/fx.js` : sons WebAudio, vibration, confettis, wake lock. `public/share.js` : image de partage (canvas). `public/wheel.js` : composant Roue. `public/style.css` : tout le style.
 - `public/img/` : bg-wide/bg-tall, cloud, star, desk, obj-*, logo, prof-{base,accueil,question,reflexion,bravo,desole} (.webp).
