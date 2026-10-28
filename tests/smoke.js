@@ -313,6 +313,30 @@ const tests = {
     close(game);
   },
 
+  async 'cœur perdu oublié à la partie suivante'() {
+    const quiz = { title: 'TF', questions: [{ type: 'tf', text: 'Vrai ?', correct: 0 }] };
+    const game = await setupGame({ hearts: true, speedBonus: false, lives: 3 }, quiz);
+    const { host, players } = game;
+    await play(game, (q, i) => ({ index: i })); // Bob se trompe et perd un cœur
+    const lobby = once(host, 'lobby');
+    host.emit('host:reset');
+    await lobby;
+    const sOk = once(host, 'host:settings');
+    host.emit('host:settings', { hearts: false });
+    await sOk;
+    const qOk = once(host, 'host:quiz:ok');
+    host.emit('host:quiz', quiz);
+    await qOk;
+    const res = once(players[1], 'result');
+    host.emit('host:start');
+    await once(host, 'question');
+    players.forEach((p) => p.emit('player:answer', { index: 0 })); // tout le monde a juste
+    const r = await res;
+    assert.strictEqual(r.correct, true);
+    assert.strictEqual(r.lostHeart, false);
+    close(game);
+  },
+
   async 'PIN inconnu'() {
     const s = connect();
     const e1 = once(s, 'join:error');

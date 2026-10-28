@@ -114,6 +114,7 @@ function resetPlayerStats(p) {
   p.team = null;
   p.lastResult = null;
   p.hearts = null;
+  p.lostHeart = false;
   p.mistakes = [];
 }
 
