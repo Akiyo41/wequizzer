@@ -72,6 +72,16 @@ const Brand = (() => {
     return i;
   }
   function setPose(el, pose) { if (el) { el.dataset.mascot = pose; apply(el.parentNode); } }
+  // Le Professeur parle : sa pose à gauche, une bulle de BD avec le texte à droite (box reçoit la classe « say »)
+  function say(box, text, pose) {
+    box.textContent = '';
+    box.classList.add('say');
+    box.appendChild(img(BRAND.poses[pose || 'explication'] || BRAND.poses.base, 'mascot', BRAND.mascotName));
+    const b = document.createElement('div');
+    b.className = 'say-bubble';
+    b.textContent = text;
+    box.appendChild(b);
+  }
   document.addEventListener('DOMContentLoaded', () => { apply(); });
-  return { apply, setPose, img, intro, preload };
+  return { apply, setPose, img, intro, preload, say };
 })();

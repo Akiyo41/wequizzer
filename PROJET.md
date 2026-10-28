@@ -108,7 +108,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 ## À ajouter (chacun attend un « go »)
 1. Page d'entrée « Tu es ? » (Animateur / Joueur), animateur d'abord.
 2. Barre d'onglets en bas côté animateur : Jeu (QR + PIN en premier, choix du quiz et du mode, gros bouton Lancer), Questions, Paramètres ; Compte et Groupe grisés « Bientôt ». Mise en page moins basique (cadre central, décor sur les bords).
-3. Professeur qui parle (bulles sur tous les écrans, textes dans un seul fichier, ton tutoiement drôle et encourageant).
+3. Professeur qui parle (bulles sur tous les écrans, textes dans un seul fichier, ton tutoiement drôle et encourageant). (fait, étape 1) L'explication après chaque question s'affiche dans une bulle de BD à côté du Professeur en pose « explication » : `Brand.say(boîte, texte, pose)` dans `public/brand.js`, style `.say` / `.say-bubble` dans `style.css`. Joueur : la bulle remplace la mascotte du haut. Animateur : la bulle est dans la carte de résultat, la mascotte du coin garde bravo / désolé. Reste : les autres écrans et le fichier de textes.
 4. (fait) Cœurs / points bonus.
 5. Écran animateur plus intuitif : choix clair « Quiz carrés » / « Roue » au départ, création plus visible.
 6. Bouton d'invitation (WhatsApp, copier le lien, partager ; lien `play.html?pin=XXXXXX`, PIN constant pendant la session de l'animateur).

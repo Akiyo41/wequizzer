@@ -315,9 +315,9 @@ socket.on('results', (r) => {
   $('rText').textContent = r.text || (currentQ ? currentQ.text : '');
   const ct = r.order ? 'Bon ordre : ' + r.correctText : r.match ? 'Bonnes liaisons : ' + r.correctText : r.type === 'text' ? 'Réponse(s) acceptée(s) : ' + r.correctText : r.correctText ? 'Bonne réponse : ' + r.correctText : 'Voici les votes';
   $('rCorrect').textContent = ct;
+  // explication : le petit Professeur l'explique dans sa bulle (la mascotte du coin garde bravo / désolé)
   $('rExplain').classList.toggle('hidden', !r.explain);
-  $('rExplain').textContent = r.explain ? '💡 ' + r.explain : '';
-  if (r.explain) Brand.setPose($('resMascot'), 'explication');
+  if (r.explain) Brand.say($('rExplain'), r.explain);
   $('rScore').classList.toggle('hidden', r.type === 'poll' || !r.partCount);
   $('rScore').innerHTML = '<i class="ti ti-circle-check"></i> ' + r.okCount + ' / ' + r.partCount + ' ont bien répondu';
   if (r.wheel || r.match || r.order) $('rChoices').innerHTML = '';

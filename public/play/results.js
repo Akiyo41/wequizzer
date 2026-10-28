@@ -48,9 +48,10 @@ socket.on('result', (r) => {
     hm.innerHTML = Hangman.svg(r.hangErrors, '#14213d', 110);
     hm.appendChild(el('span', '', r.hangErrors >= r.hangMax ? '💀 Le pendu de ton équipe est complet…' : 'Pendu de ton équipe : ' + r.hangErrors + ' / ' + r.hangMax));
   }
+  // explication : le Professeur l'explique dans sa bulle (il remplace la mascotte du haut)
   $('resExplain').classList.toggle('hidden', !r.explain);
-  $('resExplain').textContent = r.explain ? '💡 ' + r.explain : '';
-  if (r.explain) Brand.setPose($('resMascot'), 'explication');
+  if (r.explain) Brand.say($('resExplain'), r.explain);
+  $('resMascot').classList.toggle('hidden', !!r.explain);
   const stats = $('resStats');
   stats.innerHTML = '';
   if (r.type !== 'poll' && r.myTotal) stats.appendChild(stat('Tes bonnes réponses', r.myCorrect + ' / ' + r.myTotal));
