@@ -1,13 +1,13 @@
 // Événements Socket.IO de l'animateur et des joueurs
 const QRCode = require('qrcode');
-const { AVATARS, DEFAULTS, HOST_GRACE_MS, LOBBY_GRACE_MS, MAX_PLAYERS, REACTIONS } = require('./config');
+const { AVATARS, DEFAULTS, HOST_GRACE_MS, LOBBY_GRACE_MS, MAX_GAMES, MAX_PLAYERS, REACTIONS } = require('./config');
 const { lanUrl, rid } = require('./utils');
 const { isBlocked } = require('./names');
 const { sanitize } = require('./settings');
 const { buildQuestions, cleanQuiz, missedQuiz, quizCount } = require('./quiz');
 const { cleanAnswer } = require('./answers');
 const { assignTeams, bonusOn, heartsOn, isTeamMode, resetPlayerStats } = require('./rules');
-const { advance, allPeople, banLeft, banMessage, beginRound, clearTimer, clientIp, elapsed, endQuestion, games, joinInfo, maybeEndEarly, newPin, pickAvatar, progressPayload, qTime, removePlayer, resetGame, sendHostPlayers, sendHostState, sendPlayerState, setPaused, settingsPayload, toHost, toPlayer } = require('./game');
+const { advance, allPeople, banLeft, banMessage, beginRound, clientIp, closeGame, elapsed, endQuestion, games, joinInfo, maybeEndEarly, newPin, pickAvatar, progressPayload, qTime, removePlayer, resetGame, sendHostPlayers, sendHostState, sendPlayerState, setPaused, settingsPayload, toHost, toPlayer } = require('./game');
 
 function setupSockets(io) {
   io.on('connection', (socket) => {
@@ -22,6 +22,12 @@ function setupSockets(io) {
       const isLocal = !origin || /localhost|127\.0\.0\.1|\[::1\]/.test(origin);
       const lan = lanUrl();
       const base = isLocal && lan ? lan : origin || lan || '';
+      // Une connexion n'anime qu'une salle à la fois : l'ancienne est fermée
+      const old = hostGame();
+      if (old) closeGame(old);
+      if (Object.keys(games).length >= MAX_GAMES) {
+        return socket.emit('host:create:error', 'Le serveur est plein pour le moment. Réessaie dans quelques minutes.');
+      }
       const pin = newPin();
       const g = {
         pin,
@@ -183,10 +189,7 @@ function setupSockets(io) {
     // Ferme complètement la salle
     socket.on('host:close', () => {
       const g = hostGame();
-      if (!g) return;
-      clearTimer(g);
-      allPeople(g).forEach((p) => toPlayer(p, 'host:left'));
-      delete games[g.pin];
+      if (g) closeGame(g);
     });
 
     // ---------- Joueurs ----------
@@ -337,9 +340,7 @@ function setupSockets(io) {
     const now = Date.now();
     Object.values(games).forEach((g) => {
       if (!g.host && g.hostGoneAt && now - g.hostGoneAt > HOST_GRACE_MS) {
-        clearTimer(g);
-        allPeople(g).forEach((p) => toPlayer(p, 'host:left'));
-        delete games[g.pin];
+        closeGame(g);
         return;
       }
       if (g.state === 'lobby') {

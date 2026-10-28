@@ -25,6 +25,8 @@ function mistakeEntry(q, answer) {
 function normAnswer(s) {
   return String(s)
     .toLowerCase()
+    .replace(/œ/g, 'oe') // « cœur » = « coeur »
+    .replace(/æ/g, 'ae')
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9 ]/g, ' ')

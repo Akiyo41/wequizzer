@@ -3,6 +3,7 @@
 const PORT = process.env.PORT || 3000;
 const COUNTDOWN = 3; // secondes avant chaque question
 const MAX_PLAYERS = 200;
+const MAX_GAMES = 300; // salles ouvertes en même temps sur le serveur (protège la mémoire)
 const AVATARS = ['🦊', '🐼', '🐸', '🦁', '🐙', '🐵', '🦄', '🐯', '🐧', '🐢', '🦉', '🐳', '🐰', '🐨', '🦖', '🐝'];
 const REACTIONS = ['👏', '😂', '😮', '🔥', '😢', '❤️'];
 const THEMES = ['wequizzer']; // d'autres thèmes (enfant, ados, adulte…) pourront s'ajouter ici
@@ -54,4 +55,4 @@ const DEFAULTS = {
   reviewErrors: true, // les joueurs peuvent revoir leurs erreurs à la fin
 };
 
-module.exports = { PORT, THEMES, TIME_CHOICES, AUTO_DELAYS, READ_DELAYS, MODES, WHEEL_Q_MAX, WHEEL_A_MAX, WHEEL_MAX, MAX_PAIRS, HANG_MAX, TEAMS, COUNTDOWN, AVATARS, MAX_PLAYERS, REACTIONS, HOST_GRACE_MS, LOBBY_GRACE_MS, DEFAULTS };
+module.exports = { PORT, THEMES, TIME_CHOICES, AUTO_DELAYS, READ_DELAYS, MODES, WHEEL_Q_MAX, WHEEL_A_MAX, WHEEL_MAX, MAX_PAIRS, HANG_MAX, TEAMS, COUNTDOWN, AVATARS, MAX_PLAYERS, MAX_GAMES, REACTIONS, HOST_GRACE_MS, LOBBY_GRACE_MS, DEFAULTS };

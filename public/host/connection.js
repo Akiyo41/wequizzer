@@ -26,6 +26,7 @@ socket.on('host:rejoin:error', () => {
   LS.del(SESSION_KEY);
   socket.emit('host:create', { origin: location.origin });
 });
+socket.on('host:create:error', (msg) => alert(msg));
 // ----- Inviter des joueurs (menu de partage du téléphone, copier le lien) -----
 let inviteUrl = '';
 if (!navigator.share) $('invShare').classList.add('hidden');

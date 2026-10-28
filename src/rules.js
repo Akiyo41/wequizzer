@@ -69,10 +69,9 @@ function computeTitles(g, ranked) {
 }
 
 function teamBoard(g) {
-  const count = g.teamCount;
   const rows = [];
   const hang = g.settings.mode === 'hangman';
-  for (let t = 0; t < count; t++) {
+  for (const t of g.teams) {
     const members = Object.values(g.players).filter((p) => p.team === t);
     const total = members.reduce((s, p) => s + p.score, 0);
     rows.push({
@@ -136,11 +135,13 @@ function assignTeams(g) {
       p.team = t;
       size[t]++;
     });
-    return;
+  } else {
+    shuffle(all).forEach((p, i) => {
+      p.team = i % g.teamCount;
+    });
   }
-  shuffle(all).forEach((p, i) => {
-    p.team = i % g.teamCount;
-  });
+  // Équipes en jeu : seulement celles qui ont au moins un joueur
+  g.teams = [...new Set(all.map((p) => p.team))].sort((a, b) => a - b);
 }
 
 module.exports = { isTeamMode, teamInfo, heartsOn, activePlayers, rankedPlayers, computeTitles, teamBoard, resetPlayerStats, bonusOn, assignTeams };

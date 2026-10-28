@@ -274,6 +274,45 @@ const tests = {
     }
   },
 
+  async 'une connexion qui recrée une salle ferme l\'ancienne'() {
+    const host = connect();
+    const pins = [];
+    for (let i = 0; i < 2; i++) {
+      const created = once(host, 'host:created');
+      host.emit('host:create', { origin: URL });
+      pins.push((await created).pin);
+    }
+    const s = connect();
+    const err = once(s, 'join:error');
+    s.emit('player:join', { pin: pins[0], name: 'Zoe' });
+    assert.strictEqual(await err, 'Code PIN introuvable.');
+    s.close();
+    host.close();
+  },
+
+  async 'réponses écrites avec œ et æ'() {
+    const { isCorrect } = require('../src/answers');
+    const ok = (ans, typed) => isCorrect({ type: 'text', answers: [ans] }, typed);
+    assert.ok(ok('cœur', 'coeur'));
+    assert.ok(ok('cœur', 'cœur'));
+    assert.ok(ok('coeur', 'cœur'));
+    assert.ok(ok('Œdipe', 'oedipe'));
+    assert.ok(ok('Lætitia', 'laetitia'));
+    assert.ok(!ok('Œdipe', 'Ulysse'));
+  },
+
+  async 'pendu avec des équipes choisies : pas d\'équipe vide'() {
+    const game = await setupGame({ mode: 'hangman', teamCount: 3, teamAssign: 'manual' }, {
+      title: 'Pendu',
+      questions: Array.from({ length: 10 }, (_, i) => ({ type: 'tf', text: 'Q' + i, correct: 0 })),
+    });
+    game.players.forEach((p, i) => game.host.emit('host:team', { pid: p.info.pid, team: i }));
+    const { results, end } = await play(game, (q, i) => ({ index: i }));
+    assert.strictEqual(results.length, 6); // l'équipe de Bob est pendue à la 6e erreur : fin
+    assert.deepStrictEqual(end.teams.map((t) => t.members), [1, 1]);
+    close(game);
+  },
+
   async 'PIN inconnu'() {
     const s = connect();
     const e1 = once(s, 'join:error');

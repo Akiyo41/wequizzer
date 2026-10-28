@@ -40,8 +40,8 @@ Ancien nom « QuizFlash » : ne plus jamais l'utiliser.
 - États d'une partie : `lobby → countdown (3 s) → [reading] → question → results → … → end`. `reset` renvoie au lobby.
 - Fonctions clés : `sanitize` (réglages), `cleanQuiz` / `cleanWheel`, `buildQuestions`, `beginRound → startReading → startQuestion → endQuestion → advance → endGame`, `isCorrect`, `cleanAnswer`, `rankedPlayers`, `computeTitles`, `sendPlayerState` / `sendHostState` (reprise après coupure).
 - Événements animateur : `host:create / rejoin / quiz / settings / kick / start / pause / skip / next / reset / close`. Joueur : `player:join / rejoin / answer / react / leave`. Serveur → clients : `lobby, countdown, reading, question, progress, results, result, end, paused, answer:ack, game:settings, join:ok, queued, kicked, host:left`.
-- Identité stable des joueurs (pid + token) ; l'animateur revient avec `hostKey`. Pause automatique si l'animateur est déconnecté ; salle supprimée après 15 min sans animateur. Max 200 joueurs. Bannissement par appareil + IP. File d'attente pour les arrivées tardives.
-- Types de questions : single, tf, multi, text (tolérance de fautes, Levenshtein), poll. Max 100 questions, 2 à 4 réponses.
+- Identité stable des joueurs (pid + token) ; l'animateur revient avec `hostKey`. Pause automatique si l'animateur est déconnecté ; salle supprimée après 15 min sans animateur. Une connexion n'anime qu'une salle (en recréer une ferme l'ancienne) ; 300 salles max sur le serveur (`MAX_GAMES`). Max 200 joueurs. Bannissement par appareil + IP. File d'attente pour les arrivées tardives.
+- Types de questions : single, tf, multi, text (tolérance de fautes, Levenshtein ; œ = oe, æ = ae), poll. Max 100 questions, 2 à 4 réponses.
 
 ## Règles de jeu
 - Points (seulement si temps limité ET bonus de rapidité) : `500 + 500 × (1 − temps_de_réponse / durée)` ; sinon 1 point par bonne réponse. Question bonus : ×2.

@@ -276,7 +276,7 @@ function endQuestion(pin) {
   if (hangman && !pollQ) {
     // Pendu : chaque mauvaise réponse (ou absence) ajoute une partie au pendu de l'équipe
     const aliveBefore = [];
-    for (let t = 0; t < g.teamCount; t++) if (g.hang[t] < HANG_MAX) aliveBefore.push(t);
+    g.teams.forEach((t) => { if (g.hang[t] < HANG_MAX) aliveBefore.push(t); });
     participants.filter((p) => !p.lastCorrect && p.team !== null).forEach((p) => {
       g.hang[p.team] = Math.min(HANG_MAX, g.hang[p.team] + 1);
     });
@@ -294,8 +294,8 @@ function endQuestion(pin) {
     p.elimRound = g.index;
   });
   const survivors = activePlayers(g).length;
-  const teamsAlive = hangman ? g.hang.slice(0, g.teamCount).filter((e) => e < HANG_MAX).length : 0;
-  const elimOver = hangman ? g.teamCount >= 2 && teamsAlive <= 1 : (g.settings.mode === 'elimination' || hearts) && g.startPlayers >= 2 && survivors <= 1;
+  const teamsAlive = hangman ? g.teams.filter((t) => g.hang[t] < HANG_MAX).length : 0;
+  const elimOver = hangman ? g.teams.length >= 2 && teamsAlive <= 1 : (g.settings.mode === 'elimination' || hearts) && g.startPlayers >= 2 && survivors <= 1;
   const last = g.index === g.questions.length - 1 || elimOver;
   g.lastFlag = last;
 
@@ -588,4 +588,11 @@ function removePlayer(g, p, reason, minutes) {
   if (s) s.data.pid = null;
 }
 
-module.exports = { init, games, newPin, allPeople, pickAvatar, sendHostPlayers, toHost, toPlayer, clearTimer, qTime, elapsed, setPaused, beginRound, progressPayload, maybeEndEarly, endQuestion, advance, resetGame, settingsPayload, joinInfo, sendPlayerState, sendHostState, clientIp, banLeft, banMessage, removePlayer };
+// Ferme complètement une salle : les joueurs sont prévenus
+function closeGame(g) {
+  clearTimer(g);
+  allPeople(g).forEach((p) => toPlayer(p, 'host:left'));
+  delete games[g.pin];
+}
+
+module.exports = { init, games, newPin, closeGame, allPeople, pickAvatar, sendHostPlayers, toHost, toPlayer, clearTimer, qTime, elapsed, setPaused, beginRound, progressPayload, maybeEndEarly, endQuestion, advance, resetGame, settingsPayload, joinInfo, sendPlayerState, sendHostState, clientIp, banLeft, banMessage, removePlayer };
