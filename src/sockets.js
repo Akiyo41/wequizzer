@@ -7,7 +7,12 @@ const { sanitize } = require('./settings');
 const { buildQuestions, cleanQuiz, missedQuiz, quizCount } = require('./quiz');
 const { cleanAnswer } = require('./answers');
 const { assignTeams, bonusOn, heartsOn, isTeamMode, resetPlayerStats } = require('./rules');
-const { advance, allPeople, banLeft, banMessage, beginRound, clientIp, closeGame, elapsed, endQuestion, games, joinInfo, maybeEndEarly, newPin, pickAvatar, progressPayload, qTime, removePlayer, resetGame, sendHostPlayers, sendHostState, sendPlayerState, setPaused, settingsPayload, toHost, toPlayer } = require('./game');
+const { allPeople, games, newPin, toHost, toPlayer } = require('./send');
+const { elapsed, qTime, setPaused } = require('./timer');
+const { banLeft, banMessage, clientIp, closeGame, joinInfo, pickAvatar, removePlayer, sendHostPlayers, settingsPayload } = require('./room');
+const { advance, beginRound, endQuestion, maybeEndEarly, progressPayload } = require('./round');
+const { resetGame } = require('./end');
+const { sendHostState, sendPlayerState } = require('./resume');
 
 function setupSockets(io) {
   io.on('connection', (socket) => {

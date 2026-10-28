@@ -6,7 +6,7 @@ const { Server } = require('socket.io');
 const sampleQuestions = require('./questions.json');
 const { PORT } = require('./src/config');
 const { lanUrl } = require('./src/utils');
-const game = require('./src/game');
+const { init } = require('./src/send');
 const setupSockets = require('./src/sockets');
 
 const app = express();
@@ -19,7 +19,7 @@ app.get('/api/sample-quiz', (req, res) => {
   res.json({ title: 'Culture générale', questions: sampleQuestions });
 });
 
-game.init(io);
+init(io);
 setupSockets(io);
 
 if (require.main === module) {

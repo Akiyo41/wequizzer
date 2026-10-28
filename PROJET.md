@@ -25,7 +25,8 @@ Ancien nom « QuizFlash » : ne plus jamais l'utiliser.
   - `quiz.js` : vérification des quiz (`cleanQuiz`, roue, jeu de mots), `buildQuestions`, `missedQuiz`.
   - `answers.js` : `isCorrect`, `cleanAnswer`, textes des réponses, `mistakeEntry`.
   - `rules.js` : modes, cœurs, équipes, classement (`rankedPlayers`, `computeTitles`, `teamBoard`).
-  - `game.js` : `games[pin]`, envoi des messages, minuterie et pause, déroulement des questions, fin, reprise après coupure, exclusions.
+  - Déroulement d'une partie, en 6 modules (chacun n'utilise que ceux d'avant, sauf `round` qui appelle `end`) :
+    `send.js` (`games[pin]`, `newPin`, envoi des messages `toHost` / `toPlayer` / `toAll`) → `timer.js` (minuterie, pause) → `room.js` (salle d'attente, liste des joueurs, exclusions, `closeGame`) → `end.js` (fin de partie, `resetGame`) → `round.js` (une question : compte à rebours, lecture, `endQuestion`, `advance`) → `resume.js` (`sendPlayerState` / `sendHostState`, reprise après coupure).
   - `sockets.js` : tous les événements `host:*` et `player:*`, nettoyage des salles.
 - `tests/smoke.js` (`npm test`) : lance le serveur et joue des parties complètes (animateur + 2 joueurs). À lancer après chaque modification du serveur.
 - `public/host.html` : écran animateur (lobby, éditeurs, jeu, résultats, fin, suivi de course). Son code est dans `public/host/`, chargé dans cet ordre (chaque fichier peut utiliser ce que les précédents définissent ; même portée globale qu'un seul fichier) :
