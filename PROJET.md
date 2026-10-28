@@ -31,7 +31,9 @@ Ancien nom « QuizFlash » : ne plus jamais l'utiliser.
 - `public/host.html` : écran animateur (lobby, éditeurs, jeu, résultats, fin, suivi de course). Son code est dans `public/host/`, chargé dans cet ordre (chaque fichier peut utiliser ce que les précédents définissent ; même portée globale qu'un seul fichier) :
   `base.js` (outils, stockage, paramètres) → `connection.js` (connexion, création de la partie, invitation) → `quiz-list.js` (mes quiz) → `ai-import.js` (IA / CSV) → `editor.js` (onglets, éditeur de quiz) → `pair-editors.js` (roue, jeu de mots) → `library-stats.js` (bibliothèque, statistiques) → `tf-editor.js` (Vrai/Faux en rafale) → `editor-check.js` (réglages selon le quiz, vérification de l'éditeur) → `preview.js` (tester un quiz) → `game.js` (déroulement de la partie).
   La connexion au serveur (`socket.connect()`) se fait à la fin de `game.js`, une fois tout chargé : ne pas la déplacer. Un nouveau fichier doit être ajouté dans `host.html` au bon endroit.
-- `public/play.html` + `public/play.js` : écran joueur (rejoindre, attente, question, roue, résultat, fin).
+- `public/play.html` : écran joueur (rejoindre, attente, question, roue, résultat, fin). Son code est dans `public/play/`, chargé dans cet ordre (même principe que `public/host/`) :
+  `base.js` (outils, avatar et pseudo, réactions) → `connection.js` (connexion, reconnexion, mes réglages, pause) → `question.js` (compte à rebours, question, roue, jeu de mots, ordre, relier) → `results.js` (résultat, fin).
+  La connexion au serveur (`socket.connect()`) se fait à la fin de `results.js` : ne pas la déplacer.
 - `public/index.html` : page d'accueil. `public/brand.js` : nom, logo, mascotte, intro, décor. `public/fx.js` : sons WebAudio, vibration, confettis, wake lock. `public/share.js` : image de partage (canvas). `public/wheel.js` : composant Roue. `public/style.css` : tout le style.
 - `public/img/` : bg-wide/bg-tall, cloud, star, desk, obj-*, logo, prof-{base,accueil,question,reflexion,bravo,desole} (.webp).
 - `questions.json` (quiz d'exemple, route `/api/sample-quiz`), `blocked-words.txt` (filtre de pseudos), `render.yaml`, `.gitignore`, `package.json`.
