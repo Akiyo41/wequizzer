@@ -500,4 +500,7 @@ body.has-snd .screen.editor { padding-top: 54px; }
 /* Page d'entrée « Tu es ? » (index.html) */
 .who-grid { width: 100%; margin-top: 4px; }
 a.create-card { text-decoration: none; }
-.create-card.on { border-color: var(--accent); }
+.who-play { cursor: default; }
+.who-play:hover { transform: none; }
+.who-play input { width: 100%; margin-top: 4px; }
+.who-play .btn { margin: 4px 0 2px; }

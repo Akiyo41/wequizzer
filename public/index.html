@@ -17,25 +17,17 @@
     <div id="hello"></div>
     <div class="create-grid who-grid">
       <a class="card create-card" id="whoHost" href="host.html"><i class="ti ti-player-play"></i><b>J'anime</b><small>Je choisis un quiz et je le lance sur mon écran.</small></a>
-      <button class="card create-card" id="whoPlay" type="button"><i class="ti ti-door-enter"></i><b>Je joue</b><small>J'ai un code PIN pour rejoindre une partie.</small></button>
+      <form class="card create-card who-play" id="f"><i class="ti ti-door-enter"></i><b>Je joue</b>
+        <input id="pin" inputmode="numeric" maxlength="6" placeholder="Code PIN" autocomplete="off" aria-label="Code PIN">
+        <button class="btn block" type="submit">Rejoindre</button>
+        <small>Pas de code ? Demande-le à l'animateur, ou scanne son QR code.</small>
+      </form>
     </div>
-    <form class="card pop hidden" id="f">
-      <input id="pin" inputmode="numeric" maxlength="6" placeholder="Code PIN" autocomplete="off">
-      <button class="btn block big" type="submit"><i class="ti ti-door-enter"></i> Rejoindre</button>
-      <p class="hint" style="margin-top:10px;text-align:center">Pas de code ? Demande-le à l'animateur, ou scanne son QR code.</p>
-    </form>
   </main>
   <script src="brand.js"></script>
   <script>
     Brand.intro();
     Brand.say(document.getElementById('hello'), 'Salut ! Tu es plutôt… ?', 'accueil');
-    document.getElementById('whoPlay').addEventListener('click', function () {
-      this.classList.add('on');
-      var f = document.getElementById('f');
-      f.classList.remove('hidden');
-      document.getElementById('pin').focus({ preventScroll: true });
-      f.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    });
     document.getElementById('f').addEventListener('submit', function (e) {
       e.preventDefault();
       var pin = document.getElementById('pin').value.replace(/\D/g, '');
