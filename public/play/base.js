@@ -37,6 +37,7 @@ const SCREEN_LINES = {
   wait: ['sayWait', 'waitMascot', 'attente', 'danse'],
   queued: ['sayQueued', 'queuedMascot', 'file', 'recherche'],
   countdown: ['sayCount', 'cdMascot', 'compte', 'chrono'],
+  reading: ['sayRead', null, 'lecture', 'reflexion'],
   sent: ['saySent', 'sentMascot', 'envoye', 'reflexion'],
   spectate: ['saySpec', 'specMascot', 'elimine', 'desole'],
 };

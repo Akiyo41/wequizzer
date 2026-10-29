@@ -2,10 +2,10 @@
 const assert = require('assert');
 const { LINES, pickLine } = require('../public/lines.js');
 
-const KEYS = ['attente', 'file', 'compte', 'envoye', 'elimine', 'bravo', 'serie', 'rate', 'tropTard', 'sondage', 'finGagne', 'finPodium', 'finAutre', 'animCompte', 'animTous', 'animMoitie', 'animPersonne', 'animSondage', 'animPodium', 'dernier'];
+const KEYS = ['attente', 'file', 'compte', 'envoye', 'elimine', 'bravo', 'serie', 'rate', 'tropTard', 'sondage', 'finGagne', 'finPodium', 'finAutre', 'animCompte', 'animTous', 'animMoitie', 'animPersonne', 'animSondage', 'animPodium', 'dernier', 'lecture', 'animLecture', 'pause', 'pauseCoupure', 'animPause', 'animPauseCoupure', 'animAccueil'];
 
 const tests = {
-  'les 20 situations, 3 à 5 phrases chacune'() {
+  'les 27 situations, 3 à 5 phrases chacune'() {
     assert.deepStrictEqual(Object.keys(LINES).sort(), KEYS.slice().sort());
     KEYS.forEach((k) => assert.ok(LINES[k].length >= 3 && LINES[k].length <= 5, k));
   },
@@ -84,6 +84,10 @@ const tests = {
     assert.ok(LINES.sondage.includes('Ton avis compte !'));
     assert.ok(LINES.attente.includes('Installe-toi, {pseudo}, ça va bientôt commencer !'));
     assert.ok(LINES.serie.includes('Et de {serie} d\'affilée ! Rien ne t\'arrête !'));
+    assert.ok(LINES.lecture.includes('Lis attentivement, le piège n\'est jamais loin !'));
+    assert.ok(LINES.pauseCoupure.includes('Coupure chez l\'animateur ! La partie reprend dès son retour.'));
+    assert.ok(LINES.animAccueil.includes('Sortez vos téléphones et scannez le QR code !'));
+    assert.ok(LINES.animPauseCoupure.every((s) => !/déconnecté/.test(s)), 'pas de « déconnecté » (accord masculin)');
   },
 };
 

@@ -32,9 +32,15 @@ let lastEnd = null;
 let labelMode = 'letters';
 const lab = (i) => (labelMode === 'numbers' ? String(i + 1) : LETTERS[i]);
 
+// Accueil : le Professeur, à côté du QR code, invite les joueurs à rejoindre (nouvelle phrase à chaque retour à l'accueil)
+function hostWelcome() {
+  Brand.speak($('sayHostJoin'), $('hostJoinMascot'), 'animAccueil', 'accueil');
+}
 function show(id) {
   if (id !== 'lobby' && typeof Tour !== 'undefined' && Tour.active()) Tour.close(); // la visite guidée ne concerne que l'accueil
+  const entering = $(id).classList.contains('hidden');
   screens.forEach((s) => $(s).classList.toggle('hidden', s !== id));
+  if (id === 'lobby' && entering) hostWelcome();
   const inGame = ['countdown', 'reading', 'question', 'results'].includes(id);
   $('hostBar').classList.toggle('hidden', !inGame);
   $('tabbar').classList.toggle('hidden', id !== 'lobby');

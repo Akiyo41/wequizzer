@@ -38,7 +38,7 @@
     <!-- Onglet JOUER -->
     <div id="paneJouer" class="pane">
       <div class="card join-box pop">
-        <span data-mascot="accueil" data-size="md" class="join-mascot"></span>
+        <div class="join-mascot"><span data-mascot="accueil" data-size="md" id="hostJoinMascot"></span><div class="say up hidden" id="sayHostJoin"></div></div>
         <div class="join-main">
           <h2 class="join-title"><i class="ti ti-qrcode"></i> Scanne le QR code pour jouer</h2>
           <img id="qr" class="qr hidden" alt="QR code pour rejoindre la partie">
@@ -460,7 +460,7 @@
     <div class="timer"><div id="rdBar"></div></div>
     <div class="qtext" id="rdText"></div>
     <img id="rdImg" class="qimg hidden" alt="">
-    <p>Lis bien la question… les réponses arrivent !</p>
+    <div class="say hidden" id="sayHostRead"></div>
   </div>
 
   <!-- Question -->
@@ -553,7 +553,7 @@
   <div id="pauseOv" class="overlay hidden">
     <div class="big-emoji">⏸️</div>
     <h1>Partie en pause</h1>
-    <p id="pauseMsg"></p>
+    <div class="say hidden" id="pauseMsg"></div>
     <button id="resumeBtn" class="btn big"><i class="ti ti-player-play"></i> Reprendre</button>
   </div>
 

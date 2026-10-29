@@ -137,7 +137,13 @@ $('leaveBtn').onclick = async () => {
 // ----- Pause -----
 socket.on('paused', ({ paused, reason, left }) => {
   $('pauseOv').classList.toggle('hidden', !paused);
-  $('pauseMsg').textContent = reason === 'hostLost' ? "L'animateur a perdu la connexion. La partie reprendra bientôt." : "L'animateur a mis la partie en pause.";
+  // Le Professeur dit pourquoi la partie est en pause (une phrase par pause, pas à chaque rappel du serveur)
+  const why = reason === 'hostLost' ? 'pauseCoupure' : 'pause';
+  if (!paused) $('pauseMsg').dataset.key = '';
+  else if ($('pauseMsg').dataset.key !== why) {
+    Brand.speak($('pauseMsg'), null, why, reason === 'hostLost' ? 'reparation' : 'reflexion');
+    $('pauseMsg').dataset.key = why;
+  }
   if (paused) {
     clearInterval(timerInt);
     clearTimeout(cdTimer);

@@ -526,3 +526,11 @@ a.create-card { text-decoration: none; }
 }
 /* Bulles du Professeur sur l'écran de l'animateur (3-2-1, podium) : pas plus larges que la page */
 #sayHostCount, #sayHostEnd { max-width: 640px; margin-left: auto; margin-right: auto; }
+/* Bulle « vers le haut » : le Professeur au-dessus, la bulle en dessous (accueil de l'animateur, à côté du QR code) */
+.say.up { flex-direction: column; text-align: center; gap: 8px; }
+.say.up .say-bubble::before { left: 50%; top: -10px; transform: translateX(-50%); border: 10px solid transparent; border-top: 0; border-bottom-color: #fff; }
+.join-mascot .say.up { width: 210px; margin: 0; }
+.join-mascot .say.up .say-bubble { font-size: 1rem; padding: 10px 12px; }
+@media (max-width: 640px) { .join-mascot .say.up { width: 100%; max-width: 320px; } }
+/* Pause : la bulle reste lisible au centre du voile */
+.overlay .say { max-width: 520px; }

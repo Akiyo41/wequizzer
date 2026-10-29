@@ -47,6 +47,7 @@ socket.on('host:created', async (d) => {
     if (saved) pushSettings();
   }
   await initLibrary();
+  hostWelcome(); // l'accueil est affiché d'office au chargement (sans passer par show)
   // Première visite : le Professeur propose la visite guidée (une seule fois, jamais en reprenant une partie)
   const screen = screens.find((s) => !$(s).classList.contains('hidden'));
   if (TourLogic.shouldOffer({ seen: LS.get('wequizzer.tourSeen', false), screen, rejoined: !!d.rejoined })) Tour.offer();

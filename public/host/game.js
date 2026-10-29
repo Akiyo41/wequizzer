@@ -103,7 +103,13 @@ socket.on('paused', ({ paused, reason, left }) => {
   isPaused = paused;
   $('pauseOv').classList.toggle('hidden', !paused);
   $('pauseBtn').innerHTML = paused ? '<i class="ti ti-player-play"></i> <span class="lbl">Reprendre</span>' : '<i class="ti ti-player-pause"></i> <span class="lbl">Pause</span>';
-  $('pauseMsg').textContent = reason === 'hostLost' ? "Tu as été déconnecté : la partie s'est mise en pause automatiquement." : 'Les joueurs voient que la partie est en pause.';
+  // Le Professeur dit pourquoi la partie est en pause (une phrase par pause, pas à chaque rappel du serveur)
+  const why = reason === 'hostLost' ? 'animPauseCoupure' : 'animPause';
+  if (!paused) $('pauseMsg').dataset.key = '';
+  else if ($('pauseMsg').dataset.key !== why) {
+    Brand.speak($('pauseMsg'), null, why, reason === 'hostLost' ? 'reparation' : 'reflexion');
+    $('pauseMsg').dataset.key = why;
+  }
   if (paused) {
     clearInterval(timerInt);
     clearInterval(autoInt);
@@ -146,6 +152,7 @@ socket.on('reading', (q) => {
   $('rdBonus').classList.toggle('hidden', !q.double);
   $('rdText').textContent = q.text;
   if (q.image) { $('rdImg').src = q.image; $('rdImg').classList.remove('hidden'); } else $('rdImg').classList.add('hidden');
+  if (!hostAgain('reading', 'q' + q.index)) Brand.speak($('sayHostRead'), null, 'animLecture', 'reflexion');
   show('reading');
   FX.go();
   clearInterval(readInt);

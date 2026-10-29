@@ -14,6 +14,17 @@ const LINES = {
     'Patience ! Tu joueras dès la prochaine partie. Reste sur cette page.',
     'Tu es dans la file d\'attente : la prochaine partie est pour toi !',
   ],
+  lecture: ['Lis bien la question… les réponses arrivent !', 'Prends le temps de bien lire…', 'Lis attentivement, le piège n\'est jamais loin !'],
+  pause: [
+    'L\'animateur a mis la partie en pause. On souffle un peu !',
+    'Petite pause ! Profites-en pour t\'étirer.',
+    'Pause ! La partie reprend dans un instant.',
+  ],
+  pauseCoupure: [
+    'L\'animateur a perdu la connexion. Je répare ça, la partie reprendra bientôt !',
+    'Oups, l\'animateur a perdu la connexion… On l\'attend, ne quitte pas !',
+    'Coupure chez l\'animateur ! La partie reprend dès son retour.',
+  ],
   compte: ['Concentre-toi…', 'C\'est parti !', 'Prépare-toi, ça arrive !', 'Les yeux sur l\'écran !'],
   envoye: [
     'Réponse dans la boîte ! On attend les autres…',
@@ -57,6 +68,22 @@ const LINES = {
     'Chaque partie te fait progresser, bravo d\'avoir joué !',
   ],
   // ----- Écran de l'animateur -----
+  animAccueil: [
+    'Sortez vos téléphones et scannez le QR code !',
+    'Plus on est de fous, plus on rit : rejoignez la partie !',
+    'Je vous attends ! Scannez le QR code ou tapez le code.',
+  ],
+  animLecture: ['Lisez bien la question… les réponses arrivent !', 'Prenez le temps de bien lire…', 'Lecture attentive, s\'il vous plaît !'],
+  animPause: [
+    'Pause ! Les joueurs voient que la partie est en pause.',
+    'On souffle un peu… Appuie sur « Reprendre » quand tu veux.',
+    'Petite pause, les joueurs attendent sagement !',
+  ],
+  animPauseCoupure: [
+    'La connexion a coupé : la partie s\'est mise en pause toute seule.',
+    'Ouf, la connexion est revenue ! Reprends quand tu veux.',
+    'Coupure réparée ! Appuie sur « Reprendre » pour continuer.',
+  ],
   animCompte: ['Tout le monde est prêt ?', 'Les téléphones en main !', 'Silence, ça commence !', '3, 2, 1… on y va !'],
   animTous: ['Trop fort, cette équipe !', 'Presque tout le monde a trouvé, bravo !', 'Facile pour vous, celle-là !'],
   animMoitie: ['Ça se joue serré !', 'Les avis sont partagés !', 'Une question qui divise !'],
