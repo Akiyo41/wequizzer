@@ -38,6 +38,21 @@ socket.on('reading', (q) => {
 });
 
 // ----- Question -----
+// Consigne du Professeur (petite bulle, texte fixe : CONSIGNES dans lines.js) ;
+// « Nouveau ! » la première fois que ce téléphone rencontre ce type de question
+function showConsigne(boxId, q) {
+  const key = consigneFor(q);
+  const box = $(boxId);
+  box.classList.toggle('hidden', !key);
+  if (!key) return;
+  Brand.say(box, CONSIGNES[key], 'explication');
+  const seen = LS.get('wequizzer.seenTypes', {});
+  if (!seen[key]) {
+    box.querySelector('.say-bubble').prepend(el('span', 'new-tag', 'Nouveau !'));
+    seen[key] = true;
+    LS.set('wequizzer.seenTypes', seen);
+  }
+}
 function startTimer(total, left) {
   clearInterval(timerInt);
   $('timePill').innerHTML = '<i class="ti ti-clock"></i> <span id="timeLeft"></span> s';
@@ -240,19 +255,13 @@ socket.on('question', (q) => {
     $('wGo').innerHTML = q.letters || q.match || q.order ? '<i class="ti ti-check"></i> Valider' : '<i class="ti ti-check"></i> Répondre';
     $('wTimer').classList.toggle('hidden', !q.time);
     $('wTime').classList.add('hidden');
-    if (q.order) {
-      $('wMsg').textContent = 'Touche les éléments dans le bon ordre : du premier au dernier.';
-    } else if (q.match) {
-      $('wMsg').textContent = 'Touche un élément, puis sa réponse. Il faut tout relier, et tout doit être juste !';
-    } else if (q.letters) {
-      $('wMsg').textContent = 'Tape les lettres dans le bon ordre, puis valide.';
-    } else {
+    if (!q.order && !q.match && !q.letters) {
       const w = getWheel();
       w.set({ category: q.category, questions: ['? La question'], answers: q.choices.map((c, i) => ({ id: i, text: c })) });
       w.enable(true);
       $('wGo').disabled = false;
-      $('wMsg').textContent = 'Touche une réponse ou tourne la roue pour la mettre face à la question verte.';
     }
+    showConsigne('wMsg', q);
     show('wheel');
     FX.go();
     clearInterval(timerInt);
@@ -274,8 +283,7 @@ socket.on('question', (q) => {
   const hidden = !!q.hidden;
   $('qText').textContent = hidden ? "Regarde l'écran de l'animateur" : q.text;
   if (!hidden && q.image) { $('qImg').src = q.image; $('qImg').classList.remove('hidden'); } else $('qImg').classList.add('hidden');
-  const hint = q.type === 'multi' ? 'Plusieurs bonnes réponses : sélectionne-les toutes, puis valide.' : q.type === 'poll' ? 'Sondage : pas de bonne réponse.' : '';
-  $('qHint').textContent = hint;
+  showConsigne('qHint', q);
   $('savedNote').classList.add('hidden');
 
   const box = $('choices');

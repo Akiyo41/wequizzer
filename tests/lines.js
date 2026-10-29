@@ -75,6 +75,21 @@ const tests = {
     const fs = require('fs');
     ['public/play.html', 'public/play/results.js'].forEach((f) => assert.ok(!fs.readFileSync(require('path').join(__dirname, '..', f), 'utf8').includes('Tu es éliminé'), f));
   },
+  'consignes : une par type de question qui en a besoin'() {
+    const { CONSIGNES, consigneFor } = require('../public/lines.js');
+    assert.deepStrictEqual(Object.keys(CONSIGNES).sort(), ['mots', 'multi', 'ordre', 'relier', 'roue', 'sondage', 'texte']);
+    Object.values(CONSIGNES).forEach((s) => assert.ok(typeof s === 'string' && s.length > 10, s));
+    assert.strictEqual(consigneFor({ type: 'single', wheel: true }), 'roue');
+    assert.strictEqual(consigneFor({ type: 'match', match: true }), 'relier');
+    assert.strictEqual(consigneFor({ type: 'text', letters: true }), 'mots'); // jeu de mots avant « réponse à écrire »
+    assert.strictEqual(consigneFor({ type: 'order', order: true }), 'ordre');
+    assert.strictEqual(consigneFor({ type: 'multi' }), 'multi');
+    assert.strictEqual(consigneFor({ type: 'poll' }), 'sondage');
+    assert.strictEqual(consigneFor({ type: 'text' }), 'texte');
+    assert.strictEqual(consigneFor({ type: 'single' }), null);
+    assert.strictEqual(consigneFor({ type: 'tf' }), null);
+    assert.strictEqual(CONSIGNES.texte, 'Écris ta réponse : les accents et les petites fautes sont pardonnés !');
+  },
   'clé inconnue'() {
     assert.deepStrictEqual(pickLine('nimporte', {}, null), { raw: '', text: '' });
   },

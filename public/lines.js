@@ -123,4 +123,26 @@ function endLine(d) {
   if (place === 1) return 'finGagne';
   return place && place <= 3 ? 'finPodium' : 'finAutre';
 }
-if (typeof module !== 'undefined') module.exports = { LINES, pickLine, resultLine, endLine };
+// Consignes du Professeur sur le téléphone, selon le type de question. Elles ne varient pas : une consigne
+// doit être claire et toujours la même. Choix unique et Vrai/Faux n'en ont pas (il suffit de toucher la réponse).
+const CONSIGNES = {
+  roue: 'Touche une réponse ou tourne la roue pour la mettre face à la question verte.',
+  relier: 'Touche un élément, puis sa réponse. Il faut tout relier, et tout doit être juste !',
+  mots: 'Tape les lettres dans le bon ordre, puis valide.',
+  ordre: 'Touche les éléments dans le bon ordre : du premier au dernier.',
+  multi: 'Plusieurs bonnes réponses : sélectionne-les toutes, puis valide.',
+  sondage: 'Sondage : pas de bonne réponse.',
+  texte: 'Écris ta réponse : les accents et les petites fautes sont pardonnés !',
+};
+// Question → clé de sa consigne (ou null)
+function consigneFor(q) {
+  if (q.wheel) return 'roue';
+  if (q.match) return 'relier';
+  if (q.letters) return 'mots';
+  if (q.order || q.type === 'order') return 'ordre';
+  if (q.type === 'multi') return 'multi';
+  if (q.type === 'poll') return 'sondage';
+  if (q.type === 'text') return 'texte';
+  return null;
+}
+if (typeof module !== 'undefined') module.exports = { LINES, pickLine, resultLine, endLine, CONSIGNES, consigneFor };
