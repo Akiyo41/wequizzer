@@ -2,9 +2,10 @@
 // Pour retoucher un texte du Professeur, c'est ici.
 const TourLogic = {
   INVITE: 'Salut ! Je suis le Professeur Quizzo. Je te fais visiter en 1 minute ?',
-  // sel : l'élément à éclairer ; card : éclairer la carte qui le contient
+  // sel : l'élément à éclairer ; card : éclairer la carte qui le contient ;
+  // align 'end' : si l'élément ne tient pas à l'écran avec la bulle, montrer son bas (le plus utile)
   STEPS: [
-    { sel: '.join-box', text: 'Tes joueurs scannent ce QR code avec leur téléphone, ou tapent le code. Tu peux aussi leur envoyer le lien avec « Partager » ou « Copier le lien ».' },
+    { sel: '.join-box', align: 'end', text: 'Tes joueurs scannent ce QR code avec leur téléphone, ou tapent le code. Tu peux aussi leur envoyer le lien avec « Partager » ou « Copier le lien ».' },
     { sel: '#quizSelect', card: true, text: 'Ici, tu choisis le quiz de la partie. Il y en a déjà quelques-uns pour commencer !' },
     { sel: '#paneJouer .card.settings', text: 'Le mode de jeu, le chrono, les équipes… Si un réglage te paraît mystérieux, touche son petit « ? ».' },
     { sel: '#startBtn', card: true, text: 'Les joueurs apparaissent ici en arrivant. Quand tout le monde est là, appuie sur « Lancer le quiz » !' },
@@ -18,6 +19,17 @@ const TourLogic = {
   // Bulle en haut si l'élément éclairé est dans la moitié basse de l'écran, sinon en bas
   bubbleSide(rect, viewportH) {
     return (rect.top + rect.bottom) / 2 > viewportH / 2 ? 'top' : 'bottom';
+  },
+  // De combien faire défiler la page (en px, positif = vers le bas) pour que l'élément tienne dans la place
+  // laissée par la bulle : centré s'il y tient, sinon aligné en haut de cette place (ou en bas si align 'end')
+  // (12 px de marge partout)
+  scrollDelta(rect, viewportH, bubbleH, side, align) {
+    const top = side === 'top' ? 12 + bubbleH + 12 : 12;
+    const bottom = side === 'bottom' ? viewportH - 12 - bubbleH - 12 : viewportH - 12;
+    const room = bottom - top;
+    let want = top + (room - rect.height) / 2;
+    if (rect.height > room) want = align === 'end' ? bottom - rect.height : top;
+    return rect.top - want;
   },
 };
 if (typeof module !== 'undefined') module.exports = TourLogic;
