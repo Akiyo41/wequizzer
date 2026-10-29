@@ -5,7 +5,8 @@ function openTfEditor(q) {
   tfEditing = q;
   $('tfHead').textContent = q ? 'Modifier le Vrai/Faux en rafale' : 'Nouveau Vrai/Faux en rafale';
   $('tfTitle').value = q ? q.title : '';
-  $('tfItems').value = q ? q.questions.map((x) => x.text + ' ; ' + (x.correct === 0 ? 'vrai' : 'faux')).join('\n') : '';
+  // une ligne par affirmation : « affirmation ; vrai ou faux » puis « ; explication » si elle en a une
+  $('tfItems').value = q ? q.questions.map((x) => x.text + ' ; ' + (x.correct === 0 ? 'vrai' : 'faux') + ((x.explain || '').trim() ? ' ; ' + x.explain.trim() : '')).join('\n') : '';
   $('tfError').textContent = '';
   show('tfEditor');
 }
@@ -13,13 +14,17 @@ $('tfCancel').onclick = () => show('lobby');
 $('tfSave').onclick = () => {
   const title = $('tfTitle').value.trim() || 'Vrai/Faux sans titre';
   const questions = [];
+  const VERDICTS = ['vrai', 'faux', 'v', 'f', 'true', 'false'];
   for (const line of $('tfItems').value.split(/\r?\n/)) {
     if (!line.trim()) continue;
-    const i = line.lastIndexOf(';');
-    const text = i < 0 ? '' : line.slice(0, i).trim();
-    const v = i < 0 ? '' : line.slice(i + 1).trim().toLowerCase();
-    if (!text || !['vrai', 'faux', 'v', 'f', 'true', 'false'].includes(v)) { $('tfError').textContent = 'Ligne incorrecte : « ' + line.trim() + ' » (écris : affirmation ; vrai  ou  affirmation ; faux).'; return; }
-    questions.push({ type: 'tf', text, image: '', choices: ['Vrai', 'Faux'], correct: ['vrai', 'v', 'true'].includes(v) ? 0 : 1, answers: [], double: false });
+    // affirmation ; vrai/faux ; explication (facultative) — la première case « vrai/faux » sépare les deux
+    const parts = line.split(';');
+    const k = parts.findIndex((p, j) => j > 0 && VERDICTS.includes(p.trim().toLowerCase()));
+    const text = k < 0 ? '' : parts.slice(0, k).join(';').trim();
+    if (!text) { $('tfError').textContent = 'Ligne incorrecte : « ' + line.trim() + ' » (écris : affirmation ; vrai  ou  affirmation ; faux, puis si tu veux ; explication).'; return; }
+    const v = parts[k].trim().toLowerCase();
+    const explain = parts.slice(k + 1).join(';').trim().slice(0, 300);
+    questions.push({ type: 'tf', text, image: '', choices: ['Vrai', 'Faux'], correct: ['vrai', 'v', 'true'].includes(v) ? 0 : 1, answers: [], double: false, explain });
   }
   if (questions.length < 2) { $('tfError').textContent = 'Ajoute au moins 2 affirmations.'; return; }
   if (questions.length > 100) { $('tfError').textContent = '100 affirmations au maximum.'; return; }
