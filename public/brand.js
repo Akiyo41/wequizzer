@@ -82,6 +82,14 @@ const Brand = (() => {
     b.textContent = text;
     box.appendChild(b);
   }
+  // Une phrase du Professeur pour la situation `key` (phrases dans lines.js), jamais deux fois de suite la même
+  const lastLine = {};
+  function line(key, vars) {
+    if (typeof pickLine !== 'function') return '';
+    const p = pickLine(key, vars, lastLine[key] || null);
+    lastLine[key] = p.raw;
+    return p.text;
+  }
   document.addEventListener('DOMContentLoaded', () => { apply(); });
-  return { apply, setPose, img, intro, preload, say };
+  return { apply, setPose, img, intro, preload, say, line };
 })();
