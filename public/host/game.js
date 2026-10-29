@@ -463,7 +463,10 @@ socket.on('end', (d) => {
   // Le Professeur salue le gagnant (l'équipe gagnante en mode équipes / pendu) ; pas de joueur : pas de bulle
   const winner = teamy && d.teams && d.teams[0] ? 'l\'équipe ' + d.teams[0].name : board[0] ? board[0].avatar + ' ' + board[0].name : '';
   if (!again) {
-    if (winner) Brand.speak($('sayHostEnd'), $('hostEndMascot'), 'animPodium', 'bravo', { gagnant: winner });
+    // personne n'a eu une seule bonne réponse : le Professeur remercie tout le monde au lieu d'applaudir un « gagnant » à 0
+    const zero = !teamy && d.questions > 0 && board[0] && board[0].correct === 0;
+    if (winner && zero) Brand.speak($('sayHostEnd'), $('hostEndMascot'), 'animFinZero', 'desole');
+    else if (winner) Brand.speak($('sayHostEnd'), $('hostEndMascot'), 'animPodium', 'bravo', { gagnant: winner });
     else { $('sayHostEnd').classList.add('hidden'); $('hostEndMascot').classList.remove('hidden'); }
   }
   show('end');

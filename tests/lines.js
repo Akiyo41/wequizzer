@@ -2,10 +2,10 @@
 const assert = require('assert');
 const { LINES, pickLine } = require('../public/lines.js');
 
-const KEYS = ['attente', 'file', 'compte', 'envoye', 'elimine', 'bravo', 'serie', 'rate', 'tropTard', 'sondage', 'finGagne', 'finPodium', 'finAutre', 'animCompte', 'animTous', 'animMoitie', 'animPersonne', 'animSondage', 'animPodium', 'dernier', 'lecture', 'animLecture', 'pause', 'pauseCoupure', 'animPause', 'animPauseCoupure', 'animAccueil'];
+const KEYS = ['attente', 'file', 'compte', 'envoye', 'elimine', 'bravo', 'serie', 'rate', 'tropTard', 'sondage', 'finGagne', 'finPodium', 'finAutre', 'animCompte', 'animTous', 'animMoitie', 'animPersonne', 'animSondage', 'animPodium', 'dernier', 'lecture', 'animLecture', 'pause', 'pauseCoupure', 'animPause', 'animPauseCoupure', 'animAccueil', 'animFinZero'];
 
 const tests = {
-  'les 27 situations, 3 à 5 phrases chacune'() {
+  'les 28 situations, 3 à 5 phrases chacune'() {
     assert.deepStrictEqual(Object.keys(LINES).sort(), KEYS.slice().sort());
     KEYS.forEach((k) => assert.ok(LINES[k].length >= 3 && LINES[k].length <= 5, k));
   },
@@ -80,6 +80,25 @@ const tests = {
     assert.strictEqual(endLine({ mode: 'standard', rank: 1, total: 1 }), 'finGagne'); // seul : il a gagné
     assert.strictEqual(endLine({ mode: 'teams', teamRank: 2, teamCount: 2, rank: 1 }), 'finAutre');
     assert.strictEqual(endLine({ mode: 'teams', teamRank: 2, teamCount: 3, rank: 5 }), 'finPodium');
+  },
+  'dernière question : phrases valables qu\'on ait répondu ou non'() {
+    LINES.dernier.forEach((s) => assert.ok(!/Raté de peu/.test(s), s));
+  },
+  'gagnant sans aucune bonne réponse : pas de « première place » ni d\'applaudissements'() {
+    const { endLine } = require('../public/lines.js');
+    assert.strictEqual(endLine({ mode: 'standard', rank: 1, total: 2, correct: 0, questions: 6 }), 'finAutre');
+    assert.strictEqual(endLine({ mode: 'standard', rank: 1, total: 2, correct: 1, questions: 6 }), 'finGagne');
+    assert.strictEqual(endLine({ mode: 'standard', rank: 1, total: 2, correct: 0, questions: 0 }), 'finGagne'); // que des sondages
+    assert.strictEqual(endLine({ mode: 'teams', teamRank: 1, teamCount: 2, rank: 2, correct: 0, questions: 6 }), 'finGagne'); // l'équipe a gagné
+    assert.ok(LINES.animFinZero.length >= 3 && LINES.animFinZero.every((s) => !/\{gagnant\}/.test(s)));
+    const src = require('fs').readFileSync(require('path').join(__dirname, '..', 'public/host/game.js'), 'utf8');
+    assert.ok(/animFinZero/.test(src), 'l\'animateur utilise animFinZero');
+    const play = require('fs').readFileSync(require('path').join(__dirname, '..', 'public/play/results.js'), 'utf8');
+    assert.ok(/const zero = !teamy && d\.questions > 0 && d\.correct === 0/.test(play) && /if \(!zero &&/.test(play), 'téléphone : ni coupe ni fanfare');
+  },
+  'nouveau QR code : l\'ancienne partie est oubliée'() {
+    const src = require('fs').readFileSync(require('path').join(__dirname, '..', 'public/play/connection.js'), 'utf8');
+    assert.ok(/urlPin && urlPin !== String\(sess\.pin\)/.test(src));
   },
   'podium de l\'animateur : « En jeu » (neutre) plutôt que « Survivant »'() {
     const src = require('fs').readFileSync(require('path').join(__dirname, '..', 'public/host/game.js'), 'utf8');

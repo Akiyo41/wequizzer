@@ -149,6 +149,8 @@ function endQuestion(pin) {
   // Élimination
   let outNow = [];
   const hearts = heartsOn(g);
+  // on repart de zéro à chaque question (un sondage ne doit pas répéter « tu perds un cœur » de la question d'avant)
+  participants.forEach((p) => { p.lostHeart = false; p.keptHeart = false; });
   if (g.settings.mode === 'elimination' && !pollQ) {
     outNow = participants.filter((p) => !p.lastCorrect);
     if (outNow.length === participants.length) outNow = []; // tout le monde se trompe : personne n'est éliminé
@@ -158,8 +160,10 @@ function endQuestion(pin) {
     const wouldOut = wrong.filter((p) => p.hearts <= 1);
     const safe = wouldOut.length === participants.length; // tout le monde tomberait à zéro : personne ne sort
     wrong.forEach((p) => {
+      // tout le monde est protégé : chacun garde son dernier cœur (on ne lui dit pas qu'il en perd un)
       p.hearts = safe ? Math.max(1, p.hearts - 1 || 1) : p.hearts - 1;
-      p.lostHeart = true;
+      p.lostHeart = !safe;
+      p.keptHeart = safe;
     });
     outNow = safe ? [] : wouldOut;
   }
@@ -179,7 +183,6 @@ function endQuestion(pin) {
         Object.values(g.players).filter((p) => p.team === t && !p.eliminated).forEach((p) => outNow.push(p));
       });
   }
-  participants.forEach((p) => { if (hearts && p.lastCorrect) p.lostHeart = false; });
   outNow.forEach((p) => {
     p.eliminated = true;
     p.elimRound = g.index;
@@ -256,6 +259,7 @@ function resultFor(g, q, p) {
     hearts: p.hearts,
     maxHearts: heartsOn(g) ? g.settings.lives : null,
     lostHeart: !!p.lostHeart,
+    keptHeart: !!p.keptHeart,
     myCorrect: p.correct,
     myTotal: g.scored,
     explain: g.settings.showExplain ? q.explain || '' : '',

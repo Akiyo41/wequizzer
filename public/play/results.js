@@ -40,6 +40,7 @@ socket.on('result', (r) => {
     FX.bad();
   }
   if (r.lostHeart && !r.outNow) sub.textContent = '💔 Tu perds un cœur… il t\'en reste ' + r.hearts + ' !';
+  if (r.keptHeart) sub.textContent = '😮‍💨 Ouf ! Tout le monde s\'est trompé : tu gardes ton dernier cœur.';
   if (r.outNow) {
     sub.textContent = settings.reactions ? '💀 Tu es hors jeu… mais tu peux encore envoyer des réactions !' : '💀 Tu es hors jeu… regarde la suite sur le grand écran !';
     sub.style.fontSize = '1.2rem';
@@ -81,11 +82,16 @@ socket.on('end', (d) => {
   clearInterval(timerInt);
   const teamy = d.mode === 'teams' || d.mode === 'hangman';
   const elim = d.mode === 'elimination' || (d.heartsMode && !teamy);
+  // aucune bonne réponse de toute la partie : pas de coupe ni de « Tu as gagné ! », même 1er à égalité
+  const zero = !teamy && d.questions > 0 && d.correct === 0;
   let medal;
   let head;
   if (teamy && d.teamRank) {
     medal = d.teamRank === 1 ? '🏆' : d.teamRank === 2 ? '🥈' : d.teamRank === 3 ? '🥉' : '🎮';
     head = d.teamRank === 1 ? 'Ton équipe a gagné !' : 'Ton équipe : ' + d.teamRank + 'e sur ' + d.teamCount;
+  } else if (zero) {
+    medal = '🎮';
+    head = d.rank + 'e sur ' + d.total;
   } else if (elim) {
     medal = d.alive ? '🏆' : '💀';
     head = d.alive ? 'Toujours en jeu !' : d.rank + 'e sur ' + d.total;
@@ -115,7 +121,7 @@ socket.on('end', (d) => {
   // Le Professeur félicite : 1er (ou 1re équipe), podium (2e / 3e), ou les autres (lines.js)
   if (!again) profSay('sayEnd', 'endMascot', endLine(d), 'bravo', { pseudo: d.name });
   show('end');
-  if ((teamy ? d.teamRank : d.rank) <= 3) { FX.fanfare(); FX.confetti((teamy ? d.teamRank : d.rank) === 1 ? 100 : 50); }
+  if (!zero && (teamy ? d.teamRank : d.rank) <= 3) { FX.fanfare(); FX.confetti((teamy ? d.teamRank : d.rank) === 1 ? 100 : 50); }
 });
 $('reviewBtn').onclick = () => {
   const box = $('reviewList');

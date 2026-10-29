@@ -115,6 +115,7 @@ function resetPlayerStats(p) {
   p.lastResult = null;
   p.hearts = null;
   p.lostHeart = false;
+  p.keptHeart = false;
   p.mistakes = [];
 }
 

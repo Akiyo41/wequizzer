@@ -26,6 +26,9 @@ function connHide() { clearTimeout(connTimer); $('connBanner').classList.add('hi
 socket.on('connect', () => {
   connHide();
   const sess = LS.get(SESSION, null);
+  // Un lien ou un QR code avec un AUTRE code : on oublie l'ancienne partie pour rejoindre la nouvelle
+  const urlPin = new URLSearchParams(location.search).get('pin');
+  if (sess && urlPin && urlPin !== String(sess.pin)) { LS.del(SESSION); return; }
   if (sess && sess.pin && sess.pid && sess.token) socket.emit('player:rejoin', sess);
 });
 socket.on('disconnect', connShow);

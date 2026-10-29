@@ -337,6 +337,21 @@ const tests = {
     close(game);
   },
 
+  async 'tout le monde se trompe avec son dernier cœur : personne ne le perd, et on ne dit pas « tu perds un cœur »'() {
+    const quiz = { title: 'TF', questions: [{ type: 'tf', text: 'Vrai ?', correct: 0 }, { type: 'tf', text: 'Encore ?', correct: 0 }] };
+    const game = await setupGame({ hearts: true, speedBonus: false, lives: 1 }, quiz);
+    const { host, players } = game;
+    const res = once(players[0], 'result');
+    host.emit('host:start');
+    await once(host, 'question');
+    players.forEach((p) => p.emit('player:answer', { index: 1 })); // tout le monde a faux
+    const r = await res;
+    assert.strictEqual(r.hearts, 1);
+    assert.strictEqual(r.lostHeart, false);
+    assert.strictEqual(r.keptHeart, true);
+    close(game);
+  },
+
   async 'PIN inconnu'() {
     const s = connect();
     const e1 = once(s, 'join:error');

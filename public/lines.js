@@ -56,7 +56,7 @@ const LINES = {
   // dernière question ratée (ou sans réponse) : on ne parle plus de « la suivante »
   dernier: [
     'Dommage pour la dernière ! Place aux résultats…',
-    'Raté de peu ! Voyons maintenant le classement…',
+    'C\'était la dernière ! Voyons maintenant le classement…',
     'Pas grave, tu as tout donné ! Les résultats arrivent…',
   ],
   sondage: ['Voyons ce que pensent les autres !', 'Ton avis compte !', 'Intéressant… on verra si les autres sont d\'accord !'],
@@ -90,6 +90,8 @@ const LINES = {
   animPersonne: ['Aïe, celle-là était coriace !', 'Pas facile, celle-là ! On se rattrape à la suivante ?', 'Même moi, j\'ai hésité !'],
   animSondage: ['Merci pour vos votes !', 'Voilà ce que vous en pensez !', 'Intéressant, ces réponses !'],
   animPodium: ['Bravo à {gagnant} ! Et merci à tous d\'avoir joué !', 'Applaudissements pour {gagnant} !', '{gagnant} remporte la partie, bravo !'],
+  // fin de partie où personne n'a trouvé une seule bonne réponse : on n'applaudit pas un « gagnant » à 0
+  animFinZero: ['Coriace, ce quiz ! Merci à tous d\'avoir joué.', 'Personne n\'a trouvé cette fois… On remet ça ?', 'Merci d\'avoir joué ! La revanche sera la bonne.'],
 };
 
 // Tire une phrase de la situation `key`, différente de `last` s'il y en a plusieurs, et remplit les trous.
@@ -122,6 +124,7 @@ function endLine(d) {
   const teamy = d.mode === 'teams' || d.mode === 'hangman';
   const place = teamy ? d.teamRank : d.rank;
   const count = teamy ? d.teamCount : d.total;
+  if (!teamy && d.questions > 0 && d.correct === 0) return 'finAutre'; // aucune bonne réponse : pas de « première place »
   if (place === 1) return 'finGagne';
   if (count && place >= count) return 'finAutre'; // le dernier n'est pas « sur le podium », même à 2 ou 3
   return place && place <= 3 ? 'finPodium' : 'finAutre';
