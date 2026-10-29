@@ -81,6 +81,7 @@ const Brand = (() => {
     b.className = 'say-bubble';
     b.textContent = text;
     box.appendChild(b);
+    if (typeof UI !== 'undefined' && UI.announce) UI.announce(text); // lu par les lecteurs d'écran
   }
   // Une phrase du Professeur pour la situation `key` (phrases dans lines.js), jamais deux fois de suite la même
   const lastLine = {};

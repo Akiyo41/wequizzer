@@ -83,5 +83,34 @@ const UI = (() => {
     document.body.classList.add('has-snd');
     apply();
   }
-  return { confirm: confirmBox, soundButton, soundInit, soundSlider };
+  // Lecteurs d'écran : annonce un texte qui vient d'apparaître (résultat, bulle du Professeur).
+  // Les annonces faites au même moment sont lues ensemble, dans l'ordre.
+  let live = null; let pending = []; let flushT = null;
+  function announce(text) {
+    if (!text) return;
+    if (!live) {
+      live = document.createElement('div');
+      live.className = 'sr-only';
+      live.setAttribute('role', 'status');
+      live.setAttribute('aria-live', 'polite');
+      document.body.appendChild(live);
+    }
+    pending.push(String(text));
+    clearTimeout(flushT);
+    flushT = setTimeout(() => { live.textContent = pending.join(' '); pending = []; }, 120);
+  }
+  // Chaque réglage (interrupteur, liste) prend le nom de sa ligne, pour qu'un lecteur d'écran dise « Chrono » et pas seulement « case à cocher »
+  function nameRows(root) {
+    (root || document).querySelectorAll('.row').forEach((row) => {
+      const rl = row.querySelector('.rl');
+      if (!rl) return;
+      const title = [...rl.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join(' ').replace(/\s+/g, ' ').trim();
+      if (!title) return;
+      row.querySelectorAll('input, select').forEach((c) => {
+        if (!c.hasAttribute('aria-label') && !(c.labels && [...c.labels].some((l) => l.textContent.trim()))) c.setAttribute('aria-label', title);
+      });
+    });
+  }
+  nameRows();
+  return { confirm: confirmBox, soundButton, soundInit, soundSlider, announce, nameRows };
 })();

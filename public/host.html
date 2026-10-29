@@ -54,7 +54,7 @@
 
       <div class="card pop" style="margin-top:18px">
         <h2><i class="ti ti-list-details"></i> Quiz à jouer</h2>
-        <select id="quizSelect" class="wide"></select>
+        <select id="quizSelect" aria-label="Quiz à jouer" class="wide"></select>
         <p class="hint" id="quizInfo"></p>
       </div>
 
@@ -110,7 +110,7 @@
       <div class="card pop">
         <h2><i class="ti ti-books"></i> Mes quiz</h2>
         <div class="quiz-pick">
-          <select id="quizSelect2" class="wide"></select>
+          <select id="quizSelect2" aria-label="Quiz choisi" class="wide"></select>
           <button id="deleteQuiz" class="btn ghost mini" title="Supprimer ce quiz" aria-label="Supprimer ce quiz"><i class="ti ti-trash"></i></button>
         </div>
         <p class="hint" id="quizInfo2"></p>
@@ -278,7 +278,7 @@
   <div id="editor" class="screen editor hidden">
     <h1><i class="ti ti-edit"></i> <span id="edHead">Nouveau quiz</span></h1>
     <div class="card" style="margin-top:14px">
-      <input id="edTitle" maxlength="60" placeholder="Titre du quiz">
+      <input id="edTitle" aria-label="Titre du quiz" maxlength="60" placeholder="Titre du quiz">
     </div>
     <div id="edQuestions" style="width:100%"></div>
     <button id="addQ" class="btn ghost"><i class="ti ti-plus"></i> Ajouter une question</button>
@@ -295,9 +295,9 @@
     <h1><i class="ti ti-chart-donut-3"></i> <span id="weHead">Nouvelle roue</span></h1>
     <div class="card" style="margin-top:14px">
       <p class="hint" style="margin-top:0"><b>1. Donne un titre à ta roue</b> (il sert à la retrouver dans ta liste).</p>
-      <input id="weTitle" maxlength="60" placeholder="Ex : Capitales d'Europe">
+      <input id="weTitle" aria-label="Titre de la roue" maxlength="60" placeholder="Ex : Capitales d'Europe">
       <p class="hint" style="margin-top:12px"><b>2. Écris le mot du centre.</b> C'est le petit texte écrit au milieu de la roue (le thème).</p>
-      <input id="weCategory" maxlength="80" placeholder="Ex : Capitales">
+      <input id="weCategory" aria-label="Mot du centre de la roue" maxlength="80" placeholder="Ex : Capitales">
       <p class="hint" style="margin-top:12px"><b>3. Écris tes questions.</b> Pour chaque question : la question, la bonne réponse, et 1 à 3 fausses réponses sur le même sujet. Si tu n'écris pas de fausses réponses, le jeu en choisit tout seul.</p>
       <div id="weRows"></div>
       <div style="margin-top:10px">
@@ -308,7 +308,7 @@
       <details style="margin-top:8px">
         <summary class="hint" style="cursor:pointer">Tu as déjà tes questions dans un tableur ou dans une IA ? Clique ici pour les coller d'un coup.</summary>
         <p class="hint">Colle une ligne par question, avec des « ; » entre les morceaux : <b>question ; bonne réponse ; fausse 1 ; fausse 2 ; fausse 3</b></p>
-        <textarea id="wePaste" rows="6" style="width:100%" placeholder="Quelle est la capitale de l'Italie ? ; Rome ; Milan ; Naples ; Venise"></textarea>
+        <textarea id="wePaste" aria-label="Questions à coller" rows="6" style="width:100%" placeholder="Quelle est la capitale de l'Italie ? ; Rome ; Milan ; Naples ; Venise"></textarea>
         <button id="wePasteGo" class="btn ghost mini" type="button"><i class="ti ti-table-import"></i> Ajouter ces lignes à ma roue</button>
       </details>
     </div>
@@ -325,7 +325,7 @@
     <h1><i class="ti ti-abc"></i> <span id="leHead">Nouveau jeu de mots</span></h1>
     <div class="card" style="margin-top:14px">
       <p class="hint" style="margin-top:0"><b>1. Donne un titre à ton jeu</b> (il sert à le retrouver dans ta liste).</p>
-      <input id="leTitle" maxlength="60" placeholder="Ex : Les animaux">
+      <input id="leTitle" aria-label="Titre du jeu de mots" maxlength="60" placeholder="Ex : Les animaux">
       <p class="hint" style="margin-top:12px"><b>2. Écris tes mots.</b> Pour chaque mot : une question, et le mot à trouver. Les joueurs voient la question et remettent les lettres du mot dans le bon ordre.</p>
       <div id="leRows"></div>
       <div style="margin-top:10px">
@@ -336,7 +336,7 @@
       <details style="margin-top:8px">
         <summary class="hint" style="cursor:pointer">Tu as déjà tes mots dans un tableur ou dans une IA ? Clique ici pour les coller d'un coup.</summary>
         <p class="hint">Colle une ligne par mot, avec des « ; » entre les morceaux : <b>question ; mot ; lien de l'image (facultatif)</b></p>
-        <textarea id="lePaste" rows="6" style="width:100%" placeholder="Quel animal miaule ? ; Chat"></textarea>
+        <textarea id="lePaste" aria-label="Mots à coller" rows="6" style="width:100%" placeholder="Quel animal miaule ? ; Chat"></textarea>
         <button id="lePasteGo" class="btn ghost mini" type="button"><i class="ti ti-table-import"></i> Ajouter ces lignes à mon jeu</button>
         <button id="leFile" class="btn ghost mini" type="button"><i class="ti ti-file-import"></i> Charger un fichier (CSV / texte)</button>
         <input type="file" id="leFileInput" accept=".csv,.tsv,.txt,text/csv,text/plain" class="hidden">
@@ -356,25 +356,25 @@
     <p class="hint" style="margin-top:6px">Tu utilises ChatGPT, Claude, Gemini ou une autre IA ? Elle écrit les questions pour toi, et WeQuizzer les transforme en quiz. 3 petites étapes :</p>
     <div class="card" style="margin-top:14px">
       <p style="margin:0 0 8px"><b>1. Dis ce que tu veux</b></p>
-      <input id="aiTheme" maxlength="120" placeholder="Le thème. Ex : Les volcans, La Révolution française, Les fractions…">
+      <input id="aiTheme" aria-label="Thème du quiz" maxlength="120" placeholder="Le thème. Ex : Les volcans, La Révolution française, Les fractions…">
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
         <label class="hint" style="margin:0">Combien de questions ?<br><input id="aiCount" type="number" min="3" max="100" value="10" style="width:90px"></label>
         <label class="hint" style="margin:0">Niveau<br><select id="aiLevel"><option>facile</option><option selected>moyen</option><option>difficile</option></select></label>
         <label class="hint" style="margin:0;flex:1;min-width:150px">Pour qui ?<br><input id="aiPublic" maxlength="60" placeholder="Ex : élèves de 6e, adultes…"></label>
       </div>
-      <input id="aiTitle" maxlength="60" placeholder="Nom du quiz (si tu laisses vide, on prend le thème)" style="margin-top:8px">
+      <input id="aiTitle" aria-label="Nom du quiz" maxlength="60" placeholder="Nom du quiz (si tu laisses vide, on prend le thème)" style="margin-top:8px">
       <p class="hint" style="margin-top:10px">Quels types de questions ? (coche ce que tu veux)</p>
       <div id="aiTypes"></div>
     </div>
     <div class="card">
       <p style="margin:0 0 8px"><b>2. Copie ce texte et colle-le dans ton IA</b></p>
-      <textarea id="aiPrompt" rows="14" readonly style="width:100%"></textarea>
+      <textarea id="aiPrompt" aria-label="Texte à copier dans ton IA" rows="14" readonly style="width:100%"></textarea>
       <button id="aiCopy" class="btn big" type="button" style="margin-top:8px"><i class="ti ti-copy"></i> Copier le texte</button>
       <p class="hint">Ensuite, ouvre ton IA, colle ce texte, et envoie. Elle te répond avec un tableau.</p>
     </div>
     <div class="card">
       <p style="margin:0 0 8px"><b>3. Colle ici la réponse de l'IA</b></p>
-      <textarea id="aiReply" rows="8" style="width:100%" placeholder="Colle ici tout ce que l'IA t'a répondu. Pas besoin de nettoyer, on s'occupe du reste."></textarea>
+      <textarea id="aiReply" aria-label="Réponse de l'IA" rows="8" style="width:100%" placeholder="Colle ici tout ce que l'IA t'a répondu. Pas besoin de nettoyer, on s'occupe du reste."></textarea>
       <div style="margin-top:8px">
         <button id="aiGo" class="btn big" type="button"><i class="ti ti-wand"></i> Créer mon quiz</button>
         <button id="aiFile" class="btn ghost mini" type="button"><i class="ti ti-file-upload"></i> Ou choisir un fichier</button>
@@ -399,7 +399,7 @@
   <div id="statsPage" class="screen editor hidden">
     <h1><i class="ti ti-chart-bar"></i> Statistiques</h1>
     <div class="card" style="margin-top:14px">
-      <select id="statsSelect" class="wide"></select>
+      <select id="statsSelect" aria-label="Quiz à analyser" class="wide"></select>
       <p class="hint" id="statsInfo" style="margin-top:8px"></p>
       <div id="statsList" style="margin-top:8px"></div>
       <button id="statsReset" class="btn ghost mini" type="button"><i class="ti ti-trash"></i> Effacer les statistiques de ce quiz</button>
@@ -411,8 +411,8 @@
   <div id="tfEditor" class="screen editor hidden">
     <h1><i class="ti ti-bolt"></i> <span id="tfHead">Nouveau Vrai/Faux en rafale</span></h1>
     <div class="card" style="margin-top:14px">
-      <input id="tfTitle" maxlength="60" placeholder="Titre (ex. Vrai ou faux : les animaux)">
-      <textarea id="tfItems" rows="12" style="margin-top:10px;width:100%" placeholder="Une ligne par affirmation : affirmation ; vrai ou faux ; explication (facultatif)&#10;Le dauphin est un poisson ; faux ; C'est un mammifère : il respire de l'air.&#10;Paris est la capitale de la France ; vrai"></textarea>
+      <input id="tfTitle" aria-label="Titre du Vrai/Faux" maxlength="60" placeholder="Titre (ex. Vrai ou faux : les animaux)">
+      <textarea id="tfItems" aria-label="Affirmations, une par ligne" rows="12" style="margin-top:10px;width:100%" placeholder="Une ligne par affirmation : affirmation ; vrai ou faux ; explication (facultatif)&#10;Le dauphin est un poisson ; faux ; C'est un mammifère : il respire de l'air.&#10;Paris est la capitale de la France ; vrai"></textarea>
       <p class="hint">Une ligne par affirmation : <b>affirmation ; vrai</b> (ou <b>faux</b>), et si tu veux <b>; une explication</b> que le Professeur donnera après la réponse. Tout le monde répond en même temps, sans choix à lire : ça va vite ! Dans les réglages, <b>limite le temps</b> (5 ou 8 secondes) et coche le <b>passage automatique</b> pour une vraie rafale. C'est toi qui décides du temps.</p>
     </div>
     <div id="tfError" class="error"></div>

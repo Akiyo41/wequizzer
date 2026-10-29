@@ -36,8 +36,8 @@
   <div id="join" class="screen narrow">
     <div class="logo big"><span data-logo></span></div>
     <div class="card pop" style="margin-top:18px">
-      <input id="pin" inputmode="numeric" maxlength="6" placeholder="Code PIN" autocomplete="off">
-      <input id="name" maxlength="16" placeholder="Ton pseudo" autocomplete="off">
+      <input id="pin" aria-label="Code PIN" inputmode="numeric" maxlength="6" placeholder="Code PIN" autocomplete="off">
+      <input id="name" aria-label="Ton pseudo" maxlength="16" placeholder="Ton pseudo" autocomplete="off">
       <p class="hint" style="text-align:center">Choisis ton avatar :</p>
       <div id="avpick" class="avpick"></div>
       <button id="joinBtn" class="btn block big"><i class="ti ti-door-enter"></i> Rejoindre</button>
@@ -99,7 +99,7 @@
     <div id="qHint" class="say mini hidden"></div>
     <div id="choices" class="pchoices"></div>
     <div id="textAns" class="textans hidden" style="width:100%">
-      <input id="textInput" type="text" maxlength="100" placeholder="Écris ta réponse" autocomplete="off">
+      <input id="textInput" aria-label="Ta réponse" type="text" maxlength="100" placeholder="Écris ta réponse" autocomplete="off">
       <button id="textSend" class="btn block big"><i class="ti ti-send"></i> Envoyer</button>
     </div>
     <button id="multiSend" class="btn block big multi-send hidden"><i class="ti ti-check"></i> Valider</button>

@@ -89,6 +89,7 @@ function drawSetAvatars() {
     b.type = 'button';
     b.disabled = locked();
     b.setAttribute('aria-label', 'Avatar ' + a);
+    b.setAttribute('aria-pressed', a === setAvatar ? 'true' : 'false');
     b.onclick = () => { setAvatar = a; FX.click(); drawSetAvatars(); };
     box.appendChild(b);
   });

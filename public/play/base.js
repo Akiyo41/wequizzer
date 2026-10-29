@@ -90,6 +90,7 @@ function renderAvatars() {
     const b = el('button', a === myAvatar ? 'on' : '', a);
     b.type = 'button';
     b.setAttribute('aria-label', 'Avatar ' + a);
+    b.setAttribute('aria-pressed', a === myAvatar ? 'true' : 'false');
     b.onclick = () => { myAvatar = a; LS.set('wequizzer.avatar', a); FX.click(); renderAvatars(); };
     box.appendChild(b);
   });

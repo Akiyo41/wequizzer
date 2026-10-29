@@ -44,6 +44,7 @@ socket.on('result', (r) => {
     sub.textContent = '💀 Tu es hors jeu… mais tu peux encore envoyer des réactions !';
     sub.style.fontSize = '1.2rem';
   } else sub.style.fontSize = '1.5rem';
+  if (!again) UI.announce(t.textContent + (sub.textContent ? '. ' + sub.textContent : ''));
   const hm = $('resHang');
   hm.classList.toggle('hidden', r.hangErrors === null || r.hangErrors === undefined);
   if (r.hangErrors !== null && r.hangErrors !== undefined) {

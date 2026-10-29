@@ -159,6 +159,7 @@ function renderEditor() {
         radio.type = 'radio';
         radio.name = 'correct' + i;
         radio.checked = q.correct === k;
+        radio.setAttribute('aria-label', 'Bonne réponse : ' + label);
         radio.onchange = () => { q.correct = k; };
         row.appendChild(radio);
         row.appendChild(el('span', 'badge c' + (k === 0 ? 3 : 0), k === 0 ? '✔' : '✖'));
@@ -205,12 +206,14 @@ function renderEditor() {
           radio.type = 'radio';
           radio.name = 'correct' + i;
           radio.checked = q.correct === k;
+          radio.setAttribute('aria-label', 'Bonne réponse ' + LETTERS[k]);
           radio.onchange = () => { q.correct = k; };
           row.appendChild(radio);
         } else if (q.type === 'multi') {
           const cb = el('input');
           cb.type = 'checkbox';
           cb.checked = q.correct.includes(k);
+          cb.setAttribute('aria-label', 'Bonne réponse ' + LETTERS[k]);
           cb.onchange = () => {
             q.correct = cb.checked ? Array.from(new Set([...q.correct, k])) : q.correct.filter((x) => x !== k);
           };

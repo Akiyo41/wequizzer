@@ -92,6 +92,7 @@ function buildTeamNames() {
     inp.type = 'text';
     inp.maxLength = 14;
     inp.placeholder = TEAM_DEF[i];
+    inp.setAttribute('aria-label', 'Nom de l\'équipe ' + (i + 1));
     inp.style.cssText = 'flex:1 1 90px;min-width:80px';
     inp.addEventListener('change', () => { pushSettings(); renderTeamAssign(); });
     teamNameInputs.push(inp);
@@ -111,6 +112,7 @@ function renderTeamAssign() {
     r.appendChild(el('span', 'nm', p.name));
     const sel = document.createElement('select');
     sel.style.marginLeft = 'auto';
+    sel.setAttribute('aria-label', 'Équipe de ' + p.name);
     sel.appendChild(new Option('— au hasard —', ''));
     for (let t = 0; t < n; t++) sel.appendChild(new Option(teamNameInputs[t].value.trim() || TEAM_DEF[t], String(t)));
     sel.value = Number.isInteger(p.team) && p.team < n ? String(p.team) : '';
