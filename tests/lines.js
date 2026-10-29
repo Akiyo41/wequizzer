@@ -31,6 +31,11 @@ const tests = {
     for (let i = 0; i < 100 && (!p || p.raw !== 'Bien joué, {pseudo} !'); i++) p = pickLine('bravo', { pseudo: '{serie}', serie: 9 }, null);
     assert.strictEqual(p.text, 'Bien joué, {serie} !');
   },
+  'la phrase commence toujours par une majuscule'() {
+    let p = null;
+    for (let i = 0; i < 100 && (!p || p.raw !== '{gagnant} remporte la partie, bravo !'); i++) p = pickLine('animPodium', { gagnant: 'l\'équipe Bleu' }, null);
+    assert.strictEqual(p.text, 'L\'équipe Bleu remporte la partie, bravo !');
+  },
   'clé inconnue'() {
     assert.deepStrictEqual(pickLine('nimporte', {}, null), { raw: '', text: '' });
   },

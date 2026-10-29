@@ -90,6 +90,14 @@ const Brand = (() => {
     lastLine[key] = p.raw;
     return p.text;
   }
+  // Le Professeur dit une phrase de la situation `key` dans la bulle `box` ; la mascotte `mascot` (facultative)
+  // est cachée pendant ce temps (un seul Professeur à l'écran). Pas de phrase : pas de bulle, la mascotte revient.
+  function speak(box, mascot, key, pose, vars) {
+    const text = line(key, vars);
+    if (text) say(box, text, pose);
+    box.classList.toggle('hidden', !text);
+    if (mascot) mascot.classList.toggle('hidden', !!text);
+  }
   document.addEventListener('DOMContentLoaded', () => { apply(); });
-  return { apply, setPose, img, intro, preload, say, line };
+  return { apply, setPose, img, intro, preload, say, line, speak };
 })();

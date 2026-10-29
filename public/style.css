@@ -524,3 +524,5 @@ a.create-card { text-decoration: none; }
   #tourBox .say-bubble { font-size: .88rem; padding: 7px 11px; line-height: 1.3; }
   #tourBox .tour-row .btn { padding: 6px 10px; }
 }
+/* Bulles du Professeur sur l'écran de l'animateur (3-2-1, podium) : pas plus larges que la page */
+#sayHostCount, #sayHostEnd { max-width: 640px; margin-left: auto; margin-right: auto; }

@@ -442,7 +442,8 @@
   <!-- Compte à rebours -->
   <div id="countdown" class="screen countdown hidden">
     <div class="hostlogo"><span data-logo></span></div>
-    <span data-mascot="chrono" data-size="lg"></span>
+    <span data-mascot="chrono" data-size="lg" id="hostCdMascot"></span>
+    <div class="say hidden" id="sayHostCount"></div>
     <div class="count-label" id="cdLabel"></div>
     <div class="count-num" id="cdNum">3</div>
     <div class="count-label">Prépare-toi !</div>
@@ -510,7 +511,8 @@
   <!-- Fin -->
   <div id="end" class="screen hidden" style="text-align:center">
     <div class="hostlogo"><span data-logo></span></div>
-    <span data-mascot="bravo" data-size="lg"></span>
+    <span data-mascot="bravo" data-size="lg" id="hostEndMascot"></span>
+    <div class="say hidden" id="sayHostEnd"></div>
     <h1><i class="ti ti-trophy"></i> <span id="endHead">Podium final</span></h1>
     <div id="teamBoard" class="teamboard hidden"></div>
     <div id="podium" class="podium"></div>

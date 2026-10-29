@@ -68,7 +68,9 @@ function pickLine(key, vars, last) {
   const raw = choices[Math.floor(Math.random() * choices.length)];
   const v = vars || {};
   // une seule passe : une valeur insérée (ex. un pseudo « {serie} ») n'est jamais remplacée à son tour
-  const text = raw.replace(/\{(pseudo|serie|gagnant)\}/g, (_, n) => (v[n] === undefined || v[n] === null ? '' : String(v[n])));
+  const filled = raw.replace(/\{(pseudo|serie|gagnant)\}/g, (_, n) => (v[n] === undefined || v[n] === null ? '' : String(v[n])));
+  // une phrase commence par une majuscule, même quand elle commence par un trou (« l'équipe Bleu… » → « L'équipe Bleu… »)
+  const text = filled.charAt(0).toLocaleUpperCase('fr') + filled.slice(1);
   return { raw, text };
 }
 if (typeof module !== 'undefined') module.exports = { LINES, pickLine };

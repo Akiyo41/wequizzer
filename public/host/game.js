@@ -131,6 +131,7 @@ socket.on('countdown', ({ seconds, index, total }) => {
   clearInterval(autoInt);
   clearInterval(readInt);
   $('cdLabel').textContent = 'Question ' + (index + 1) + ' sur ' + total;
+  Brand.speak($('sayHostCount'), $('hostCdMascot'), 'animCompte', 'chrono');
   show('countdown');
   clearTimeout(cdTimer);
   cdLeft = seconds;
@@ -315,9 +316,18 @@ socket.on('results', (r) => {
   $('rText').textContent = r.text || (currentQ ? currentQ.text : '');
   const ct = r.order ? 'Bon ordre : ' + r.correctText : r.match ? 'Bonnes liaisons : ' + r.correctText : r.type === 'text' ? 'Réponse(s) acceptée(s) : ' + r.correctText : r.correctText ? 'Bonne réponse : ' + r.correctText : 'Voici les votes';
   $('rCorrect').textContent = ct;
-  // explication : le petit Professeur l'explique dans sa bulle (la mascotte du coin garde bravo / désolé)
-  $('rExplain').classList.toggle('hidden', !r.explain);
-  if (r.explain) Brand.say($('rExplain'), r.explain);
+  // Le petit Professeur parle dans la carte (la mascotte du coin garde bravo / désolé) : l'explication s'il y en a une,
+  // sinon une réaction selon la part de bonnes réponses ; rien si personne n'a participé
+  if (r.explain) {
+    Brand.say($('rExplain'), r.explain);
+    $('rExplain').classList.remove('hidden');
+  } else if (!r.partCount) {
+    $('rExplain').classList.add('hidden');
+  } else {
+    const share = r.okCount / r.partCount;
+    const [key, pose] = r.type === 'poll' ? ['animSondage', 'question'] : share >= 0.8 ? ['animTous', 'bravo'] : share >= 0.3 ? ['animMoitie', 'question'] : ['animPersonne', 'desole'];
+    Brand.speak($('rExplain'), null, key, pose);
+  }
   $('rScore').classList.toggle('hidden', r.type === 'poll' || !r.partCount);
   $('rScore').innerHTML = '<i class="ti ti-circle-check"></i> ' + r.okCount + ' / ' + r.partCount + ' ont bien répondu';
   if (r.wheel || r.match || r.order) $('rChoices').innerHTML = '';
@@ -439,6 +449,10 @@ socket.on('end', (d) => {
     tbox.appendChild(c);
   });
   $('drawer').classList.add('hidden');
+  // Le Professeur salue le gagnant (l'équipe gagnante en mode équipes / pendu) ; pas de joueur : pas de bulle
+  const winner = teamy && d.teams && d.teams[0] ? 'l\'équipe ' + d.teams[0].name : board[0] ? board[0].avatar + ' ' + board[0].name : '';
+  if (winner) Brand.speak($('sayHostEnd'), $('hostEndMascot'), 'animPodium', 'bravo', { gagnant: winner });
+  else { $('sayHostEnd').classList.add('hidden'); $('hostEndMascot').classList.remove('hidden'); }
   show('end');
   setTimeout(() => { FX.fanfare(); FX.confetti(90); }, 1500);
 });

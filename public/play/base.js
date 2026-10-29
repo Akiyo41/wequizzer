@@ -30,15 +30,8 @@ if (!new URLSearchParams(location.search).get('pin') && !LS.get(SESSION, null)) 
 let deviceId = LS.get('wequizzer.device', null);
 if (!deviceId) { deviceId = Math.random().toString(36).slice(2) + Date.now().toString(36); LS.set('wequizzer.device', deviceId); }
 
-// Le Professeur dit une phrase de la situation `key` dans la bulle `boxId` ; sa mascotte `mascotId` est cachée
-// pendant ce temps (un seul Professeur à l'écran). Pas de phrase : pas de bulle, la mascotte revient.
-function profSay(boxId, mascotId, key, pose, vars) {
-  const text = Brand.line(key, vars);
-  const box = $(boxId);
-  if (text) Brand.say(box, text, pose);
-  box.classList.toggle('hidden', !text);
-  if (mascotId) $(mascotId).classList.toggle('hidden', !!text);
-}
+// Le Professeur parle dans la bulle `boxId` (sa mascotte `mascotId` est cachée pendant ce temps) — voir Brand.speak
+const profSay = (boxId, mascotId, key, pose, vars) => Brand.speak($(boxId), mascotId ? $(mascotId) : null, key, pose, vars);
 // Écrans sans données : une nouvelle phrase à chaque fois qu'on y entre
 const SCREEN_LINES = {
   wait: ['sayWait', 'waitMascot', 'attente', 'danse'],
