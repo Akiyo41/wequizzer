@@ -54,9 +54,8 @@ socket.on('result', (r) => {
     $('resExplain').classList.remove('hidden');
     $('resMascot').classList.add('hidden');
   } else {
-    const poll = r.type === 'poll';
-    const key = poll ? 'sondage' : r.correct ? (r.streak >= 3 ? 'serie' : 'bravo') : r.answered ? 'rate' : 'tropTard';
-    profSay('resExplain', 'resMascot', key, poll ? 'question' : r.correct ? 'bravo' : 'desole', { pseudo: me.name, serie: r.streak });
+    const { key, pose } = resultLine(r); // éliminé d'abord, puis sondage / juste / faux / pas de réponse (lines.js)
+    profSay('resExplain', 'resMascot', key, pose, { pseudo: me.name, serie: r.streak });
   }
   const stats = $('resStats');
   stats.innerHTML = '';

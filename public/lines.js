@@ -22,7 +22,7 @@ const LINES = {
   ],
   elimine: [
     'Pas de chance ! Reste avec nous, regarde la suite sur le grand écran.',
-    'Éliminé, mais pas oublié ! Suis la fin de la partie sur l\'écran de l\'animateur.',
+    'Hors jeu, mais toujours avec nous ! Suis la fin de la partie sur l\'écran de l\'animateur.',
     'Ça arrive aux meilleurs ! Regarde comment ça se termine.',
   ],
   bravo: ['Excellent !', 'Bien joué, {pseudo} !', 'Tu as tout compris !', 'Impressionnant !', 'Je n\'aurais pas mieux répondu !'],
@@ -39,7 +39,7 @@ const LINES = {
   ],
   tropTard: [
     'Trop tard ! Sois plus rapide la prochaine fois.',
-    'Le temps a filé… Reste prêt pour la suivante !',
+    'Le temps a filé… Garde l\'œil ouvert pour la suivante !',
     'Tu étais dans la lune ? La prochaine, tu ne la rates pas !',
   ],
   sondage: ['Voyons ce que pensent les autres !', 'Ton avis compte !', 'Intéressant… on verra si les autres sont d\'accord !'],
@@ -73,4 +73,12 @@ function pickLine(key, vars, last) {
   const text = filled.charAt(0).toLocaleUpperCase('fr') + filled.slice(1);
   return { raw, text };
 }
-if (typeof module !== 'undefined') module.exports = { LINES, pickLine };
+// Résultat d'une question côté joueur → { key, pose } de la phrase du Professeur.
+// Éliminé (ou pendu de l'équipe complet) passe avant tout : pas de « la prochaine est pour toi » à ce moment-là.
+function resultLine(r) {
+  if (r.outNow || (r.hangErrors !== null && r.hangErrors !== undefined && r.hangErrors >= r.hangMax)) return { key: 'elimine', pose: 'desole' };
+  if (r.type === 'poll') return { key: 'sondage', pose: 'question' };
+  if (r.correct) return { key: r.streak >= 3 ? 'serie' : 'bravo', pose: 'bravo' };
+  return { key: r.answered ? 'rate' : 'tropTard', pose: 'desole' };
+}
+if (typeof module !== 'undefined') module.exports = { LINES, pickLine, resultLine };

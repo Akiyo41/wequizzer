@@ -19,7 +19,8 @@ Le Professeur Quizzo ne parle aujourd'hui que pour l'explication après une ques
 2. **Les informations utiles restent** : « 💔 Tu perds un cœur… », « 💀 Tu es éliminé… », « ⚡ Question bonus réussie ! », le pendu de l'équipe… restent affichées comme aujourd'hui (sous le gros titre). Seules les phrases génériques « Bonne réponse » et « Mauvaise réponse » sont remplacées par la bulle ; « Prochaine question bientôt… » / « Les résultats arrivent… » restent en bas de l'écran.
 3. **Un seul Professeur à l'écran** : sur le téléphone, quand la bulle s'affiche, la mascotte posée au-dessus est cachée (la bulle contient déjà le Professeur), comme pour l'explication aujourd'hui.
 4. **Phrases neutres** : on ne connaît pas le genre du joueur ; aucune phrase ne s'accorde au masculin ou au féminin (« Victoire ! » plutôt que « Champion »).
-5. **Pas de phrase = pas de bulle** : si une situation n'a pas de phrase, la bulle ne s'affiche pas ; rien ne casse.
+5. **Éliminé d'abord** : au résultat où le joueur est éliminé (ou où le pendu de son équipe est complet), la bulle utilise `elimine`, jamais une phrase qui annonce « la prochaine » (ajouté après la relecture).
+6. **Pas de phrase = pas de bulle** : si une situation n'a pas de phrase, la bulle ne s'affiche pas ; rien ne casse.
 
 ## Écrans et situations
 
@@ -56,11 +57,11 @@ Trous : `{pseudo}`, `{serie}`, `{gagnant}`.
 - **file** : « La partie a déjà commencé, mais je te garde une place pour la prochaine ! » · « Patience ! Tu joueras dès la prochaine partie. Reste sur cette page. » · « Tu es dans la file d'attente : la prochaine partie est pour toi ! »
 - **compte** : « Concentre-toi… » · « C'est parti ! » · « Prépare-toi, ça arrive ! » · « Les yeux sur l'écran ! »
 - **envoye** : « Réponse dans la boîte ! On attend les autres… » · « C'est noté ! Voyons ce que répondent les autres… » · « Bien reçu ! Le suspense est insoutenable… »
-- **elimine** : « Pas de chance ! Reste avec nous, regarde la suite sur le grand écran. » · « Éliminé, mais pas oublié ! Suis la fin de la partie sur l'écran de l'animateur. » · « Ça arrive aux meilleurs ! Regarde comment ça se termine. »
+- **elimine** : « Pas de chance ! Reste avec nous, regarde la suite sur le grand écran. » · « Hors jeu, mais toujours avec nous ! Suis la fin de la partie sur l'écran de l'animateur. » · « Ça arrive aux meilleurs ! Regarde comment ça se termine. »
 - **bravo** : « Excellent ! » · « Bien joué, {pseudo} ! » · « Tu as tout compris ! » · « Impressionnant ! » · « Je n'aurais pas mieux répondu ! »
 - **serie** : « Et de {serie} d'affilée ! Rien ne t'arrête ! » · « {serie} bonnes réponses de suite, tu es en feu ! » · « Série de {serie} ! Continue comme ça ! »
 - **rate** : « Pas grave, la prochaine est pour toi ! » · « Presque ! Tu feras mieux à la suivante. » · « On apprend de ses erreurs, c'est comme ça qu'on progresse ! » · « Raté de peu, garde le moral ! »
-- **tropTard** : « Trop tard ! Sois plus rapide la prochaine fois. » · « Le temps a filé… Reste prêt pour la suivante ! » · « Tu étais dans la lune ? La prochaine, tu ne la rates pas ! »
+- **tropTard** : « Trop tard ! Sois plus rapide la prochaine fois. » · « Le temps a filé… Garde l'œil ouvert pour la suivante ! » · « Tu étais dans la lune ? La prochaine, tu ne la rates pas ! »
 - **sondage** : « Voyons ce que pensent les autres ! » · « Ton avis compte ! » · « Intéressant… on verra si les autres sont d'accord ! »
 - **finGagne** : « Victoire ! Tu as tout déchiré ! » · « Première place ! Je suis fier de toi ! » · « Personne n'a fait mieux que toi, bravo ! »
 - **finPodium** : « Sur le podium, bien joué ! » · « Une place sur le podium, chapeau ! » · « Médaille méritée, bravo ! »

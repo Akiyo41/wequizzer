@@ -36,6 +36,21 @@ const tests = {
     for (let i = 0; i < 100 && (!p || p.raw !== '{gagnant} remporte la partie, bravo !'); i++) p = pickLine('animPodium', { gagnant: 'l\'équipe Bleu' }, null);
     assert.strictEqual(p.text, 'L\'équipe Bleu remporte la partie, bravo !');
   },
+  'situation du résultat : éliminé avant tout'() {
+    const { resultLine } = require('../public/lines.js');
+    assert.deepStrictEqual(resultLine({ type: 'tf', correct: false, answered: true, outNow: true }), { key: 'elimine', pose: 'desole' });
+    assert.deepStrictEqual(resultLine({ type: 'tf', correct: false, answered: false, outNow: true }), { key: 'elimine', pose: 'desole' });
+    assert.deepStrictEqual(resultLine({ type: 'tf', correct: false, answered: true, hangErrors: 6, hangMax: 6 }), { key: 'elimine', pose: 'desole' });
+    assert.deepStrictEqual(resultLine({ type: 'tf', correct: false, answered: true, hangErrors: 5, hangMax: 6 }), { key: 'rate', pose: 'desole' });
+    assert.deepStrictEqual(resultLine({ type: 'tf', correct: false, answered: false }), { key: 'tropTard', pose: 'desole' });
+    assert.deepStrictEqual(resultLine({ type: 'tf', correct: true, streak: 2 }), { key: 'bravo', pose: 'bravo' });
+    assert.deepStrictEqual(resultLine({ type: 'tf', correct: true, streak: 3 }), { key: 'serie', pose: 'bravo' });
+    assert.deepStrictEqual(resultLine({ type: 'poll', answered: true }), { key: 'sondage', pose: 'question' });
+  },
+  'phrases neutres (aucun accord masculin ou féminin avec le joueur)'() {
+    const all = Object.values(LINES).flat();
+    ['Éliminé, mais pas oublié', 'Reste prêt pour'].forEach((bad) => assert.ok(!all.some((s) => s.includes(bad)), bad));
+  },
   'clé inconnue'() {
     assert.deepStrictEqual(pickLine('nimporte', {}, null), { raw: '', text: '' });
   },
