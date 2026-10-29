@@ -8,10 +8,13 @@ const Tour = (() => {
   let target = null;
   let side = 'bottom'; // côté de la bulle, choisi une fois par étape
   let align = null; // 'end' : montrer le bas de l'élément s'il est trop grand
+  let inviting = false; // l'invitation « Je te fais visiter ? » est affichée
+  let waiting = false; // une invitation attend la fin de l'écran d'intro
+  let ro = null; // suit les changements de taille de l'accueil (image arrivée en retard, texte qui change…)
   const markSeen = () => LS.set(SEEN, true);
-  // Échap ferme ; Tab reste dans la bulle (le voile bloque aussi le clavier, pas seulement la souris)
+  // Échap ferme (sur l'invitation, ça vaut « Non merci ») ; Tab reste dans la bulle (le voile bloque aussi le clavier)
   function onKey(e) {
-    if (e.key === 'Escape') { close(); return; }
+    if (e.key === 'Escape') { if (inviting) markSeen(); close(); return; }
     if (e.key !== 'Tab' || !box) return;
     const btns = [...box.querySelectorAll('button')];
     if (!btns.length) return;
@@ -41,15 +44,21 @@ const Tour = (() => {
     addEventListener('scroll', place, true);
     document.addEventListener('keydown', onKey);
     document.addEventListener('animationend', onAnim, true);
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(() => place());
+      ['lobby', 'tabbar'].forEach((id) => { if ($(id)) ro.observe($(id)); });
+    }
   }
   function close() {
     if (!shade) return;
     [shade, hole, box].forEach((e) => e.remove());
     shade = hole = box = target = null;
+    inviting = false;
     removeEventListener('resize', place);
     removeEventListener('scroll', place, true);
     document.removeEventListener('keydown', onKey);
     document.removeEventListener('animationend', onAnim, true);
+    if (ro) { ro.disconnect(); ro = null; }
   }
   // Recale la zone éclairée sur l'élément, et met la bulle du côté où elle ne le cache pas
   function place() {
@@ -84,6 +93,7 @@ const Tour = (() => {
     buttons[buttons.length - 1].focus(); // le bouton principal (Suivant / Oui) est prêt pour le clavier
   }
   function go(i) {
+    inviting = false;
     const s = TourLogic.STEPS[i];
     let t = document.querySelector(s.sel);
     if (t && s.card) t = t.closest('.card');
@@ -108,11 +118,17 @@ const Tour = (() => {
     build();
     go(0);
   }
-  // Invitation « Je te fais visiter ? » ; attend que l'écran d'intro « Commencer » soit fermé
+  // Invitation « Je te fais visiter ? » ; attend que l'écran d'intro « Commencer » soit fermé.
+  // Une seule à la fois, même si on la demande plusieurs fois (reconnexion pendant l'intro).
   function offer() {
-    if (document.getElementById('intro')) { setTimeout(offer, 300); return; }
+    if (shade) return;
+    if (document.getElementById('intro')) {
+      if (!waiting) { waiting = true; setTimeout(() => { waiting = false; offer(); }, 300); }
+      return;
+    }
     build();
     target = null;
+    inviting = true;
     render(TourLogic.INVITE, 'accueil', [btn('Non merci', 'ghost', () => { markSeen(); close(); }), btn('Oui, vas-y !', '', start)]);
     place();
   }

@@ -516,3 +516,11 @@ a.create-card { text-decoration: none; }
 #tourBox.bottom { bottom: 12px; }
 .tour-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; }
 .tour-count { margin-right: auto; color: var(--muted); font-weight: 800; }
+/* Écran peu haut (téléphone en paysage) : bulle de la visite plus compacte, pour laisser voir la zone éclairée */
+@media (max-height: 500px) {
+  #tourBox { padding: 0 10px 6px; }
+  #tourBox .say { margin: 6px 0; gap: 8px; }
+  #tourBox .say .mascot { height: 52px; }
+  #tourBox .say-bubble { font-size: .88rem; padding: 7px 11px; line-height: 1.3; }
+  #tourBox .tour-row .btn { padding: 6px 10px; }
+}
