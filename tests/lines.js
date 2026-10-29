@@ -2,10 +2,10 @@
 const assert = require('assert');
 const { LINES, pickLine } = require('../public/lines.js');
 
-const KEYS = ['attente', 'file', 'compte', 'envoye', 'elimine', 'bravo', 'serie', 'rate', 'tropTard', 'sondage', 'finGagne', 'finPodium', 'finAutre', 'animCompte', 'animTous', 'animMoitie', 'animPersonne', 'animSondage', 'animPodium'];
+const KEYS = ['attente', 'file', 'compte', 'envoye', 'elimine', 'bravo', 'serie', 'rate', 'tropTard', 'sondage', 'finGagne', 'finPodium', 'finAutre', 'animCompte', 'animTous', 'animMoitie', 'animPersonne', 'animSondage', 'animPodium', 'dernier'];
 
 const tests = {
-  'les 19 situations, 3 à 5 phrases chacune'() {
+  'les 20 situations, 3 à 5 phrases chacune'() {
     assert.deepStrictEqual(Object.keys(LINES).sort(), KEYS.slice().sort());
     KEYS.forEach((k) => assert.ok(LINES[k].length >= 3 && LINES[k].length <= 5, k));
   },
@@ -50,6 +50,30 @@ const tests = {
   'phrases neutres (aucun accord masculin ou féminin avec le joueur)'() {
     const all = Object.values(LINES).flat();
     ['Éliminé, mais pas oublié', 'Reste prêt pour'].forEach((bad) => assert.ok(!all.some((s) => s.includes(bad)), bad));
+  },
+  'dernière question ratée : on ne parle plus de « la suivante »'() {
+    const { resultLine } = require('../public/lines.js');
+    assert.deepStrictEqual(resultLine({ type: 'tf', correct: false, answered: true, last: true }), { key: 'dernier', pose: 'desole' });
+    assert.deepStrictEqual(resultLine({ type: 'tf', correct: false, answered: false, last: true }), { key: 'dernier', pose: 'desole' });
+    assert.deepStrictEqual(resultLine({ type: 'tf', correct: true, streak: 1, last: true }), { key: 'bravo', pose: 'bravo' });
+    assert.deepStrictEqual(resultLine({ type: 'tf', correct: false, answered: true, last: true, outNow: true }), { key: 'elimine', pose: 'desole' });
+    LINES.dernier.forEach((s) => assert.ok(!/suivante|prochaine/i.test(s), s));
+  },
+  'fin de partie : une seule « première place »'() {
+    const { endLine } = require('../public/lines.js');
+    assert.strictEqual(endLine({ mode: 'standard', rank: 1 }), 'finGagne');
+    assert.strictEqual(endLine({ mode: 'standard', rank: 3 }), 'finPodium');
+    assert.strictEqual(endLine({ mode: 'standard', rank: 5 }), 'finAutre');
+    assert.strictEqual(endLine({ mode: 'elimination', alive: true, rank: 1 }), 'finGagne');
+    assert.strictEqual(endLine({ mode: 'elimination', alive: true, rank: 2 }), 'finPodium'); // plusieurs survivants
+    assert.strictEqual(endLine({ mode: 'elimination', alive: false, rank: 2 }), 'finPodium');
+    assert.strictEqual(endLine({ mode: 'standard', heartsMode: true, alive: true, rank: 2 }), 'finPodium');
+    assert.strictEqual(endLine({ mode: 'teams', teamRank: 1, rank: 4 }), 'finGagne');
+    assert.strictEqual(endLine({ mode: 'hangman', teamRank: 2, rank: 1 }), 'finPodium');
+  },
+  'écran joueur : « hors jeu » plutôt que « Tu es éliminé »'() {
+    const fs = require('fs');
+    ['public/play.html', 'public/play/results.js'].forEach((f) => assert.ok(!fs.readFileSync(require('path').join(__dirname, '..', f), 'utf8').includes('Tu es éliminé'), f));
   },
   'clé inconnue'() {
     assert.deepStrictEqual(pickLine('nimporte', {}, null), { raw: '', text: '' });

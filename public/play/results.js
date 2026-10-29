@@ -1,6 +1,9 @@
 // Résultat après chaque question et écran de fin
 // ----- Résultat (jamais de points ni de rang pendant le quiz) -----
+// Le même résultat qui revient alors qu'on est encore dessus (coupure du réseau) garde la phrase du Professeur
+const sameAgain = (() => { const last = {}; return (screen, data) => { const sig = JSON.stringify(data); const again = curScreen === screen && last[screen] === sig; last[screen] = sig; return again; }; })();
 socket.on('result', (r) => {
+  const again = sameAgain('result', r);
   clearInterval(timerInt);
   const icon = $('resIcon');
   Brand.setPose($('resMascot'), r.correct ? 'bravo' : (r.type === 'poll' ? 'question' : 'desole'));
@@ -38,7 +41,7 @@ socket.on('result', (r) => {
   }
   if (r.lostHeart && !r.outNow) sub.textContent = '💔 Tu perds un cœur… il t\'en reste ' + r.hearts + ' !';
   if (r.outNow) {
-    sub.textContent = '💀 Tu es éliminé… mais tu peux encore envoyer des réactions !';
+    sub.textContent = '💀 Tu es hors jeu… mais tu peux encore envoyer des réactions !';
     sub.style.fontSize = '1.2rem';
   } else sub.style.fontSize = '1.5rem';
   const hm = $('resHang');
@@ -53,7 +56,7 @@ socket.on('result', (r) => {
     Brand.say($('resExplain'), r.explain);
     $('resExplain').classList.remove('hidden');
     $('resMascot').classList.add('hidden');
-  } else {
+  } else if (!again) {
     const { key, pose } = resultLine(r); // éliminé d'abord, puis sondage / juste / faux / pas de réponse (lines.js)
     profSay('resExplain', 'resMascot', key, pose, { pseudo: me.name, serie: r.streak });
   }
@@ -72,6 +75,7 @@ function scoreLine(d) {
   return ['Bonnes réponses', d.score + ' / ' + d.questions];
 }
 socket.on('end', (d) => {
+  const again = sameAgain('end', d);
   lastEnd = d;
   clearInterval(timerInt);
   const teamy = d.mode === 'teams' || d.mode === 'hangman';
@@ -107,10 +111,8 @@ socket.on('end', (d) => {
   $('reviewBtn').classList.toggle('hidden', !nm);
   $('reviewLabel').textContent = 'Revoir mes erreurs (' + nm + ')';
   $('noMistakes').classList.toggle('hidden', !(d.mistakes && nm === 0));
-  // Le Professeur félicite : 1er (ou 1re équipe, ou dernier survivant), podium (2e / 3e), ou les autres
-  const place = teamy ? d.teamRank : d.rank;
-  const won = teamy ? d.teamRank === 1 : elim ? d.alive : d.rank === 1;
-  profSay('sayEnd', 'endMascot', won ? 'finGagne' : place && place <= 3 ? 'finPodium' : 'finAutre', 'bravo', { pseudo: d.name });
+  // Le Professeur félicite : 1er (ou 1re équipe), podium (2e / 3e), ou les autres (lines.js)
+  if (!again) profSay('sayEnd', 'endMascot', endLine(d), 'bravo', { pseudo: d.name });
   show('end');
   if ((teamy ? d.teamRank : d.rank) <= 3) { FX.fanfare(); FX.confetti((teamy ? d.teamRank : d.rank) === 1 ? 100 : 50); }
 });

@@ -42,6 +42,12 @@ const LINES = {
     'Le temps a filé… Garde l\'œil ouvert pour la suivante !',
     'Tu étais dans la lune ? La prochaine, tu ne la rates pas !',
   ],
+  // dernière question ratée (ou sans réponse) : on ne parle plus de « la suivante »
+  dernier: [
+    'Dommage pour la dernière ! Place aux résultats…',
+    'Raté de peu ! Voyons maintenant le classement…',
+    'Pas grave, tu as tout donné ! Les résultats arrivent…',
+  ],
   sondage: ['Voyons ce que pensent les autres !', 'Ton avis compte !', 'Intéressant… on verra si les autres sont d\'accord !'],
   finGagne: ['Victoire ! Tu as tout déchiré !', 'Première place ! Je suis fier de toi !', 'Personne n\'a fait mieux que toi, bravo !'],
   finPodium: ['Sur le podium, bien joué !', 'Une place sur le podium, chapeau !', 'Médaille méritée, bravo !'],
@@ -79,6 +85,15 @@ function resultLine(r) {
   if (r.outNow || (r.hangErrors !== null && r.hangErrors !== undefined && r.hangErrors >= r.hangMax)) return { key: 'elimine', pose: 'desole' };
   if (r.type === 'poll') return { key: 'sondage', pose: 'question' };
   if (r.correct) return { key: r.streak >= 3 ? 'serie' : 'bravo', pose: 'bravo' };
+  if (r.last) return { key: 'dernier', pose: 'desole' };
   return { key: r.answered ? 'rate' : 'tropTard', pose: 'desole' };
 }
-if (typeof module !== 'undefined') module.exports = { LINES, pickLine, resultLine };
+// Fin de partie côté joueur → clé de la phrase. Une seule « première place » : le 1er (ou la 1re équipe) ;
+// en élimination / cœurs, les autres survivants vont au podium (2e, 3e) ou avec les autres.
+function endLine(d) {
+  const teamy = d.mode === 'teams' || d.mode === 'hangman';
+  const place = teamy ? d.teamRank : d.rank;
+  if (place === 1) return 'finGagne';
+  return place && place <= 3 ? 'finPodium' : 'finAutre';
+}
+if (typeof module !== 'undefined') module.exports = { LINES, pickLine, resultLine, endLine };

@@ -122,6 +122,8 @@ socket.on('profile:ok', (d) => {
   $('myAvatar').textContent = d.avatar;
   $('hello').textContent = 'Salut ' + d.name + ' !';
   $('setPanel').classList.add('hidden');
+  // en salle d'attente, le Professeur reprend la parole avec le nouveau pseudo
+  if (curScreen === 'wait') profSay('sayWait', 'waitMascot', 'attente', 'danse', { pseudo: d.name });
 });
 
 $('leaveBtn').onclick = async () => {

@@ -127,11 +127,13 @@ function cdTick() {
   cdLeft--;
   if (cdLeft >= 0) cdTimer = setTimeout(cdTick, 1000);
 }
+// Le même écran qui revient pour la même question (retour après une coupure) garde la phrase du Professeur
+const hostAgain = (() => { const last = {}; return (screen, sig) => { const again = !$(screen).classList.contains('hidden') && last[screen] === sig; last[screen] = sig; return again; }; })();
 socket.on('countdown', ({ seconds, index, total }) => {
   clearInterval(autoInt);
   clearInterval(readInt);
   $('cdLabel').textContent = 'Question ' + (index + 1) + ' sur ' + total;
-  Brand.speak($('sayHostCount'), $('hostCdMascot'), 'animCompte', 'chrono');
+  if (!hostAgain('countdown', 'q' + index)) Brand.speak($('sayHostCount'), $('hostCdMascot'), 'animCompte', 'chrono');
   show('countdown');
   clearTimeout(cdTimer);
   cdLeft = seconds;
@@ -309,6 +311,7 @@ function startAuto(n) {
 }
 
 socket.on('results', (r) => {
+  const again = hostAgain('results', 'q' + r.index);
   clearInterval(timerInt);
   clearInterval(autoInt);
   labelMode = r.labels || labelMode;
@@ -326,7 +329,7 @@ socket.on('results', (r) => {
   } else {
     const share = r.okCount / r.partCount;
     const [key, pose] = r.type === 'poll' ? ['animSondage', 'question'] : share >= 0.8 ? ['animTous', 'bravo'] : share >= 0.3 ? ['animMoitie', 'question'] : ['animPersonne', 'desole'];
-    Brand.speak($('rExplain'), null, key, pose);
+    if (!again) Brand.speak($('rExplain'), null, key, pose);
   }
   $('rScore').classList.toggle('hidden', r.type === 'poll' || !r.partCount);
   $('rScore').innerHTML = '<i class="ti ti-circle-check"></i> ' + r.okCount + ' / ' + r.partCount + ' ont bien répondu';
@@ -384,6 +387,7 @@ function scoreText(p, d) {
 }
 const aliveText = (p) => (p.hearts ? '❤️'.repeat(p.hearts) : 'Survivant');
 socket.on('end', (d) => {
+  const again = hostAgain('end', JSON.stringify(d));
   recordStats(d);
   $('replayMissedBtn').classList.toggle('hidden', !(d.missedCount > 0));
   $('missedLabel').textContent = 'Rejouer les questions ratées (' + d.missedCount + ')';
@@ -451,8 +455,10 @@ socket.on('end', (d) => {
   $('drawer').classList.add('hidden');
   // Le Professeur salue le gagnant (l'équipe gagnante en mode équipes / pendu) ; pas de joueur : pas de bulle
   const winner = teamy && d.teams && d.teams[0] ? 'l\'équipe ' + d.teams[0].name : board[0] ? board[0].avatar + ' ' + board[0].name : '';
-  if (winner) Brand.speak($('sayHostEnd'), $('hostEndMascot'), 'animPodium', 'bravo', { gagnant: winner });
-  else { $('sayHostEnd').classList.add('hidden'); $('hostEndMascot').classList.remove('hidden'); }
+  if (!again) {
+    if (winner) Brand.speak($('sayHostEnd'), $('hostEndMascot'), 'animPodium', 'bravo', { gagnant: winner });
+    else { $('sayHostEnd').classList.add('hidden'); $('hostEndMascot').classList.remove('hidden'); }
+  }
   show('end');
   setTimeout(() => { FX.fanfare(); FX.confetti(90); }, 1500);
 });
