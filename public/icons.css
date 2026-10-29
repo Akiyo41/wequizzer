@@ -114,6 +114,7 @@ i.ti-send::before{background-image:url(/ico/envoyer.webp)}
 i.ti-logout::before{background-image:url(/ico/quitter.webp)}
 i.ti-door-enter::before{background-image:url(/ico/rejoindre.webp)}
 i.ti-target-arrow::before{background-image:url(/ico/cible.webp)}
+i.ti-target::before{background-image:url(/ico/cible.webp)}
 i.ti-trophy::before{background-image:url(/ico/trophee.webp)}
 i.ti-medal::before{background-image:url(/ico/medaille.webp)}
 i.ti-copy::before{background-image:url(/ico/copier.webp)}
