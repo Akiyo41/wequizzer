@@ -47,29 +47,29 @@
 
   <!-- Attente -->
   <div id="wait" class="screen narrow hidden" style="text-align:center">
-    <span data-mascot="danse" data-size="md"></span>
+    <span data-mascot="danse" data-size="md" id="waitMascot"></span>
+    <div class="say hidden" id="sayWait"></div>
     <div class="big-emoji" id="myAvatar"></div>
     <h2 id="hello" style="margin-top:12px"></h2>
     <span id="waitTeam" class="teamtag hidden"></span>
     <div class="spinner"></div>
-    <p id="waitMsg">Tu es dans la partie ! Attends que l'animateur lance le quiz…</p>
   </div>
 
   <!-- File d'attente (partie déjà commencée) -->
   <div id="queued" class="screen narrow hidden" style="text-align:center">
-    <span data-mascot="recherche" data-size="md"></span>
+    <span data-mascot="recherche" data-size="md" id="queuedMascot"></span>
+    <div class="say hidden" id="sayQueued"></div>
     <div class="big-emoji">⏳</div>
     <h2 style="margin-top:12px">La partie a déjà commencé</h2>
     <div class="spinner"></div>
-    <p>Tu es dans la file d'attente : tu joueras dès la prochaine partie. Reste sur cette page !</p>
   </div>
 
   <!-- Compte à rebours -->
   <div id="countdown" class="screen countdown hidden">
-    <span data-mascot="chrono" data-size="sm"></span>
+    <span data-mascot="chrono" data-size="sm" id="cdMascot"></span>
+    <div class="say hidden" id="sayCount"></div>
     <div class="count-label" id="cdLabel"></div>
     <div class="count-num" id="cdNum">3</div>
-    <div class="count-label">Prépare-toi !</div>
   </div>
 
   <!-- Lecture -->
@@ -146,18 +146,18 @@
   <!-- Réponse envoyée -->
   <div id="sent" class="screen narrow hidden" style="text-align:center">
     <div class="big-emoji"><i class="ti ti-send"></i></div>
-    <span data-mascot="reflexion" data-size="sm"></span>
+    <span data-mascot="reflexion" data-size="sm" id="sentMascot"></span>
+    <div class="say hidden" id="saySent"></div>
     <h2 style="margin-top:12px">Réponse envoyée !</h2>
     <div class="spinner"></div>
-    <p>On attend les autres joueurs…</p>
   </div>
 
   <!-- Spectateur (éliminé) -->
   <div id="spectate" class="screen narrow hidden" style="text-align:center">
-    <span data-mascot="desole" data-size="sm"></span>
+    <span data-mascot="desole" data-size="sm" id="specMascot"></span>
+    <div class="say hidden" id="saySpec"></div>
     <div class="big-emoji">💀</div>
     <h2 style="margin-top:12px">Tu es éliminé</h2>
-    <p>Regarde la suite sur l'écran de l'animateur. Tu peux encore envoyer des réactions !</p>
     <div class="spinner"></div>
   </div>
 
@@ -175,7 +175,8 @@
 
   <!-- Fin -->
   <div id="end" class="screen narrow hidden" style="text-align:center">
-    <span data-mascot="bravo" data-size="lg"></span>
+    <span data-mascot="bravo" data-size="lg" id="endMascot"></span>
+    <div class="say hidden" id="sayEnd"></div>
     <div class="big-emoji" id="endIcon"></div>
     <h1 id="endTitle" style="margin-top:12px"></h1>
     <div class="stats" id="endStats"></div>

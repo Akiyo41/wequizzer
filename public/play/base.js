@@ -30,8 +30,30 @@ if (!new URLSearchParams(location.search).get('pin') && !LS.get(SESSION, null)) 
 let deviceId = LS.get('wequizzer.device', null);
 if (!deviceId) { deviceId = Math.random().toString(36).slice(2) + Date.now().toString(36); LS.set('wequizzer.device', deviceId); }
 
+// Le Professeur dit une phrase de la situation `key` dans la bulle `boxId` ; sa mascotte `mascotId` est cachée
+// pendant ce temps (un seul Professeur à l'écran). Pas de phrase : pas de bulle, la mascotte revient.
+function profSay(boxId, mascotId, key, pose, vars) {
+  const text = Brand.line(key, vars);
+  const box = $(boxId);
+  if (text) Brand.say(box, text, pose);
+  box.classList.toggle('hidden', !text);
+  if (mascotId) $(mascotId).classList.toggle('hidden', !!text);
+}
+// Écrans sans données : une nouvelle phrase à chaque fois qu'on y entre
+const SCREEN_LINES = {
+  wait: ['sayWait', 'waitMascot', 'attente', 'danse'],
+  queued: ['sayQueued', 'queuedMascot', 'file', 'recherche'],
+  countdown: ['sayCount', 'cdMascot', 'compte', 'chrono'],
+  sent: ['saySent', 'sentMascot', 'envoye', 'reflexion'],
+  spectate: ['saySpec', 'specMascot', 'elimine', 'desole'],
+};
 function show(id) {
+  const entering = id !== curScreen;
   curScreen = id;
+  if (entering && SCREEN_LINES[id]) {
+    const [box, mascot, key, pose] = SCREEN_LINES[id];
+    profSay(box, mascot, key, pose, { pseudo: me.name });
+  }
   screens.forEach((s) => $(s).classList.toggle('hidden', s !== id));
   document.body.classList.toggle('center', !['question', 'reading'].includes(id));
   const inGame = id !== 'join';

@@ -58,7 +58,6 @@ socket.on('lobby', (d) => {
   clearInterval(readInt);
   $('pauseOv').classList.add('hidden');
   $('waitTeam').classList.add('hidden');
-  $('waitMsg').textContent = "En attente du prochain quiz… Tu restes connecté !";
   applySettings(d);
   show('wait');
 });

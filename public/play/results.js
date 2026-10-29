@@ -21,7 +21,7 @@ socket.on('result', (r) => {
     t.textContent = 'Bravo !';
     t.className = 'big-num good';
     t.style.fontSize = '';
-    sub.textContent = r.double ? '⚡ Question bonus réussie !' : 'Bonne réponse';
+    sub.textContent = r.double ? '⚡ Question bonus réussie !' : '';
     FX.good();
   } else if (!r.answered) {
     icon.textContent = '⏱️';
@@ -34,7 +34,6 @@ socket.on('result', (r) => {
     t.textContent = 'Raté !';
     t.className = 'big-num bad';
     t.style.fontSize = '';
-    sub.textContent = 'Mauvaise réponse';
     FX.bad();
   }
   if (r.lostHeart && !r.outNow) sub.textContent = '💔 Tu perds un cœur… il t\'en reste ' + r.hearts + ' !';
@@ -48,10 +47,17 @@ socket.on('result', (r) => {
     hm.innerHTML = Hangman.svg(r.hangErrors, '#14213d', 110);
     hm.appendChild(el('span', '', r.hangErrors >= r.hangMax ? '💀 Le pendu de ton équipe est complet…' : 'Pendu de ton équipe : ' + r.hangErrors + ' / ' + r.hangMax));
   }
-  // explication : le Professeur l'explique dans sa bulle (il remplace la mascotte du haut)
-  $('resExplain').classList.toggle('hidden', !r.explain);
-  if (r.explain) Brand.say($('resExplain'), r.explain);
-  $('resMascot').classList.toggle('hidden', !!r.explain);
+  // Le Professeur parle dans sa bulle (il remplace la mascotte du haut) : l'explication s'il y en a une,
+  // sinon une réaction (série à partir de 3 bonnes réponses d'affilée)
+  if (r.explain) {
+    Brand.say($('resExplain'), r.explain);
+    $('resExplain').classList.remove('hidden');
+    $('resMascot').classList.add('hidden');
+  } else {
+    const poll = r.type === 'poll';
+    const key = poll ? 'sondage' : r.correct ? (r.streak >= 3 ? 'serie' : 'bravo') : r.answered ? 'rate' : 'tropTard';
+    profSay('resExplain', 'resMascot', key, poll ? 'question' : r.correct ? 'bravo' : 'desole', { pseudo: me.name, serie: r.streak });
+  }
   const stats = $('resStats');
   stats.innerHTML = '';
   if (r.type !== 'poll' && r.myTotal) stats.appendChild(stat('Tes bonnes réponses', r.myCorrect + ' / ' + r.myTotal));
@@ -102,6 +108,10 @@ socket.on('end', (d) => {
   $('reviewBtn').classList.toggle('hidden', !nm);
   $('reviewLabel').textContent = 'Revoir mes erreurs (' + nm + ')';
   $('noMistakes').classList.toggle('hidden', !(d.mistakes && nm === 0));
+  // Le Professeur félicite : 1er (ou 1re équipe, ou dernier survivant), podium (2e / 3e), ou les autres
+  const place = teamy ? d.teamRank : d.rank;
+  const won = teamy ? d.teamRank === 1 : elim ? d.alive : d.rank === 1;
+  profSay('sayEnd', 'endMascot', won ? 'finGagne' : place && place <= 3 ? 'finPodium' : 'finAutre', 'bravo', { pseudo: d.name });
   show('end');
   if ((teamy ? d.teamRank : d.rank) <= 3) { FX.fanfare(); FX.confetti((teamy ? d.teamRank : d.rank) === 1 ? 100 : 50); }
 });
