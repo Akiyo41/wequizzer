@@ -124,7 +124,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
    - Suppression de compte avec confirmation et conséquences claires (groupes créés, quiz partagés, délai éventuel). Base de données nécessaire.
    - Textes à rédiger puis à faire relire : mentions légales, confidentialité, conditions d'utilisation, bandeau d'information.
    - Refaire tous les textes/descriptions (ton du professeur, un seul fichier).
-14. Plus tard : comptes et groupes (lien permanent), appli installable (PWA), musique, reformulation finale des textes.
+14. Plus tard : comptes et groupes (lien permanent), musique, reformulation finale des textes.
+15. (fait) Appli installable (PWA) : `public/manifest.webmanifest` (nom, bleu nuit #081246, départ « / », plein écran), icônes `public/img/icon-192.png`, `icon-512.png`, `apple-touch-icon.png` (Professeur + logo sur bleu nuit, dessinées dans le navigateur à partir de prof-base.webp et logo.webp), `public/sw.js` = service worker SANS cache (ne rien mettre en cache : sinon les mises à jour n'arriveraient plus). Les 3 pages ont les liens dans leur `<head>`. Installation : Chrome ⋮ → « Installer l'application » ; iPhone : Safari → Partager → « Sur l'écran d'accueil ». À tester en ligne (https obligatoire).
 
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
