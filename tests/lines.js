@@ -86,6 +86,10 @@ const tests = {
       ['public/play/base.js', 'public/host/base.js'].forEach((f) => assert.ok(read(f).includes('\'' + t + '\':'), f + ' : symbole pour ' + t));
     });
   },
+  'hors jeu : on ne parle des réactions que si elles sont allumées'() {
+    const src = require('fs').readFileSync(require('path').join(__dirname, '..', 'public/play/results.js'), 'utf8');
+    assert.ok(src.includes('settings.reactions ? \'💀 Tu es hors jeu… mais tu peux encore envoyer des réactions !\' : \'💀 Tu es hors jeu… regarde la suite sur le grand écran !\''));
+  },
   'consignes : une par type de question qui en a besoin'() {
     const { CONSIGNES, consigneFor } = require('../public/lines.js');
     assert.deepStrictEqual(Object.keys(CONSIGNES).sort(), ['mots', 'multi', 'ordre', 'relier', 'roue', 'sondage', 'texte']);

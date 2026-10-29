@@ -41,7 +41,7 @@ socket.on('result', (r) => {
   }
   if (r.lostHeart && !r.outNow) sub.textContent = '💔 Tu perds un cœur… il t\'en reste ' + r.hearts + ' !';
   if (r.outNow) {
-    sub.textContent = '💀 Tu es hors jeu… mais tu peux encore envoyer des réactions !';
+    sub.textContent = settings.reactions ? '💀 Tu es hors jeu… mais tu peux encore envoyer des réactions !' : '💀 Tu es hors jeu… regarde la suite sur le grand écran !';
     sub.style.fontSize = '1.2rem';
   } else sub.style.fontSize = '1.5rem';
   if (!again) UI.announce(t.textContent + (sub.textContent ? '. ' + sub.textContent : ''));
