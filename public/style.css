@@ -504,3 +504,15 @@ a.create-card { text-decoration: none; }
 .who-play:hover { transform: none; }
 .who-play input { width: 100%; margin-top: 4px; }
 .who-play .btn { margin: 4px 0 2px; }
+
+/* Visite guidée (host/tour.js) : voile qui bloque les clics, zone éclairée, bulle du Professeur.
+   Au-dessus de la barre d'onglets (40), du bouton son (45) et du voile de pause (50),
+   sous la bannière « Connexion perdue » (60) et les fenêtres de confirmation (90). */
+#tourShade { position: fixed; inset: 0; z-index: 55; background: transparent; }
+#tourShade.dark { background: rgba(0, 0, 0, .65); }
+#tourHole { position: fixed; z-index: 56; border: 3px solid var(--accent); border-radius: 16px; box-shadow: 0 0 0 9999px rgba(0, 0, 0, .65); pointer-events: none; transition: top .25s, left .25s, width .25s, height .25s; }
+#tourBox { position: fixed; left: 50%; transform: translateX(-50%); z-index: 57; width: min(560px, calc(100% - 24px)); background: rgba(8, 18, 70, .96); border: 2px solid var(--line); border-radius: 20px; padding: 2px 14px 12px; }
+#tourBox.top { top: 12px; }
+#tourBox.bottom { bottom: 12px; }
+.tour-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; }
+.tour-count { margin-right: auto; color: var(--muted); font-weight: 800; }
