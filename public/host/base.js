@@ -33,6 +33,7 @@ let labelMode = 'letters';
 const lab = (i) => (labelMode === 'numbers' ? String(i + 1) : LETTERS[i]);
 
 function show(id) {
+  if (id !== 'lobby' && typeof Tour !== 'undefined' && Tour.active()) Tour.close(); // la visite guidée ne concerne que l'accueil
   screens.forEach((s) => $(s).classList.toggle('hidden', s !== id));
   const inGame = ['countdown', 'reading', 'question', 'results'].includes(id);
   $('hostBar').classList.toggle('hidden', !inGame);

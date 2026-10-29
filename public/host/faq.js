@@ -13,3 +13,4 @@ document.querySelectorAll('[data-faq]').forEach((b) => {
   b.onclick = (e) => { e.preventDefault(); e.stopPropagation(); openFaq(b.dataset.faq); };
 });
 $('faqBack').onclick = () => show(faqBack);
+$('faqTour').onclick = () => Tour.start();
