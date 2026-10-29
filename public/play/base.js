@@ -7,8 +7,8 @@ const LETTERS = ['A', 'B', 'C', 'D'];
 const AVATARS = ['🦊', '🐼', '🐸', '🦁', '🐙', '🐵', '🦄', '🐯', '🐧', '🐢', '🦉', '🐳', '🐰', '🐨', '🦖', '🐝'];
 const REACTIONS = ['👏', '😂', '😮', '🔥', '😢', '❤️'];
 const TITLE_EMOJI = {
-  'Le plus rapide': '⚡', 'La meilleure série': '🔥', 'Le sans-faute': '🎯',
-  'Le plus réfléchi': '💡', 'Le plus expressif': '😄', 'Le dernier survivant': '🛡️',
+  'Vitesse éclair': '⚡', 'La meilleure série': '🔥', 'Sans-faute': '🎯',
+  'Tête pensante': '💡', 'Réactions en folie': '😄', 'Inarrêtable': '🛡️',
 };
 let timerInt = null;
 let readInt = null;

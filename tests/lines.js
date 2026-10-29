@@ -75,6 +75,17 @@ const tests = {
     const fs = require('fs');
     ['public/play.html', 'public/play/results.js'].forEach((f) => assert.ok(!fs.readFileSync(require('path').join(__dirname, '..', f), 'utf8').includes('Tu es éliminé'), f));
   },
+  'relecture : textes neutres et cohérents dans toute l\'interface'() {
+    const fs = require('fs');
+    const read = (f) => fs.readFileSync(require('path').join(__dirname, '..', f), 'utf8');
+    const files = ['public/ui.js', 'src/room.js', 'src/rules.js', 'src/quiz.js', 'public/host.html', 'public/play.html', 'public/play/connection.js', 'public/play/results.js', 'public/play/base.js', 'public/host/base.js', 'public/host/game.js', 'public/host/ai-import.js'];
+    const bad = ['Tu es sûr', 't\'a exclu', 't\'a retiré', 'en as été retiré', 'Dernier survivant !', 'Le dernier survivant', 'Le sans-faute', 'Le plus rapide\'', 'Le plus réfléchi', 'Le plus expressif', 'ta IA', 'Sur ton téléphone, choisis', 's\'additionnent', 'Choisie par l\'animateur', 'Animateur + joueurs', 'Animateur seulement', '>Seul, en équipes', 'Plus de cœur : éliminé<', '> Entrer<', 'Paire ', 'caractères maximum', 'la même que la bonne.\''];
+    files.forEach((f) => { const t = read(f); bad.forEach((b) => assert.ok(!t.includes(b), f + ' contient encore « ' + b + ' »')); });
+    ['Sans-faute', 'Vitesse éclair', 'Tête pensante', 'Réactions en folie', 'Inarrêtable'].forEach((t) => {
+      assert.ok(read('src/rules.js').includes('\'' + t + '\''), 'titre ' + t);
+      ['public/play/base.js', 'public/host/base.js'].forEach((f) => assert.ok(read(f).includes('\'' + t + '\':'), f + ' : symbole pour ' + t));
+    });
+  },
   'consignes : une par type de question qui en a besoin'() {
     const { CONSIGNES, consigneFor } = require('../public/lines.js');
     assert.deepStrictEqual(Object.keys(CONSIGNES).sort(), ['mots', 'multi', 'ordre', 'relier', 'roue', 'sondage', 'texte']);

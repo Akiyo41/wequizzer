@@ -31,7 +31,7 @@ socket.on('connect', () => {
 socket.on('disconnect', connShow);
 socket.on('rejoin:error', () => {
   LS.del(SESSION);
-  resetToJoin("La partie n'existe plus ou tu en as été retiré. Entre un nouveau code.");
+  resetToJoin("La partie n'existe plus, ou ta place a été fermée. Entre un nouveau code.");
 });
 function resetToJoin(msg) {
   clearInterval(timerInt);
@@ -64,7 +64,7 @@ socket.on('lobby', (d) => {
 socket.on('queued', (d) => { applySettings(d); show('queued'); });
 socket.on('kicked', (d) => {
   LS.del(SESSION);
-  resetToJoin((d && d.message) || "L'animateur t'a retiré de la salle.");
+  resetToJoin((d && d.message) || "L'animateur t'a fait quitter la salle.");
 });
 socket.on('host:left', () => {
   LS.del(SESSION);

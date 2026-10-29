@@ -17,7 +17,7 @@ const UI = (() => {
         m.appendChild(Brand.img(BRAND.poses[o.pose || 'question'] || BRAND.poses.base, 'mascot sm', BRAND.mascotName));
         box.appendChild(m);
       }
-      const h = document.createElement('h3'); h.textContent = o.title || 'Tu es sûr ?'; box.appendChild(h);
+      const h = document.createElement('h3'); h.textContent = o.title || 'Tu confirmes ?'; box.appendChild(h);
       if (o.name) { const b = document.createElement('p'); b.className = 'cbx-name'; b.textContent = o.name; box.appendChild(b); }
       if (o.text) { const p = document.createElement('p'); p.textContent = o.text; box.appendChild(p); }
       const row = document.createElement('div'); row.className = 'cbx-btns';

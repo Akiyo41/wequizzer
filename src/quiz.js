@@ -15,9 +15,9 @@ function cleanWheel(input) {
   for (let i = 0; i < raw.length; i++) {
     const q = String((raw[i] && raw[i].q) || '').trim();
     const a = String((raw[i] && raw[i].a) || '').trim();
-    if (!q || !a) return { error: `Paire ${i + 1} : la question ou la réponse est vide.` };
-    if (q.length > WHEEL_Q_MAX) return { error: `Paire ${i + 1} : la question est trop longue (${WHEEL_Q_MAX} caractères maximum).` };
-    if (a.length > WHEEL_A_MAX) return { error: `Paire ${i + 1} : la réponse « ${a} » est trop longue (${WHEEL_A_MAX} caractères maximum).` };
+    if (!q || !a) return { error: `Question ${i + 1} : la question ou la réponse est vide.` };
+    if (q.length > WHEEL_Q_MAX) return { error: `Question ${i + 1} : la question est trop longue (${WHEEL_Q_MAX} lettres maximum).` };
+    if (a.length > WHEEL_A_MAX) return { error: `Question ${i + 1} : la réponse « ${a} » est trop longue (${WHEEL_A_MAX} lettres maximum).` };
     const key = a.toLowerCase();
     if (seen.has(key)) return { error: `La réponse « ${a} » est en double : chaque réponse doit être unique.` };
     seen.add(key);
@@ -27,11 +27,11 @@ function cleanWheel(input) {
     for (const x of wr) {
       const t = String(x || '').trim();
       if (!t) continue;
-      if (t.length > WHEEL_A_MAX) return { error: `Paire ${i + 1} : la mauvaise réponse « ${t} » est trop longue (${WHEEL_A_MAX} caractères maximum).` };
-      if (t.toLowerCase() === key || w.some((y) => y.toLowerCase() === t.toLowerCase())) return { error: `Paire ${i + 1} : la mauvaise réponse « ${t} » est en double.` };
+      if (t.length > WHEEL_A_MAX) return { error: `Question ${i + 1} : la mauvaise réponse « ${t} » est trop longue (${WHEEL_A_MAX} lettres maximum).` };
+      if (t.toLowerCase() === key || w.some((y) => y.toLowerCase() === t.toLowerCase())) return { error: `Question ${i + 1} : la mauvaise réponse « ${t} » est en double.` };
       w.push(t);
     }
-    if (w.length > 3) return { error: `Paire ${i + 1} : 3 mauvaises réponses au maximum.` };
+    if (w.length > 3) return { error: `Question ${i + 1} : 3 mauvaises réponses au maximum.` };
     pairs.push(w.length ? { q, a, w } : { q, a });
   }
   return { quiz: { title, kind: 'wheel', category, pairs, questions: [] } };

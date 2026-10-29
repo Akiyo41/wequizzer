@@ -87,7 +87,7 @@ socket.on('end', (d) => {
     head = d.teamRank === 1 ? 'Ton équipe a gagné !' : 'Ton équipe : ' + d.teamRank + 'e sur ' + d.teamCount;
   } else if (elim) {
     medal = d.alive ? '🏆' : '💀';
-    head = d.alive ? 'Dernier survivant !' : d.rank + 'e sur ' + d.total;
+    head = d.alive ? 'Toujours en jeu !' : d.rank + 'e sur ' + d.total;
   } else {
     medal = d.rank === 1 ? '🏆' : d.rank === 2 ? '🥈' : d.rank === 3 ? '🥉' : '🎮';
     head = d.rank === 1 ? 'Tu as gagné !' : d.rank + 'e sur ' + d.total;

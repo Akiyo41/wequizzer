@@ -54,16 +54,16 @@ function computeTitles(g, ranked) {
     titles.push({ title, icon, pid: p.pid, name: p.name, avatar: p.avatar });
   };
   if (g.settings.mode === 'elimination' || heartsOn(g)) {
-    give('Le dernier survivant', 'ti-shield-check', ranked.filter((p) => !p.eliminated));
+    give('Inarrêtable', 'ti-shield-check', ranked.filter((p) => !p.eliminated));
   }
   if (n >= 2) {
-    if (g.scored >= 3) give('Le sans-faute', 'ti-target', ranked.filter((p) => p.correct === g.scored));
+    if (g.scored >= 3) give('Sans-faute', 'ti-target', ranked.filter((p) => p.correct === g.scored));
     const withCorrect = ranked.filter((p) => p.correct > 0);
     const byAvg = withCorrect.slice().sort((a, b) => a.timeSum / a.correct - b.timeSum / b.correct);
-    give('Le plus rapide', 'ti-bolt', byAvg);
+    give('Vitesse éclair', 'ti-bolt', byAvg);
     give('La meilleure série', 'ti-flame', ranked.filter((p) => p.bestStreak >= 3).sort((a, b) => b.bestStreak - a.bestStreak));
-    give('Le plus réfléchi', 'ti-bulb', byAvg.slice().reverse());
-    if (g.settings.reactions) give('Le plus expressif', 'ti-mood-happy', ranked.filter((p) => p.reactions >= 3).sort((a, b) => b.reactions - a.reactions));
+    give('Tête pensante', 'ti-bulb', byAvg.slice().reverse());
+    if (g.settings.reactions) give('Réactions en folie', 'ti-mood-happy', ranked.filter((p) => p.reactions >= 3).sort((a, b) => b.reactions - a.reactions));
   }
   return titles;
 }

@@ -14,8 +14,8 @@ const TYPE_LABEL = {
   poll: 'Sondage (pas de bonne réponse)',
 };
 const TITLE_EMOJI = {
-  'Le plus rapide': '⚡', 'La meilleure série': '🔥', 'Le sans-faute': '🎯',
-  'Le plus réfléchi': '💡', 'Le plus expressif': '😄', 'Le dernier survivant': '🛡️',
+  'Vitesse éclair': '⚡', 'La meilleure série': '🔥', 'Sans-faute': '🎯',
+  'Tête pensante': '💡', 'Réactions en folie': '😄', 'Inarrêtable': '🛡️',
 };
 let currentQ = null;
 let timerInt = null;
@@ -135,7 +135,7 @@ function applySettings(s) {
   cur.teamish = cur.mode === 'teams' || cur.mode === 'hangman';
   cur.teamManual = cur.teamish && cur.teamAssign === 'manual';
   teamNameInputs.forEach((inp, i) => inp.classList.toggle('hidden', i >= cur.teamCount));
-  $('teamNote').textContent = cur.mode === 'hangman' ? 'Pendu : chaque mauvaise réponse ajoute une partie au pendu de l\'équipe. 6 erreurs : pendu complet, l\'équipe est éliminée' : 'Les équipes s\'additionnent : la moyenne des points de chaque équipe compte';
+  $('teamNote').textContent = cur.mode === 'hangman' ? 'Pendu : chaque mauvaise réponse ajoute une partie au pendu de l\'équipe. 6 erreurs : pendu complet, l\'équipe est éliminée' : 'Le score d\'une équipe est la moyenne de ses joueurs';
   renderTeamAssign();
   document.querySelectorAll('[data-if]').forEach((row) => {
     const [k, v] = row.dataset.if.split(':');

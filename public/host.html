@@ -61,7 +61,7 @@
       <div class="card settings pop" style="margin-top:18px">
         <h2><i class="ti ti-settings"></i> Réglages de la partie</h2>
 
-        <div class="row"><i class="ti ti-sword"></i><div class="rl">Mode de jeu <button class="faq-q" type="button" data-faq="faq-modes" aria-label="Aide : les modes de jeu">?</button><small>Seul, en équipes, par élimination ou en pendu</small></div>
+        <div class="row"><i class="ti ti-sword"></i><div class="rl">Mode de jeu <button class="faq-q" type="button" data-faq="faq-modes" aria-label="Aide : les modes de jeu">?</button><small>Chacun pour soi, en équipes, par élimination ou au pendu</small></div>
           <select data-key="mode">
             <option value="standard">Quiz standard</option>
             <option value="teams">Mode équipes</option>
@@ -71,7 +71,7 @@
         <div class="row sub" data-if="teamish"><i class="ti ti-users-group"></i><div class="rl">Nombre d'équipes<small id="teamNote">Pendu : 6 erreurs et l'équipe est éliminée</small></div>
           <select data-key="teamCount"><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
         <div class="row sub" data-if="teamish"><i class="ti ti-arrows-shuffle"></i><div class="rl">Répartition des équipes<small>Au hasard, ou c'est toi qui choisis</small></div>
-          <select data-key="teamAssign"><option value="random">Au hasard</option><option value="manual">Choisie par l'animateur</option></select></div>
+          <select data-key="teamAssign"><option value="random">Au hasard</option><option value="manual">C'est moi qui choisis</option></select></div>
         <div class="row sub" data-if="teamish" style="flex-wrap:wrap"><i class="ti ti-tag"></i><div class="rl">Noms des équipes<small>Vide = nom de couleur</small></div>
           <div id="teamNames" style="display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-top:6px"></div></div>
         <div class="row sub" data-if="teamManual" style="flex-wrap:wrap"><i class="ti ti-users"></i><div class="rl">Qui va avec qui ?<small>Sans choix, le joueur rejoint la plus petite équipe</small></div>
@@ -168,7 +168,7 @@
 
     <div class="card settings">
       <h3 class="set-sec"><i class="ti ti-adjustments-horizontal"></i> Règles</h3>
-      <div class="row" id="rowHearts"><i class="ti ti-heart"></i><div class="rl">Cœurs <button class="faq-q" type="button" data-faq="faq-coeurs" aria-label="Aide : les cœurs">?</button><small>Une erreur = un cœur perdu. Plus de cœur : éliminé</small></div>
+      <div class="row" id="rowHearts"><i class="ti ti-heart"></i><div class="rl">Cœurs <button class="faq-q" type="button" data-faq="faq-coeurs" aria-label="Aide : les cœurs">?</button><small>Une erreur = un cœur perdu. Plus de cœur : hors jeu</small></div>
         <label class="sw"><input type="checkbox" data-key="hearts"><span class="knob"></span></label></div>
       <div class="row sub" data-if="hearts"><i class="ti ti-heart-plus"></i><div class="rl">Nombre de cœurs</div>
         <select data-key="lives"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div>
@@ -190,8 +190,8 @@
         <label class="sw"><input type="checkbox" data-key="reviewErrors"><span class="knob"></span></label></div>
       <div class="row"><i class="ti ti-device-tv"></i><div class="rl">Où s'affichent les questions ?<small>Chez tout le monde, ou seulement sur ton écran</small></div>
         <select data-key="display">
-          <option value="both">Animateur + joueurs</option>
-          <option value="host">Animateur seulement</option>
+          <option value="both">Chez tout le monde</option>
+          <option value="host">Seulement sur mon écran</option>
         </select></div>
       <div class="row"><i class="ti ti-letter-case"></i><div class="rl">Repérer les réponses avec<small>Sur les boutons et dans les résultats</small></div>
         <select data-key="labels">
@@ -381,7 +381,7 @@
         <button id="aiTemplate" class="btn ghost mini" type="button"><i class="ti ti-file-download"></i> Télécharger un modèle de tableur</button>
       </div>
       <div id="aiErr" class="error" style="margin-top:8px"></div>
-      <div id="aiErrBox" class="hidden"><button id="aiErrCopy" class="btn ghost mini" type="button"><i class="ti ti-copy"></i> Copier ce message pour l'IA</button><p class="hint">Colle-le dans ta IA : elle corrigera son tableau. Puis colle sa nouvelle réponse ci-dessus.</p></div>
+      <div id="aiErrBox" class="hidden"><button id="aiErrCopy" class="btn ghost mini" type="button"><i class="ti ti-copy"></i> Copier ce message pour l'IA</button><p class="hint">Colle-le dans ton IA : elle corrigera son tableau. Puis colle sa nouvelle réponse ci-dessus.</p></div>
       <div id="aiOk" class="hidden" style="margin-top:8px;padding:12px;border-radius:12px;background:#e8fff0;border:2px solid #1fb35a;color:#0b5a2b"></div>
     </div>
     <div><button id="aiBack" class="btn ghost big"><i class="ti ti-arrow-left"></i> Retour</button></div>

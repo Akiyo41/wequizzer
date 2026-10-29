@@ -120,7 +120,7 @@ function aiBuild(rows, hasHead) {
       if (!cell(2)) return err('il manque la bonne réponse (colonne « Réponse A »).');
       if (Array.from(text).length > 60) return err('la question est trop longue (60 lettres au maximum) : « ' + text.slice(0, 40) + '… »');
       if (tooLong([cell(2), ...w], 25)) return err('une réponse est trop longue (25 lettres au maximum).');
-      if (w.some((x) => plain(x) === plain(cell(2)))) return err('une fausse réponse est la même que la bonne.');
+      if (w.some((x) => plain(x) === plain(cell(2)))) return err('une fausse réponse est la même que la bonne réponse.');
       if (new Set(w.map(plain)).size !== w.length) return err('deux fausses réponses sont identiques.');
       const key = plain(cell(2));
       if (answersSeen[key]) return err('la bonne réponse « ' + cell(2) + ' » existe déjà à la ligne ' + answersSeen[key] + ' : chaque bonne réponse de la roue doit être différente.');

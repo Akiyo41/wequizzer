@@ -61,9 +61,9 @@ function banLeft(g, socket, device) {
   return b.until === null ? -1 : b.until - now;
 }
 function banMessage(left) {
-  if (left < 0) return "L'animateur t'a exclu de cette partie (jusqu'à sa fermeture).";
+  if (left < 0) return "L'animateur a fermé ta place dans cette partie (jusqu'à sa fermeture).";
   const min = Math.max(1, Math.ceil(left / 60000));
-  return "L'animateur t'a exclu pour le moment. Tu pourras revenir dans " + min + ' min.';
+  return "L'animateur a mis ta place en pause : tu pourras revenir dans " + min + ' min.';
 }
 
 function removePlayer(g, p, reason, minutes) {
