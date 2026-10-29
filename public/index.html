@@ -10,19 +10,32 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="center">
+  <!-- Page d'entrée « Tu es ? » : l'animateur d'abord, puis le joueur (qui tape son code PIN) -->
   <main class="narrow">
     <div class="logo big"><span data-logo></span></div>
-    <span data-mascot="accueil" data-size="lg"></span>
     <p class="tag">Le quiz en direct avec tes potes</p>
-    <form class="card pop" id="f">
+    <div id="hello"></div>
+    <div class="create-grid who-grid">
+      <a class="card create-card" id="whoHost" href="host.html"><i class="ti ti-player-play"></i><b>J'anime</b><small>Je choisis un quiz et je le lance sur mon écran.</small></a>
+      <button class="card create-card" id="whoPlay" type="button"><i class="ti ti-door-enter"></i><b>Je joue</b><small>J'ai un code PIN pour rejoindre une partie.</small></button>
+    </div>
+    <form class="card pop hidden" id="f">
       <input id="pin" inputmode="numeric" maxlength="6" placeholder="Code PIN" autocomplete="off">
       <button class="btn block big" type="submit"><i class="ti ti-door-enter"></i> Rejoindre</button>
+      <p class="hint" style="margin-top:10px;text-align:center">Pas de code ? Demande-le à l'animateur, ou scanne son QR code.</p>
     </form>
-    <a class="btn ghost" href="host.html"><i class="ti ti-pencil-plus"></i> Créer une partie</a>
   </main>
   <script src="brand.js"></script>
   <script>
     Brand.intro();
+    Brand.say(document.getElementById('hello'), 'Salut ! Tu es plutôt… ?', 'accueil');
+    document.getElementById('whoPlay').addEventListener('click', function () {
+      this.classList.add('on');
+      var f = document.getElementById('f');
+      f.classList.remove('hidden');
+      document.getElementById('pin').focus({ preventScroll: true });
+      f.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
     document.getElementById('f').addEventListener('submit', function (e) {
       e.preventDefault();
       var pin = document.getElementById('pin').value.replace(/\D/g, '');

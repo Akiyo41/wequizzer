@@ -496,3 +496,8 @@ body.has-snd .screen.editor { padding-top: 54px; }
 .faq details[open] summary::before { content: '–'; }
 .faq details p { margin: 0 0 10px 40px; line-height: 1.45; color: var(--text); }
 .faq-q { width: 22px; height: 22px; border-radius: 50%; border: 0; background: var(--accent); color: #14213d; font-weight: 900; font-size: .8rem; font-family: inherit; cursor: pointer; vertical-align: middle; margin-left: 4px; padding: 0; line-height: 22px; }
+
+/* Page d'entrée « Tu es ? » (index.html) */
+.who-grid { width: 100%; margin-top: 4px; }
+a.create-card { text-decoration: none; }
+.create-card.on { border-color: var(--accent); }
