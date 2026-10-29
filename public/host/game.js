@@ -392,7 +392,7 @@ function scoreText(p, d) {
   if (d.scoreMode === 'points' || d.hasDouble) return p.score + ' pts';
   return p.score + ' / ' + d.questions;
 }
-const aliveText = (p) => (p.hearts ? '❤️'.repeat(p.hearts) : 'Survivant');
+const aliveText = (p) => (p.hearts ? '❤️'.repeat(p.hearts) : 'En jeu');
 socket.on('end', (d) => {
   const again = hostAgain('end', JSON.stringify(d));
   recordStats(d);

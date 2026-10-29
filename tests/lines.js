@@ -71,6 +71,21 @@ const tests = {
     assert.strictEqual(endLine({ mode: 'teams', teamRank: 1, rank: 4 }), 'finGagne');
     assert.strictEqual(endLine({ mode: 'hangman', teamRank: 2, rank: 1 }), 'finPodium');
   },
+  'fin de partie : le dernier du classement n\'est jamais félicité « sur le podium »'() {
+    const { endLine } = require('../public/lines.js');
+    assert.strictEqual(endLine({ mode: 'elimination', alive: false, rank: 3, total: 3 }), 'finAutre');
+    assert.strictEqual(endLine({ mode: 'standard', rank: 2, total: 2 }), 'finAutre');
+    assert.strictEqual(endLine({ mode: 'standard', rank: 2, total: 3 }), 'finPodium');
+    assert.strictEqual(endLine({ mode: 'standard', rank: 3, total: 10 }), 'finPodium');
+    assert.strictEqual(endLine({ mode: 'standard', rank: 1, total: 1 }), 'finGagne'); // seul : il a gagné
+    assert.strictEqual(endLine({ mode: 'teams', teamRank: 2, teamCount: 2, rank: 1 }), 'finAutre');
+    assert.strictEqual(endLine({ mode: 'teams', teamRank: 2, teamCount: 3, rank: 5 }), 'finPodium');
+  },
+  'podium de l\'animateur : « En jeu » (neutre) plutôt que « Survivant »'() {
+    const src = require('fs').readFileSync(require('path').join(__dirname, '..', 'public/host/game.js'), 'utf8');
+    assert.ok(!src.includes('\'Survivant\''));
+    assert.ok(src.includes('\'❤️\'.repeat(p.hearts) : \'En jeu\''));
+  },
   'écran joueur : « hors jeu » plutôt que « Tu es éliminé »'() {
     const fs = require('fs');
     ['public/play.html', 'public/play/results.js'].forEach((f) => assert.ok(!fs.readFileSync(require('path').join(__dirname, '..', f), 'utf8').includes('Tu es éliminé'), f));

@@ -116,11 +116,14 @@ function resultLine(r) {
   return { key: r.answered ? 'rate' : 'tropTard', pose: 'desole' };
 }
 // Fin de partie côté joueur → clé de la phrase. Une seule « première place » : le 1er (ou la 1re équipe) ;
-// en élimination / cœurs, les autres survivants vont au podium (2e, 3e) ou avec les autres.
+// en élimination / cœurs, les autres survivants vont au podium (2e, 3e) ou avec les autres. Le dernier du classement
+// n'est jamais « sur le podium » (à 2 ou 3 joueurs, il serait félicité alors qu'il est dernier).
 function endLine(d) {
   const teamy = d.mode === 'teams' || d.mode === 'hangman';
   const place = teamy ? d.teamRank : d.rank;
+  const count = teamy ? d.teamCount : d.total;
   if (place === 1) return 'finGagne';
+  if (count && place >= count) return 'finAutre'; // le dernier n'est pas « sur le podium », même à 2 ou 3
   return place && place <= 3 ? 'finPodium' : 'finAutre';
 }
 // Consignes du Professeur sur le téléphone, selon le type de question. Elles ne varient pas : une consigne
