@@ -64,6 +64,11 @@ function buildFromEditor() {
       if (new Set(items.map((c) => c.toLowerCase())).size !== items.length) return fail(pre + 'deux éléments sont identiques.');
       clean.choices = items;
       clean.correct = 0;
+    } else if (q.type === 'zone') {
+      // image à toucher : une image et la bonne zone (mêmes messages que le serveur)
+      if (!image) return fail(pre + 'il faut une image pour une question « image à toucher ».');
+      if (!zoneValid(q.zone)) return fail(pre + 'touche l\'image pour placer la bonne zone.');
+      clean.zone = { ...q.zone };
     } else if (q.type === 'tf') {
       clean.choices = ['Vrai', 'Faux'];
       clean.correct = q.correct === 1 ? 1 : 0;

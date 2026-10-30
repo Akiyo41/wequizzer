@@ -352,6 +352,31 @@ const tests = {
     close(game);
   },
 
+  async 'image à toucher : image toujours sur le téléphone, zone cachée jusqu\'au résultat, points pour l\'animateur'() {
+    const zone = { x: 0.5, y: 0.5, r: 0.08, ar: 1 };
+    const quiz = { title: 'Carte', questions: [{ type: 'zone', text: 'Touche le centre', image: 'https://example.com/a.png', zone }] };
+    const game = await setupGame({ display: 'host', speedBonus: false }, quiz);
+    const { host, players } = game;
+    const pq = once(players[0], 'question');
+    const hq = once(host, 'question');
+    const res = once(host, 'results');
+    host.emit('host:start');
+    const [p, h] = await Promise.all([pq, hq]);
+    assert.strictEqual(p.image, 'https://example.com/a.png');
+    assert.strictEqual(p.hidden, undefined);
+    assert.strictEqual(p.zone, undefined);
+    assert.strictEqual(h.zone, undefined);
+    players[0].emit('player:answer', { point: { x: 0.5, y: 0.5 } });
+    players[1].emit('player:answer', { point: { x: 0.95, y: 0.95 } });
+    const r = await res;
+    assert.deepStrictEqual(r.zone, zone);
+    assert.strictEqual(r.image, 'https://example.com/a.png'); // pour redessiner après un rechargement de l'animateur
+    assert.strictEqual(r.points.length, 2);
+    assert.deepStrictEqual(r.points.map((x) => x.ok).sort(), [false, true]);
+    assert.deepStrictEqual(r.counts, [1, 1]);
+    close(game);
+  },
+
   async 'PIN inconnu'() {
     const s = connect();
     const e1 = once(s, 'join:error');

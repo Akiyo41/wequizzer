@@ -289,8 +289,11 @@ socket.on('question', (q) => {
   const box = $('choices');
   box.innerHTML = '';
   const isText = q.type === 'text';
-  box.classList.toggle('hidden', isText);
+  const isZone = q.type === 'zone';
+  box.classList.toggle('hidden', isText || isZone);
   $('textAns').classList.toggle('hidden', !isText);
+  $('zoneAns').classList.toggle('hidden', !isZone);
+  if (isZone) startZone(q);
   $('multiSend').classList.toggle('hidden', q.type !== 'multi');
   selected = [];
   if (isText) {
@@ -331,6 +334,32 @@ socket.on('question', (q) => {
   else startTimer(q.time, q.left === null || q.left === undefined ? q.time : q.left);
 });
 $('multiSend').onclick = submitChoices;
+
+// ----- Image à toucher : un toucher pose l'épingle (un autre la déplace), « Valider » envoie -----
+let zonePick = null;
+function startZone(q) {
+  $('qImg').classList.add('hidden'); // l'image est dans la zone à toucher
+  const v = zoneView(q.image, q.text);
+  const pin = el('span', 'zone-pin', '📍');
+  const place = (p) => {
+    zonePick = p;
+    pin.style.left = p.x * 100 + '%';
+    pin.style.top = p.y * 100 + '%';
+    if (!pin.parentNode) v.layer.appendChild(pin);
+    $('zoneSend').disabled = false;
+  };
+  zonePick = null;
+  $('zoneSend').disabled = true;
+  v.wrap.onclick = (e) => { FX.click(); place(zonePoint(e, v.img)); UI.announce('Épingle posée'); };
+  if (q.mine && typeof q.mine.x === 'number') place(q.mine); // retour après une coupure : l'épingle revient
+  $('zoneBox').innerHTML = '';
+  $('zoneBox').appendChild(v.wrap);
+}
+$('zoneSend').onclick = () => {
+  if (!zonePick) return;
+  FX.click();
+  socket.emit('player:answer', { point: zonePick });
+};
 function sendText() {
   const t = $('textInput').value.trim();
   if (!t) return;

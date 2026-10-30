@@ -59,6 +59,21 @@ function renderPreview() {
     const d = el('div', 'textbox');
     d.textContent = pv.shown ? 'Bon ordre : ' + q.choices.join(' → ') : 'Les joueurs remettent ces ' + q.choices.length + ' éléments dans l\'ordre';
     box.appendChild(d);
+  } else if (q.type === 'zone') {
+    // image à toucher : on touche l'image pour essayer, « Voir la réponse » montre le cercle
+    $('pvImg').classList.add('hidden');
+    const v = zoneView(q.image, q.text);
+    const res = el('div', 'textbox', pv.try ? (pv.try.ok ? '✅ Juste !' : '❌ À côté') : 'Touche l\'image pour essayer');
+    const paint = () => zoneDraw(v.layer, pv.shown ? q.zone : null, pv.try ? [pv.try] : []);
+    v.wrap.onclick = (e) => {
+      const p = zonePoint(e, v.img);
+      pv.try = { ...p, ok: zoneHit(q.zone, p) };
+      res.textContent = pv.try.ok ? '✅ Juste !' : '❌ À côté';
+      paint();
+    };
+    paint();
+    box.appendChild(v.wrap);
+    box.appendChild(res);
   } else if (q.type === 'text') {
     const d = el('div', 'textbox');
     d.appendChild(el('i', 'ti ti-pencil'));
@@ -82,6 +97,6 @@ function renderPreview() {
   $('pvReveal').innerHTML = pv.shown ? '<i class="ti ti-eye-off"></i> Masquer la réponse' : '<i class="ti ti-eye"></i> Voir la réponse';
 }
 $('pvReveal').onclick = () => { pv.shown = !pv.shown; renderPreview(); };
-$('pvPrev').onclick = () => { pv.i--; pv.shown = false; renderPreview(); };
-$('pvNext').onclick = () => { pv.i++; pv.shown = false; renderPreview(); };
+$('pvPrev').onclick = () => { pv.i--; pv.shown = false; pv.try = null; renderPreview(); };
+$('pvNext').onclick = () => { pv.i++; pv.shown = false; pv.try = null; renderPreview(); };
 $('pvQuit').onclick = () => { const back = pv.back; pv = null; show(back); };

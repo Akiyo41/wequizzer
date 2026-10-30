@@ -2,7 +2,7 @@
 // ----- Bibliothèque de quiz -----
 // Question enregistrée → question de l'éditeur (« Compléter la phrase » devient le type 'gap')
 function normQ(q) {
-  let type = ['single', 'tf', 'multi', 'text', 'poll', 'order', 'gap'].includes(q.type) ? q.type : 'single';
+  let type = ['single', 'tf', 'multi', 'text', 'poll', 'order', 'gap', 'zone'].includes(q.type) ? q.type : 'single';
   if (type === 'single' && q.gapSrc) type = 'gap';
   let choices = (q.choices || []).slice(0, type === 'order' ? 6 : 4).map(String);
   if (type === 'tf') choices = ['Vrai', 'Faux'];
@@ -29,6 +29,7 @@ function normQ(q) {
     answers: Array.isArray(q.answers) ? q.answers.map(String) : [],
     double: q.double === true,
     explain: String(q.explain || ''),
+    ...(type === 'zone' ? { zone: q.zone && typeof q.zone === 'object' ? { ...q.zone } : null } : {}),
   };
 }
 // Question de l'éditeur → question enregistrée : « Compléter la phrase » devient un choix unique avec gapSrc
@@ -42,6 +43,7 @@ function validateQ(q) {
   if (!q.text.trim()) return 'le texte est vide';
   if (q.type === 'text') return q.answers.some((a) => a.trim()) ? null : 'écris au moins une réponse acceptée';
   if (q.type === 'tf') return q.correct === 0 || q.correct === 1 ? null : 'choisis Vrai ou Faux';
+  if (q.type === 'zone') return !(q.image || '').trim() ? 'il faut une image pour une question « image à toucher »' : zoneValid(q.zone) ? null : 'touche l\'image pour placer la bonne zone';
   if (q.choices.length < 2 || q.choices.some((c) => !c.trim())) return 'il faut au moins 2 réponses remplies';
   if (q.type === 'single' && (q.correct < 0 || q.correct >= q.choices.length)) return 'la bonne réponse est invalide';
   if (q.type === 'multi' && (!q.correct.length || q.correct.some((c) => c < 0 || c >= q.choices.length))) return 'coche au moins une bonne réponse';
@@ -104,7 +106,7 @@ function quizPayload(q) {
   return {
     title: q.title,
     questions: q.questions.map((x) => ({
-      type: x.type, text: x.text, image: x.image || '', choices: x.choices, correct: x.correct, answers: x.answers, double: x.double, explain: x.explain || '',
+      type: x.type, text: x.text, image: x.image || '', choices: x.choices, correct: x.correct, answers: x.answers, double: x.double, explain: x.explain || '', zone: x.zone,
     })),
   };
 }

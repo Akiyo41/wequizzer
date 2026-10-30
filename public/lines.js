@@ -139,6 +139,7 @@ const CONSIGNES = {
   multi: 'Plusieurs bonnes réponses : sélectionne-les toutes, puis valide.',
   sondage: 'Sondage : pas de bonne réponse.',
   texte: 'Écris ta réponse : les accents et les petites fautes sont pardonnés !',
+  zone: 'Touche le bon endroit sur l\'image, puis valide.',
 };
 // Question → clé de sa consigne (ou null)
 function consigneFor(q) {
@@ -149,6 +150,7 @@ function consigneFor(q) {
   if (q.type === 'multi') return 'multi';
   if (q.type === 'poll') return 'sondage';
   if (q.type === 'text') return 'texte';
+  if (q.type === 'zone') return 'zone';
   return null;
 }
 if (typeof module !== 'undefined') module.exports = { LINES, pickLine, resultLine, endLine, CONSIGNES, consigneFor };

@@ -126,7 +126,7 @@ const tests = {
   },
   'consignes : une par type de question qui en a besoin'() {
     const { CONSIGNES, consigneFor } = require('../public/lines.js');
-    assert.deepStrictEqual(Object.keys(CONSIGNES).sort(), ['mots', 'multi', 'ordre', 'relier', 'roue', 'sondage', 'texte']);
+    assert.deepStrictEqual(Object.keys(CONSIGNES).sort(), ['mots', 'multi', 'ordre', 'relier', 'roue', 'sondage', 'texte', 'zone']);
     Object.values(CONSIGNES).forEach((s) => assert.ok(typeof s === 'string' && s.length > 10, s));
     assert.strictEqual(consigneFor({ type: 'single', wheel: true }), 'roue');
     assert.strictEqual(consigneFor({ type: 'match', match: true }), 'relier');
@@ -135,6 +135,8 @@ const tests = {
     assert.strictEqual(consigneFor({ type: 'multi' }), 'multi');
     assert.strictEqual(consigneFor({ type: 'poll' }), 'sondage');
     assert.strictEqual(consigneFor({ type: 'text' }), 'texte');
+    assert.strictEqual(consigneFor({ type: 'zone' }), 'zone');
+    assert.strictEqual(CONSIGNES.zone, 'Touche le bon endroit sur l\'image, puis valide.');
     assert.strictEqual(consigneFor({ type: 'single' }), null);
     assert.strictEqual(consigneFor({ type: 'tf' }), null);
     assert.strictEqual(CONSIGNES.texte, 'Écris ta réponse : les accents et les petites fautes sont pardonnés !');

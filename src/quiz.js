@@ -1,6 +1,7 @@
 // Vérification des quiz et préparation des questions d'une partie
 const { MAX_PAIRS, WHEEL_A_MAX, WHEEL_MAX, WHEEL_Q_MAX } = require('./config');
 const { shuffle } = require('./utils');
+const { zoneValid } = require('../public/zone.js');
 
 // Vérifie et nettoie un quiz envoyé par l'animateur
 function cleanWheel(input) {
@@ -90,12 +91,17 @@ function cleanQuiz(input) {
     if (!raw || typeof raw !== 'object') return { error: `Question ${n} invalide.` };
     const text = String(raw.text || '').trim().slice(0, 200);
     if (!text) return { error: `Question ${n} : le texte est vide.` };
-    const type = ['single', 'tf', 'multi', 'text', 'poll', 'order'].includes(raw.type) ? raw.type : 'single';
+    const type = ['single', 'tf', 'multi', 'text', 'poll', 'order', 'zone'].includes(raw.type) ? raw.type : 'single';
     const image = cleanImage(raw.image);
     const double = raw.double === true && type !== 'poll';
     const q = { type, text, image, double, choices: [], correct: null, answers: [], explain: String(raw.explain || '').trim().slice(0, 300) };
 
-    if (type === 'tf') {
+    if (type === 'zone') {
+      // Image à toucher : une image et la bonne zone (cercle), voir public/zone.js
+      if (!image) return { error: `Question ${n} : il faut une image pour une question « image à toucher ».` };
+      if (!zoneValid(raw.zone)) return { error: `Question ${n} : touche l'image pour placer la bonne zone.` };
+      q.zone = { x: raw.zone.x, y: raw.zone.y, r: raw.zone.r, ar: raw.zone.ar };
+    } else if (type === 'tf') {
       q.choices = ['Vrai', 'Faux'];
       if (raw.correct !== 0 && raw.correct !== 1) return { error: `Question ${n} : choisis Vrai ou Faux.` };
       q.correct = raw.correct;
@@ -237,6 +243,7 @@ function missedQuiz(g) {
   const questions = idx.map((i) => {
     const q = g.questions[i];
     if (q.type === 'order') return { type: 'order', text: q.text, image: q.image || '', double: false, choices: q.items, correct: null, answers: [], explain: q.explain || '' };
+    if (q.type === 'zone') return { type: 'zone', text: q.text, image: q.image || '', double: !!q.double, zone: q.zone, explain: q.explain || '' };
     return { type: q.type, text: q.text, image: q.image || '', double: !!q.double, choices: q.choices, correct: q.correct, answers: q.answers, explain: q.explain || '' };
   });
   return { title, questions };

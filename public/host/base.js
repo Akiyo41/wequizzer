@@ -12,6 +12,7 @@ const TYPE_LABEL = {
   multi: 'Plusieurs bonnes réponses',
   text: 'Réponse à écrire',
   poll: 'Sondage (pas de bonne réponse)',
+  zone: '📍 Image à toucher',
 };
 const TITLE_EMOJI = {
   'Vitesse éclair': '⚡', 'La meilleure série': '🔥', 'Sans-faute': '🎯',
