@@ -87,16 +87,15 @@ async function initLibrary() {
 function renderQuizSelect() {
   [$('quizSelect'), $('quizSelect2')].forEach((sel) => {
     sel.innerHTML = '';
-    library.forEach((q) => {
-      const n = q.kind === 'wheel' ? q.pairs.length : q.kind === 'letters' ? q.items.length : q.questions.length;
-      const o = el('option', '', (q.kind === 'wheel' ? '🎡 ' : q.kind === 'letters' ? '🔤 ' : '') + q.title + ' (' + n + (q.kind === 'wheel' ? ' paire' : q.kind === 'letters' ? ' mot' : ' question') + (n > 1 ? 's' : '') + ')');
+    quizOrder(library).forEach((q) => {
+      const o = el('option', '', quizLabel(q));
       o.value = q.id;
       sel.appendChild(o);
     });
     if (selectedId) sel.value = selectedId;
   });
   const has = library.length > 0;
-  ['editQuiz', 'testQuiz', 'exportQuiz', 'deleteQuiz'].forEach((id) => { $(id).disabled = !has; });
+  ['editQuiz', 'testQuiz', 'copyQuiz', 'exportQuiz', 'deleteQuiz'].forEach((id) => { $(id).disabled = !has; });
   applyKind();
 }
 const setInfo = (t) => { $('quizInfo').textContent = t; $('quizInfo2').textContent = t; };

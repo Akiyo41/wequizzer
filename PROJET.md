@@ -138,6 +138,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 20. (fait) Code PIN plus tolérant : le serveur ne garde que les chiffres (« 427 111 », « 427-111 » collés marchent, `player:join` dans `src/sockets.js`) ; sur le téléphone le champ ne garde que 6 chiffres pendant la saisie et Entrée passe au pseudo (ou rejoint si le pseudo est déjà écrit). Champs PIN en `maxlength="12"` pour ne pas couper un code collé avec des espaces.
 
+21. (fait) Listes « Quiz choisi » triées par ordre alphabétique (accents et majuscules ignorés, « Quiz 2 » avant « Quiz 10 ») ; la liste enregistrée garde son ordre. Icône ⚡ et « affirmations » pour le Vrai/Faux en rafale. `public/host/quiz-labels.js` (`quizLabel`, `quizOrder`, testé par `tests/quiz-labels.js`). « Dupliquer ce quiz » grisé quand il n'y a aucun quiz.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
