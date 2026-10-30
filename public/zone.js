@@ -7,7 +7,7 @@ const ZONE_MARGIN = 0.02; // un peu de marge pour les gros doigts
 
 const zoneNum = (v, min, max) => typeof v === 'number' && Number.isFinite(v) && v >= min && v <= max;
 function zoneValid(z) {
-  return !!z && typeof z === 'object' && zoneNum(z.x, 0, 1) && zoneNum(z.y, 0, 1) && zoneNum(z.r, 0.03, 0.25) && zoneNum(z.ar, 0.2, 5);
+  return !!z && typeof z === 'object' && zoneNum(z.x, 0, 1) && zoneNum(z.y, 0, 1) && zoneNum(z.r, 0.03, 0.25) && zoneNum(z.ar, 0.1, 10);
 }
 // Le point touché est-il dans le cercle ? (les distances sont comptées en largeurs d'image, d'où ar pour la hauteur)
 function zoneHit(z, p) {

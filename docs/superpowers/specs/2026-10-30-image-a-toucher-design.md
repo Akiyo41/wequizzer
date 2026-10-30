@@ -23,7 +23,7 @@ Une question de ce type, dans le quiz enregistré (navigateur, fichier exporté)
 - `image` : obligatoire (lien `http(s)://…` ou image envoyée, mêmes règles que les autres questions : `cleanImage`).
 - `x`, `y` : centre du cercle, en proportion de la largeur et de la hauteur de l'image (0 à 1).
 - `r` : rayon, en proportion de la **largeur** de l'image (0,03 à 0,25).
-- `ar` : forme de l'image = hauteur / largeur (0,2 à 5), mesurée dans l'éditeur quand l'image se charge. Sert à calculer les distances : un cercle reste rond sur une image en hauteur.
+- `ar` : forme de l'image = hauteur / largeur (0,1 à 10), mesurée dans l'éditeur quand l'image se charge. Sert à calculer les distances : un cercle reste rond sur une image en hauteur.
 - Tailles proposées par le curseur : petit 0,05, moyen 0,08 (par défaut), grand 0,12, réglage continu de 0,03 à 0,20.
 
 Réponse d'un joueur : `player:answer { point: { x, y } }` (proportions 0 à 1). Toute autre forme est ignorée.

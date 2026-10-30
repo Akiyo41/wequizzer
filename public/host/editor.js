@@ -117,7 +117,7 @@ function zoneEditor(card, q) {
   v.wrap.classList.add('zone-pick');
   let none = null;
   const paint = () => { zoneDraw(v.layer, q.zone, []); if (none) none.classList.toggle('hidden', !!q.zone); };
-  const ar = () => (v.img.naturalWidth ? Math.min(5, Math.max(0.2, v.img.naturalHeight / v.img.naturalWidth)) : 1);
+  const ar = () => (v.img.naturalWidth ? Math.min(10, Math.max(0.1, v.img.naturalHeight / v.img.naturalWidth)) : 1);
   v.img.onload = () => { if (q.zone) q.zone.ar = ar(); paint(); };
   v.img.onerror = () => { q.zone = null; v.wrap.replaceWith(el('p', 'error', 'Cette image ne s\'affiche pas : vérifie l\'adresse.')); };
   v.wrap.onclick = (e) => {

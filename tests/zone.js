@@ -27,9 +27,9 @@ const tests = {
     assert.strictEqual(zoneHit(null, { x: 0.5, y: 0.5 }), false);
   },
   'zone valide seulement dans les bornes'() {
-    assert.strictEqual(zoneValid({ x: 0, y: 1, r: 0.03, ar: 0.2 }), true);
-    assert.strictEqual(zoneValid({ x: 0.5, y: 0.5, r: 0.25, ar: 5 }), true);
-    [{ x: -0.1, y: 0.5, r: 0.1, ar: 1 }, { x: 0.5, y: 0.5, r: 0.3, ar: 1 }, { x: 0.5, y: 0.5, r: 0.1, ar: 6 }, { x: 0.5, y: 0.5, r: 0.02, ar: 1 }, { x: '0.5', y: 0.5, r: 0.1, ar: 1 }, null]
+    assert.strictEqual(zoneValid({ x: 0, y: 1, r: 0.03, ar: 0.1 }), true);
+    assert.strictEqual(zoneValid({ x: 0.5, y: 0.5, r: 0.25, ar: 10 }), true);
+    [{ x: -0.1, y: 0.5, r: 0.1, ar: 1 }, { x: 0.5, y: 0.5, r: 0.3, ar: 1 }, { x: 0.5, y: 0.5, r: 0.1, ar: 11 }, { x: 0.5, y: 0.5, r: 0.02, ar: 1 }, { x: '0.5', y: 0.5, r: 0.1, ar: 1 }, null]
       .forEach((b) => assert.strictEqual(zoneValid(b), false, JSON.stringify(b)));
   },
   'serveur : question « image à toucher » acceptée ou refusée avec un message clair'() {
