@@ -1,8 +1,20 @@
 // Test de la liste « Quiz choisi » : ordre alphabétique et noms affichés. Lancer avec : npm test
 const assert = require('assert');
-const { quizLabel, quizOrder } = require('../public/host/quiz-labels.js');
+const { quizLabel, quizOrder, exportPayload, exportName } = require('../public/host/quiz-labels.js');
 
 const tests = {
+  'fichier enregistré : le Vrai/Faux en rafale garde son genre'() {
+    const qs = [{ type: 'tf', text: 'Le chat miaule', correct: 0 }];
+    assert.deepStrictEqual(exportPayload({ id: 'x', flavor: 'tfrush', title: 'Rafale', questions: qs }), { flavor: 'tfrush', title: 'Rafale', questions: qs });
+    assert.deepStrictEqual(exportPayload({ id: 'x', title: 'Quiz', questions: qs }), { title: 'Quiz', questions: qs });
+    assert.deepStrictEqual(exportPayload({ id: 'x', kind: 'wheel', title: 'R', category: 'C', pairs: [{ q: 'a', a: 'b' }] }), { kind: 'wheel', title: 'R', category: 'C', pairs: [{ q: 'a', a: 'b' }] });
+    assert.deepStrictEqual(exportPayload({ id: 'x', kind: 'letters', title: 'M', items: [{ q: 'a', word: 'b' }] }), { kind: 'letters', title: 'M', items: [{ q: 'a', word: 'b' }] });
+  },
+  'nom du fichier : accents gardés lisibles'() {
+    assert.strictEqual(exportName('Étoiles et planètes'), 'Etoiles_et_planetes.json');
+    assert.strictEqual(exportName('Vrai ou faux : animaux !'), 'Vrai_ou_faux_animaux.json');
+    assert.strictEqual(exportName('???'), 'quiz.json');
+  },
   'nom affiché selon le genre de quiz'() {
     assert.strictEqual(quizLabel({ title: 'Capitales', questions: [1, 2] }), 'Capitales (2 questions)');
     assert.strictEqual(quizLabel({ title: 'Un', questions: [1] }), 'Un (1 question)');

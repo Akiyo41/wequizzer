@@ -169,13 +169,14 @@ function download(name, text, type) {
 $('exportQuiz').onclick = () => {
   const q = currentQuiz();
   if (!q) return;
-  const out = q.kind === 'wheel' ? { kind: 'wheel', title: q.title, category: q.category, pairs: q.pairs } : q.kind === 'letters' ? { kind: 'letters', title: q.title, items: q.items } : { title: q.title, questions: q.questions };
-  download((q.title.replace(/[^\w\-]+/g, '_') || 'quiz') + '.json', JSON.stringify(out, null, 2), 'application/json');
+  download(exportName(q.title), JSON.stringify(exportPayload(q), null, 2), 'application/json');
 };
-function addImported(title, qs) {
+function addImported(title, qs, flavor) {
   const bad = qs.findIndex((q) => validateQ(q));
   if (bad !== -1) throw new Error('Question ' + (bad + 1) + ' : ' + validateQ(qs[bad]));
   const quiz = { id: uid(), title: String(title || 'Quiz importé').slice(0, 60), questions: qs.map(savedQ) };
+  // Vrai/Faux en rafale : seulement si toutes les questions sont des Vrai/Faux (sinon son éditeur les perdrait)
+  if (flavor === 'tfrush' && quiz.questions.every((q) => q.type === 'tf')) quiz.flavor = 'tfrush';
   library.push(quiz);
   selectedId = quiz.id;
   saveLibrary();
@@ -203,7 +204,7 @@ $('importFile').onchange = () => {
       }
       if (Array.isArray(data)) data = { title: f.name.replace(/\.json$/i, ''), questions: data };
       if (!data || !Array.isArray(data.questions) || data.questions.length === 0) throw new Error('Fichier vide.');
-      addImported(data.title, data.questions.map(normQ));
+      addImported(data.title, data.questions.map(normQ), data.flavor);
     } catch (e) {
       $('quizError').textContent = e.message && e.message.startsWith('Question') ? e.message : "Ce fichier n'est pas un quiz valide.";
     }

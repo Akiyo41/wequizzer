@@ -10,4 +10,14 @@ const QUIZ_COLLATOR = new Intl.Collator('fr', { sensitivity: 'base', numeric: tr
 function quizOrder(list) {
   return list.slice().sort((a, b) => QUIZ_COLLATOR.compare(a.title, b.title));
 }
-if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder };
+// « Enregistrer ce quiz dans un fichier » : ce qu'on écrit (sans l'identifiant interne) et le nom du fichier
+function exportPayload(q) {
+  if (q.kind === 'wheel') return { kind: 'wheel', title: q.title, category: q.category, pairs: q.pairs };
+  if (q.kind === 'letters') return { kind: 'letters', title: q.title, items: q.items };
+  return q.flavor === 'tfrush' ? { flavor: 'tfrush', title: q.title, questions: q.questions } : { title: q.title, questions: q.questions };
+}
+function exportName(title) {
+  const base = String(title || '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w-]+/g, '_').replace(/^_+|_+$/g, '');
+  return (base || 'quiz') + '.json';
+}
+if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName };
