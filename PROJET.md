@@ -130,6 +130,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 16. (fait) Tableau des résultats en fin de partie (bouton « Tableau des résultats ») : CSV `;` avec BOM, tous les joueurs (rang, pseudo, équipe, points, bonnes réponses, cœurs / en jeu) + réussite par question. Texte : `public/host/results-csv.js` (`resultsCsv`, testé par `tests/results-csv.js`) ; le serveur envoie `endData.results` (tous les joueurs, le podium n'en garde que 10). Les pseudos qui commencent par = + - @ sont neutralisés (pas de formule dans le tableur). FAQ `faq-resultats`.
 
+17. (fait) Plein écran pour le vidéoprojecteur : bouton rond à gauche du 🔊 (`UI.fullscreenButton` / `UI.toggleFullscreen` dans `public/ui.js`, absent si le navigateur ne sait pas le faire) et touche **F** (salle d'attente, partie, podium ; `hostKey` dans `public/host/keys.js`). Fermer l'onglet animateur pendant une question ou un résultat demande confirmation (`beforeunload` dans `host/game.js`).
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

@@ -83,6 +83,37 @@ const UI = (() => {
     document.body.classList.add('has-snd');
     apply();
   }
+  // Plein écran (vidéoprojecteur) : bouton rond à gauche du bouton de son, et touche F côté animateur.
+  // toggleFullscreen() → false si le navigateur ne sait pas le faire (iPhone…)
+  const fsOn = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+  function toggleFullscreen() {
+    const d = document.documentElement;
+    const enter = d.requestFullscreen || d.webkitRequestFullscreen;
+    const leave = document.exitFullscreen || document.webkitExitFullscreen;
+    if (!enter) return false;
+    try {
+      const p = fsOn() ? leave.call(document) : enter.call(d);
+      if (p && p.catch) p.catch(() => {});
+    } catch (e) { return false; }
+    return true;
+  }
+  function fullscreenButton() {
+    if (!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen)) return;
+    const btn = document.createElement('button');
+    btn.className = 'snd-btn fs-btn'; btn.type = 'button';
+    const paint = () => {
+      const on = fsOn();
+      btn.innerHTML = '<i class="ti ' + (on ? 'ti-minimize' : 'ti-maximize') + '"></i>';
+      btn.title = on ? 'Quitter le plein écran (F)' : 'Plein écran (F)';
+      btn.setAttribute('aria-label', on ? 'Quitter le plein écran' : 'Plein écran');
+    };
+    btn.onclick = toggleFullscreen;
+    document.addEventListener('fullscreenchange', paint);
+    document.addEventListener('webkitfullscreenchange', paint);
+    document.body.appendChild(btn);
+    document.body.classList.add('has-fs');
+    paint();
+  }
   // Lecteurs d'écran : annonce un texte qui vient d'apparaître (résultat, bulle du Professeur).
   // Les annonces faites au même moment sont lues ensemble, dans l'ordre.
   let live = null; let pending = []; let flushT = null;
@@ -112,5 +143,5 @@ const UI = (() => {
     });
   }
   nameRows();
-  return { confirm: confirmBox, soundButton, soundInit, soundSlider, announce, nameRows };
+  return { confirm: confirmBox, soundButton, soundInit, soundSlider, fullscreenButton, toggleFullscreen, announce, nameRows };
 })();

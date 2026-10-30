@@ -29,6 +29,12 @@ const tests = {
     assert.strictEqual(hostKey('Enter', 'question', 'BUTTON'), null);
     assert.strictEqual(hostKey('p', 'question', 'BUTTON'), 'pause');
   },
+  'F : plein écran, pendant la partie et dans la salle d\'attente'() {
+    ['lobby', 'countdown', 'reading', 'question', 'results', 'end'].forEach((s) => assert.strictEqual(hostKey('f', s, 'BODY'), 'fullscreen', s));
+    assert.strictEqual(hostKey('F', 'question', 'BUTTON'), 'fullscreen');
+    assert.strictEqual(hostKey('f', 'lobby', 'INPUT'), null);
+    assert.strictEqual(hostKey('f', 'editor', 'BODY'), null);
+  },
   'autres touches : rien'() {
     assert.strictEqual(hostKey('a', 'question', 'BODY'), null);
     assert.strictEqual(hostKey('Escape', 'results', 'BODY'), null);

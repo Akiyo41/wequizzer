@@ -557,3 +557,6 @@ a.create-card { text-decoration: none; }
 .zone-size { flex-wrap: wrap; }
 .zone-size input[type="range"] { flex: 1 1 120px; accent-color: var(--accent); }
 .choices > .zone-view, .choices > .textbox { grid-column: 1 / -1; }
+/* Bouton plein écran (animateur), à gauche du bouton de son */
+.fs-btn { right: 60px; }
+body.has-fs .hostbar { padding-right: 112px; }

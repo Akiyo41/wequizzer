@@ -498,5 +498,13 @@ $('csvResultsBtn').onclick = () => {
   download('resultats-' + slug + '-' + now.toISOString().slice(0, 10) + '.csv', resultsCsv(lastEnd, now.toLocaleDateString('fr-FR')), 'text/csv');
 };
 
+// Fermer l'onglet en pleine partie par erreur : le navigateur demande confirmation
+window.addEventListener('beforeunload', (e) => {
+  const screen = screens.find((s) => !$(s).classList.contains('hidden'));
+  if (!KEY_GAME_SCREENS.includes(screen)) return;
+  e.preventDefault();
+  e.returnValue = '';
+});
+
 // Tous les fichiers de l'écran animateur sont chargés : on peut se connecter
 socket.connect();

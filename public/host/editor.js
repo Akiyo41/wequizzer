@@ -20,6 +20,7 @@ $('moreBtn').onclick = (e) => { e.stopPropagation(); $('moreMenu').classList.tog
 $('moreMenu').addEventListener('click', () => $('moreMenu').classList.add('hidden'));
 document.addEventListener('click', (e) => { if (!$('moreMenu').contains(e.target) && e.target !== $('moreBtn')) $('moreMenu').classList.add('hidden'); });
 UI.soundButton();
+UI.fullscreenButton();
 
 // ----- Éditeur de quiz -----
 let editing = null;
