@@ -32,10 +32,10 @@ const CSV_SAMPLE = AI_TYPES.map((t) => t.ex).concat([['sondage', 'Ton fruit pré
 
 function parseCsv(text) {
   text = text.replace(/^﻿/, '');
-  const first = text.split(/\r?\n/)[0] || '';
+  // séparateur le plus fréquent sur les premières lignes (des lignes de consignes peuvent précéder le tableau)
   const counts = { ';': 0, ',': 0, '\t': 0 };
   let inQ = false;
-  for (const ch of first) { if (ch === '"') inQ = !inQ; else if (!inQ && ch in counts) counts[ch]++; }
+  text.split(/\r?\n/).slice(0, 15).forEach((l) => { inQ = false; for (const ch of l) { if (ch === '"') inQ = !inQ; else if (!inQ && ch in counts) counts[ch]++; } });
   const delim = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
   const rows = [];
   let row = [];
@@ -72,7 +72,8 @@ function aiExtract(text) {
   let kept = lines.slice(start);
   const hasDelim = (l) => /[;\t]/.test(l) || (l.match(/,/g) || []).length >= 3;
   while (kept.length && !hasDelim(kept[kept.length - 1])) kept.pop();
-  return { rows: parseCsv(kept.join('\n')), hasHead };
+  const rows = parseCsv(kept.join('\n'));
+  return (!hasHead && csvRemap(rows)) || { rows, hasHead };
 }
 
 const AI_TYPE_NAMES = 'choix, multiple, vrai/faux, texte, ordre, completer, roue, mot ou sondage';

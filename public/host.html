@@ -386,6 +386,7 @@
         <button id="aiFile" class="btn ghost mini" type="button"><i class="ti ti-file-upload"></i> Ou choisir un fichier</button>
         <button id="aiTemplate" class="btn ghost mini" type="button"><i class="ti ti-file-download"></i> Télécharger un modèle de tableur</button>
       </div>
+      <p class="hint">Un tableur fait ailleurs (une autre IA, Kahoot, Excel…) marche aussi s'il a une colonne « Question », des colonnes de réponses et une colonne « Bonne réponse », dans n'importe quel ordre.</p>
       <div id="aiErr" class="error" style="margin-top:8px"></div>
       <div id="aiErrBox" class="hidden"><button id="aiErrCopy" class="btn ghost mini" type="button"><i class="ti ti-copy"></i> Copier ce message pour l'IA</button><p class="hint">Colle-le dans ton IA : elle corrigera son tableau. Puis colle sa nouvelle réponse ci-dessus.</p></div>
       <div id="aiOk" class="hidden" style="margin-top:8px;padding:12px;border-radius:12px;background:#e8fff0;border:2px solid #1fb35a;color:#0b5a2b"></div>
@@ -578,6 +579,7 @@
   <script src="host/base.js"></script>
   <script src="host/connection.js"></script>
   <script src="host/quiz-list.js"></script>
+  <script src="host/csv-columns.js"></script>
   <script src="host/ai-import.js"></script>
   <script src="host/editor.js"></script>
   <script src="host/pair-editors.js"></script>
