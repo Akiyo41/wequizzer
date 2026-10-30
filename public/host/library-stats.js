@@ -96,5 +96,10 @@ $('openStats').onclick = () => {
   show('statsPage');
 };
 $('statsSelect').onchange = renderStats;
-$('statsReset').onclick = () => { const all = LS.get(STATS_KEY, {}); delete all[$('statsSelect').value]; LS.set(STATS_KEY, all); renderStats(); };
+$('statsReset').onclick = async () => {
+  const sel = $('statsSelect');
+  if (!LS.get(STATS_KEY, {})[sel.value]) return;
+  const ok = await UI.confirm({ title: 'Effacer les statistiques ?', name: '« ' + sel.options[sel.selectedIndex].text + ' »', text: 'Les résultats des parties déjà jouées avec ce quiz seront oubliés. Le quiz, lui, est gardé.', ok: 'Effacer', cancel: 'Annuler', pose: 'desole' });
+  if (!ok) return;
+  const all = LS.get(STATS_KEY, {}); delete all[$('statsSelect').value]; LS.set(STATS_KEY, all); renderStats(); };
 $('statsBack').onclick = () => show('lobby');

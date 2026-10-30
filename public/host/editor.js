@@ -314,8 +314,12 @@ function copyQ(i) {
   const card = $('edQuestions').children[i + 1];
   if (card) card.scrollIntoView({ block: 'center', behavior: 'smooth' });
 }
-function removeQ(i) {
+async function removeQ(i) {
   if (editing.questions.length === 1) { $('edError').textContent = 'Un quiz doit avoir au moins une question.'; return; }
+  if (!questionEmpty(editing.questions[i])) {
+    const ok = await UI.confirm({ title: 'Supprimer cette question ?', name: 'Question ' + (i + 1), text: 'Elle sera effacée de ce quiz.', ok: 'Supprimer', cancel: 'Garder', pose: 'desole' });
+    if (!ok) return;
+  }
   editing.questions.splice(i, 1);
   renderEditor();
 }

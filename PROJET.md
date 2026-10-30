@@ -140,6 +140,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 21. (fait) Listes « Quiz choisi » triées par ordre alphabétique (accents et majuscules ignorés, « Quiz 2 » avant « Quiz 10 ») ; la liste enregistrée garde son ordre. Icône ⚡ et « affirmations » pour le Vrai/Faux en rafale. `public/host/quiz-labels.js` (`quizLabel`, `quizOrder`, testé par `tests/quiz-labels.js`). « Dupliquer ce quiz » grisé quand il n'y a aucun quiz.
 
+22. (fait) Confirmations ajoutées : supprimer une question déjà remplie dans l'éditeur (une question vide part sans question ; `questionEmpty` dans `public/host/leave-guard.js`) et « Effacer les statistiques de ce quiz ».
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

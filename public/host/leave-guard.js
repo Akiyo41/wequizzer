@@ -9,7 +9,12 @@ function makeLeaveGuard() {
     changed(k) { return !!read[k] && snap(k) !== start[k]; },
   };
 }
-if (typeof module !== 'undefined') module.exports = { makeLeaveGuard };
+// Une question encore vide se supprime sans demander ; une question remplie demande confirmation
+function questionEmpty(q) {
+  const full = (s) => String(s || '').trim() !== '';
+  return !full(q.text) && !full(q.gapSrc) && !full(q.image) && !full(q.explain) && !(q.choices || []).some(full) && !(q.answers || []).some(full);
+}
+if (typeof module !== 'undefined') module.exports = { makeLeaveGuard, questionEmpty };
 else {
   var leaveGuard = makeLeaveGuard(); // eslint-disable-line no-var
   // Bouton « Annuler » d'un éditeur : retour à l'accueil, après confirmation s'il y a des changements
