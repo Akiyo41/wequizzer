@@ -80,6 +80,7 @@ function startQuestion(pin) {
   const g = games[pin];
   if (!g) return;
   const q = g.questions[g.index];
+  g.extraTime = 0; // « +10 s » ne vaut que pour une question
   const time = qTime(g);
   g.state = 'question';
   g.startedAt = Date.now();

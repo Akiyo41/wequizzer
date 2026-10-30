@@ -8,7 +8,7 @@ const { buildQuestions, cleanQuiz, missedQuiz, quizCount } = require('./quiz');
 const { cleanAnswer } = require('./answers');
 const { assignTeams, bonusOn, heartsOn, isTeamMode, resetPlayerStats } = require('./rules');
 const { allPeople, games, newPin, toHost, toPlayer } = require('./send');
-const { elapsed, qTime, setPaused } = require('./timer');
+const { addTime, elapsed, qTime, setPaused } = require('./timer');
 const { banLeft, banMessage, clientIp, closeGame, joinInfo, pickAvatar, removePlayer, sendHostPlayers, settingsPayload } = require('./room');
 const { advance, beginRound, endQuestion, maybeEndEarly, progressPayload } = require('./round');
 const { resetGame } = require('./end');
@@ -170,6 +170,10 @@ function setupSockets(io) {
     socket.on('host:skip', () => {
       const g = hostGame();
       if (g && !g.paused) endQuestion(g.pin);
+    });
+    socket.on('host:moreTime', () => {
+      const g = hostGame();
+      if (g) addTime(g);
     });
     socket.on('host:next', () => {
       const g = hostGame();

@@ -19,8 +19,20 @@ function schedule(g, ms, fn) {
   }, ms);
 }
 
+// Temps de la question en cours, avec les secondes ajoutées par l'animateur (« +10 s »)
 function qTime(g) {
-  return g.settings.limitTime ? g.settings.time : null;
+  return g.settings.limitTime ? g.settings.time + (g.extraTime || 0) : null;
+}
+const MORE_TIME = 10;
+const MORE_TIME_MAX = 120;
+// « +10 s » : seulement pendant une question chronométrée, pas en pause, 2 minutes en plus au maximum
+function addTime(g) {
+  if (g.state !== 'question' || g.paused || !qTime(g) || !g.timerFn) return false;
+  if ((g.extraTime || 0) + MORE_TIME > MORE_TIME_MAX) return false;
+  g.extraTime = (g.extraTime || 0) + MORE_TIME;
+  schedule(g, g.timerDue - Date.now() + MORE_TIME * 1000, g.timerFn);
+  toAll(g, 'time:more', { time: qTime(g), left: Math.max(0, qTime(g) - elapsed(g)), more: g.extraTime < MORE_TIME_MAX });
+  return true;
 }
 function elapsed(g) {
   return ((g.paused ? g.pausedAt : Date.now()) - g.startedAt) / 1000;
@@ -58,4 +70,4 @@ function pausePayload(g) {
   };
 }
 
-module.exports = { clearTimer, schedule, qTime, elapsed, pausePayload, setPaused };
+module.exports = { clearTimer, schedule, qTime, elapsed, pausePayload, setPaused, addTime };

@@ -154,6 +154,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 28. (fait) « Enregistrer tous mes quiz dans un fichier » (menu ⋯ de « Mes quiz ») : un seul fichier `mes-quiz-wequizzer-AAAA-MM-JJ.json` = `{ wequizzer: 'sauvegarde', quizzes: [...] }` (`backupPayload` / `backupItems` dans `public/host/quiz-labels.js`). « Ouvrir un quiz depuis un fichier » reconnaît une sauvegarde et ajoute tous ses quiz (noms libres grâce à `freeTitle`) ; un quiz abîmé est signalé sans bloquer les autres. Lecture d'un quiz : `readQuiz` dans `quiz-list.js`. Noms de fichiers datés à l'heure locale (`localDay` dans `base.js`), aussi pour le tableau des résultats.
 
+29. (fait) « + 10 s » pendant une question chronométrée (bouton à côté de « Voir le résultat », touche **+**) : 10 secondes de plus pour tout le monde, 2 minutes en plus au maximum par question. Serveur : `addTime` dans `src/timer.js` (`g.extraTime`, remis à 0 à chaque question ; `qTime` en tient compte, donc les points de vitesse restent justes), événement `time:more` { time, left, more } vers l'animateur et les téléphones, qui relancent leur chrono.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

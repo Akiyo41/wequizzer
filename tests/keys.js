@@ -35,6 +35,12 @@ const tests = {
     assert.strictEqual(hostKey('f', 'lobby', 'INPUT'), null);
     assert.strictEqual(hostKey('f', 'editor', 'BODY'), null);
   },
+  '+ : 10 secondes de plus, seulement pendant la question'() {
+    assert.strictEqual(hostKey('+', 'question', 'BODY'), 'moreTime');
+    assert.strictEqual(hostKey('+', 'question', 'BUTTON'), 'moreTime');
+    assert.strictEqual(hostKey('+', 'results', 'BODY'), null);
+    assert.strictEqual(hostKey('+', 'question', 'INPUT'), null);
+  },
   'autres touches : rien'() {
     assert.strictEqual(hostKey('a', 'question', 'BODY'), null);
     assert.strictEqual(hostKey('Escape', 'results', 'BODY'), null);

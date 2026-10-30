@@ -263,7 +263,7 @@
     <div class="card faq">
       <h3 class="set-sec"><i class="ti ti-player-play"></i> Pendant la partie</h3>
       <details id="faq-clavier"><summary>Il y a des raccourcis clavier ?</summary>
-        <p>Oui, pendant la partie (pratique quand ton ordinateur est branché au vidéoprojecteur) : <b>Espace</b> ou <b>Entrée</b> = « Voir le résultat » pendant une question, puis « Question suivante » ; <b>P</b> = pause ou reprise ; <b>F</b> = plein écran (aussi avec le bouton <i class="ti ti-maximize"></i> en haut à droite). Échap quitte le plein écran.</p></details>
+        <p>Oui, pendant la partie (pratique quand ton ordinateur est branché au vidéoprojecteur) : <b>Espace</b> ou <b>Entrée</b> = « Voir le résultat » pendant une question, puis « Question suivante » ; <b>P</b> = pause ou reprise ; <b>+</b> = 10 secondes de plus (aussi avec le bouton « + 10 s » quand il y a un chrono) ; <b>F</b> = plein écran (aussi avec le bouton <i class="ti ti-maximize"></i> en haut à droite). Échap quitte le plein écran.</p></details>
       <details id="faq-pause"><summary>Je peux faire une pause ?</summary>
         <p>Oui : le bouton « Pause » en haut arrête le chrono pour tout le monde. Les joueurs voient que la partie est en pause. « Reprendre » relance tout là où c'était.</p></details>
       <details id="faq-changer"><summary>Un joueur peut changer sa réponse ?</summary>
@@ -498,6 +498,7 @@
     <div id="qMatch" class="matchview hidden"></div>
     <div class="footer-row">
       <span class="pill"><i class="ti ti-check"></i> <span id="answered">0 / 0</span> ont répondu</span>
+      <button id="moreTimeBtn" class="btn ghost hidden" title="Donner 10 secondes de plus (raccourci : +)"><i class="ti ti-plus"></i> 10 s</button>
       <button id="skipBtn" class="btn ghost" title="Raccourci : Espace ou Entrée"><i class="ti ti-player-skip-forward"></i> Voir le résultat</button>
     </div>
     <div id="pendingBox" class="pending hidden">

@@ -61,6 +61,15 @@ $('drawerClose').onclick = () => $('drawer').classList.add('hidden');
 
 $('startBtn').onclick = () => { FX.unlock(); FX.go(); socket.emit('host:start'); };
 $('skipBtn').onclick = () => socket.emit('host:skip');
+$('moreTimeBtn').onclick = () => socket.emit('host:moreTime');
+// 10 secondes de plus : le chrono repart avec le nouveau total
+socket.on('time:more', ({ time, left, more }) => {
+  if (!currentQ) return;
+  currentQ.time = time;
+  if (!isPaused && !$('question').classList.contains('hidden')) startTimer(time, left);
+  $('moreTimeBtn').classList.toggle('hidden', !more);
+  UI.announce('10 secondes de plus');
+});
 $('quitBtn').onclick = async () => {
   const ok = await UI.confirm({ title: 'Quitter le quiz en cours ?', text: "Les scores seront effacés. Les joueurs restent connectés et reviennent dans la salle d'attente.", ok: 'Quitter le quiz', cancel: 'Continuer', pose: 'question' });
   if (!ok) return;
@@ -216,6 +225,7 @@ function startTimer(total, left) {
 
 socket.on('question', (q) => {
   currentQ = q;
+  $('moreTimeBtn').classList.toggle('hidden', !q.time); // « +10 s » : seulement avec un chrono
   labelMode = q.labels || 'letters';
   clearInterval(readInt);
   $('qInfo').textContent = 'Question ' + (q.index + 1) + ' / ' + q.total;

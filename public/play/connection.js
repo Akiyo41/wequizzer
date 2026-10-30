@@ -153,6 +153,14 @@ $('leaveBtn').onclick = async () => {
 };
 
 // ----- Pause -----
+// L'animateur donne 10 secondes de plus
+socket.on('time:more', ({ time, left }) => {
+  if (!curQ || !curQ.time) return;
+  curQ.time = time;
+  if (curScreen === 'question') startTimer(time, left);
+  else if (curScreen === 'wheel') wheelTimer(time, left);
+  UI.announce('10 secondes de plus');
+});
 socket.on('paused', ({ paused, reason, left }) => {
   $('pauseOv').classList.toggle('hidden', !paused);
   // Le Professeur dit pourquoi la partie est en pause (une phrase par pause, pas à chaque rappel du serveur)

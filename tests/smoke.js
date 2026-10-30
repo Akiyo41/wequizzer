@@ -277,6 +277,20 @@ const tests = {
     }
   },
 
+  async '+10 s pendant une question chronométrée'() {
+    const game = await setupGame({ mode: 'standard', limitTime: true, time: 20, readDelay: false }, QUIZ);
+    const q = once(game.host, 'question', 15000);
+    game.host.emit('host:start');
+    assert.strictEqual((await q).time, 20);
+    const more = Promise.all([once(game.host, 'time:more'), once(game.players[0], 'time:more')]);
+    game.host.emit('host:moreTime');
+    const [h, p] = await more;
+    assert.strictEqual(h.time, 30);
+    assert.strictEqual(p.time, 30);
+    assert.ok(p.left > 25 && p.left <= 30, 'temps restant : ' + p.left);
+    close(game);
+  },
+
   async 'salle d\'attente : les téléphones voient combien de joueurs sont là'() {
     const game = await setupGame({ mode: 'standard' }, QUIZ);
     const count = once(game.players[0], 'lobby:count');
