@@ -20,7 +20,7 @@
   <div id="hostBar" class="hostbar hidden">
     <button id="quitBtn" class="btn ghost mini" title="Quitter le quiz en cours"><i class="ti ti-logout"></i> <span class="lbl">Quitter</span></button>
     <span>
-      <button id="pauseBtn" class="btn ghost mini"><i class="ti ti-player-pause"></i> <span class="lbl">Pause</span></button>
+      <button id="pauseBtn" class="btn ghost mini" title="Raccourci : touche P"><i class="ti ti-player-pause"></i> <span class="lbl">Pause</span></button>
       <button id="playersBtn" class="btn ghost mini"><i class="ti ti-users"></i> <span id="barCount">0</span></button>
     </span>
   </div>
@@ -257,6 +257,8 @@
 
     <div class="card faq">
       <h3 class="set-sec"><i class="ti ti-player-play"></i> Pendant la partie</h3>
+      <details id="faq-clavier"><summary>Il y a des raccourcis clavier ?</summary>
+        <p>Oui, pendant la partie (pratique quand ton ordinateur est branché au vidéoprojecteur) : <b>Espace</b> ou <b>Entrée</b> = « Voir le résultat » pendant une question, puis « Question suivante » ; <b>P</b> = pause ou reprise.</p></details>
       <details id="faq-pause"><summary>Je peux faire une pause ?</summary>
         <p>Oui : le bouton « Pause » en haut arrête le chrono pour tout le monde. Les joueurs voient que la partie est en pause. « Reprendre » relance tout là où c'était.</p></details>
       <details id="faq-changer"><summary>Un joueur peut changer sa réponse ?</summary>
@@ -484,7 +486,7 @@
     <div id="qMatch" class="matchview hidden"></div>
     <div class="footer-row">
       <span class="pill"><i class="ti ti-check"></i> <span id="answered">0 / 0</span> ont répondu</span>
-      <button id="skipBtn" class="btn ghost"><i class="ti ti-player-skip-forward"></i> Voir le résultat</button>
+      <button id="skipBtn" class="btn ghost" title="Raccourci : Espace ou Entrée"><i class="ti ti-player-skip-forward"></i> Voir le résultat</button>
     </div>
     <div id="pendingBox" class="pending hidden">
       <small><i class="ti ti-hourglass-empty"></i> Pas encore répondu :</small>
@@ -509,7 +511,7 @@
         <div id="badCol"><h3 class="bad"><i class="ti ti-circle-x"></i> Mauvaise réponse</h3><div id="badList" class="players"></div></div>
       </div>
     </div>
-    <button id="nextBtn" class="btn big"><i class="ti ti-arrow-right"></i> <span id="nextLabel">Question suivante</span></button>
+    <button id="nextBtn" class="btn big" title="Raccourci : Espace ou Entrée"><i class="ti ti-arrow-right"></i> <span id="nextLabel">Question suivante</span></button>
   </div>
 
   <!-- Fin -->
@@ -586,6 +588,7 @@
   <script src="host/faq.js"></script>
   <script src="host/tour-logic.js"></script>
   <script src="host/tour.js"></script>
+  <script src="host/keys.js"></script>
   <script src="host/game.js"></script>
 </body>
 </html>
