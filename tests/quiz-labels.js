@@ -1,6 +1,6 @@
 // Test de la liste « Quiz choisi » : ordre alphabétique et noms affichés. Lancer avec : npm test
 const assert = require('assert');
-const { quizLabel, quizOrder, exportPayload, exportName } = require('../public/host/quiz-labels.js');
+const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems } = require('../public/host/quiz-labels.js');
 
 const tests = {
   'fichier enregistré : le Vrai/Faux en rafale garde son genre'() {
@@ -9,6 +9,20 @@ const tests = {
     assert.deepStrictEqual(exportPayload({ id: 'x', title: 'Quiz', questions: qs }), { title: 'Quiz', questions: qs });
     assert.deepStrictEqual(exportPayload({ id: 'x', kind: 'wheel', title: 'R', category: 'C', pairs: [{ q: 'a', a: 'b' }] }), { kind: 'wheel', title: 'R', category: 'C', pairs: [{ q: 'a', a: 'b' }] });
     assert.deepStrictEqual(exportPayload({ id: 'x', kind: 'letters', title: 'M', items: [{ q: 'a', word: 'b' }] }), { kind: 'letters', title: 'M', items: [{ q: 'a', word: 'b' }] });
+  },
+  'sauvegarde de tous les quiz, puis relecture'() {
+    const lib = [
+      { id: 'a', title: 'Quiz', questions: [{ type: 'single', text: 'x', choices: ['a', 'b'], correct: 0 }] },
+      { id: 'b', kind: 'wheel', title: 'Roue', category: 'C', pairs: [{ q: 'a', a: 'b' }], questions: [] },
+      { id: 'c', flavor: 'tfrush', title: 'Rafale', questions: [{ type: 'tf', text: 'y', correct: 1 }] },
+    ];
+    const b = backupPayload(lib);
+    assert.strictEqual(b.wequizzer, 'sauvegarde');
+    assert.deepStrictEqual(b.quizzes, lib.map(exportPayload));
+    assert.deepStrictEqual(backupItems(JSON.parse(JSON.stringify(b))), b.quizzes);
+    // un quiz seul (ancien format) n'est pas une sauvegarde
+    assert.strictEqual(backupItems({ title: 'Quiz', questions: [] }), null);
+    assert.strictEqual(backupItems({ wequizzer: 'sauvegarde', quizzes: 'non' }), null);
   },
   'nom du fichier : accents gardés lisibles'() {
     assert.strictEqual(exportName('Étoiles et planètes'), 'Etoiles_et_planetes.json');

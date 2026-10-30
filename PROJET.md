@@ -152,6 +152,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 27. (fait) Mémoire du navigateur pleine (≈ 5 Mo, souvent à cause des images) : avant, l'enregistrement échouait sans rien dire et le quiz disparaissait au rechargement. Maintenant `saveLibrary()` (`public/host/base.js`, avec `trySet` de `public/host/store.js`, testé par `tests/store.js`) renvoie faux, revient à ce qui est vraiment enregistré et affiche « Mémoire pleine » (un seul bouton : `UI.confirm({ cancel: false })`). Les 4 éditeurs restent ouverts avec les modifications, pour enlever des images et réessayer. Dans « Mes quiz », `#memInfo` affiche la place prise à partir de 50 % (en rouge à partir de 80 %) : `memoryInfo` dans `store.js`, appelé par `renderQuizSelect`.
 
+28. (fait) « Enregistrer tous mes quiz dans un fichier » (menu ⋯ de « Mes quiz ») : un seul fichier `mes-quiz-wequizzer-AAAA-MM-JJ.json` = `{ wequizzer: 'sauvegarde', quizzes: [...] }` (`backupPayload` / `backupItems` dans `public/host/quiz-labels.js`). « Ouvrir un quiz depuis un fichier » reconnaît une sauvegarde et ajoute tous ses quiz (noms libres grâce à `freeTitle`) ; un quiz abîmé est signalé sans bloquer les autres. Lecture d'un quiz : `readQuiz` dans `quiz-list.js`. Noms de fichiers datés à l'heure locale (`localDay` dans `base.js`), aussi pour le tableau des résultats.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

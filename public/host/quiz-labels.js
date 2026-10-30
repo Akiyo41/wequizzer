@@ -20,4 +20,12 @@ function exportName(title) {
   const base = String(title || '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w-]+/g, '_').replace(/^_+|_+$/g, '');
   return (base || 'quiz') + '.json';
 }
-if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName };
+// Sauvegarde de TOUS les quiz dans un seul fichier (pour changer d'ordinateur ou libérer de la place)
+function backupPayload(list) {
+  return { wequizzer: 'sauvegarde', quizzes: list.map(exportPayload) };
+}
+// Fichier ouvert : la liste des quiz si c'est une sauvegarde, sinon null (c'est un quiz seul)
+function backupItems(data) {
+  return data && data.wequizzer === 'sauvegarde' && Array.isArray(data.quizzes) ? data.quizzes : null;
+}
+if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems };

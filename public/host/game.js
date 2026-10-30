@@ -495,7 +495,7 @@ $('csvResultsBtn').onclick = () => {
   if (!lastEnd || !lastEnd.results) return;
   const now = new Date();
   const slug = String(lastEnd.quizTitle || 'quiz').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'quiz';
-  download('resultats-' + slug + '-' + now.toISOString().slice(0, 10) + '.csv', resultsCsv(lastEnd, now.toLocaleDateString('fr-FR')), 'text/csv');
+  download('resultats-' + slug + '-' + localDay(now) + '.csv', resultsCsv(lastEnd, now.toLocaleDateString('fr-FR')), 'text/csv');
 };
 
 // Fermer l'onglet en pleine partie par erreur : le navigateur demande confirmation

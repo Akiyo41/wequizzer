@@ -100,7 +100,7 @@ function renderQuizSelect() {
   $('memInfo').classList.toggle('error', !!(mem && mem.warn));
   if (mem) $('memInfo').textContent = '💾 ' + mem.text;
   const has = library.length > 0;
-  ['editQuiz', 'testQuiz', 'copyQuiz', 'exportQuiz', 'deleteQuiz'].forEach((id) => { $(id).disabled = !has; });
+  ['editQuiz', 'testQuiz', 'copyQuiz', 'exportQuiz', 'exportAll', 'deleteQuiz'].forEach((id) => { $(id).disabled = !has; });
   applyKind();
 }
 const setInfo = (t) => { $('quizInfo').textContent = t; $('quizInfo2').textContent = t; };
@@ -176,18 +176,28 @@ $('exportQuiz').onclick = () => {
   if (!q) return;
   download(exportName(q.title), JSON.stringify(exportPayload(q), null, 2), 'application/json');
 };
-function addImported(title, qs, flavor) {
+// Un quiz lu dans un fichier → quiz prêt à ranger (pas encore enregistré) ; erreur s'il n'est pas valide
+function readQuiz(data, fallbackTitle) {
+  if (data && data.kind === 'wheel' && Array.isArray(data.pairs) && data.pairs.length) {
+    return { id: uid(), kind: 'wheel', title: freeTitle(String(data.title || 'Roue importée').slice(0, 60), library.map((x) => x.title)), category: String(data.category || '').slice(0, 80), pairs: data.pairs.map((p) => (Array.isArray(p.w) && p.w.length ? { q: String(p.q || ''), a: String(p.a || ''), w: p.w.map(String).slice(0, 3) } : { q: String(p.q || ''), a: String(p.a || '') })), questions: [] };
+  }
+  if (data && data.kind === 'letters' && Array.isArray(data.items) && data.items.length) {
+    return { id: uid(), kind: 'letters', title: freeTitle(String(data.title || 'Jeu de mots importé').slice(0, 60), library.map((x) => x.title)), items: data.items.map((p) => ({ q: String(p.q || ''), word: String(p.word || ''), image: String(p.image || '') })), questions: [] };
+  }
+  if (Array.isArray(data)) data = { title: fallbackTitle, questions: data };
+  if (!data || !Array.isArray(data.questions) || data.questions.length === 0) throw new Error('Fichier vide.');
+  const qs = data.questions.map(normQ);
   const bad = qs.findIndex((q) => validateQ(q));
   if (bad !== -1) throw new Error('Question ' + (bad + 1) + ' : ' + validateQ(qs[bad]));
-  const quiz = { id: uid(), title: freeTitle(String(title || 'Quiz importé').slice(0, 60), library.map((x) => x.title)), questions: qs.map(savedQ) };
+  const quiz = { id: uid(), title: freeTitle(String(data.title || 'Quiz importé').slice(0, 60), library.map((x) => x.title)), questions: qs.map(savedQ) };
   // Vrai/Faux en rafale : seulement si toutes les questions sont des Vrai/Faux (sinon son éditeur les perdrait)
-  if (flavor === 'tfrush' && quiz.questions.every((q) => q.type === 'tf')) quiz.flavor = 'tfrush';
-  library.push(quiz);
-  selectedId = quiz.id;
-  saveLibrary();
-  renderQuizSelect();
-  pushQuiz();
+  if (data.flavor === 'tfrush' && quiz.questions.every((q) => q.type === 'tf')) quiz.flavor = 'tfrush';
+  return quiz;
 }
+$('exportAll').onclick = () => {
+  if (!library.length) return;
+  download('mes-quiz-wequizzer-' + localDay() + '.json', JSON.stringify(backupPayload(library)), 'application/json');
+};
 $('importQuiz').onclick = () => $('importFile').click();
 $('importFile').onchange = () => {
   const f = $('importFile').files[0];
@@ -195,23 +205,30 @@ $('importFile').onchange = () => {
   if (!f) return;
   const r = new FileReader();
   r.onload = () => {
+    $('quizError').textContent = '';
+    let badMsg = '';
     try {
-      let data = JSON.parse(r.result);
-      if (data && data.kind === 'wheel' && Array.isArray(data.pairs) && data.pairs.length) {
-        const w = { id: uid(), kind: 'wheel', title: freeTitle(String(data.title || 'Roue importée').slice(0, 60), library.map((x) => x.title)), category: String(data.category || '').slice(0, 80), pairs: data.pairs.map((p) => (Array.isArray(p.w) && p.w.length ? { q: String(p.q || ''), a: String(p.a || ''), w: p.w.map(String).slice(0, 3) } : { q: String(p.q || ''), a: String(p.a || '') })), questions: [] };
-        library.push(w); selectedId = w.id; saveLibrary(); renderQuizSelect(); pushQuiz();
-        return;
+      const data = JSON.parse(r.result);
+      const all = backupItems(data);
+      if (!all) {
+        const quiz = readQuiz(data, f.name.replace(/\.json$/i, ''));
+        library.push(quiz);
+        selectedId = quiz.id;
+      } else {
+        // sauvegarde complète : chaque quiz valide est ajouté, les autres sont signalés
+        const before = library.length;
+        const bad = [];
+        all.forEach((d, i) => { try { library.push(readQuiz(d, 'Quiz ' + (i + 1))); } catch (e) { bad.push((d && d.title) || 'Quiz ' + (i + 1)); } });
+        if (library.length === before) throw new Error('Aucun quiz valide dans cette sauvegarde.');
+        selectedId = library[before].id;
+        if (bad.length) badMsg = bad.length + ' quiz non repris (abîmés) : ' + bad.join(', ') + '.';
       }
-      if (data && data.kind === 'letters' && Array.isArray(data.items) && data.items.length) {
-        const w = { id: uid(), kind: 'letters', title: freeTitle(String(data.title || 'Jeu de mots importé').slice(0, 60), library.map((x) => x.title)), items: data.items.map((p) => ({ q: String(p.q || ''), word: String(p.word || ''), image: String(p.image || '') })), questions: [] };
-        library.push(w); selectedId = w.id; saveLibrary(); renderQuizSelect(); pushQuiz();
-        return;
-      }
-      if (Array.isArray(data)) data = { title: f.name.replace(/\.json$/i, ''), questions: data };
-      if (!data || !Array.isArray(data.questions) || data.questions.length === 0) throw new Error('Fichier vide.');
-      addImported(data.title, data.questions.map(normQ), data.flavor);
+      if (!saveLibrary()) return;
+      renderQuizSelect();
+      pushQuiz();
+      if (badMsg) $('quizError').textContent = badMsg; // après pushQuiz, qui efface les messages
     } catch (e) {
-      $('quizError').textContent = e.message && e.message.startsWith('Question') ? e.message : "Ce fichier n'est pas un quiz valide.";
+      $('quizError').textContent = e.message && (e.message.startsWith('Question') || e.message.startsWith('Aucun')) ? e.message : "Ce fichier n'est pas un quiz valide.";
     }
   };
   r.readAsText(f);

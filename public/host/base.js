@@ -55,6 +55,8 @@ function el(tag, cls, text) {
   if (text !== undefined) e.textContent = text;
   return e;
 }
+// Date du jour à l'heure de l'animateur, pour les noms de fichiers (2026-10-31)
+const localDay = (d = new Date()) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 const uid = () => 'q' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
 FX.keepAwake();
