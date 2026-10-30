@@ -224,17 +224,20 @@ function aiCreate(replyText, titleIn, themeIn) {
   const kinds = [o.normal.length > 0, o.pairs.length > 0, o.items.length > 0].filter(Boolean).length;
   const made = [];
   const parts = [];
+  const taken = library.map((x) => x.title);
+  const free = (t) => { const f = freeTitle(t, taken); taken.push(f); return f; };
   if (o.normal.length) {
-    made.push({ id: uid(), title: base, questions: o.normal });
-    parts.push(plural(o.normal.length, 'question ajoutée', 'questions ajoutées') + ' au quiz « ' + base + ' »');
+    const title = free(base);
+    made.push({ id: uid(), title, questions: o.normal });
+    parts.push(plural(o.normal.length, 'question ajoutée', 'questions ajoutées') + ' au quiz « ' + title + ' »');
   }
   if (o.pairs.length) {
-    const title = (kinds > 1 ? base.slice(0, 52) + ' (roue)' : base);
+    const title = free(kinds > 1 ? base.slice(0, 52) + ' (roue)' : base);
     made.push({ id: uid(), kind: 'wheel', title, category: base.slice(0, 80), pairs: o.pairs, questions: [] });
     parts.push('une roue de ' + plural(o.pairs.length, 'question', 'questions') + ' créée : « ' + title + ' »');
   }
   if (o.items.length) {
-    const title = (kinds > 1 ? base.slice(0, 51) + ' (mots)' : base);
+    const title = free(kinds > 1 ? base.slice(0, 51) + ' (mots)' : base);
     made.push({ id: uid(), kind: 'letters', title, items: o.items, questions: [] });
     parts.push('un jeu de mots de ' + plural(o.items.length, 'mot', 'mots') + ' créé : « ' + title + ' »');
   }

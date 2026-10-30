@@ -1,6 +1,6 @@
 // Test du nom donné à la copie d'un quiz. Lancer avec : npm test
 const assert = require('assert');
-const { copyTitle } = require('../public/host/copy-title.js');
+const { copyTitle, freeTitle } = require('../public/host/copy-title.js');
 
 const tests = {
   'première copie, puis copie 2, copie 3'() {
@@ -11,6 +11,11 @@ const tests = {
   'copie d\'une copie : pas de « (copie) (copie) »'() {
     assert.strictEqual(copyTitle('Capitales (copie)', ['Capitales', 'Capitales (copie)']), 'Capitales (copie 2)');
     assert.strictEqual(copyTitle('Capitales (copie 2)', ['Capitales (copie 2)']), 'Capitales (copie)');
+  },
+  'quiz importé : nom gardé s\'il est libre, sinon « (copie) »'() {
+    assert.strictEqual(freeTitle('Capitales', ['Animaux']), 'Capitales');
+    assert.strictEqual(freeTitle('Capitales', ['Capitales']), 'Capitales (copie)');
+    assert.strictEqual(freeTitle('Capitales (copie)', ['Capitales (copie)']), 'Capitales (copie 2)');
   },
   'titre long : coupé pour rester à 60 caractères'() {
     const long = 'x'.repeat(60);

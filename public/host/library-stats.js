@@ -29,7 +29,7 @@ async function openLibPage() {
       delete copy.pid; delete copy.theme; delete copy.level;
       copy.id = uid();
       if (copy.kind === 'quiz') delete copy.kind;
-      copy.title = p.title;
+      copy.title = freeTitle(p.title, library.map((x) => x.title));
       library.push(copy);
       selectedId = copy.id;
       added[p.pid] = true;

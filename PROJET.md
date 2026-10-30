@@ -144,6 +144,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 23. (fait) « Enregistrer ce quiz dans un fichier » : le Vrai/Faux en rafale garde son genre (`flavor: 'tfrush'`, remis à l'import seulement si toutes les questions sont des Vrai/Faux) et le nom du fichier garde les lettres accentuées lisibles (« Étoiles » → `Etoiles.json`). `exportPayload`, `exportName` dans `public/host/quiz-labels.js`.
 
+24. (fait) Pas deux quiz au même nom : un quiz importé (fichier, tableur, IA) ou ajouté depuis la Bibliothèque dont le nom existe déjà devient « Titre (copie) », « (copie 2) »… (`freeTitle` dans `public/host/copy-title.js`).
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

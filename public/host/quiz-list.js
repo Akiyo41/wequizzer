@@ -174,7 +174,7 @@ $('exportQuiz').onclick = () => {
 function addImported(title, qs, flavor) {
   const bad = qs.findIndex((q) => validateQ(q));
   if (bad !== -1) throw new Error('Question ' + (bad + 1) + ' : ' + validateQ(qs[bad]));
-  const quiz = { id: uid(), title: String(title || 'Quiz importé').slice(0, 60), questions: qs.map(savedQ) };
+  const quiz = { id: uid(), title: freeTitle(String(title || 'Quiz importé').slice(0, 60), library.map((x) => x.title)), questions: qs.map(savedQ) };
   // Vrai/Faux en rafale : seulement si toutes les questions sont des Vrai/Faux (sinon son éditeur les perdrait)
   if (flavor === 'tfrush' && quiz.questions.every((q) => q.type === 'tf')) quiz.flavor = 'tfrush';
   library.push(quiz);
@@ -193,12 +193,12 @@ $('importFile').onchange = () => {
     try {
       let data = JSON.parse(r.result);
       if (data && data.kind === 'wheel' && Array.isArray(data.pairs) && data.pairs.length) {
-        const w = { id: uid(), kind: 'wheel', title: String(data.title || 'Roue importée').slice(0, 60), category: String(data.category || '').slice(0, 80), pairs: data.pairs.map((p) => (Array.isArray(p.w) && p.w.length ? { q: String(p.q || ''), a: String(p.a || ''), w: p.w.map(String).slice(0, 3) } : { q: String(p.q || ''), a: String(p.a || '') })), questions: [] };
+        const w = { id: uid(), kind: 'wheel', title: freeTitle(String(data.title || 'Roue importée').slice(0, 60), library.map((x) => x.title)), category: String(data.category || '').slice(0, 80), pairs: data.pairs.map((p) => (Array.isArray(p.w) && p.w.length ? { q: String(p.q || ''), a: String(p.a || ''), w: p.w.map(String).slice(0, 3) } : { q: String(p.q || ''), a: String(p.a || '') })), questions: [] };
         library.push(w); selectedId = w.id; saveLibrary(); renderQuizSelect(); pushQuiz();
         return;
       }
       if (data && data.kind === 'letters' && Array.isArray(data.items) && data.items.length) {
-        const w = { id: uid(), kind: 'letters', title: String(data.title || 'Jeu de mots importé').slice(0, 60), items: data.items.map((p) => ({ q: String(p.q || ''), word: String(p.word || ''), image: String(p.image || '') })), questions: [] };
+        const w = { id: uid(), kind: 'letters', title: freeTitle(String(data.title || 'Jeu de mots importé').slice(0, 60), library.map((x) => x.title)), items: data.items.map((p) => ({ q: String(p.q || ''), word: String(p.word || ''), image: String(p.image || '') })), questions: [] };
         library.push(w); selectedId = w.id; saveLibrary(); renderQuizSelect(); pushQuiz();
         return;
       }

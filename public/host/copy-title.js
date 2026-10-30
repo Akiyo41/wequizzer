@@ -9,4 +9,8 @@ function copyTitle(title, taken) {
     if (!used.has(t)) return t;
   }
 }
-if (typeof module !== 'undefined') module.exports = { copyTitle };
+// Quiz importé : garde son nom s'il est libre, sinon « Titre (copie) »… (pas deux quiz au même nom dans la liste)
+function freeTitle(title, taken) {
+  return (taken || []).includes(title) ? copyTitle(title, taken) : title;
+}
+if (typeof module !== 'undefined') module.exports = { copyTitle, freeTitle };
