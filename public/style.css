@@ -556,3 +556,4 @@ a.create-card { text-decoration: none; }
 .zone-pin { position: absolute; transform: translate(-50%, -100%); font-size: 2.2rem; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .5)); }
 .zone-size { flex-wrap: wrap; }
 .zone-size input[type="range"] { flex: 1 1 120px; accent-color: var(--accent); }
+.choices > .zone-view, .choices > .textbox { grid-column: 1 / -1; }

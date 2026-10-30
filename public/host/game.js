@@ -224,7 +224,7 @@ socket.on('question', (q) => {
   $('qMatch').classList.toggle('hidden', !q.match && !q.order);
   if (q.image) { $('qImg').src = q.image; $('qImg').classList.remove('hidden'); }
   else $('qImg').classList.add('hidden');
-  const note = q.order ? 'Sur leur téléphone, les joueurs touchent les éléments dans le bon ordre (tout est bon ou rien).' : q.match ? 'Sur leur téléphone, les joueurs relient chaque élément à sa réponse (tout est bon ou rien).' : q.letters ? 'Les joueurs reconstituent le mot de ' + q.slots.filter((x) => x === '').length + ' lettres avec les lettres mélangées.' : q.wheel ? 'Sur leur téléphone, les joueurs choisissent parmi les ' + q.choices.length + ' réponses de la roue, puis appuient sur « Répondre ».' : q.type === 'multi' ? 'Plusieurs bonnes réponses : il faut toutes les trouver.' : q.type === 'poll' ? 'Sondage : pas de bonne réponse.' : q.changeAnswer ? 'Les joueurs peuvent changer leur réponse jusqu\'à la fin.' : '';
+  const note = q.type === 'zone' ? 'Sur leur téléphone, les joueurs touchent le bon endroit sur l\'image.' : q.order ?'Sur leur téléphone, les joueurs touchent les éléments dans le bon ordre (tout est bon ou rien).' : q.match ? 'Sur leur téléphone, les joueurs relient chaque élément à sa réponse (tout est bon ou rien).' : q.letters ? 'Les joueurs reconstituent le mot de ' + q.slots.filter((x) => x === '').length + ' lettres avec les lettres mélangées.' : q.wheel ? 'Sur leur téléphone, les joueurs choisissent parmi les ' + q.choices.length + ' réponses de la roue, puis appuient sur « Répondre ».' : q.type === 'multi' ? 'Plusieurs bonnes réponses : il faut toutes les trouver.' : q.type === 'poll' ? 'Sondage : pas de bonne réponse.' : q.changeAnswer ? 'Les joueurs peuvent changer leur réponse jusqu\'à la fin.' : '';
   $('qNote').textContent = note;
   $('qNote').classList.toggle('hidden', !note);
   $('answered').textContent = '0 / 0';
@@ -342,9 +342,15 @@ socket.on('results', (r) => {
   $('rScore').innerHTML = '<i class="ti ti-circle-check"></i> ' + r.okCount + ' / ' + r.partCount + ' ont bien répondu';
   if (r.wheel || r.match || r.order) $('rChoices').innerHTML = '';
   else renderChoices($('rChoices'), q, r.type === 'text' ? null : { counts: r.counts });
-  if (r.type === 'text' || r.type === 'match' || r.type === 'order') {
+  if (r.type === 'text' || r.type === 'match' || r.type === 'order' || r.type === 'zone') {
     const box = $('rChoices');
     box.innerHTML = '';
+    if (r.type === 'zone' && currentQ && currentQ.image) {
+      // image à toucher : la bonne zone et un point par joueur (vert dans la zone, rouge à côté), sans nom
+      const v = zoneView(currentQ.image, currentQ.text);
+      zoneDraw(v.layer, r.zone, r.points);
+      box.appendChild(v.wrap);
+    }
     const d = el('div', 'textbox');
     d.textContent = '✅ ' + r.counts[0] + ' bonne(s) réponse(s)   ·   ❌ ' + r.counts[1] + ' mauvaise(s)';
     box.appendChild(d);

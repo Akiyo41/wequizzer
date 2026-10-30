@@ -104,6 +104,7 @@ function aiBuild(rows, hasHead) {
     else if (/^(roue|wheel|relier|paire)/.test(t)) type = 'wheel';
     else if (/^(mot|lettre|pendu|jeu)/.test(t)) type = 'word';
     else if (/^(choix|single|unique|qcm|simple)/.test(t)) type = 'single';
+    else if (/^(zone|image|carte|touch)/.test(t)) return err('les questions « image à toucher » se créent dans l\'éditeur, pas avec une IA.');
     else if (!t) type = filled.length >= 2 ? 'single' : 'text';
     else return err('je ne connais pas le type « ' + cell(0) + ' ». Les types possibles : ' + AI_TYPE_NAMES + '.');
     if (!text) return err('la question est vide.');

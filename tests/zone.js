@@ -82,6 +82,13 @@ const tests = {
       assert.ok(h.indexOf('src="zone.js"') > 0 && h.indexOf('src="zone.js"') < h.indexOf('src="' + (f.includes('host') ? 'host' : 'play') + '/base.js"'), f + ' charge zone.js avant ses scripts');
     });
   },
+  'écran de partie, IA, Aide'() {
+    const game = read('public/host/game.js');
+    assert.ok(game.includes('Sur leur téléphone, les joueurs touchent le bon endroit sur l\\\'image.'), 'note de la question');
+    assert.ok(/zoneDraw\([^)]*r\.zone, r\.points\)/.test(game), 'résultat : cercle et points');
+    assert.ok(read('public/host.html').indexOf('id="faq-zone"') > read('public/host.html').indexOf('id="faq-roue"'), 'Aide');
+    assert.ok(read('public/host/ai-import.js').includes('les questions « image à toucher » se créent dans l\\\'éditeur, pas avec une IA.'), 'IA');
+  },
 };
 
 let failed = 0;
