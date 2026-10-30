@@ -100,7 +100,7 @@ $('edSave').onclick = () => {
   const idx = library.findIndex((x) => x.id === quiz.id);
   if (idx === -1) library.push(quiz); else library[idx] = quiz;
   selectedId = quiz.id;
-  saveLibrary();
+  if (!saveLibrary()) return; // mémoire pleine : on reste dans l'éditeur, rien n'est perdu
   renderQuizSelect();
   pushQuiz();
   show('lobby');

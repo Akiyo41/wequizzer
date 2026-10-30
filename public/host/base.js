@@ -62,12 +62,24 @@ FX.keepAwake();
 // ----- Stockage dans le navigateur (quiz + paramètres) -----
 const LS = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* stockage indisponible */ } },
+  set(k, v) { let s = null; try { s = localStorage; } catch (e) { /* stockage indisponible */ } return trySet(s, k, v); },
   del(k) { try { localStorage.removeItem(k); } catch (e) { /* rien */ } },
 };
 let library = LS.get('wequizzer.quizzes', []);
 let selectedId = LS.get('wequizzer.lastQuiz', null);
-const saveLibrary = () => { LS.set('wequizzer.quizzes', library); LS.set('wequizzer.lastQuiz', selectedId); };
+// Renvoie faux si le navigateur n'a pas pu enregistrer (mémoire pleine, souvent à cause des images)
+const saveLibrary = () => {
+  if (LS.set('wequizzer.quizzes', library)) { LS.set('wequizzer.lastQuiz', selectedId); return true; }
+  // Mémoire pleine (le stockage marche pour une petite valeur) : on revient à ce qui est vraiment enregistré,
+  // pour ne pas croire garder un quiz qui disparaîtrait au rechargement
+  if (LS.set('wequizzer.probe', 1)) {
+    library = LS.get('wequizzer.quizzes', []);
+    selectedId = LS.get('wequizzer.lastQuiz', null);
+    if (typeof renderQuizSelect === 'function') renderQuizSelect();
+  }
+  UI.confirm({ title: 'Mémoire pleine', text: 'Ce changement n\'est pas enregistré : ce navigateur n\'a plus de place pour tes quiz (les images en prennent beaucoup). Enlève des images, ou supprime un vieux quiz après l\'avoir enregistré dans un fichier (menu ⋯), puis réessaie.', ok: 'Compris', cancel: false, danger: false, pose: 'desole' });
+  return false;
+};
 const currentQuiz = () => library.find((q) => q.id === selectedId) || null;
 
 // ----- Paramètres -----

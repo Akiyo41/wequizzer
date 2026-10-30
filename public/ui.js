@@ -23,7 +23,8 @@ const UI = (() => {
       const row = document.createElement('div'); row.className = 'cbx-btns';
       const no = document.createElement('button'); no.className = 'btn big'; no.type = 'button'; no.textContent = o.cancel || 'Annuler';
       const yes = document.createElement('button'); yes.className = 'btn big ' + (o.danger === false ? 'green' : 'danger'); yes.type = 'button'; yes.textContent = o.ok || 'Oui';
-      row.appendChild(no); row.appendChild(yes); box.appendChild(row);
+      if (o.cancel !== false) row.appendChild(no); // cancel: false = simple message, un seul bouton
+      row.appendChild(yes); box.appendChild(row);
       wrap.appendChild(box);
       document.body.appendChild(wrap);
       const done = (v) => { document.removeEventListener('keydown', key); wrap.remove(); resolve(v); };
@@ -32,7 +33,7 @@ const UI = (() => {
       no.onclick = () => done(false);
       yes.onclick = () => done(true);
       wrap.addEventListener('click', (e) => { if (e.target === wrap) done(false); });
-      no.focus();
+      (o.cancel === false ? yes : no).focus();
     });
   }
 

@@ -35,7 +35,7 @@ $('tfSave').onclick = () => {
     library.push(w);
     selectedId = w.id;
   }
-  saveLibrary();
+  if (!saveLibrary()) return; // mémoire pleine : on reste dans l'éditeur, rien n'est perdu
   renderQuizSelect();
   pushQuiz();
   show('lobby');
