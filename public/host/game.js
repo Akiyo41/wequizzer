@@ -491,6 +491,12 @@ $('shareBtn').onclick = () => {
   if (d.teams && d.teams[0]) { headline = d.teams[0].icon + ' Équipe ' + d.teams[0].name; sub = 'remporte la partie !'; }
   Share.share({ quiz: d.quizTitle, emoji: '🏆', headline, sub, rows, badges }, 'wequizzer-resultats.png');
 };
+$('csvResultsBtn').onclick = () => {
+  if (!lastEnd || !lastEnd.results) return;
+  const now = new Date();
+  const slug = String(lastEnd.quizTitle || 'quiz').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'quiz';
+  download('resultats-' + slug + '-' + now.toISOString().slice(0, 10) + '.csv', resultsCsv(lastEnd, now.toLocaleDateString('fr-FR')), 'text/csv');
+};
 
 // Tous les fichiers de l'écran animateur sont chargés : on peut se connecter
 socket.connect();

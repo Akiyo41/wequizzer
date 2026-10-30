@@ -115,6 +115,8 @@ const tests = {
     assert.strictEqual(end.questions, 4);
     assert.deepStrictEqual(end.board.map((b) => [b.name, b.score]), [['Alice', 4], ['Bob', 0]]);
     assert.strictEqual(end.missedCount, 4);
+    // tous les joueurs, pour le tableur des résultats
+    assert.deepStrictEqual(end.results.map((r) => [r.rank, r.name, r.score, r.correct, r.team]), [[1, 'Alice', 4, 4, null], [2, 'Bob', 0, 0, null]]);
     assert.strictEqual(endPlayers[0].rank, 1);
     assert.strictEqual(endPlayers[1].mistakes.length, 4);
     const replay = once(game.host, 'host:replayQuiz');
@@ -192,6 +194,7 @@ const tests = {
     assert.strictEqual(end.teams.length, 2);
     assert.notStrictEqual(endPlayers[0].team, endPlayers[1].team);
     assert.deepStrictEqual(end.teams.map((t) => t.score), [4, 0]);
+    assert.ok(end.results.every((r) => typeof r.team === 'string' && r.team), 'nom d\'équipe dans les résultats');
     close(game);
   },
 

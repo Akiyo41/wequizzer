@@ -128,6 +128,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 14. Plus tard : comptes et groupes (lien permanent), musique, reformulation finale des textes.
 15. (fait) Appli installable (PWA) : `public/manifest.webmanifest` (nom, bleu nuit #081246, départ « / », plein écran), icônes `public/img/icon-192.png`, `icon-512.png`, `apple-touch-icon.png` (Professeur + logo sur bleu nuit, dessinées dans le navigateur à partir de prof-base.webp et logo.webp), `public/sw.js` = service worker SANS cache (ne rien mettre en cache : sinon les mises à jour n'arriveraient plus). Les 3 pages ont les liens dans leur `<head>`. Installation : Chrome ⋮ → « Installer l'application » ; iPhone : Safari → Partager → « Sur l'écran d'accueil ». À tester en ligne (https obligatoire).
 
+16. (fait) Tableau des résultats en fin de partie (bouton « Tableau des résultats ») : CSV `;` avec BOM, tous les joueurs (rang, pseudo, équipe, points, bonnes réponses, cœurs / en jeu) + réussite par question. Texte : `public/host/results-csv.js` (`resultsCsv`, testé par `tests/results-csv.js`) ; le serveur envoie `endData.results` (tous les joueurs, le podium n'en garde que 10). Les pseudos qui commencent par = + - @ sont neutralisés (pas de formule dans le tableur). FAQ `faq-resultats`.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

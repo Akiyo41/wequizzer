@@ -226,6 +226,8 @@
 
     <div class="card faq">
       <h3 class="set-sec"><i class="ti ti-sword"></i> Les modes de jeu</h3>
+      <details id="faq-resultats"><summary>Je peux garder les résultats d'une partie ?</summary>
+        <p>Oui. À la fin, « Tableau des résultats » télécharge un fichier à ouvrir avec Excel ou LibreOffice : le classement de tous les joueurs (points, bonnes réponses) et le pourcentage de réussite de chaque question. Pratique pour noter une classe.</p></details>
       <details id="faq-modes"><summary>Quelle différence entre les modes ?</summary>
         <p><b>Quiz standard</b> : chacun pour soi, le meilleur score gagne.</p>
         <p><b>Équipes</b> : les joueurs sont répartis en 2 à 4 équipes (au hasard, ou c'est toi qui choisis). Le score d'une équipe est la <b>moyenne</b> de ses joueurs : une petite équipe n'est donc pas désavantagée.</p>
@@ -530,6 +532,7 @@
     </div>
     <div>
       <button id="shareBtn" class="btn ghost big"><i class="ti ti-share"></i> Image des résultats</button>
+      <button id="csvResultsBtn" class="btn ghost big" title="Tous les joueurs et la réussite de chaque question, à ouvrir avec Excel ou LibreOffice"><i class="ti ti-file-download"></i> Tableau des résultats</button>
       <button id="replayBtn" class="btn big"><i class="ti ti-refresh"></i> Rejouer ce quiz</button>
       <button id="replayMissedBtn" class="btn purple big hidden"><i class="ti ti-target-arrow"></i> <span id="missedLabel">Rejouer les questions ratées</span></button>
       <button id="otherBtn" class="btn ghost big"><i class="ti ti-list-details"></i> Nouvelle partie</button>
@@ -590,6 +593,7 @@
   <script src="host/faq.js"></script>
   <script src="host/tour-logic.js"></script>
   <script src="host/tour.js"></script>
+  <script src="host/results-csv.js"></script>
   <script src="host/keys.js"></script>
   <script src="host/game.js"></script>
 </body>

@@ -42,6 +42,10 @@ function endGame(pin) {
       pid: p.pid, name: p.name, avatar: p.avatar, score: p.score, correct: p.correct, team: p.team, alive: !p.eliminated, hearts: heartsOn(g) ? p.hearts : null,
     })),
     total: ranked.length,
+    // tous les joueurs (le podium n'en montre que 10) : pour le tableur des résultats
+    results: ranked.map((p, i) => ({
+      rank: i + 1, name: p.name, team: p.team === null || p.team === undefined ? null : teamInfo(g, p.team).teamName, score: p.score, correct: p.correct, alive: !p.eliminated, hearts: heartsOn(g) ? p.hearts : null,
+    })),
     scoreMode: g.scoreMode,
     hasDouble: g.questions.some((q) => q.double),
     questions: g.scored,
