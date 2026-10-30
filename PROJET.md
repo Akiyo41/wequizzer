@@ -134,6 +134,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 18. (fait) Dupliquer : « Dupliquer ce quiz » dans le menu ⋯ de « Mes quiz » (copie juste après l'original, nommée « Titre (copie) », « (copie 2) »… par `copyTitle` dans `public/host/copy-title.js`, testé par `tests/copy-title.js`) et bouton « Dupliquer la question » sur chaque question de l'éditeur (copie juste en dessous).
 
+19. (fait) « Annuler » dans les 4 éditeurs (quiz, roue, jeu de mots, Vrai/Faux en rafale) demande « Quitter sans enregistrer ? » s'il y a des modifications (sinon on quitte directement). `public/host/leave-guard.js` (`makeLeaveGuard`, testé par `tests/leave-guard.js`) : `leaveGuard.arm(éditeur, lire)` à l'ouverture, `leaveEditor(éditeur)` sur Annuler.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

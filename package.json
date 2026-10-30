@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node tests/lines.js && node tests/tour-logic.js && node tests/a11y.js && node tests/zone.js && node tests/keys.js && node tests/csv-columns.js && node tests/results-csv.js && node tests/copy-title.js && node tests/smoke.js"
+    "test": "node tests/lines.js && node tests/tour-logic.js && node tests/a11y.js && node tests/zone.js && node tests/keys.js && node tests/csv-columns.js && node tests/results-csv.js && node tests/copy-title.js && node tests/leave-guard.js && node tests/smoke.js"
   },
   "dependencies": {
     "@tabler/icons-webfont": "^3.49.0",

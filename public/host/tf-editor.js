@@ -8,9 +8,10 @@ function openTfEditor(q) {
   // une ligne par affirmation : « affirmation ; vrai ou faux » puis « ; explication » si elle en a une
   $('tfItems').value = q ? q.questions.map((x) => x.text + ' ; ' + (x.correct === 0 ? 'vrai' : 'faux') + ((x.explain || '').trim() ? ' ; ' + x.explain.trim() : '')).join('\n') : '';
   $('tfError').textContent = '';
+  leaveGuard.arm('tf', () => [$('tfTitle').value, $('tfItems').value]);
   show('tfEditor');
 }
-$('tfCancel').onclick = () => show('lobby');
+$('tfCancel').onclick = () => leaveEditor('tf');
 $('tfSave').onclick = () => {
   const title = $('tfTitle').value.trim() || 'Vrai/Faux sans titre';
   const questions = [];

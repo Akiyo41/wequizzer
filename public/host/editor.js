@@ -42,6 +42,7 @@ function openEditor(quiz) {
   $('edTitle').value = editing.title;
   $('edError').textContent = '';
   renderEditor();
+  leaveGuard.arm('editor', () => [$('edTitle').value, editing.questions]);
   show('editor');
 }
 function miniBtn(icon, fn, label) {

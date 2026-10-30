@@ -22,10 +22,11 @@ function openWheelEditor(q) {
   $('wePaste').value = '';
   $('weError').textContent = '';
   weDraw();
+  leaveGuard.arm('wheel', () => [$('weTitle').value, $('weCategory').value, $('wePaste').value, weRows]);
   show('wheelEditor');
 }
 $('newWheel').onclick = () => openWheelEditor(null);
-$('weCancel').onclick = () => show('lobby');
+$('weCancel').onclick = () => leaveEditor('wheel');
 $('weAdd').onclick = () => { if (weRows.length >= 100) { $('weError').textContent = '100 questions au maximum.'; return; } weRows.push(weBlank()); weDraw(); };
 $('weExample').onclick = () => {
   if (weUsed().length) { $('weError').textContent = "Il y a déjà des questions : supprime-les d'abord si tu veux mettre l'exemple."; return; }
@@ -125,10 +126,11 @@ function openLettersEditor(q) {
   $('lePaste').value = '';
   $('leError').textContent = '';
   leDraw();
+  leaveGuard.arm('letters', () => [$('leTitle').value, $('lePaste').value, leRows]);
   show('lettersEditor');
 }
 $('newLetters').onclick = () => openLettersEditor(null);
-$('leCancel').onclick = () => show('lobby');
+$('leCancel').onclick = () => leaveEditor('letters');
 $('leAdd').onclick = () => { if (leRows.length >= 100) { $('leError').textContent = '100 mots au maximum.'; return; } leRows.push(leBlank()); leDraw(); };
 $('leFile').onclick = () => $('leFileInput').click();
 $('leFileInput').onchange = () => {

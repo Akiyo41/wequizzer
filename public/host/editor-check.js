@@ -28,7 +28,7 @@ function applyScoring() {
   $('rowBonus').classList.toggle('hidden', !limit);
   $('rowHearts').classList.toggle('hidden', elim);
 }
-$('edCancel').onclick = () => show('lobby');
+$('edCancel').onclick = () => leaveEditor('editor');
 
 // Vérifie l'éditeur et renvoie le quiz propre, ou null (avec un message d'erreur)
 function buildFromEditor() {
