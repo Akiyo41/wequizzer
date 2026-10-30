@@ -345,9 +345,10 @@ socket.on('results', (r) => {
   if (r.type === 'text' || r.type === 'match' || r.type === 'order' || r.type === 'zone') {
     const box = $('rChoices');
     box.innerHTML = '';
-    if (r.type === 'zone' && currentQ && currentQ.image) {
-      // image à toucher : la bonne zone et un point par joueur (vert dans la zone, rouge à côté), sans nom
-      const v = zoneView(currentQ.image, currentQ.text);
+    if (r.type === 'zone' && r.image) {
+      // image à toucher : la bonne zone et un point par joueur (vert dans la zone, rouge à côté), sans nom ;
+      // l'image vient du résultat lui-même (après un rechargement de la page, on n'a plus la question)
+      const v = zoneView(r.image, r.text);
       zoneDraw(v.layer, r.zone, r.points);
       box.appendChild(v.wrap);
     }

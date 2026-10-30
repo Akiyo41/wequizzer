@@ -226,6 +226,7 @@ function endQuestion(pin) {
     counts,
     // image à toucher : la bonne zone et un point par joueur (sans nom, dans le désordre)
     zone: q.type === 'zone' ? q.zone : null,
+    image: q.type === 'zone' ? q.image : null,
     points: q.type === 'zone' ? shuffle(participants.filter((p) => p.answer).map((p) => ({ x: p.answer.x, y: p.answer.y, ok: !!p.lastCorrect }))) : null,
     players: g.settings.showAnswers
       ? participants.map((p) => ({

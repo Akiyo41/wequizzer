@@ -82,6 +82,18 @@ const tests = {
       assert.ok(h.indexOf('src="zone.js"') > 0 && h.indexOf('src="zone.js"') < h.indexOf('src="' + (f.includes('host') ? 'host' : 'play') + '/base.js"'), f + ' charge zone.js avant ses scripts');
     });
   },
+  'import d\'un fichier : une question « image à toucher » est acceptée'() {
+    const src = read('public/host/quiz-list.js');
+    const fn = src.slice(src.indexOf('function validateQ('), src.indexOf('async function initLibrary'));
+    const validateQ = new Function('zoneValid', fn + '; return validateQ;')(zoneValid);
+    const q = { type: 'zone', text: 'Où ?', image: 'https://a.b/c.png', choices: [], correct: 0, answers: [], zone: { x: 0.5, y: 0.5, r: 0.08, ar: 1 } };
+    assert.strictEqual(validateQ(q), null);
+    assert.ok(validateQ({ ...q, image: '' }));
+    assert.ok(validateQ({ ...q, zone: null }));
+  },
+  'résultat après rechargement de l\'animateur : l\'image vient du résultat'() {
+    assert.ok(/zoneView\(r\.image/.test(read('public/host/game.js')));
+  },
   'écran de partie, IA, Aide'() {
     const game = read('public/host/game.js');
     assert.ok(game.includes('Sur leur téléphone, les joueurs touchent le bon endroit sur l\\\'image.'), 'note de la question');

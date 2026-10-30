@@ -370,6 +370,7 @@ const tests = {
     players[1].emit('player:answer', { point: { x: 0.95, y: 0.95 } });
     const r = await res;
     assert.deepStrictEqual(r.zone, zone);
+    assert.strictEqual(r.image, 'https://example.com/a.png'); // pour redessiner après un rechargement de l'animateur
     assert.strictEqual(r.points.length, 2);
     assert.deepStrictEqual(r.points.map((x) => x.ok).sort(), [false, true]);
     assert.deepStrictEqual(r.counts, [1, 1]);

@@ -43,6 +43,7 @@ function validateQ(q) {
   if (!q.text.trim()) return 'le texte est vide';
   if (q.type === 'text') return q.answers.some((a) => a.trim()) ? null : 'écris au moins une réponse acceptée';
   if (q.type === 'tf') return q.correct === 0 || q.correct === 1 ? null : 'choisis Vrai ou Faux';
+  if (q.type === 'zone') return !(q.image || '').trim() ? 'il faut une image pour une question « image à toucher »' : zoneValid(q.zone) ? null : 'touche l\'image pour placer la bonne zone';
   if (q.choices.length < 2 || q.choices.some((c) => !c.trim())) return 'il faut au moins 2 réponses remplies';
   if (q.type === 'single' && (q.correct < 0 || q.correct >= q.choices.length)) return 'la bonne réponse est invalide';
   if (q.type === 'multi' && (!q.correct.length || q.correct.some((c) => c < 0 || c >= q.choices.length))) return 'coche au moins une bonne réponse';
