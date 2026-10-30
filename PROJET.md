@@ -146,6 +146,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 24. (fait) Pas deux quiz au même nom : un quiz importé (fichier, tableur, IA) ou ajouté depuis la Bibliothèque dont le nom existe déjà devient « Titre (copie) », « (copie 2) »… (`freeTitle` dans `public/host/copy-title.js`).
 
+25. (fait) Salle d'attente du téléphone : « 👥 Vous êtes 5 dans la salle » en direct (ou « Personne d'autre pour l'instant… ça arrive ! »). Le serveur envoie `lobby:count` aux joueurs à chaque changement de la liste (`sendLobbyCount` dans `src/room.js`, appelé par `sendHostPlayers`), au plus une fois toutes les 0,7 s pour ne pas inonder une grande salle.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

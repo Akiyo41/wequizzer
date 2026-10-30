@@ -277,6 +277,16 @@ const tests = {
     }
   },
 
+  async 'salle d\'attente : les téléphones voient combien de joueurs sont là'() {
+    const game = await setupGame({ mode: 'standard' }, QUIZ);
+    const count = once(game.players[0], 'lobby:count');
+    const s = connect();
+    s.emit('player:join', { pin: game.pin, name: 'Chloé', device: 'test-Chloe' });
+    assert.deepStrictEqual(await Promise.all([once(s, 'lobby:count'), count]), [3, 3]);
+    s.close();
+    close(game);
+  },
+
   async 'code PIN collé avec des espaces ou des tirets'() {
     const game = await setupGame({ mode: 'standard' }, QUIZ);
     const s = connect();

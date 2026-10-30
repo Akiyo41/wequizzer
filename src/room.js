@@ -26,6 +26,17 @@ function playerList(g) {
 
 function sendHostPlayers(g) {
   toHost(g, 'host:players', playerList(g));
+  sendLobbyCount(g);
+}
+// Téléphones en salle d'attente : combien de joueurs sont là (au plus une fois toutes les 0,7 s, pour ne pas inonder une grande salle)
+function sendLobbyCount(g) {
+  if (g.countTimer) return;
+  g.countTimer = setTimeout(() => {
+    g.countTimer = null;
+    if (games[g.pin] !== g || g.state !== 'lobby') return;
+    const n = Object.keys(g.players).length;
+    Object.values(g.players).forEach((p) => toPlayer(p, 'lobby:count', n));
+  }, 700);
 }
 
 function settingsPayload(g) {

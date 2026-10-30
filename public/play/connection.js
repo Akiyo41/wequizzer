@@ -74,6 +74,11 @@ socket.on('lobby', (d) => {
   show('wait');
 });
 socket.on('queued', (d) => { applySettings(d); show('queued'); });
+// Salle d'attente : combien de joueurs sont là (moi compris)
+socket.on('lobby:count', (n) => {
+  $('waitCount').textContent = n > 1 ? '👥 Vous êtes ' + n + ' dans la salle' : '👥 Personne d\'autre pour l\'instant… ça arrive !';
+  $('waitCount').classList.remove('hidden');
+});
 socket.on('kicked', (d) => {
   LS.del(SESSION);
   resetToJoin((d && d.message) || "L'animateur t'a fait quitter la salle.");
