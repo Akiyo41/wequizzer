@@ -140,7 +140,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 21. (fait) Listes « Quiz choisi » triées par ordre alphabétique (accents et majuscules ignorés, « Quiz 2 » avant « Quiz 10 ») ; la liste enregistrée garde son ordre. Icône ⚡ et « affirmations » pour le Vrai/Faux en rafale. `public/host/quiz-labels.js` (`quizLabel`, `quizOrder`, testé par `tests/quiz-labels.js`). « Dupliquer ce quiz » grisé quand il n'y a aucun quiz.
 
-22. (fait) Confirmations ajoutées : supprimer une question déjà remplie dans l'éditeur (une question vide part sans question ; `questionEmpty` dans `public/host/leave-guard.js`) et « Effacer les statistiques de ce quiz ».
+22. (fait) Confirmations ajoutées : supprimer une question déjà remplie dans l'éditeur (une question vide part sans question ; `questionEmpty` dans `public/host/leave-guard.js`) et « Effacer les statistiques de ce quiz ». Pareil pour la corbeille d'une ligne remplie dans les éditeurs de roue et de jeu de mots (`rowEmpty`).
 
 23. (fait) « Enregistrer ce quiz dans un fichier » : le Vrai/Faux en rafale garde son genre (`flavor: 'tfrush'`, remis à l'import seulement si toutes les questions sont des Vrai/Faux) et le nom du fichier garde les lettres accentuées lisibles (« Étoiles » → `Etoiles.json`). `exportPayload`, `exportName` dans `public/host/quiz-labels.js`.
 

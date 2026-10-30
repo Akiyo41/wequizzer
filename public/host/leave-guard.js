@@ -14,7 +14,9 @@ function questionEmpty(q) {
   const full = (s) => String(s || '').trim() !== '';
   return !full(q.text) && !full(q.gapSrc) && !full(q.image) && !full(q.explain) && !(q.choices || []).some(full) && !(q.answers || []).some(full);
 }
-if (typeof module !== 'undefined') module.exports = { makeLeaveGuard, questionEmpty };
+// Ligne de roue ou de jeu de mots : vide si toutes ses cases sont vides
+const rowEmpty = (r) => Object.values(r).every((v) => String(v || '').trim() === '');
+if (typeof module !== 'undefined') module.exports = { makeLeaveGuard, questionEmpty, rowEmpty };
 else {
   var leaveGuard = makeLeaveGuard(); // eslint-disable-line no-var
   // Bouton « Annuler » d'un éditeur : retour à l'accueil, après confirmation s'il y a des changements

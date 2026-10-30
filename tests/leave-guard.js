@@ -1,6 +1,6 @@
 // Test de la mémoire des éditeurs : « Annuler » après une modification demande confirmation. Lancer avec : npm test
 const assert = require('assert');
-const { makeLeaveGuard, questionEmpty } = require('../public/host/leave-guard.js');
+const { makeLeaveGuard, questionEmpty, rowEmpty } = require('../public/host/leave-guard.js');
 
 const tests = {
   'rien changé : on quitte sans question'() {
@@ -28,6 +28,11 @@ const tests = {
     assert.strictEqual(questionEmpty({ type: 'text', text: '', answers: ['Vinci'] }), false);
     assert.strictEqual(questionEmpty({ type: 'zone', text: '', image: 'data:image/png;base64,xx', zone: null }), false);
     assert.strictEqual(questionEmpty({ type: 'single', text: '', explain: 'Parce que…' }), false);
+  },
+  'ligne de roue ou de jeu de mots vide ou remplie'() {
+    assert.strictEqual(rowEmpty({ q: '', a: ' ', w1: '', w2: '', w3: '' }), true);
+    assert.strictEqual(rowEmpty({ q: 'Capitale ?', a: '', w1: '' }), false);
+    assert.strictEqual(rowEmpty({ q: '', word: '', image: 'https://a.b/c.png' }), false);
   },
   'chaque éditeur a sa propre mémoire ; jamais armé = pas changé'() {
     const g = makeLeaveGuard();

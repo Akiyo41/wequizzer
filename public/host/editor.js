@@ -336,7 +336,12 @@ function buildRows(box, rows, defs, what, onChange, blank) {
     const head = el('div');
     head.style.cssText = 'display:flex;justify-content:space-between;align-items:center';
     head.appendChild(el('b', '', what + ' ' + (i + 1)));
-    head.appendChild(miniBtn('ti-trash', () => { rows.splice(i, 1); if (!rows.length) rows.push(blank()); buildRows(box, rows, defs, what, onChange, blank); onChange(); }, 'Supprimer'));
+    head.appendChild(miniBtn('ti-trash', async () => {
+      if (!rowEmpty(r)) {
+        const ok = await UI.confirm({ title: 'Supprimer cette ligne ?', name: what + ' ' + (i + 1), text: 'Elle sera effacée de la liste.', ok: 'Supprimer', cancel: 'Garder', pose: 'desole' });
+        if (!ok) return;
+      }
+      rows.splice(i, 1); if (!rows.length) rows.push(blank()); buildRows(box, rows, defs, what, onChange, blank); onChange(); }, 'Supprimer'));
     card.appendChild(head);
     defs.forEach((d) => {
       card.appendChild(el('p', 'hint', d.label));
