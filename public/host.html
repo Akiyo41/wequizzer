@@ -121,6 +121,7 @@
           <span class="more-wrap">
             <button id="moreBtn" class="btn ghost mini" title="Plus d'actions" aria-label="Plus d'actions"><i class="ti ti-dots"></i></button>
             <div id="moreMenu" class="more-menu hidden">
+              <button id="copyQuiz" class="btn ghost mini"><i class="ti ti-copy"></i> Dupliquer ce quiz</button>
               <button id="exportQuiz" class="btn ghost mini"><i class="ti ti-download"></i> Enregistrer ce quiz dans un fichier</button>
               <button id="importQuiz" class="btn ghost mini"><i class="ti ti-upload"></i> Ouvrir un quiz depuis un fichier</button>
             </div>
@@ -581,6 +582,7 @@
   <!-- Le code de l'écran animateur, dans l'ordre : chaque fichier peut utiliser ce que les précédents définissent -->
   <script src="host/base.js"></script>
   <script src="host/connection.js"></script>
+  <script src="host/copy-title.js"></script>
   <script src="host/quiz-list.js"></script>
   <script src="host/csv-columns.js"></script>
   <script src="host/ai-import.js"></script>

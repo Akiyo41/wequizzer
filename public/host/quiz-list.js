@@ -134,6 +134,19 @@ const onPick = (sel) => () => {
 $('quizSelect').onchange = onPick($('quizSelect'));
 $('quizSelect2').onchange = onPick($('quizSelect2'));
 
+// Une copie à modifier sans toucher à l'original (ex. : une version plus facile pour une autre classe)
+$('copyQuiz').onclick = () => {
+  const q = currentQuiz();
+  if (!q) return;
+  const copy = JSON.parse(JSON.stringify(q));
+  copy.id = uid();
+  copy.title = copyTitle(q.title, library.map((x) => x.title));
+  library.splice(library.indexOf(q) + 1, 0, copy);
+  selectedId = copy.id;
+  saveLibrary();
+  renderQuizSelect();
+  pushQuiz();
+};
 $('deleteQuiz').onclick = async () => {
   const q = currentQuiz();
   if (!q) return;

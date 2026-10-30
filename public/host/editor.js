@@ -159,6 +159,7 @@ function renderEditor() {
     const tools = el('span');
     tools.appendChild(miniBtn('ti-arrow-up', () => moveQ(i, -1), 'Monter'));
     tools.appendChild(miniBtn('ti-arrow-down', () => moveQ(i, 1), 'Descendre'));
+    tools.appendChild(miniBtn('ti-copy', () => copyQ(i), 'Dupliquer la question'));
     tools.appendChild(miniBtn('ti-trash', () => removeQ(i), 'Supprimer la question'));
     head.appendChild(tools);
     card.appendChild(head);
@@ -304,6 +305,13 @@ function moveQ(i, d) {
   if (j < 0 || j >= editing.questions.length) return;
   [editing.questions[i], editing.questions[j]] = [editing.questions[j], editing.questions[i]];
   renderEditor();
+}
+// La copie arrive juste en dessous, prête à être modifiée
+function copyQ(i) {
+  editing.questions.splice(i + 1, 0, JSON.parse(JSON.stringify(editing.questions[i])));
+  renderEditor();
+  const card = $('edQuestions').children[i + 1];
+  if (card) card.scrollIntoView({ block: 'center', behavior: 'smooth' });
 }
 function removeQ(i) {
   if (editing.questions.length === 1) { $('edError').textContent = 'Un quiz doit avoir au moins une question.'; return; }
