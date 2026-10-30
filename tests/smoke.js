@@ -277,6 +277,16 @@ const tests = {
     }
   },
 
+  async 'code PIN collé avec des espaces ou des tirets'() {
+    const game = await setupGame({ mode: 'standard' }, QUIZ);
+    const s = connect();
+    const ok = once(s, 'join:ok');
+    s.emit('player:join', { pin: ' ' + game.pin.slice(0, 3) + ' - ' + game.pin.slice(3) + ' ', name: 'Chloé', device: 'test-Chloe' });
+    await ok;
+    s.close();
+    close(game);
+  },
+
   async 'une connexion qui recrée une salle ferme l\'ancienne'() {
     const host = connect();
     const pins = [];

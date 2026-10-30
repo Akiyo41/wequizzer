@@ -199,7 +199,7 @@ function setupSockets(io) {
 
     // ---------- Joueurs ----------
     socket.on('player:join', ({ pin, name, avatar, device } = {}) => {
-      pin = String(pin || '').trim();
+      pin = String(pin || '').replace(/\D/g, ''); // « 427 111 », « 427-111 » collés : on garde les chiffres
       name = String(name || '').trim().replace(/\s+/g, ' ').slice(0, 16);
       const g = games[pin];
       if (!g) return socket.emit('join:error', 'Code PIN introuvable.');

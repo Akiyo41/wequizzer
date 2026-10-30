@@ -8,6 +8,15 @@ function join() {
 }
 $('joinBtn').onclick = join;
 $('name').addEventListener('keydown', (e) => { if (e.key === 'Enter') join(); });
+// Code PIN : seulement des chiffres (« 427 111 » collé devient 427111) ; Entrée passe au pseudo
+$('pin').addEventListener('input', () => {
+  const v = $('pin').value.replace(/\D/g, '').slice(0, 6);
+  if (v !== $('pin').value) $('pin').value = v;
+});
+$('pin').addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter') return;
+  if ($('name').value.trim()) join(); else $('name').focus();
+});
 socket.on('join:error', (msg) => { $('joinError').textContent = msg; });
 
 // Connexion perdue : le professeur répare le câble (affiché seulement si la coupure dure plus d'1,5 s)
