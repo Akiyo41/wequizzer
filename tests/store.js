@@ -1,6 +1,6 @@
 // Test de l'enregistrement dans le navigateur : une mémoire pleine doit se voir. Lancer avec : npm test
 const assert = require('assert');
-const { trySet } = require('../public/host/store.js');
+const { trySet, memoryInfo } = require('../public/host/store.js');
 
 const memory = (limit) => {
   const data = {};
@@ -25,6 +25,12 @@ const tests = {
     trySet(s, 'k', 'court');
     assert.strictEqual(trySet(s, 'k', 'x'.repeat(50)), false);
     assert.strictEqual(s.data.k, '"court"');
+  },
+  'place prise : rien à dire en dessous de la moitié, prévenir au-delà'() {
+    assert.strictEqual(memoryInfo(100000), null);
+    assert.deepStrictEqual(memoryInfo(3000000), { pct: 60, warn: false, text: 'Tes quiz prennent 60 % de la place de ce navigateur (surtout à cause des images).' });
+    assert.deepStrictEqual(memoryInfo(4500000), { pct: 90, warn: true, text: 'Attention : tes quiz prennent 90 % de la place de ce navigateur. Enlève des images ou enregistre de vieux quiz dans un fichier avant de les supprimer.' });
+    assert.strictEqual(memoryInfo(9000000).pct, 100);
   },
   'pas de stockage du tout (navigation privée bloquée) : faux'() {
     assert.strictEqual(trySet(null, 'k', 1), false);

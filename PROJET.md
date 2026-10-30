@@ -150,7 +150,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 26. (fait) Éditeur : une image peut être collée (Ctrl+V, capture d'écran) ou glissée dans la case image d'une question, comme « Depuis mon ordinateur » (`acceptImages` / `loadImageFile` dans `public/host/editor.js`). Petit défaut réglé : après une reconnexion sur une « image à toucher », `selected` ne garde plus le point.
 
-27. (fait) Mémoire du navigateur pleine (≈ 5 Mo, souvent à cause des images) : avant, l'enregistrement échouait sans rien dire et le quiz disparaissait au rechargement. Maintenant `saveLibrary()` (`public/host/base.js`, avec `trySet` de `public/host/store.js`, testé par `tests/store.js`) renvoie faux, revient à ce qui est vraiment enregistré et affiche « Mémoire pleine » (un seul bouton : `UI.confirm({ cancel: false })`). Les 4 éditeurs restent ouverts avec les modifications, pour enlever des images et réessayer.
+27. (fait) Mémoire du navigateur pleine (≈ 5 Mo, souvent à cause des images) : avant, l'enregistrement échouait sans rien dire et le quiz disparaissait au rechargement. Maintenant `saveLibrary()` (`public/host/base.js`, avec `trySet` de `public/host/store.js`, testé par `tests/store.js`) renvoie faux, revient à ce qui est vraiment enregistré et affiche « Mémoire pleine » (un seul bouton : `UI.confirm({ cancel: false })`). Les 4 éditeurs restent ouverts avec les modifications, pour enlever des images et réessayer. Dans « Mes quiz », `#memInfo` affiche la place prise à partir de 50 % (en rouge à partir de 80 %) : `memoryInfo` dans `store.js`, appelé par `renderQuizSelect`.
 
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.

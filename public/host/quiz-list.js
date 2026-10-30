@@ -94,6 +94,11 @@ function renderQuizSelect() {
     });
     if (selectedId) sel.value = selectedId;
   });
+  // place prise dans le navigateur : affichée à partir de la moitié
+  const mem = memoryInfo(JSON.stringify(library).length);
+  $('memInfo').classList.toggle('hidden', !mem);
+  $('memInfo').classList.toggle('error', !!(mem && mem.warn));
+  if (mem) $('memInfo').textContent = '💾 ' + mem.text;
   const has = library.length > 0;
   ['editQuiz', 'testQuiz', 'copyQuiz', 'exportQuiz', 'deleteQuiz'].forEach((id) => { $(id).disabled = !has; });
   applyKind();
