@@ -68,6 +68,20 @@ const tests = {
     const g = { quiz: { title: 'T' }, missed: { 0: 1 }, questions: [{ type: 'zone', text: 'Où ?', image: 'https://a.b/c.png', zone, choices: [], correct: null, answers: [], double: false, explain: '' }] };
     assert.deepStrictEqual(missedQuiz(g).questions[0].zone, zone);
   },
+  'éditeur : type proposé, zone gardée, vérifiée et envoyée'() {
+    assert.ok(/zone: '📍 Image à toucher'/.test(read('public/host/base.js')), 'TYPE_LABEL');
+    const ql = read('public/host/quiz-list.js');
+    assert.ok(/'zone'\]\.includes\(q\.type\)/.test(ql), 'normQ accepte zone');
+    assert.ok(/zone: x\.zone/.test(ql), 'quizPayload envoie zone');
+    const chk = read('public/host/editor-check.js');
+    assert.ok(chk.includes('il faut une image pour une question « image à toucher ».') && chk.includes('touche l\\\'image pour placer la bonne zone.'), 'messages');
+    assert.ok(/zoneDraw\(/.test(read('public/host/editor.js')) && /ZONE_SIZES/.test(read('public/host/editor.js')), 'éditeur');
+    assert.ok(/zoneHit\(/.test(read('public/host/preview.js')), 'aperçu');
+    ['public/host.html', 'public/play.html'].forEach((f) => {
+      const h = read(f);
+      assert.ok(h.indexOf('src="zone.js"') > 0 && h.indexOf('src="zone.js"') < h.indexOf('src="' + (f.includes('host') ? 'host' : 'play') + '/base.js"'), f + ' charge zone.js avant ses scripts');
+    });
+  },
 };
 
 let failed = 0;

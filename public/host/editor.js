@@ -82,19 +82,66 @@ function pickImage(q, done) {
     const img = new Image();
     const url = URL.createObjectURL(f);
     img.onload = () => {
-      const k = Math.min(1, 520 / Math.max(img.width, img.height));
-      const c = document.createElement('canvas');
-      c.width = Math.max(1, Math.round(img.width * k));
-      c.height = Math.max(1, Math.round(img.height * k));
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      // image à toucher : plus grande (on doit voir les détails d'une carte), en restant sous la limite du serveur (150 000 caractères)
+      const tries = q.type === 'zone' ? [[800, 0.72], [800, 0.55], [640, 0.6], [520, 0.6]] : [[520, 0.72]];
+      for (const [max, quality] of tries) {
+        const k = Math.min(1, max / Math.max(img.width, img.height));
+        const c = document.createElement('canvas');
+        c.width = Math.max(1, Math.round(img.width * k));
+        c.height = Math.max(1, Math.round(img.height * k));
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        q.image = c.toDataURL('image/jpeg', quality);
+        if (q.image.length <= 145000) break;
+      }
       URL.revokeObjectURL(url);
-      q.image = c.toDataURL('image/jpeg', 0.72);
+      if (q.type === 'zone') q.zone = null; // nouvelle image : la zone est à replacer
       done();
     };
     img.onerror = () => { URL.revokeObjectURL(url); $('edError').textContent = "Cette image n'a pas pu être lue."; };
     img.src = url;
   };
   inp.click();
+}
+// Image à toucher : l'animateur touche l'image pour placer le cercle de la bonne zone et règle sa taille
+function zoneEditor(card, q) {
+  const image = (q.image || '').trim();
+  if (!image) { card.appendChild(el('p', 'hint', '📍 Ajoute d\'abord une image (carte, schéma…), puis touche-la à l\'endroit de la bonne réponse.')); return; }
+  card.appendChild(el('p', 'hint', 'Touche l\'image à l\'endroit de la bonne réponse :'));
+  const v = zoneView(image, q.text);
+  v.wrap.classList.add('zone-pick');
+  let none = null;
+  const paint = () => { zoneDraw(v.layer, q.zone, []); if (none) none.classList.toggle('hidden', !!q.zone); };
+  const ar = () => (v.img.naturalWidth ? Math.min(5, Math.max(0.2, v.img.naturalHeight / v.img.naturalWidth)) : 1);
+  v.img.onload = () => { if (q.zone) q.zone.ar = ar(); paint(); };
+  v.img.onerror = () => { v.wrap.replaceWith(el('p', 'error', 'Cette image ne s\'affiche pas : vérifie l\'adresse.')); };
+  v.wrap.onclick = (e) => {
+    const p = zonePoint(e, v.img);
+    q.zone = { x: p.x, y: p.y, r: q.zone ? q.zone.r : ZONE_SIZES.moyenne, ar: ar() };
+    paint();
+  };
+  card.appendChild(v.wrap);
+  const row = el('div', 'ans zone-size');
+  row.appendChild(el('span', '', 'Taille de la zone :'));
+  const range = el('input');
+  range.type = 'range';
+  range.min = '0.03';
+  range.max = '0.2';
+  range.step = '0.01';
+  range.value = String(q.zone ? q.zone.r : ZONE_SIZES.moyenne);
+  range.setAttribute('aria-label', 'Taille de la zone');
+  const setR = (r) => { range.value = String(r); if (q.zone) { q.zone.r = r; paint(); } };
+  range.oninput = () => setR(Number(range.value));
+  row.appendChild(range);
+  [['Petite', 'petite'], ['Moyenne', 'moyenne'], ['Grande', 'grande']].forEach(([label, k]) => {
+    const b = el('button', 'btn ghost mini', label);
+    b.type = 'button';
+    b.onclick = () => setR(ZONE_SIZES[k]);
+    row.appendChild(b);
+  });
+  card.appendChild(row);
+  none = el('p', 'hint', '👆 Pas encore de zone : touche l\'image.');
+  none.classList.toggle('hidden', !!q.zone);
+  card.appendChild(none);
 }
 function renderEditor() {
   const box = $('edQuestions');
@@ -142,7 +189,9 @@ function renderEditor() {
       imRow.appendChild(el('span', '', 'Image envoyée'));
       imRow.appendChild(miniBtn('ti-x', () => { q.image = ''; renderEditor(); }, "Retirer l'image"));
     } else {
-      imRow.appendChild(textField(q.image, "Image : adresse internet (facultatif)", (v) => { q.image = v; }));
+      const imField = textField(q.image, q.type === 'zone' ? 'Image : adresse internet' : 'Image : adresse internet (facultatif)', (v) => { q.image = v; });
+      if (q.type === 'zone') imField.onchange = () => { q.zone = null; renderEditor(); }; // affiche la nouvelle image pour placer la zone
+      imRow.appendChild(imField);
       const up = el('button', 'btn ghost mini');
       up.type = 'button';
       up.innerHTML = '<i class="ti ti-photo-up"></i> Depuis mon ordinateur';
@@ -150,6 +199,7 @@ function renderEditor() {
       imRow.appendChild(up);
     }
     card.appendChild(imRow);
+    if (q.type === 'zone') zoneEditor(card, q);
 
     if (q.type === 'tf') {
       card.appendChild(el('p', 'hint', 'Coche la bonne réponse :'));
@@ -191,6 +241,8 @@ function renderEditor() {
         row.appendChild(textField(q.choices[k], 'Élément ' + (k + 1) + (k >= 2 ? ' (facultatif)' : ''), (v) => { q.choices[k] = v; }));
         card.appendChild(row);
       }
+    } else if (q.type === 'zone') {
+      // la bonne réponse est la zone placée sur l'image, plus haut
     } else if (q.type === 'text') {
       card.appendChild(el('p', 'hint', 'Écris la bonne réponse. Si plusieurs réponses sont acceptées, sépare-les par un point-virgule « ; ». Les accents, majuscules et petites fautes sont tolérés :'));
       card.appendChild(textField(q.answers.join('; '), 'Ex : Pacifique; Océan Pacifique', (v) => { q.answers = v.split(';'); }));

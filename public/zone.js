@@ -35,4 +35,24 @@ function zoneDraw(layer, z, points) {
     layer.appendChild(d);
   });
 }
+// L'image avec son calque de dessin par-dessus : { wrap, img, layer }
+function zoneView(src, alt) {
+  const wrap = document.createElement('div');
+  wrap.className = 'zone-view';
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = alt || '';
+  img.draggable = false;
+  const layer = document.createElement('div');
+  layer.className = 'zone-layer';
+  wrap.appendChild(img);
+  wrap.appendChild(layer);
+  return { wrap, img, layer };
+}
+// Endroit touché sur l'image, en proportion (0 à 1)
+function zonePoint(e, img) {
+  const b = img.getBoundingClientRect();
+  const c = (v) => Math.min(1, Math.max(0, v));
+  return { x: c((e.clientX - b.left) / b.width), y: c((e.clientY - b.top) / b.height) };
+}
 if (typeof module !== 'undefined') module.exports = { ZONE_SIZES, ZONE_MARGIN, zoneValid, zoneHit };
