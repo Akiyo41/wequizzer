@@ -78,36 +78,45 @@ function pickImage(q, done) {
   const inp = document.createElement('input');
   inp.type = 'file';
   inp.accept = 'image/*';
-  inp.onchange = () => {
-    const f = inp.files[0];
-    if (!f) return;
-    const img = new Image();
-    const url = URL.createObjectURL(f);
-    img.onload = () => {
-      // image à toucher : plus grande (on doit voir les détails d'une carte), en restant sous la limite du serveur (150 000 caractères)
-      const tries = q.type === 'zone' ? [[800, 0.72], [800, 0.55], [640, 0.6], [520, 0.6]] : [[520, 0.72]];
-      for (const [max, quality] of tries) {
-        const k = Math.min(1, max / Math.max(img.width, img.height));
-        const c = document.createElement('canvas');
-        c.width = Math.max(1, Math.round(img.width * k));
-        c.height = Math.max(1, Math.round(img.height * k));
-        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-        q.image = c.toDataURL('image/jpeg', quality);
-        if (q.image.length <= 145000) break;
-      }
-      URL.revokeObjectURL(url);
-      if (q.image.length > 145000) {
-        // le serveur la refuserait (et dirait seulement « il faut une image ») : on prévient tout de suite
-        q.image = '';
-        $('edError').textContent = 'Cette image est trop lourde, même réduite : choisis-en une plus simple ou plus petite.';
-      }
-      if (q.type === 'zone') q.zone = null; // nouvelle image : la zone est à replacer
-      done();
-    };
-    img.onerror = () => { URL.revokeObjectURL(url); $('edError').textContent = "Cette image n'a pas pu être lue."; };
-    img.src = url;
-  };
+  inp.onchange = () => { if (inp.files[0]) loadImageFile(q, inp.files[0], done); };
   inp.click();
+}
+// Image collée (Ctrl+V) ou glissée dans la case image : comme « Depuis mon ordinateur »
+function imageFrom(dt) {
+  return dt ? [...(dt.files || [])].find((f) => /^image\//.test(f.type)) || null : null;
+}
+function acceptImages(field, q) {
+  field.addEventListener('paste', (e) => { const f = imageFrom(e.clipboardData); if (f) { e.preventDefault(); loadImageFile(q, f, renderEditor); } });
+  field.addEventListener('dragover', (e) => e.preventDefault());
+  field.addEventListener('drop', (e) => { const f = imageFrom(e.dataTransfer); if (f) { e.preventDefault(); loadImageFile(q, f, renderEditor); } });
+}
+// Réduit l'image et la garde dans la question
+function loadImageFile(q, f, done) {
+  const img = new Image();
+  const url = URL.createObjectURL(f);
+  img.onload = () => {
+    // image à toucher : plus grande (on doit voir les détails d'une carte), en restant sous la limite du serveur (150 000 caractères)
+    const tries = q.type === 'zone' ? [[800, 0.72], [800, 0.55], [640, 0.6], [520, 0.6]] : [[520, 0.72]];
+    for (const [max, quality] of tries) {
+      const k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(img.width * k));
+      c.height = Math.max(1, Math.round(img.height * k));
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      q.image = c.toDataURL('image/jpeg', quality);
+      if (q.image.length <= 145000) break;
+    }
+    URL.revokeObjectURL(url);
+    if (q.image.length > 145000) {
+      // le serveur la refuserait (et dirait seulement « il faut une image ») : on prévient tout de suite
+      q.image = '';
+      $('edError').textContent = 'Cette image est trop lourde, même réduite : choisis-en une plus simple ou plus petite.';
+    }
+    if (q.type === 'zone') q.zone = null; // nouvelle image : la zone est à replacer
+    done();
+  };
+  img.onerror = () => { URL.revokeObjectURL(url); $('edError').textContent = "Cette image n'a pas pu être lue."; };
+  img.src = url;
 }
 // Image à toucher : l'animateur touche l'image pour placer le cercle de la bonne zone et règle sa taille
 function zoneEditor(card, q) {
@@ -197,7 +206,8 @@ function renderEditor() {
       imRow.appendChild(el('span', '', 'Image envoyée'));
       imRow.appendChild(miniBtn('ti-x', () => { q.image = ''; renderEditor(); }, "Retirer l'image"));
     } else {
-      const imField = textField(q.image, q.type === 'zone' ? 'Image : adresse internet' : 'Image : adresse internet (facultatif)', (v) => { q.image = v; });
+      const imField = textField(q.image, q.type === 'zone' ? 'Image : adresse internet, ou colle une image ici' : 'Image : adresse internet ou image collée (facultatif)', (v) => { q.image = v; });
+      acceptImages(imField, q);
       if (q.type === 'zone') imField.onchange = () => { q.zone = null; renderEditor(); }; // affiche la nouvelle image pour placer la zone
       imRow.appendChild(imField);
       const up = el('button', 'btn ghost mini');

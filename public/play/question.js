@@ -303,7 +303,7 @@ socket.on('question', (q) => {
   } else {
     const choices = hidden ? Array.from({ length: q.count }, () => '') : q.choices;
     box.classList.toggle('compact', hidden);
-    if (q.mine !== null && q.mine !== undefined) selected = Array.isArray(q.mine) ? q.mine.slice() : [q.mine];
+    if (!isZone && q.mine !== null && q.mine !== undefined) selected = Array.isArray(q.mine) ? q.mine.slice() : [q.mine]; // image à toucher : l'épingle est remise par startZone
     choices.forEach((c, i) => {
       const b = el('button', 'choice c' + (q.type === 'tf' ? (i === 0 ? 1 : 0) : i % 4));
       b.appendChild(el('span', 'badge', lab(q, i)));

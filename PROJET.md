@@ -148,6 +148,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 25. (fait) Salle d'attente du téléphone : « 👥 Vous êtes 5 dans la salle » en direct (ou « Personne d'autre pour l'instant… ça arrive ! »). Le serveur envoie `lobby:count` aux joueurs à chaque changement de la liste (`sendLobbyCount` dans `src/room.js`, appelé par `sendHostPlayers`), au plus une fois toutes les 0,7 s pour ne pas inonder une grande salle.
 
+26. (fait) Éditeur : une image peut être collée (Ctrl+V, capture d'écran) ou glissée dans la case image d'une question, comme « Depuis mon ordinateur » (`acceptImages` / `loadImageFile` dans `public/host/editor.js`). Petit défaut réglé : après une reconnexion sur une « image à toucher », `selected` ne garde plus le point.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
