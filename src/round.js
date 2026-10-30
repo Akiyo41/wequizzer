@@ -6,6 +6,7 @@ const { allPeople, games, toAll, toHost, toPlayer } = require('./send');
 const { clearTimer, qTime, schedule } = require('./timer');
 const { queuedPayload } = require('./room');
 const { endGame } = require('./end');
+const { shuffle } = require('./utils');
 
 function beginRound(pin) {
   const g = games[pin];
@@ -55,7 +56,7 @@ function questionPayload(g, p, left) {
   };
   if (!p) return { ...base, text: q.text, image: q.image || null, choices: q.choices };
   const out =
-    g.settings.display === 'host' && !q.wheel && !q.letters && !q.match && q.type !== 'order'
+    g.settings.display === 'host' && !q.wheel && !q.letters && !q.match && q.type !== 'order' && q.type !== 'zone'
       ? { ...base, hidden: true, count: q.choices.length }
       : { ...base, text: q.text, image: q.image || null, choices: q.choices };
   out.eliminated = !!p.eliminated;
@@ -195,7 +196,7 @@ function endQuestion(pin) {
 
   // Compteurs par réponse
   let counts = null;
-  if (q.type === 'text' || q.type === 'match' || q.type === 'order') counts = [participants.filter((p) => p.lastCorrect).length, participants.filter((p) => p.answered && !p.lastCorrect).length];
+  if (q.type === 'text' || q.type === 'match' || q.type === 'order' || q.type === 'zone') counts = [participants.filter((p) => p.lastCorrect).length, participants.filter((p) => p.answered && !p.lastCorrect).length];
   else {
     counts = q.choices.map(() => 0);
     participants.forEach((p) => {
@@ -223,6 +224,9 @@ function endQuestion(pin) {
     correct: q.correct,
     choices: q.choices,
     counts,
+    // image à toucher : la bonne zone et un point par joueur (sans nom, dans le désordre)
+    zone: q.type === 'zone' ? q.zone : null,
+    points: q.type === 'zone' ? shuffle(participants.filter((p) => p.answer).map((p) => ({ x: p.answer.x, y: p.answer.y, ok: !!p.lastCorrect }))) : null,
     players: g.settings.showAnswers
       ? participants.map((p) => ({
           pid: p.pid,

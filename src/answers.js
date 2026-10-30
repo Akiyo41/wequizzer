@@ -1,19 +1,27 @@
 // Réponses : vérification, correction, affichage
 const { wordLetters } = require('./quiz');
+const { zoneHit } = require('../public/zone.js');
+
+// Image à toucher : textes de la réponse (pas de lettre A, B… : un endroit sur l'image)
+const ZONE_IN = '📍 Dans la bonne zone';
+const ZONE_OUT = '📍 À côté de la bonne zone';
+const ZONE_OK = '📍 La zone entourée sur l\'image';
 
 // ---------- Erreurs (revoir / rejouer) ----------
 function mistakeEntry(q, answer) {
   const c = q.choices;
   let yours = 'Pas de réponse';
   if (answer !== null && answer !== undefined) {
-    if (q.type === 'match') yours = answer.map((x, i) => q.left[i] + ' → ' + c[x]).join(' · ');
+    if (q.type === 'zone') yours = zoneHit(q.zone, answer) ? ZONE_IN : ZONE_OUT;
+    else if (q.type === 'match') yours = answer.map((x, i) => q.left[i] + ' → ' + c[x]).join(' · ');
     else if (q.type === 'order') yours = answer.map((x) => c[x]).join(' → ');
     else if (q.type === 'text') yours = String(answer);
     else if (q.type === 'multi') yours = answer.map((i) => c[i]).join(' + ');
     else yours = c[answer];
   }
   let correct = '';
-  if (q.type === 'match') correct = q.pairs.map((p) => p.q + ' → ' + p.a).join(' · ');
+  if (q.type === 'zone') correct = ZONE_OK;
+  else if (q.type === 'match') correct = q.pairs.map((p) => p.q + ' → ' + p.a).join(' · ');
   else if (q.type === 'order') correct = q.items.join(' → ');
   else if (q.type === 'text') correct = q.answers.join(' / ');
   else if (q.type === 'multi') correct = q.correct.map((i) => c[i]).join(' + ');
@@ -61,6 +69,7 @@ function isCorrect(q, answer) {
   if (answer === null || answer === undefined) return false;
   if (q.type === 'match' || q.type === 'order') return Array.isArray(answer) && answer.length === q.correct.length && q.correct.every((c, i) => answer[i] === c);
   if (q.type === 'single' || q.type === 'tf') return answer === q.correct;
+  if (q.type === 'zone') return zoneHit(q.zone, answer);
   if (q.type === 'multi') {
     return Array.isArray(answer) && answer.length === q.correct.length && q.correct.every((c) => answer.includes(c));
   }
@@ -78,6 +87,7 @@ function lab(g, i) {
 function shownAnswer(g, q, answer) {
   if (answer === null || answer === undefined) return null;
   if (q.wheel) return q.choices[answer];
+  if (q.type === 'zone') return zoneHit(q.zone, answer) ? ZONE_IN : ZONE_OUT;
   if (q.type === 'match') return answer.map((c, i) => q.left[i] + ' → ' + q.choices[c]).join(' · ');
   if (q.type === 'order') return answer.map((c) => q.choices[c]).join(' → ');
   if (q.type === 'text') return String(answer);
@@ -86,6 +96,7 @@ function shownAnswer(g, q, answer) {
 }
 function correctText(g, q) {
   if (q.wheel) return q.choices[q.correct];
+  if (q.type === 'zone') return ZONE_OK;
   if (q.type === 'match') return q.pairs.map((p) => p.q + ' → ' + p.a).join(' · ');
   if (q.type === 'order') return q.items.join(' → ');
   if (q.type === 'text') return q.answers.join(' / ');
@@ -96,6 +107,11 @@ function correctText(g, q) {
 
 function cleanAnswer(q, data) {
   data = data || {};
+  if (q.type === 'zone') {
+    const p = data.point;
+    const ok = (v) => typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 1;
+    return p && ok(p.x) && ok(p.y) ? { x: p.x, y: p.y } : null;
+  }
   if (q.type === 'text') {
     const t = String(data.text || '').trim().slice(0, 100);
     return t ? t : null;
