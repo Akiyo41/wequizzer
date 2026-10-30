@@ -1,5 +1,7 @@
 # Icônes à générer — 4e planche
 
+**✅ Fait le 30/10/2026** : les 23 icônes sont découpées (fond vert retiré dans le navigateur), enregistrées en WebP 128 px dans `public/ico/` et branchées dans `public/icons.css`. Titres de fin renommés depuis : « Le dernier survivant » → « Inarrêtable » (bouclier), « Le plus expressif » → « Réactions en folie » (sourire).
+
 Les 48 icônes cartoon actuelles sont dans `public/ico/` (WebP 128 px) et branchées par `public/icons.css`.
 Les icônes ci-dessous sont encore au style « simple » (Tabler). Relevé du 30/10/2026.
 
