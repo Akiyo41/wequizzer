@@ -94,6 +94,11 @@ function pickImage(q, done) {
         if (q.image.length <= 145000) break;
       }
       URL.revokeObjectURL(url);
+      if (q.image.length > 145000) {
+        // le serveur la refuserait (et dirait seulement « il faut une image ») : on prévient tout de suite
+        q.image = '';
+        $('edError').textContent = 'Cette image est trop lourde, même réduite : choisis-en une plus simple ou plus petite.';
+      }
       if (q.type === 'zone') q.zone = null; // nouvelle image : la zone est à replacer
       done();
     };
@@ -113,7 +118,7 @@ function zoneEditor(card, q) {
   const paint = () => { zoneDraw(v.layer, q.zone, []); if (none) none.classList.toggle('hidden', !!q.zone); };
   const ar = () => (v.img.naturalWidth ? Math.min(5, Math.max(0.2, v.img.naturalHeight / v.img.naturalWidth)) : 1);
   v.img.onload = () => { if (q.zone) q.zone.ar = ar(); paint(); };
-  v.img.onerror = () => { v.wrap.replaceWith(el('p', 'error', 'Cette image ne s\'affiche pas : vérifie l\'adresse.')); };
+  v.img.onerror = () => { q.zone = null; v.wrap.replaceWith(el('p', 'error', 'Cette image ne s\'affiche pas : vérifie l\'adresse.')); };
   v.wrap.onclick = (e) => {
     const p = zonePoint(e, v.img);
     q.zone = { x: p.x, y: p.y, r: q.zone ? q.zone.r : ZONE_SIZES.moyenne, ar: ar() };

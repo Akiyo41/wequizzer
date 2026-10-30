@@ -94,6 +94,13 @@ const tests = {
   'résultat après rechargement de l\'animateur : l\'image vient du résultat'() {
     assert.ok(/zoneView\(r\.image/.test(read('public/host/game.js')));
   },
+  'images : trop lourde, cassée, et note « changer sa réponse »'() {
+    const ed = read('public/host/editor.js');
+    assert.ok(ed.includes('Cette image est trop lourde, même réduite : choisis-en une plus simple ou plus petite.'), 'image trop lourde');
+    assert.ok(/v\.img\.onerror = \(\) => \{ q\.zone = null;/.test(ed), 'image cassée : zone effacée (on ne peut pas enregistrer)');
+    assert.ok(read('public/play/question.js').includes('L\\\'image ne s\\\'affiche pas : regarde l\\\'écran de l\\\'animateur.'), 'téléphone : image cassée');
+    assert.ok(/q\.type === 'zone' \? 'Sur leur téléphone, les joueurs touchent le bon endroit sur l\\'image\.' \+ \(q\.changeAnswer/.test(read('public/host/game.js')), 'note changer sa réponse');
+  },
   'écran de partie, IA, Aide'() {
     const game = read('public/host/game.js');
     assert.ok(game.includes('Sur leur téléphone, les joueurs touchent le bon endroit sur l\\\'image.'), 'note de la question');

@@ -340,6 +340,7 @@ let zonePick = null;
 function startZone(q) {
   $('qImg').classList.add('hidden'); // l'image est dans la zone à toucher
   const v = zoneView(q.image, q.text);
+  v.img.onerror = () => { v.wrap.replaceWith(el('p', 'error', 'L\'image ne s\'affiche pas : regarde l\'écran de l\'animateur.')); };
   const pin = el('span', 'zone-pin', '📍');
   const place = (p) => {
     zonePick = p;
