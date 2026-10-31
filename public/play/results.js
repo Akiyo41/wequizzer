@@ -128,7 +128,7 @@ socket.on('end', (d) => {
   }
   if (d.teamName) stats.appendChild(stat('Équipe', d.teamIcon + ' ' + d.teamName));
   $('endStopped').classList.toggle('hidden', !d.stopped);
-  if (d.stopped) $('endStopped').textContent = "🏁 L'animateur a terminé la partie après " + d.stopped.asked + ' question' + (d.stopped.asked > 1 ? 's' : '') + ' sur ' + d.stopped.total + '.';
+  if (d.stopped) $('endStopped').textContent = d.stopped.asked ? "🏁 L'animateur a terminé la partie après " + d.stopped.asked + ' question' + (d.stopped.asked > 1 ? 's' : '') + ' sur ' + d.stopped.total + '.' : "🏁 L'animateur a arrêté la partie avant la première question.";
   // Récap question par question : ✅ juste, ❌ raté, ➖ pas jouée (arrivé en retard, éliminé…)
   const recap = $('endRecap');
   recap.innerHTML = '';

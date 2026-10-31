@@ -460,7 +460,7 @@ socket.on('end', (d) => {
   $('endHead').textContent = teamy ? 'Les équipes' : elim ? 'Les survivants' : 'Podium final';
   // partie terminée avant la fin avec le bouton « Terminer »
   $('endStopped').classList.toggle('hidden', !d.stopped);
-  if (d.stopped) $('endStopped').textContent = '🏁 Partie terminée après ' + d.stopped.asked + ' question' + (d.stopped.asked > 1 ? 's' : '') + ' sur ' + d.stopped.total + '.';
+  if (d.stopped) $('endStopped').textContent = d.stopped.asked ? '🏁 Partie terminée après ' + d.stopped.asked + ' question' + (d.stopped.asked > 1 ? 's' : '') + ' sur ' + d.stopped.total + '.' : '🏁 Partie arrêtée avant la première question.';
   // équipes
   const tb = $('teamBoard');
   tb.innerHTML = '';
