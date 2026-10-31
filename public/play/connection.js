@@ -144,6 +144,7 @@ $('setSave').onclick = () => {
   socket.emit('player:profile', { name, avatar: setAvatar });
 };
 socket.on('profile:error', (m) => { $('setErr').textContent = m; });
+socket.on('profile:suggest', (name) => { $('setName').value = String(name || '').slice(0, 16); }); // pseudo libre proposé
 socket.on('profile:ok', (d) => {
   me.name = d.name; me.avatar = d.avatar;
   LS.set('wequizzer.name', d.name); LS.set('wequizzer.avatar', d.avatar);

@@ -300,7 +300,12 @@ function setupSockets(io) {
       const others = allPeople(g).filter((x) => x.pid !== p.pid);
       if (name.toLowerCase() !== p.name.toLowerCase()) {
         if (isBlocked(name)) return err("Ce pseudo n'est pas autorisé. Choisis-en un autre.");
-        if (others.some((x) => x.name.toLowerCase() === name.toLowerCase())) return err('Ce pseudo est déjà pris.');
+        const same = others.find((x) => x.name.toLowerCase() === name.toLowerCase());
+        if (same) {
+          const free = freeName(g, same.name);
+          if (free) socket.emit('profile:suggest', free);
+          return err(free ? 'Ce pseudo est déjà pris. Essaie « ' + free + ' » !' : 'Ce pseudo est déjà pris.');
+        }
       }
       if (avatar !== p.avatar) {
         if (!AVATARS.includes(avatar)) return err('Cet avatar n\'existe pas.');

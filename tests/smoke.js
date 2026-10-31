@@ -366,6 +366,16 @@ const tests = {
     close(game);
   },
 
+  async 'changer de pseudo pour un pseudo pris : un pseudo libre est proposé'() {
+    const game = await setupGame({ mode: 'standard' }, QUIZ);
+    const sug = once(game.players[1], 'profile:suggest');
+    const err = once(game.players[1], 'profile:error');
+    game.players[1].emit('player:profile', { name: 'ALICE', avatar: game.players[1].info.avatar });
+    assert.ok(/Alice 2/.test(await err));
+    assert.strictEqual(await sug, 'Alice 2');
+    close(game);
+  },
+
   async 'code PIN collé avec des espaces ou des tirets'() {
     const game = await setupGame({ mode: 'standard' }, QUIZ);
     const s = connect();
