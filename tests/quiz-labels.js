@@ -1,8 +1,14 @@
 // Test de la liste « Quiz choisi » : ordre alphabétique et noms affichés. Lancer avec : npm test
 const assert = require('assert');
-const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions } = require('../public/host/quiz-labels.js');
+const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage } = require('../public/host/quiz-labels.js');
 
 const tests = {
+  'message des doublons'() {
+    assert.strictEqual(twinsMessage([]), '');
+    assert.strictEqual(twinsMessage([[1, 3]]), '⚠️ Les questions 1 et 3 sont identiques');
+    assert.strictEqual(twinsMessage([[1, 3], [2, 5]], 'affirmations'), '⚠️ Les affirmations 1 et 3 sont identiques (et 1 autre doublon)');
+    assert.strictEqual(twinsMessage([[1, 3], [2, 5], [4, 6]]), '⚠️ Les questions 1 et 3 sont identiques (et 2 autres doublons)');
+  },
   'questions en double : repérées malgré majuscules, accents et ponctuation, pas avec une autre image'() {
     const qs = [
       { text: 'Capitale de la France ?' }, { text: 'Quel est ce drapeau ?', image: 'a' }, { text: 'capitale  de la france' },

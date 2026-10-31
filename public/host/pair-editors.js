@@ -208,4 +208,6 @@ $('leSave').onclick = () => {
   renderQuizSelect();
   pushQuiz();
   show('lobby');
+  const warn = twinsMessage(sameQuestions(items.map((it) => ({ text: it.q }))), 'définitions');
+  if (warn) UI.toast(warn);
 };

@@ -69,4 +69,10 @@ function sameQuestions(questions) {
   });
   return out;
 }
-if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions };
+// Message pour l'animateur (vide s'il n'y a pas de doublon)
+function twinsMessage(twins, noun = 'questions') {
+  if (!twins.length) return '';
+  const more = twins.length - 1;
+  return '⚠️ Les ' + noun + ' ' + twins[0][0] + ' et ' + twins[0][1] + ' sont identiques' + (more ? ' (et ' + more + ' autre' + (more > 1 ? 's' : '') + ' doublon' + (more > 1 ? 's' : '') + ')' : '');
+}
+if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage };

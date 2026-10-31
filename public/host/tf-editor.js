@@ -52,4 +52,6 @@ $('tfSave').onclick = () => {
   renderQuizSelect();
   pushQuiz();
   show('lobby');
+  const warn = twinsMessage(sameQuestions(questions), 'affirmations');
+  if (warn) UI.toast(warn);
 };
