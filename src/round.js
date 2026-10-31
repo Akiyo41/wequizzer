@@ -268,6 +268,7 @@ function endQuestion(pin) {
 
 // Bonne réponse écrite en entier pour le téléphone (« B – Paris » plutôt que « B »)
 function goodAnswerText(g, q) {
+  if (q.type === 'text' && !q.letters) return q.answers[0]; // la réponse principale, pas toutes les orthographes acceptées
   if (q.wheel || !['single', 'tf', 'multi'].includes(q.type)) return correctText(g, q);
   const ids = Array.isArray(q.correct) ? q.correct : [q.correct];
   return ids.map((i) => (g.settings.labels === 'numbers' ? String(i + 1) : 'ABCD'[i]) + ' – ' + q.choices[i]).join(' + ');

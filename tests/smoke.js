@@ -326,6 +326,19 @@ const tests = {
     close(game);
   },
 
+  async 'réponse écrite ratée : le téléphone montre la réponse principale, pas toutes les variantes'() {
+    const quiz = { title: 'T', questions: [{ type: 'text', text: 'Capitale du Japon ?', answers: ['Tokyo', 'Tokio', 'Tōkyō'] }] };
+    const game = await setupGame({ mode: 'standard', limitTime: false }, quiz);
+    const rb = once(game.players[1], 'result');
+    const q = once(game.players[0], 'question', 15000);
+    game.host.emit('host:start');
+    await q;
+    game.players[1].emit('player:answer', { text: 'Kyoto' });
+    game.host.emit('host:skip');
+    assert.strictEqual((await rb).goodAnswer, 'Tokyo');
+    close(game);
+  },
+
   async 'terminer la partie avant la fin : podium avec les scores actuels'() {
     const game = await setupGame({ mode: 'standard', limitTime: false }, QUIZ);
     const res = once(game.host, 'results');
