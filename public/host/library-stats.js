@@ -82,6 +82,8 @@ function renderStats() {
   const st = all[id];
   const box = $('statsList');
   box.innerHTML = '';
+  const quiz = library.find((q) => q.id === id);
+  $('statsRevision').classList.toggle('hidden', !st || !quiz || !!quiz.kind); // pas de révision pour la roue ni le jeu de mots
   if (!st) { $('statsInfo').textContent = 'Pas encore de partie terminée avec ce quiz.'; return; }
   $('statsInfo').textContent = st.games + ' partie' + (st.games > 1 ? 's' : '') + ' jouée' + (st.games > 1 ? 's' : '') + ' · les questions les plus ratées en premier';
   Object.keys(st.qs)

@@ -214,7 +214,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 58. (fait) Stats cumulées d'un quiz (« Mes quiz » → Stats) : la bonne réponse sous chaque question (« ✅ Canberra ») et une colonne « Bonne réponse » dans le fichier Excel. Gardée sans la lettre du choix (`plainAnswer` : les choix sont mélangés à chaque partie), apprise à la prochaine partie jouée. Test results-csv.
 
-59. (fait) Page Stats : bouton « Créer un quiz de révision » → nouveau quiz « Révision - Titre » dans « Mes quiz » avec les questions réussies à moins de 60 % sur toutes les parties (quiz classiques et Vrai/Faux en rafale ; pas la roue ni le jeu de mots). `revisionQuiz` dans `quiz-labels.js`, testé. Aide `faq-resultats`.
+59. (fait) Page Stats : bouton « Créer un quiz de révision » → nouveau quiz « Révision - Titre » dans « Mes quiz » avec les questions réussies à moins de 60 % sur toutes les parties (quiz classiques et Vrai/Faux en rafale ; bouton caché pour la roue, le jeu de mots et un quiz sans statistiques). `revisionQuiz` dans `quiz-labels.js`, testé. Aide `faq-resultats`.
 
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
