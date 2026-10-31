@@ -551,8 +551,14 @@ $('shareBtn').onclick = () => {
   const badges = d.titles.map((t) => (TITLE_EMOJI[t.title] || '🏅') + ' ' + t.title + ' : ' + t.name);
   let headline = top ? top.avatar + ' ' + top.name : 'Résultats';
   let sub = 'a gagné la partie !';
+  // partie sans question notée (nuages de mots, sondages) : pas de gagnant ni de score
+  if (!d.questions && !d.teams) {
+    headline = 'Merci à tous !';
+    sub = d.total + ' participant' + (d.total > 1 ? 's' : '');
+    rows.splice(0, rows.length, ...d.board.slice(0, 5).map((p) => ({ left: '•', mid: p.avatar + ' ' + p.name, right: '' })));
+  }
   if (d.teams && d.teams[0]) { headline = d.teams[0].icon + ' Équipe ' + d.teams[0].name; sub = 'remporte la partie !'; }
-  Share.share({ quiz: d.quizTitle, emoji: '🏆', headline, sub, rows, badges }, 'wequizzer-resultats.png');
+  Share.share({ quiz: d.quizTitle, emoji: !d.questions && !d.teams ? '☁️' : '🏆', headline, sub, rows, badges }, 'wequizzer-resultats.png');
 };
 $('csvResultsBtn').onclick = () => {
   if (!lastEnd || !lastEnd.results) return;
