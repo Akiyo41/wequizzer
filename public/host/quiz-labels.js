@@ -78,10 +78,21 @@ function revisionQuiz(quiz, st) {
   if (!questions.length) return null;
   return { ...(quiz.flavor ? { flavor: quiz.flavor } : {}), title: ('Révision - ' + quiz.title).slice(0, 60), questions };
 }
+// Rappel « Enregistrer tous mes quiz dans un fichier » : les quiz ne vivent que dans ce navigateur.
+// Affiché quand des quiz ont été modifiés depuis la dernière sauvegarde, au plus tôt une semaine après. Vide sinon.
+function backupReminder({ firstEdit, lastEdit, lastBackup } = {}, now = Date.now()) {
+  const WEEK = 7 * 86400000;
+  if (!lastEdit || (lastBackup && lastBackup >= lastEdit)) return '';
+  if (now - (lastBackup || firstEdit || lastEdit) < WEEK) return '';
+  const button = '« Enregistrer tous mes quiz dans un fichier »';
+  return lastBackup
+    ? '💾 Dernière sauvegarde de tes quiz le ' + new Date(lastBackup).toLocaleDateString('fr-FR') + ' : pense à ' + button + '.'
+    : '💾 Tes quiz ne sont gardés que dans ce navigateur : pense à ' + button + ', au cas où.';
+}
 // Message pour l'animateur (vide s'il n'y a pas de doublon)
 function twinsMessage(twins, noun = 'questions') {
   if (!twins.length) return '';
   const more = twins.length - 1;
   return '⚠️ Les ' + noun + ' ' + twins[0][0] + ' et ' + twins[0][1] + ' sont identiques' + (more ? ' (et ' + more + ' autre' + (more > 1 ? 's' : '') + ' doublon' + (more > 1 ? 's' : '') + ')' : '');
 }
-if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage, revisionQuiz };
+if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage, revisionQuiz, backupReminder };

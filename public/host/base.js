@@ -72,7 +72,18 @@ let library = LS.get('wequizzer.quizzes', []);
 let selectedId = LS.get('wequizzer.lastQuiz', null);
 // Renvoie faux si le navigateur n'a pas pu enregistrer (mémoire pleine, souvent à cause des images)
 const saveLibrary = () => {
-  if (LS.set('wequizzer.quizzes', library)) { LS.set('wequizzer.lastQuiz', selectedId); return true; }
+  let before = null;
+  try { before = localStorage.getItem('wequizzer.quizzes'); } catch (e) { /* stockage indisponible */ }
+  if (LS.set('wequizzer.quizzes', library)) {
+    LS.set('wequizzer.lastQuiz', selectedId);
+    // quiz vraiment modifiés (pas seulement le quiz choisi) : pour le rappel de sauvegarde (backupReminder)
+    if (before !== JSON.stringify(library)) {
+      const now = Date.now();
+      LS.set('wequizzer.lastEdit', now);
+      if (!LS.get('wequizzer.firstEdit', 0)) LS.set('wequizzer.firstEdit', now);
+    }
+    return true;
+  }
   // Mémoire pleine (le stockage marche pour une petite valeur) : on revient à ce qui est vraiment enregistré,
   // pour ne pas croire garder un quiz qui disparaîtrait au rechargement
   if (LS.set('wequizzer.probe', 1)) {

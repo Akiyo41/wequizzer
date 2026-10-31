@@ -230,6 +230,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 66. (fait) Aide : « ✨ Quoi de neuf ? » en tête (`faq-nouveau`), la liste des dernières nouveautés (Terminer, bonne réponse sur le téléphone, À revoir, quiz de révision, nuage de mots, doublons). À tenir à jour : 6 lignes au plus, les plus récentes d'abord. Pastille « nouveau » sur le bouton Aide tant que la liste n'a pas été lue (`NEWS` dans `faq.js`, à changer à chaque mise à jour de la liste ; `wequizzer.newsSeen`) ; le clic ouvre directement « Quoi de neuf ? ».
 
+67. (fait) Rappel de sauvegarde dans « Mes quiz » : si des quiz ont été modifiés depuis la dernière sauvegarde, au plus tôt une semaine après, un message propose « Enregistrer tous mes quiz dans un fichier » (les quiz ne vivent que dans le navigateur). `backupReminder` (`quiz-labels.js`, testé) ; `saveLibrary` note `wequizzer.lastEdit` / `firstEdit` seulement quand les quiz changent vraiment ; le bouton note `wequizzer.lastBackup`.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

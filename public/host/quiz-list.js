@@ -108,6 +108,9 @@ function renderQuizSelect() {
   $('memInfo').classList.toggle('hidden', !mem);
   $('memInfo').classList.toggle('error', !!(mem && mem.warn));
   if (mem) $('memInfo').textContent = '💾 ' + mem.text;
+  const remind = backupReminder({ firstEdit: LS.get('wequizzer.firstEdit', 0), lastEdit: LS.get('wequizzer.lastEdit', 0), lastBackup: LS.get('wequizzer.lastBackup', 0) });
+  $('backupInfo').classList.toggle('hidden', !remind);
+  $('backupInfo').textContent = remind;
   const has = library.length > 0;
   ['editQuiz', 'testQuiz', 'copyQuiz', 'exportQuiz', 'exportAll', 'deleteQuiz'].forEach((id) => { $(id).disabled = !has; });
   applyKind();
@@ -228,6 +231,8 @@ function readQuiz(data, fallbackTitle) {
   return quiz;
 }
 $('exportAll').onclick = () => {
+  LS.set('wequizzer.lastBackup', Date.now()); // plus de rappel de sauvegarde jusqu'à la prochaine modification
+  $('backupInfo').classList.add('hidden');
   if (!library.length) return;
   download('mes-quiz-wequizzer-' + localDay() + '.json', JSON.stringify(backupPayload(library)), 'application/json');
 };

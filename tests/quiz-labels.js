@@ -1,8 +1,18 @@
 // Test de la liste « Quiz choisi » : ordre alphabétique et noms affichés. Lancer avec : npm test
 const assert = require('assert');
-const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage, revisionQuiz } = require('../public/host/quiz-labels.js');
+const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage, revisionQuiz, backupReminder } = require('../public/host/quiz-labels.js');
 
 const tests = {
+  'rappel de sauvegarde : après une semaine de modifications pas enregistrées dans un fichier'() {
+    const day = 86400000;
+    const now = new Date(2026, 9, 31).getTime();
+    assert.strictEqual(backupReminder({}, now), '', 'rien modifié');
+    assert.strictEqual(backupReminder({ firstEdit: now - 2 * day, lastEdit: now - day }, now), '', 'trop récent');
+    assert.ok(/que dans ce navigateur/.test(backupReminder({ firstEdit: now - 8 * day, lastEdit: now - day }, now)), 'jamais sauvegardé');
+    const last = new Date(2026, 9, 1).getTime();
+    assert.ok(/1\/10\/2026/.test(backupReminder({ firstEdit: last - day, lastBackup: last, lastEdit: now - day }, now)), 'date de la dernière sauvegarde');
+    assert.strictEqual(backupReminder({ firstEdit: last - day, lastBackup: now - day, lastEdit: now - 2 * day }, now), '', 'sauvegardé depuis');
+  },
   "quiz de révision : les questions sous 60 % de réussite, dans l'ordre du quiz"() {
     const quiz = { id: 'q1', title: 'Capitales', questions: [{ type: 'single', text: 'France ?' }, { type: 'single', text: 'Pérou ?' }, { type: 'text', text: 'Japon ?' }, { type: 'single', text: 'Jamais jouée ?' }] };
     const st = { games: 2, qs: { 'France ?': { ok: 9, total: 10 }, 'Pérou ?': { ok: 2, total: 10 }, 'Japon ?': { ok: 5, total: 10 } } };
