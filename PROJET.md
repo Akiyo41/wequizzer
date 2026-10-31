@@ -212,6 +212,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 57. (fait) « Revoir mes erreurs » sur le téléphone : sous la bonne réponse, l'explication de la question (« 💡 … ») quand il y en a une et que « Afficher l'explication » est coché. `explain` ajouté à chaque erreur dans `round.js`. Test smoke.
 
+58. (fait) Stats cumulées d'un quiz (« Mes quiz » → Stats) : la bonne réponse sous chaque question (« ✅ Canberra ») et une colonne « Bonne réponse » dans le fichier Excel. Gardée sans la lettre du choix (`plainAnswer` : les choix sont mélangés à chaque partie), apprise à la prochaine partie jouée. Test results-csv.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

@@ -53,12 +53,17 @@ function toReview(qstats) {
 }
 // Page Stats : réussite de chaque question sur toutes les parties d'un quiz, les moins réussies d'abord
 function statsCsv(st, title, date) {
-  const L = ['Quiz;' + csvText(title), 'Date;' + date, 'Parties jouées;' + st.games, '', 'Question;Bonnes réponses;Réussite'];
+  const ans = Object.values(st.qs).some((q) => q.answer);
+  const L = ['Quiz;' + csvText(title), 'Date;' + date, 'Parties jouées;' + st.games, '', 'Question;Bonnes réponses;Réussite' + (ans ? ';Bonne réponse' : '')];
   Object.keys(st.qs)
-    .map((k) => ({ label: k, ok: st.qs[k].ok, total: st.qs[k].total }))
+    .map((k) => ({ label: k, ok: st.qs[k].ok, total: st.qs[k].total, answer: st.qs[k].answer || '' }))
     .map((q) => ({ ...q, pct: q.total ? Math.round((100 * q.ok) / q.total) : 0 }))
     .sort((a, b) => a.pct - b.pct)
-    .forEach((q) => L.push(csvText(q.label) + ';' + q.ok + ' / ' + q.total + ';' + q.pct + ' %'));
+    .forEach((q) => L.push(csvText(q.label) + ';' + q.ok + ' / ' + q.total + ';' + q.pct + ' %' + (ans ? ';' + csvText(q.answer) : '')));
   return '﻿' + L.join('\r\n');
 }
-if (typeof module !== 'undefined') module.exports = { resultsCsv, toReview, statsCsv };
+// Bonne réponse sans la lettre du choix (« C – Canberra » → « Canberra ») : les choix sont mélangés à chaque partie
+function plainAnswer(a) {
+  return String(a || '').split(' + ').map((x) => x.replace(/^[A-D1-4] – /, '')).join(' + ');
+}
+if (typeof module !== 'undefined') module.exports = { resultsCsv, toReview, statsCsv, plainAnswer };

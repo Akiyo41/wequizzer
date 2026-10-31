@@ -1,6 +1,6 @@
 // Test du tableur des résultats de fin de partie (sans navigateur). Lancer avec : npm test
 const assert = require('assert');
-const { resultsCsv, toReview, statsCsv } = require('../public/host/results-csv.js');
+const { resultsCsv, toReview, statsCsv, plainAnswer } = require('../public/host/results-csv.js');
 
 const lines = (csv) => csv.replace(/^﻿/, '').split('\r\n');
 
@@ -103,6 +103,14 @@ const tests = {
   'réussite par question : la bonne réponse en plus quand elle est connue'() {
     const l = lines(resultsCsv({ quizTitle: 'Q', questions: 1, results: [], qstats: [{ label: 'Capitale ?', ok: 1, total: 2, answer: 'B – Paris' }] }, 'x'));
     assert.deepStrictEqual(l.slice(-2), ['Question;Bonnes réponses;Réussite;Bonne réponse', '"Capitale ?";1 / 2;50 %;"B – Paris"']);
+  },
+  'statistiques cumulées : la bonne réponse sans lettre (les choix sont mélangés à chaque partie)'() {
+    assert.strictEqual(plainAnswer('C – Canberra'), 'Canberra');
+    assert.strictEqual(plainAnswer('A – Chat + 3 – Chien'), 'Chat + Chien');
+    assert.strictEqual(plainAnswer('Vinci'), 'Vinci');
+    assert.strictEqual(plainAnswer(undefined), '');
+    const l = lines(statsCsv({ games: 1, players: 2, qs: { 'Capitale ?': { ok: 1, total: 2, answer: 'Canberra' } } }, 'T', 'x'));
+    assert.deepStrictEqual(l.slice(-2), ['Question;Bonnes réponses;Réussite;Bonne réponse', '"Capitale ?";1 / 2;50 %;"Canberra"']);
   },
   'formules de tableur neutralisées dans les pseudos'() {
     const l = lines(resultsCsv({ quizTitle: '=1+1', questions: 1, results: [{ rank: 1, name: '=HYPERLINK("x")', score: 0, correct: 0, team: null }], qstats: [] }, 'x'));

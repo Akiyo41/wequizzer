@@ -70,6 +70,7 @@ function recordStats(d) {
     const c = st.qs[q.label] || { ok: 0, total: 0 };
     c.ok += q.ok;
     c.total += q.total;
+    if (q.answer) c.answer = plainAnswer(q.answer);
     st.qs[q.label] = c;
   });
   all[selectedId] = st;
@@ -84,11 +85,12 @@ function renderStats() {
   if (!st) { $('statsInfo').textContent = 'Pas encore de partie terminée avec ce quiz.'; return; }
   $('statsInfo').textContent = st.games + ' partie' + (st.games > 1 ? 's' : '') + ' jouée' + (st.games > 1 ? 's' : '') + ' · les questions les plus ratées en premier';
   Object.keys(st.qs)
-    .map((k) => ({ label: k, pct: st.qs[k].total ? Math.round((100 * st.qs[k].ok) / st.qs[k].total) : 0, total: st.qs[k].total }))
+    .map((k) => ({ label: k, pct: st.qs[k].total ? Math.round((100 * st.qs[k].ok) / st.qs[k].total) : 0, total: st.qs[k].total, answer: st.qs[k].answer }))
     .sort((a, b) => a.pct - b.pct)
     .forEach((q) => {
       const row = el('div', 'srow');
       row.appendChild(el('div', 'slabel', q.label));
+      if (q.answer) row.appendChild(el('div', 'review-answer', '✅ ' + q.answer));
       const bar = el('div', 'sbar');
       const fill = el('div', 'sfill');
       fill.style.width = q.pct + '%';
