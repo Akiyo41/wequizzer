@@ -129,5 +129,13 @@ const Share = (() => {
     return true;
   }
 
-  return { draw, share };
+  // Récap à partager : ✅ juste, ❌ ratée, ➖ pas jouée (20 questions au plus, puis « … »)
+  function recapLine(answers) {
+    const list = answers || [];
+    const marks = list.slice(0, 20).map((a) => (a === true ? '✅' : a === false ? '❌' : '➖')).join('');
+    return list.length > 20 ? marks + '…' : marks;
+  }
+
+  return { draw, share, recapLine };
 })();
+if (typeof module !== 'undefined') module.exports = { Share };

@@ -158,6 +158,7 @@ $('shareBtn').onclick = () => {
   const badges = [];
   if (d.title) badges.push((TITLE_EMOJI[d.title.title] || '🏅') + ' ' + d.title.title);
   if (d.teamName) badges.push(d.teamIcon + ' Équipe ' + d.teamName);
+  if (d.answers && d.answers.length >= 2) badges.unshift(Share.recapLine(d.answers)); // ✅❌✅… question par question
   Share.share({
     quiz: d.quizTitle,
     emoji: d.avatar,
