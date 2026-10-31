@@ -23,7 +23,12 @@ app.use((req, res, next) => {
   res.setHeader('Referrer-Policy', 'same-origin');
   next();
 });
-app.use(express.static(path.join(__dirname, 'public')));
+// Images et icônes gardées un jour par le navigateur : moins d'allers-retours quand 30 téléphones chargent le jeu.
+// Les pages et les scripts restent toujours à jour (max-age=0).
+const DAY_CACHE = /[\\/]public[\\/](img|ico)[\\/]/;
+app.use(express.static(path.join(__dirname, 'public'), {
+  setHeaders: (res, file) => { if (DAY_CACHE.test(file)) res.setHeader('Cache-Control', 'public, max-age=86400'); },
+}));
 app.use('/icons', express.static(path.join(__dirname, 'node_modules/@tabler/icons-webfont/dist')));
 app.get('/api/sample-quiz', (req, res) => {
   res.json({ title: 'Culture générale', questions: sampleQuestions });

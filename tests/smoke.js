@@ -107,6 +107,13 @@ function quizAnswer(q, i) {
 }
 
 const tests = {
+  async 'images gardées en cache un jour (les pages, elles, sont toujours à jour)'() {
+    const img = await fetch(URL + '/img/logo.webp');
+    assert.ok(/max-age=86400/.test(img.headers.get('cache-control') || ''), img.headers.get('cache-control'));
+    const page = await fetch(URL + '/host.html');
+    assert.ok(/max-age=0/.test(page.headers.get('cache-control') || ''), 'page : ' + page.headers.get('cache-control'));
+  },
+
   async 'adresse inconnue : page « introuvable » en français'() {
     const r = await fetch(URL + '/nimporte-quoi');
     assert.strictEqual(r.status, 404);

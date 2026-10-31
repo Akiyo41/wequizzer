@@ -236,6 +236,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 69. (fait) Salle d'attente de l'animateur : à chaque nouvel arrivant, un petit « ding » (`FX.join`, coupé avec le son) et sa pastille apparaît en grossissant (`.chip.just-in`). Pas de son au chargement de la page ni quand un joueur se déconnecte (`seenPids` dans `game.js`). Un seul « ding » par demi-seconde quand toute la classe arrive d'un coup (`lastDing`).
 
+70. (fait) Cache : les images (`/img`, `/ico`, environ 2 Mo) sont gardées un jour par le navigateur (`Cache-Control: max-age=86400`, `setHeaders` dans `server.js`) → moins d'allers-retours quand toute la classe charge le jeu sur le Wi-Fi de l'école. Pages, scripts et styles restent à `max-age=0` (toujours à jour). Si on remplace une image, changer son nom pour qu'elle se voie tout de suite. Test smoke.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
