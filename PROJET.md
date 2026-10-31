@@ -184,6 +184,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 43. (fait) Pseudo déjà pris : le serveur propose un pseudo libre (« Léa 2 », « Léa 3 »… ; `freeName` en haut de `src/sockets.js`), l'envoie au téléphone (`join:suggest`) qui le met dans la case : il suffit de retoucher « Rejoindre ». Message : « Ce pseudo est déjà pris. Essaie « Léa 2 » ! ». Pareil quand un joueur change de pseudo dans « Mes réglages » (`profile:suggest`, la case `#setName` est remplie).
 
+44. (fait, demandé par l'utilisateur) Plein écran aussi sur le téléphone : bouton « Plein écran » / « Quitter le plein écran » dans « Mes réglages » (`#setFull`, `connection.js`, avec `UI.toggleFullscreen`). Caché si le navigateur ne sait pas le faire : sur iPhone (Safari), le plein écran passe par « Sur l'écran d'accueil » (appli installée, `display: fullscreen` du manifeste).
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
