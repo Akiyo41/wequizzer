@@ -64,6 +64,7 @@ function endGame(pin) {
       return { label: (q.wheel ? q.category + ' : ' + q.text : q.match ? q.category + ' : ' + q.left.join(', ') : q.text).slice(0, 120), ok: g.qstats[i].ok, total: g.qstats[i].total };
     }),
     titles,
+    clouds: Object.keys(g.clouds || {}).map(Number).sort((a, b) => a - b).map((k) => g.clouds[k]),
     teams: tboard,
     quizTitle: g.quiz ? g.quiz.title : '',
   };

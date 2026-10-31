@@ -70,6 +70,11 @@ const tests = {
       '"Facile ?";30 / 40;75 %',
     ]);
   },
+  'nuages de mots : les réponses données, à la fin du tableau'() {
+    const l = lines(resultsCsv({ quizTitle: 'Q', questions: 0, results: [], qstats: [],
+      clouds: [{ label: 'Un mot pour l\'été ?', words: [{ text: 'Soleil', count: 3 }, { text: '=Plage', count: 1 }] }] }, 'x'));
+    assert.deepStrictEqual(l.slice(-3), ['', 'Nuage de mots;Réponses données', '"Un mot pour l\'été ?";"Soleil (3), =Plage (1)"']);
+  },
   'équipes et cœurs : colonnes en plus'() {
     const csv = resultsCsv({
       quizTitle: 'Q', questions: 2, heartsMode: true,

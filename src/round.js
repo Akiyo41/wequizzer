@@ -144,6 +144,11 @@ function endQuestion(pin) {
       g.missed[g.index] = (g.missed[g.index] || 0) + 1;
     }
   });
+  if (q.type === 'words') {
+    // nuage de mots : on garde les réponses (30 au plus) pour le tableau des résultats
+    const all = answerGroups(participants.filter((p) => typeof p.answer === 'string').map((p) => ({ text: p.answer })), 30);
+    (g.clouds || (g.clouds = {}))[g.index] = { label: q.text.slice(0, 120), words: all.map(({ text, count }) => ({ text, count })) };
+  }
   if (!pollQ) {
     g.scored += 1;
     g.qstats[g.index] = { ok: participants.filter((p) => p.lastCorrect).length, total: participants.length };

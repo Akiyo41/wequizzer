@@ -299,6 +299,13 @@ const tests = {
     const r = await res;
     assert.deepStrictEqual(r.texts, [{ text: 'Soleil', count: 2, ok: false }]);
     assert.strictEqual(r.okCount, 0);
+    // les réponses du nuage sont gardées pour le tableau des résultats
+    const end = once(game.host, 'end', 15000);
+    game.host.on('question', () => setTimeout(() => game.host.emit('host:skip'), 50));
+    game.host.on('results', () => setTimeout(() => game.host.emit('host:next'), 50));
+    game.host.emit('host:next');
+    const e = await end;
+    assert.deepStrictEqual(e.clouds, [{ label: 'Un mot pour décrire l\'été ?', words: [{ text: 'Soleil', count: 2 }] }]);
     close(game);
   },
 

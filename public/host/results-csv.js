@@ -32,6 +32,11 @@ function resultsCsv(d, date) {
     L.push('', 'Question;Bonnes réponses;Réussite');
     d.qstats.forEach((q, i) => L.push(txt((nq ? 'Q' + (i + 1) + ' – ' : '') + q.label) + ';' + q.ok + ' / ' + q.total + ';' + (q.total ? Math.round((100 * q.ok) / q.total) : 0) + ' %'));
   }
+  // nuages de mots : les réponses données à chaque question
+  if (d.clouds && d.clouds.length) {
+    L.push('', 'Nuage de mots;Réponses données');
+    d.clouds.forEach((c) => L.push(txt(c.label) + ';' + txt(c.words.map((w) => w.text + ' (' + w.count + ')').join(', '))));
+  }
   return '﻿' + L.join('\r\n');
 }
 // « À revoir » sur le podium : les questions sous 60 % de bonnes réponses, les moins réussies d'abord, 3 au plus

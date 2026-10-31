@@ -198,6 +198,7 @@ function setupSockets(io) {
       g.paused = false;
       g.missed = {};
       g.qstats = {};
+      g.clouds = {}; // réponses des nuages de mots, pour le tableau des résultats
       Object.values(g.players).forEach(resetPlayerStats);
       if (heartsOn(g)) Object.values(g.players).forEach((p) => (p.hearts = g.settings.lives));
       g.startPlayers = Object.keys(g.players).length;

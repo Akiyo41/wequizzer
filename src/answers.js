@@ -138,7 +138,7 @@ function cleanAnswer(q, data) {
 }
 
 // Réponses écrites regroupées (sans les noms) pour l'animateur : « Picasso × 3 », les plus fréquentes d'abord, 8 au plus
-function answerGroups(list) {
+function answerGroups(list, max = 8) {
   const groups = new Map();
   list.forEach(({ text, ok }) => {
     const k = normAnswer(text || '');
@@ -146,6 +146,6 @@ function answerGroups(list) {
     if (!groups.has(k)) groups.set(k, { text: String(text).trim(), count: 0, ok: !!ok });
     groups.get(k).count++;
   });
-  return [...groups.values()].sort((a, b) => b.count - a.count).slice(0, 8);
+  return [...groups.values()].sort((a, b) => b.count - a.count).slice(0, max);
 }
 module.exports = { mistakeEntry, isCorrect, shownAnswer, correctText, cleanAnswer, answerGroups };
