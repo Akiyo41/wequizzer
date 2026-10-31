@@ -59,7 +59,8 @@ function joinInfo(g, p) {
 }
 
 function clientIp(socket) {
-  const xf = String(socket.handshake.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  // La DERNIÈRE adresse est celle ajoutée par le proxy de Render ; les premières peuvent être inventées par le client
+  const xf = String(socket.handshake.headers['x-forwarded-for'] || '').split(',').pop().trim();
   const ip = xf || socket.handshake.address || '';
   return /^(::1|127\.|::ffff:127\.)/.test(ip) ? '' : ip; // pas de blocage par IP en local
 }

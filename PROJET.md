@@ -174,7 +174,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 38. (fait) Podium de l'animateur : encadré « 📚 À revoir avec la classe » = les questions sous 60 % de bonnes réponses, les moins réussies d'abord, 3 au plus (`toReview` dans `public/host/results-csv.js`, testé par `tests/results-csv.js`).
 
-39. (fait) Protection contre les codes PIN devinés au hasard : après 8 codes faux en une minute sur une connexion (ou 40 depuis une même adresse, pour ne pas gêner une classe entière derrière la même box), « Trop d'essais de code : attends une minute avant de réessayer. ». `tooManyTries` / `countFail` en haut de `src/sockets.js` (pas de limite par adresse en local).
+39. (fait) Protection contre les codes PIN devinés au hasard : après 8 codes faux en une minute sur une connexion (ou 40 depuis une même adresse, pour ne pas gêner une classe entière derrière la même box), « Trop d'essais de code : attends une minute avant de réessayer. ». `tooManyTries` / `countFail` en haut de `src/sockets.js` (pas de limite par adresse en local). L'adresse d'un appareil (`clientIp` dans `src/room.js`, testé par `tests/client-ip.js`) est la DERNIÈRE de l'en-tête `X-Forwarded-For` (ajoutée par le proxy de Render) : avant, la première était prise, et un client pouvait l'inventer pour contourner une exclusion.
 
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
