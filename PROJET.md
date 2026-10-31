@@ -226,6 +226,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 64. (fait) Adresse inconnue (lien mal copié) : au lieu de « Cannot GET » en anglais, une page « introuvable » en français (`public/404.html`, statut 404) avec le Professeur et deux liens : Accueil, Rejoindre une partie. Dernier `app.use` dans `server.js`. Test smoke.
 
+65. (fait) Code de partie faux, message plus clair sur le téléphone : « Le code a 6 chiffres : vérifie-le sur l'écran de l'animateur. » (code trop court ou trop long) ou « Aucune partie avec ce code. Vérifie les 6 chiffres sur l'écran de l'animateur. » (au lieu de « Code PIN introuvable. »). `player:join` dans `sockets.js`, tests smoke mis à jour.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

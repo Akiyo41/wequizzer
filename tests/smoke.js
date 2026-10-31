@@ -477,7 +477,7 @@ const tests = {
     for (let i = 0; i < 9; i++) s.emit('player:join', { pin: '00000' + i, name: 'Robot', device: 'test-robot' });
     await new Promise((r) => setTimeout(r, 500));
     assert.strictEqual(errors.length, 9);
-    assert.ok(errors.slice(0, 8).every((m) => m === 'Code PIN introuvable.'), errors.join(' | '));
+    assert.ok(errors.slice(0, 8).every((m) => m === "Aucune partie avec ce code. Vérifie les 6 chiffres sur l'écran de l'animateur."), errors.join(' | '));
     assert.ok(/Trop d.essais/.test(errors[8]), errors[8]);
     s.close();
   },
@@ -525,7 +525,7 @@ const tests = {
     const s = connect();
     const err = once(s, 'join:error');
     s.emit('player:join', { pin: pins[0], name: 'Zoe' });
-    assert.strictEqual(await err, 'Code PIN introuvable.');
+    assert.strictEqual(await err, "Aucune partie avec ce code. Vérifie les 6 chiffres sur l'écran de l'animateur.");
     s.close();
     host.close();
   },
@@ -621,7 +621,10 @@ const tests = {
     const s = connect();
     const e1 = once(s, 'join:error');
     s.emit('player:join', { pin: '000000', name: 'Test' });
-    assert.strictEqual(await e1, 'Code PIN introuvable.');
+    assert.strictEqual(await e1, "Aucune partie avec ce code. Vérifie les 6 chiffres sur l'écran de l'animateur.");
+    const e2 = once(s, 'join:error');
+    s.emit('player:join', { pin: '12345', name: 'Test' });
+    assert.strictEqual(await e2, "Le code a 6 chiffres : vérifie-le sur l'écran de l'animateur.", 'code trop court');
     s.close();
   },
 };

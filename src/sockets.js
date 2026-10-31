@@ -268,7 +268,10 @@ function setupSockets(io) {
       name = String(name || '').trim().replace(/\s+/g, ' ').slice(0, 16);
       if (tooManyTries(socket)) return socket.emit('join:error', 'Trop d\'essais de code : attends une minute avant de réessayer.');
       const g = games[pin];
-      if (!g) { countFail(socket); return socket.emit('join:error', 'Code PIN introuvable.'); }
+      if (!g) {
+        countFail(socket);
+        return socket.emit('join:error', pin.length !== 6 ? "Le code a 6 chiffres : vérifie-le sur l'écran de l'animateur." : "Aucune partie avec ce code. Vérifie les 6 chiffres sur l'écran de l'animateur.");
+      }
       device = typeof device === 'string' ? device.slice(0, 40) : '';
       const left = banLeft(g, socket, device);
       if (left) return socket.emit('join:error', banMessage(left));
