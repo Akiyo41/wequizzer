@@ -222,7 +222,8 @@ function setupSockets(io) {
       const g = hostGame();
       if (!g || !['countdown', 'reading', 'question', 'results'].includes(g.state)) return;
       g.paused = false;
-      endGame(g.pin);
+      const asked = g.state === 'results' ? g.index + 1 : g.index; // questions dont le résultat a été montré
+      endGame(g.pin, { asked, total: g.questions.length });
     });
     socket.on('host:moreTime', () => {
       const g = hostGame();

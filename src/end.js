@@ -35,7 +35,8 @@ function endPayloadFor(g, p, ranked, titles, tboard) {
   };
 }
 
-function endGame(pin) {
+// stopped : { asked, total } quand l'animateur a terminé avant la dernière question
+function endGame(pin, stopped = null) {
   const g = games[pin];
   clearTimer(g);
   g.state = 'end';
@@ -67,6 +68,7 @@ function endGame(pin) {
     clouds: Object.keys(g.clouds || {}).map(Number).sort((a, b) => a - b).map((k) => g.clouds[k]),
     teams: tboard,
     quizTitle: g.quiz ? g.quiz.title : '',
+    stopped,
   };
   g.endCtx = { ranked, titles, tboard };
   toHost(g, 'end', g.endData);

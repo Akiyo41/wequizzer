@@ -456,6 +456,9 @@ socket.on('end', (d) => {
   const teamy = d.mode === 'teams' || d.mode === 'hangman';
   const elim = d.mode === 'elimination' || (d.heartsMode && !teamy);
   $('endHead').textContent = teamy ? 'Les équipes' : elim ? 'Les survivants' : 'Podium final';
+  // partie terminée avant la fin avec le bouton « Terminer »
+  $('endStopped').classList.toggle('hidden', !d.stopped);
+  if (d.stopped) $('endStopped').textContent = '🏁 Partie terminée après ' + d.stopped.asked + ' question' + (d.stopped.asked > 1 ? 's' : '') + ' sur ' + d.stopped.total + '.';
   // équipes
   const tb = $('teamBoard');
   tb.innerHTML = '';

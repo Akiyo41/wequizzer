@@ -95,6 +95,10 @@ const tests = {
     assert.strictEqual(l[3], 'Rang;Pseudo;Points;Bonnes réponses;En jeu');
     assert.strictEqual(l[4], '1;"A";1;1 / 1;Oui');
   },
+  'partie terminée avant la fin : nombre de questions posées sous la date'() {
+    const l = lines(resultsCsv({ quizTitle: 'Q', questions: 1, stopped: { asked: 3, total: 10 }, results: [], qstats: [] }, 'x'));
+    assert.deepStrictEqual(l.slice(0, 4), ['Quiz;"Q"', 'Date;x', 'Questions posées;3 / 10 (partie terminée avant la fin)', '']);
+  },
   'formules de tableur neutralisées dans les pseudos'() {
     const l = lines(resultsCsv({ quizTitle: '=1+1', questions: 1, results: [{ rank: 1, name: '=HYPERLINK("x")', score: 0, correct: 0, team: null }], qstats: [] }, 'x'));
     assert.strictEqual(l[0], 'Quiz;"\'=1+1"');

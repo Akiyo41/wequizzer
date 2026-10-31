@@ -16,7 +16,9 @@ function resultsCsv(d, date) {
   // une colonne par question notée (Q1, Q2…) : Juste, Faux, ou vide si le joueur n'y a pas joué
   const nq = res.reduce((n, r) => Math.max(n, (r.answers || []).length), 0);
   const qcols = Array.from({ length: nq }, (_, i) => 'Q' + (i + 1));
-  const L = ['Quiz;' + txt(d.quizTitle), 'Date;' + date, ''];
+  const L = ['Quiz;' + txt(d.quizTitle), 'Date;' + date];
+  if (d.stopped) L.push('Questions posées;' + d.stopped.asked + ' / ' + d.stopped.total + ' (partie terminée avant la fin)');
+  L.push('');
   L.push(['Rang', 'Pseudo'].concat(teams ? ['Équipe'] : [], ['Points', 'Bonnes réponses'], avg ? ['Temps moyen (s)'] : [], hearts ? ['Cœurs'] : [], elim ? ['En jeu'] : [], qcols).join(';'));
   res.forEach((r) => {
     const row = [r.rank, txt(r.name)];

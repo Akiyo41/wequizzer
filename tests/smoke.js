@@ -327,6 +327,7 @@ const tests = {
     const e = await end;
     assert.strictEqual(e.questions, 1);
     assert.deepStrictEqual(e.board.map((b) => [b.name, b.score]), [['Alice', 1], ['Bob', 0]]);
+    assert.deepStrictEqual(e.stopped, { asked: 1, total: QUIZ.questions.length }, 'arrêtée après la 1re question');
     assert.strictEqual((await endP).rank, 1);
     close(game);
   },
