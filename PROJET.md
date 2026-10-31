@@ -200,6 +200,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 51. (fait) Doublons dans un quiz : en enregistrant, si deux questions ont le même texte (sans tenir compte des majuscules, accents, ponctuation) et la même image, un message prévient « ⚠️ Les questions 1 et 3 sont identiques » (le quiz est enregistré quand même). Même avertissement après « Créer avec une IA » ou un tableur importé (`aiCreate`). `sameQuestions` dans `quiz-labels.js`, testé.
 
+52. (fait) Podium de l'animateur quand personne n'a eu une seule bonne réponse : plus de couronne sur le 1er ni de fanfare / confettis (comme sur les téléphones), le Professeur remercie tout le monde.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

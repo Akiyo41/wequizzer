@@ -479,13 +479,15 @@ socket.on('end', (d) => {
       tb.appendChild(row);
     });
   }
+  // personne n'a eu une seule bonne réponse : pas de couronne ni de confettis pour un « gagnant » à 0
+  const zero = !teamy && d.questions > 0 && board[0] && board[0].correct === 0;
   const pod = $('podium');
   pod.innerHTML = '';
   [1, 0, 2].forEach((idx) => {
     const p = board[idx];
     if (!p) return;
     const dd = el('div', 'pod p' + (idx + 1));
-    if (idx === 0) dd.appendChild(el('i', 'ti ti-crown crown'));
+    if (idx === 0 && !zero) dd.appendChild(el('i', 'ti ti-crown crown'));
     dd.appendChild(el('div', 'av', p.avatar));
     dd.appendChild(el('div', 'who', p.name));
     dd.appendChild(el('div', 'sc', elim ? (p.alive ? aliveText(p) : scoreText(p, d)) : scoreText(p, d)));
@@ -541,14 +543,13 @@ socket.on('end', (d) => {
   const winner = teamy && d.teams && d.teams[0] ? 'l\'équipe ' + d.teams[0].name : board[0] ? board[0].avatar + ' ' + board[0].name : '';
   if (!again) {
     // personne n'a eu une seule bonne réponse : le Professeur remercie tout le monde au lieu d'applaudir un « gagnant » à 0
-    const zero = !teamy && d.questions > 0 && board[0] && board[0].correct === 0;
     if (!teamy && !d.questions && winner) Brand.speak($('sayHostEnd'), $('hostEndMascot'), 'animSondage', 'question'); // rien à gagner : pas de « bravo au gagnant »
     else if (winner && zero) Brand.speak($('sayHostEnd'), $('hostEndMascot'), 'animFinZero', 'desole');
     else if (winner) Brand.speak($('sayHostEnd'), $('hostEndMascot'), 'animPodium', 'bravo', { gagnant: winner });
     else { $('sayHostEnd').classList.add('hidden'); $('hostEndMascot').classList.remove('hidden'); }
   }
   show('end');
-  setTimeout(() => { FX.fanfare(); FX.confetti(90); }, 1500);
+  if (!zero) setTimeout(() => { FX.fanfare(); FX.confetti(90); }, 1500);
 });
 $('shareBtn').onclick = () => {
   if (!lastEnd) return;
