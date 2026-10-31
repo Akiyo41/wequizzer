@@ -1,12 +1,13 @@
 // Tableur des résultats de fin de partie (pour noter une classe, garder une trace…)
 // resultsCsv(données de fin, date affichée) → texte CSV (séparateur ;, avec BOM pour qu'Excel lise les accents)
+// Case de texte : les cases qui commencent par = + - @ seraient lues comme des formules par le tableur
+function csvText(s) {
+  let v = String(s === undefined || s === null ? '' : s);
+  if (/^[=+\-@\t\r]/.test(v)) v = '\'' + v;
+  return '"' + v.replace(/"/g, '""') + '"';
+}
 function resultsCsv(d, date) {
-  // les cases qui commencent par = + - @ seraient lues comme des formules par le tableur
-  const txt = (s) => {
-    let v = String(s === undefined || s === null ? '' : s);
-    if (/^[=+\-@\t\r]/.test(v)) v = '\'' + v;
-    return '"' + v.replace(/"/g, '""') + '"';
-  };
+  const txt = csvText;
   const res = d.results || [];
   const teams = res.some((r) => r.team);
   const hearts = !!d.heartsMode;
@@ -42,4 +43,14 @@ function toReview(qstats) {
     .sort((a, b) => a.pct - b.pct)
     .slice(0, 3);
 }
-if (typeof module !== 'undefined') module.exports = { resultsCsv, toReview };
+// Page Stats : réussite de chaque question sur toutes les parties d'un quiz, les moins réussies d'abord
+function statsCsv(st, title, date) {
+  const L = ['Quiz;' + csvText(title), 'Date;' + date, 'Parties jouées;' + st.games, '', 'Question;Bonnes réponses;Réussite'];
+  Object.keys(st.qs)
+    .map((k) => ({ label: k, ok: st.qs[k].ok, total: st.qs[k].total }))
+    .map((q) => ({ ...q, pct: q.total ? Math.round((100 * q.ok) / q.total) : 0 }))
+    .sort((a, b) => a.pct - b.pct)
+    .forEach((q) => L.push(csvText(q.label) + ';' + q.ok + ' / ' + q.total + ';' + q.pct + ' %'));
+  return '﻿' + L.join('\r\n');
+}
+if (typeof module !== 'undefined') module.exports = { resultsCsv, toReview, statsCsv };

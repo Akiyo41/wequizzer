@@ -190,6 +190,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 46. (fait) Éditeur Vrai/Faux en rafale : bouton « Remplir avec un exemple » (5 affirmations sur les animaux, avec explications ; seulement si la liste est vide), comme les éditeurs de roue et de jeu de mots (`tfExample`, `tf-editor.js`). L'éditeur de quiz aussi : 4 questions d'exemple, une par type (choix unique, vrai/faux, choix multiple, réponse écrite ; `EDITOR_EXAMPLE` / `edExample` dans `editor.js`, `editorQ` = question enregistrée → question de l'éditeur).
 
+47. (fait) Page Stats : bouton « Télécharger (Excel) » = réussite de chaque question sur toutes les parties du quiz, les moins réussies d'abord (`statsCsv` dans `results-csv.js`, testé par `tests/results-csv.js` ; `csvText` partagé avec le tableau des résultats, formules neutralisées).
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

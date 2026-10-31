@@ -116,4 +116,11 @@ $('statsReset').onclick = async () => {
   const all = LS.get(STATS_KEY, {}); delete all[$('statsSelect').value]; LS.set(STATS_KEY, all); renderStats();
   UI.toast('🧹 Statistiques effacées');
 };
+$('statsCsv').onclick = () => {
+  const sel = $('statsSelect');
+  const st = LS.get(STATS_KEY, {})[sel.value];
+  if (!st) { UI.toast('Pas encore de partie terminée avec ce quiz.'); return; }
+  const title = (library.find((q) => q.id === sel.value) || {}).title || 'quiz';
+  download('stats-' + exportName(title).replace(/\.json$/, '') + '-' + localDay() + '.csv', statsCsv(st, title, new Date().toLocaleDateString('fr-FR')), 'text/csv');
+};
 $('statsBack').onclick = () => show('lobby');

@@ -1,6 +1,6 @@
 // Test du tableur des résultats de fin de partie (sans navigateur). Lancer avec : npm test
 const assert = require('assert');
-const { resultsCsv, toReview } = require('../public/host/results-csv.js');
+const { resultsCsv, toReview, statsCsv } = require('../public/host/results-csv.js');
 
 const lines = (csv) => csv.replace(/^﻿/, '').split('\r\n');
 
@@ -57,6 +57,18 @@ const tests = {
     assert.strictEqual(l[3], 'Rang;Pseudo;Points;Bonnes réponses;Temps moyen (s)');
     assert.strictEqual(l[4], '1;"A";2;2 / 2;4,3');
     assert.strictEqual(l[5], '2;"B";0;0 / 2;');
+  },
+  'statistiques cumulées d\'un quiz : les moins réussies d\'abord'() {
+    const l = lines(statsCsv({ games: 3, players: 40, qs: { 'Facile ?': { ok: 30, total: 40 }, '=Piège': { ok: 4, total: 40 } } }, 'Capitales', '1/11/2026'));
+    assert.deepStrictEqual(l, [
+      'Quiz;"Capitales"',
+      'Date;1/11/2026',
+      'Parties jouées;3',
+      '',
+      'Question;Bonnes réponses;Réussite',
+      '"\'=Piège";4 / 40;10 %',
+      '"Facile ?";30 / 40;75 %',
+    ]);
   },
   'équipes et cœurs : colonnes en plus'() {
     const csv = resultsCsv({
