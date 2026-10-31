@@ -19,11 +19,11 @@ function resultsCsv(d, date) {
   const L = ['Quiz;' + txt(d.quizTitle), 'Date;' + date];
   if (d.stopped) L.push('Questions posées;' + d.stopped.asked + ' / ' + d.stopped.total + ' (partie terminée avant la fin)');
   L.push('');
-  L.push(['Rang', 'Pseudo'].concat(teams ? ['Équipe'] : [], ['Points', 'Bonnes réponses'], avg ? ['Temps moyen (s)'] : [], hearts ? ['Cœurs'] : [], elim ? ['En jeu'] : [], qcols).join(';'));
+  L.push(['Rang', 'Pseudo'].concat(teams ? ['Équipe'] : [], ['Points', 'Bonnes réponses', 'Réussite'], avg ? ['Temps moyen (s)'] : [], hearts ? ['Cœurs'] : [], elim ? ['En jeu'] : [], qcols).join(';'));
   res.forEach((r) => {
     const row = [r.rank, txt(r.name)];
     if (teams) row.push(txt(r.team));
-    row.push(r.score, r.correct + ' / ' + (d.questions || 0));
+    row.push(r.score, r.correct + ' / ' + (d.questions || 0), d.questions ? Math.round((100 * r.correct) / d.questions) + ' %' : ''); // réussite : pratique pour un examen blanc
     if (avg) row.push(typeof r.avgTime === 'number' ? r.avgTime.toFixed(1).replace('.', ',') : '');
     if (hearts) row.push(r.alive ? (r.hearts || 0) : 'Éliminé');
     if (elim) row.push(r.alive ? 'Oui' : 'Éliminé');

@@ -20,9 +20,9 @@ const tests = {
       'Quiz;"Capitales"',
       'Date;30/10/2026',
       '',
-      'Rang;Pseudo;Points;Bonnes réponses',
-      '1;"Alice";2500;3 / 3',
-      '2;"Bob ""le grand""";900;1 / 3',
+      'Rang;Pseudo;Points;Bonnes réponses;Réussite',
+      '1;"Alice";2500;3 / 3;100 %',
+      '2;"Bob ""le grand""";900;1 / 3;33 %',
       '',
       'Question;Bonnes réponses;Réussite',
       '"Capitale de la France ?";2 / 2;100 %',
@@ -35,9 +35,9 @@ const tests = {
       results: [{ rank: 1, name: 'A', score: 2, correct: 2, team: null, answers: [true, true] }, { rank: 2, name: 'B', score: 0, correct: 0, team: null, answers: [null, false] }],
       qstats: [{ label: 'Un ?', ok: 1, total: 1 }, { label: 'Deux ?', ok: 1, total: 2 }],
     }, 'x'));
-    assert.strictEqual(l[3], 'Rang;Pseudo;Points;Bonnes réponses;Q1;Q2');
-    assert.strictEqual(l[4], '1;"A";2;2 / 2;Juste;Juste');
-    assert.strictEqual(l[5], '2;"B";0;0 / 2;;Faux');
+    assert.strictEqual(l[3], 'Rang;Pseudo;Points;Bonnes réponses;Réussite;Q1;Q2');
+    assert.strictEqual(l[4], '1;"A";2;2 / 2;100 %;Juste;Juste');
+    assert.strictEqual(l[5], '2;"B";0;0 / 2;0 %;;Faux');
   },
   'à revoir : les questions sous 60 % de réussite, les moins réussies d\'abord, 3 au plus'() {
     const qs = [
@@ -55,9 +55,9 @@ const tests = {
       results: [{ rank: 1, name: 'A', score: 2, correct: 2, team: null, avgTime: 4.25 }, { rank: 2, name: 'B', score: 0, correct: 0, team: null, avgTime: null }],
       qstats: [],
     }, 'x'));
-    assert.strictEqual(l[3], 'Rang;Pseudo;Points;Bonnes réponses;Temps moyen (s)');
-    assert.strictEqual(l[4], '1;"A";2;2 / 2;4,3');
-    assert.strictEqual(l[5], '2;"B";0;0 / 2;');
+    assert.strictEqual(l[3], 'Rang;Pseudo;Points;Bonnes réponses;Réussite;Temps moyen (s)');
+    assert.strictEqual(l[4], '1;"A";2;2 / 2;100 %;4,3');
+    assert.strictEqual(l[5], '2;"B";0;0 / 2;0 %;');
   },
   'statistiques cumulées d\'un quiz : les moins réussies d\'abord'() {
     const l = lines(statsCsv({ games: 3, players: 40, qs: { 'Facile ?': { ok: 30, total: 40 }, '=Piège': { ok: 4, total: 40 } } }, 'Capitales', '1/11/2026'));
@@ -86,15 +86,15 @@ const tests = {
       qstats: [],
     }, '1/1/2026');
     const l = lines(csv);
-    assert.strictEqual(l[3], 'Rang;Pseudo;Équipe;Points;Bonnes réponses;Cœurs');
-    assert.strictEqual(l[4], '1;"A";"Les Lions";2;2 / 2;2');
-    assert.strictEqual(l[5], '2;"B";"Les Aigles";0;0 / 2;Éliminé');
+    assert.strictEqual(l[3], 'Rang;Pseudo;Équipe;Points;Bonnes réponses;Réussite;Cœurs');
+    assert.strictEqual(l[4], '1;"A";"Les Lions";2;2 / 2;100 %;2');
+    assert.strictEqual(l[5], '2;"B";"Les Aigles";0;0 / 2;0 %;Éliminé');
     assert.strictEqual(l.length, 6, 'pas de bloc questions vide');
   },
   'élimination sans cœurs : colonne En jeu'() {
     const l = lines(resultsCsv({ quizTitle: 'Q', questions: 1, mode: 'elimination', results: [{ rank: 1, name: 'A', score: 1, correct: 1, team: null, alive: true }], qstats: [] }, 'x'));
-    assert.strictEqual(l[3], 'Rang;Pseudo;Points;Bonnes réponses;En jeu');
-    assert.strictEqual(l[4], '1;"A";1;1 / 1;Oui');
+    assert.strictEqual(l[3], 'Rang;Pseudo;Points;Bonnes réponses;Réussite;En jeu');
+    assert.strictEqual(l[4], '1;"A";1;1 / 1;100 %;Oui');
   },
   'partie terminée avant la fin : nombre de questions posées sous la date'() {
     const l = lines(resultsCsv({ quizTitle: 'Q', questions: 1, stopped: { asked: 3, total: 10 }, results: [], qstats: [] }, 'x'));
@@ -127,7 +127,7 @@ const tests = {
   'formules de tableur neutralisées dans les pseudos'() {
     const l = lines(resultsCsv({ quizTitle: '=1+1', questions: 1, results: [{ rank: 1, name: '=HYPERLINK("x")', score: 0, correct: 0, team: null }], qstats: [] }, 'x'));
     assert.strictEqual(l[0], 'Quiz;"\'=1+1"');
-    assert.strictEqual(l[4], '1;"\'=HYPERLINK(""x"")";0;0 / 1');
+    assert.strictEqual(l[4], '1;"\'=HYPERLINK(""x"")";0;0 / 1;0 %');
   },
 };
 
