@@ -228,7 +228,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 65. (fait) Code de partie faux, message plus clair sur le téléphone : « Le code a 6 chiffres : vérifie-le sur l'écran de l'animateur. » (code trop court ou trop long) ou « Aucune partie avec ce code. Vérifie les 6 chiffres sur l'écran de l'animateur. » (au lieu de « Code PIN introuvable. »). `player:join` dans `sockets.js`, tests smoke mis à jour.
 
-66. (fait) Aide : « ✨ Quoi de neuf ? » en tête (`faq-nouveau`), la liste des dernières nouveautés (Terminer, bonne réponse sur le téléphone, À revoir, quiz de révision, nuage de mots, doublons). À tenir à jour : 6 lignes au plus, les plus récentes d'abord.
+66. (fait) Aide : « ✨ Quoi de neuf ? » en tête (`faq-nouveau`), la liste des dernières nouveautés (Terminer, bonne réponse sur le téléphone, À revoir, quiz de révision, nuage de mots, doublons). À tenir à jour : 6 lignes au plus, les plus récentes d'abord. Pastille « nouveau » sur le bouton Aide tant que la liste n'a pas été lue (`NEWS` dans `faq.js`, à changer à chaque mise à jour de la liste ; `wequizzer.newsSeen`) ; le clic ouvre directement « Quoi de neuf ? ».
 
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
