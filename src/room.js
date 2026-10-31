@@ -40,7 +40,7 @@ function sendLobbyCount(g) {
 }
 
 function settingsPayload(g) {
-  return { theme: g.settings.theme, sounds: g.settings.sounds, volume: g.settings.volume, reactions: g.settings.reactions, changeAnswer: g.settings.changeAnswer };
+  return { theme: g.settings.theme, sounds: g.settings.sounds, volume: g.settings.volume, reactions: g.settings.reactions, changeAnswer: g.settings.changeAnswer, quizTitle: g.quiz ? g.quiz.title : '' };
 }
 function lobbyPayload(g, p) {
   return { ...settingsPayload(g), name: p.name, avatar: p.avatar };

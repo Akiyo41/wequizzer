@@ -298,6 +298,15 @@ const tests = {
     close(game);
   },
 
+  async 'salle d\'attente : les téléphones voient le nom du quiz, et le suivent'() {
+    const game = await setupGame({ mode: 'standard' }, QUIZ);
+    assert.strictEqual(game.players[0].info.quizTitle, 'Test');
+    const upd = once(game.players[1], 'game:settings');
+    game.host.emit('host:quiz', { ...QUIZ, title: 'Autre quiz' });
+    assert.strictEqual((await upd).quizTitle, 'Autre quiz');
+    close(game);
+  },
+
   async 'salle d\'attente : les téléphones voient combien de joueurs sont là'() {
     const game = await setupGame({ mode: 'standard' }, QUIZ);
     const count = once(game.players[0], 'lobby:count');

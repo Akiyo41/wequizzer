@@ -589,3 +589,5 @@ body.big-text .say-bubble, body.big-text .hint { font-size: 1.15rem; }
 .review-list { display: flex; flex-direction: column; gap: 6px; text-align: left; }
 .review-row { display: flex; gap: 10px; align-items: baseline; font-size: 1.2rem; font-weight: 700; }
 .review-pct { min-width: 54px; text-align: right; font-weight: 800; color: #ff8fab; }
+/* Téléphone, salle d'attente : nom du quiz qui va être joué */
+.wait-quiz { margin: 4px 0 0; font-weight: 800; font-size: 1.15rem; color: #fff; }

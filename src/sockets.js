@@ -138,6 +138,7 @@ function setupSockets(io) {
       }
       g.quiz = res.quiz;
       socket.emit('host:quiz:ok', { title: res.quiz.title, count: quizCount(res.quiz), kind: res.quiz.kind || 'quiz' });
+      allPeople(g).forEach((p) => toPlayer(p, 'game:settings', settingsPayload(g))); // le nom du quiz sur les téléphones
     });
 
     socket.on('host:settings', (input) => {

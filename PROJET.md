@@ -178,6 +178,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 40. (fait) Pendant la partie, le code PIN reste visible dans la barre du haut de l'animateur (`#barPin`) ; un clic affiche le QR code en grand (`qrBigOpen`), pour un joueur en retard. Expliqué dans l'Aide (`faq-retard`).
 
+41. (fait) Téléphone, salle d'attente : « 📚 nom du quiz » qui va être joué (`quizTitle` dans `settingsPayload`, `src/room.js` ; renvoyé aux joueurs quand l'animateur change de quiz ; affiché par `applySettings`, `play/base.js`). Les raccourcis de l'animateur sont ignorés quand le QR code est affiché en grand.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

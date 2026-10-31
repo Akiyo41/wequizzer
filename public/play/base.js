@@ -75,6 +75,11 @@ function applySettings(s) {
   if (!s) return;
   if (typeof s.reactions === 'boolean') settings.reactions = s.reactions;
   if (typeof s.changeAnswer === 'boolean') settings.changeAnswer = s.changeAnswer;
+  // nom du quiz qui va être joué (salle d'attente)
+  if (typeof s.quizTitle === 'string') {
+    $('waitQuiz').textContent = '📚 ' + s.quizTitle;
+    $('waitQuiz').classList.toggle('hidden', !s.quizTitle);
+  }
   show(curScreen);
 }
 
