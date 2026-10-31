@@ -14,6 +14,15 @@ socket.on('result', (r) => {
     show('spectate');
     return;
   }
+  // nuage de mots : les réponses de la classe, les plus fréquentes en plus gros
+  const cloud = $('resCloud');
+  cloud.innerHTML = '';
+  cloud.classList.toggle('hidden', !(r.cloud && r.cloud.length));
+  (r.cloud || []).forEach((w) => {
+    const s = el('span', 'cloud-word', w.text + (w.count > 1 ? ' × ' + w.count : ''));
+    s.style.fontSize = Math.min(1.8, 1 + (w.count - 1) * 0.2) + 'rem';
+    cloud.appendChild(s);
+  });
   if (r.type === 'poll' || r.type === 'words') {
     icon.textContent = r.answered ? (r.type === 'words' ? '☁️' : '🗳️') : '⏱️';
     t.textContent = r.answered ? (r.type === 'words' ? 'Merci pour ta réponse !' : 'Merci pour ton vote !') : 'Pas de réponse';

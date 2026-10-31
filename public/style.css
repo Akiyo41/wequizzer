@@ -593,3 +593,6 @@ body.big-text .say-bubble, body.big-text .hint { font-size: 1.15rem; }
 .wait-quiz { margin: 4px 0 0; font-weight: 800; font-size: 1.15rem; color: #fff; }
 /* Téléphone : pas de bouton de son en haut à droite, l'icône plein écran prend sa place */
 body:not(.has-snd) .fs-btn { right: 10px; }
+/* Téléphone : nuage de mots de la classe sur l'écran de résultat */
+.res-cloud { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 10px; margin: 12px auto 0; max-width: 360px; }
+.res-cloud .cloud-word { padding: 4px 12px; border-radius: 999px; background: rgba(255, 255, 255, .14); font-weight: 800; }

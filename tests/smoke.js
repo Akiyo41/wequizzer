@@ -291,6 +291,7 @@ const tests = {
     const quiz = { title: 'Nuage', questions: [{ type: 'words', text: 'Un mot pour décrire l\'été ?' }, { type: 'single', text: 'Q ?', choices: ['a', 'b'], correct: 0 }] };
     const game = await setupGame({ mode: 'standard', limitTime: false }, quiz);
     const res = once(game.host, 'results');
+    const myRes = once(game.players[0], 'result');
     const q = once(game.players[0], 'question', 15000);
     game.host.emit('host:start');
     assert.strictEqual((await q).type, 'words');
@@ -299,6 +300,8 @@ const tests = {
     const r = await res;
     assert.deepStrictEqual(r.texts, [{ text: 'Soleil', count: 2, ok: false }]);
     assert.strictEqual(r.okCount, 0);
+    // le téléphone reçoit aussi le nuage (sans les noms)
+    assert.deepStrictEqual((await myRes).cloud, [{ text: 'Soleil', count: 2 }]);
     // les réponses du nuage sont gardées pour le tableau des résultats
     const end = once(game.host, 'end', 15000);
     game.host.on('question', () => setTimeout(() => game.host.emit('host:skip'), 50));

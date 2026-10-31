@@ -286,6 +286,8 @@ function resultFor(g, q, p) {
     eliminated: !!p.eliminated,
     outNow: !!p.eliminated && p.elimRound === g.index,
     last: !!g.lastFlag,
+    // nuage de mots : les réponses de la classe (sans les noms), 8 au plus, aussi sur le téléphone
+    cloud: q.type === 'words' && g.hostResults && g.hostResults.texts ? g.hostResults.texts.map(({ text, count }) => ({ text, count })) : null,
   };
 }
 
