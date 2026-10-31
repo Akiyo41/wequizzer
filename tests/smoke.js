@@ -110,6 +110,8 @@ const tests = {
   async 'images gardées en cache un jour (les pages, elles, sont toujours à jour)'() {
     const img = await fetch(URL + '/img/logo.webp');
     assert.ok(/max-age=86400/.test(img.headers.get('cache-control') || ''), img.headers.get('cache-control'));
+    const icons = await fetch(URL + '/icons/tabler-icons.min.css');
+    assert.ok(/max-age=604800/.test(icons.headers.get('cache-control') || ''), 'icônes : ' + icons.headers.get('cache-control'));
     const page = await fetch(URL + '/host.html');
     assert.ok(/max-age=0/.test(page.headers.get('cache-control') || ''), 'page : ' + page.headers.get('cache-control'));
   },

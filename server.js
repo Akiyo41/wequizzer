@@ -29,7 +29,8 @@ const DAY_CACHE = /[\\/]public[\\/](img|ico)[\\/]/;
 app.use(express.static(path.join(__dirname, 'public'), {
   setHeaders: (res, file) => { if (DAY_CACHE.test(file)) res.setHeader('Cache-Control', 'public, max-age=86400'); },
 }));
-app.use('/icons', express.static(path.join(__dirname, 'node_modules/@tabler/icons-webfont/dist')));
+// Icônes Tabler (700 Ko) : ne changent qu'avec la version du paquet, gardées une semaine
+app.use('/icons', express.static(path.join(__dirname, 'node_modules/@tabler/icons-webfont/dist'), { maxAge: '7d' }));
 app.get('/api/sample-quiz', (req, res) => {
   res.json({ title: 'Culture générale', questions: sampleQuestions });
 });
