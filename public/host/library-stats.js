@@ -24,6 +24,13 @@ async function openLibPage() {
     row.appendChild(el('i', 'ti ' + (p.flavor === 'tfrush' ? 'ti-bolt' : KIND_ICON[p.kind])));
     const nm = el('span', 'nm', p.title + ' · ' + n + ' ' + kindTxt + ' · ' + p.level);
     row.appendChild(nm);
+    // Tester avant d'ajouter (même aperçu que « Tester » dans Mes quiz), puis retour à la Bibliothèque
+    const t = el('button', 'btn ghost mini');
+    t.type = 'button';
+    t.innerHTML = '<i class="ti ti-eye-check"></i> Tester';
+    t.setAttribute('aria-label', 'Tester « ' + p.title + ' »');
+    t.onclick = () => startPreview(p, 'libPage');
+    row.appendChild(t);
     const b = el('button', 'btn ghost mini');
     b.type = 'button';
     const label = () => (added[p.pid] ? '<i class="ti ti-check"></i> Ajouté (en rajouter une copie)' : '<i class="ti ti-plus"></i> Ajouter');
