@@ -149,7 +149,12 @@ function renderStats() {
 $('openStats').onclick = () => {
   const sel = $('statsSelect');
   sel.innerHTML = '';
-  library.forEach((q) => { const o = new Option(q.title, q.id); sel.appendChild(o); });
+  // même rangement que la liste « Quiz choisi » (par thème, puis par ordre alphabétique)
+  quizGroups(library).forEach((g) => {
+    const box = g.label ? el('optgroup') : sel;
+    if (g.label) { box.label = g.label; sel.appendChild(box); }
+    g.quizzes.forEach((q) => box.appendChild(new Option(q.title, q.id)));
+  });
   if (selectedId) sel.value = selectedId;
   renderStats();
   show('statsPage');
