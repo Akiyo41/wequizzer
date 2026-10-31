@@ -25,17 +25,19 @@ UI.fullscreenButton();
 // ----- Éditeur de quiz -----
 let editing = null;
 const blankQ = () => ({ type: 'single', text: '', image: '', choices: ['', '', '', ''], correct: 0, answers: [], double: false, explain: '' });
+// Question enregistrée → question de l'éditeur (cases de réponse complétées)
+function editorQ(q) {
+  const n = normQ(q);
+  if (n.type === 'tf') n.choices = ['', '', '', ''];
+  while (n.choices.length < (n.type === 'order' ? 6 : 4)) n.choices.push('');
+  return n;
+}
 function openEditor(quiz) {
   editing = quiz
     ? {
         id: quiz.id,
         title: quiz.title,
-        questions: quiz.questions.map((q) => {
-          const n = normQ(q);
-          if (n.type === 'tf') n.choices = ['', '', '', ''];
-          while (n.choices.length < (n.type === 'order' ? 6 : 4)) n.choices.push('');
-          return n;
-        }),
+        questions: quiz.questions.map(editorQ),
       }
     : { id: uid(), title: '', questions: [blankQ()] };
   $('edHead').textContent = quiz ? 'Modifier le quiz' : 'Nouveau quiz';
@@ -345,6 +347,20 @@ async function removeQ(i) {
   editing.questions.splice(i, 1);
   renderEditor();
 }
+// Exemple prêt à modifier : un type de question par carte (seulement si le quiz est encore vide)
+const EDITOR_EXAMPLE = [
+  { type: 'single', text: 'Quelle est la capitale de la France ?', choices: ['Paris', 'Lyon', 'Marseille', 'Lille'], correct: 0, explain: 'Paris est la capitale depuis plus de mille ans.' },
+  { type: 'tf', text: 'Le Soleil est une étoile.', correct: 0 },
+  { type: 'multi', text: 'Lesquels sont des mammifères ?', choices: ['Le chat', 'La truite', 'La baleine', 'Le moineau'], correct: [0, 2] },
+  { type: 'text', text: 'Qui a peint la Joconde ?', answers: ['Vinci', 'Léonard de Vinci'] },
+];
+$('edExample').onclick = () => {
+  if (!editing.questions.every(questionEmpty)) { $('edError').textContent = 'Il y a déjà des questions : enlève-les d\'abord si tu veux mettre l\'exemple.'; return; }
+  $('edError').textContent = '';
+  if (!$('edTitle').value.trim()) $('edTitle').value = 'Mon premier quiz';
+  editing.questions = EDITOR_EXAMPLE.map(editorQ);
+  renderEditor();
+};
 $('addQ').onclick = () => { editing.questions.push(blankQ()); renderEditor(); window.scrollTo(0, document.body.scrollHeight); };
 $('newQuiz').onclick = () => openEditor(null);
 $('editQuiz').onclick = () => { const q = currentQuiz(); if (q) (q.kind === 'wheel' ? openWheelEditor(q) : q.kind === 'letters' ? openLettersEditor(q) : q.flavor === 'tfrush' ? openTfEditor(q) : openEditor(q)); };
