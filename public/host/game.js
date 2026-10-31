@@ -11,10 +11,11 @@ function kick(p) {
 }
 // Joueurs déjà vus : un petit « ding » et une pastille qui grossit pour chaque nouvel arrivant dans la salle d'attente
 let seenPids = null;
+let lastDing = 0; // un seul « ding » par demi-seconde quand toute la classe arrive d'un coup
 socket.on('host:players', (list) => {
   const fresh = seenPids ? list.filter((p) => !seenPids.has(p.pid)).map((p) => p.pid) : [];
   seenPids = new Set(list.map((p) => p.pid));
-  if (fresh.length && !$('lobby').classList.contains('hidden')) FX.join();
+  if (fresh.length && !$('lobby').classList.contains('hidden') && Date.now() - lastDing > 500) { lastDing = Date.now(); FX.join(); }
   lastPlayers = list;
   renderTeamAssign();
   const box = $('players');

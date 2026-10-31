@@ -234,7 +234,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 68. (fait) « Fermer la salle » (salle d'attente et liste des joueurs pendant la partie) : plus de nouveaux joueurs, ceux déjà là peuvent revenir après une coupure. Serveur : `host:lock` → `g.locked`, refus dans `player:join`, état renvoyé à la reconnexion (`sendHostState`). Test smoke. Aide `faq-exclure` ; ajouté à « Quoi de neuf ? » (`NEWS` = 2026-10-31b). Salle fermée : message « 🔒 Salle fermée » sous le QR code (`#lockNote`).
 
-69. (fait) Salle d'attente de l'animateur : à chaque nouvel arrivant, un petit « ding » (`FX.join`, coupé avec le son) et sa pastille apparaît en grossissant (`.chip.just-in`). Pas de son au chargement de la page ni quand un joueur se déconnecte (`seenPids` dans `game.js`).
+69. (fait) Salle d'attente de l'animateur : à chaque nouvel arrivant, un petit « ding » (`FX.join`, coupé avec le son) et sa pastille apparaît en grossissant (`.chip.just-in`). Pas de son au chargement de la page ni quand un joueur se déconnecte (`seenPids` dans `game.js`). Un seul « ding » par demi-seconde quand toute la classe arrive d'un coup (`lastDing`).
 
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
