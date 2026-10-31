@@ -610,3 +610,7 @@ body:not(.has-snd) .fs-btn { right: 10px; }
 .res-cloud .cloud-word { padding: 4px 12px; border-radius: 999px; background: rgba(255, 255, 255, .14); font-weight: 800; }
 .chip.just-in { animation: joinPop .45s ease-out; }
 @keyframes joinPop { 0% { transform: scale(.4); opacity: 0; } 70% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); } }
+/* Bibliothèque : boutons des thèmes */
+.lib-themes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.lib-themes .chip { cursor: pointer; font-family: inherit; border: 0; color: #fff; font-weight: 700; }
+.lib-themes .chip.on { background: var(--accent); color: #14213d; }

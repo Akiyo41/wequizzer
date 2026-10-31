@@ -8,6 +8,19 @@ async function openLibPage() {
     try { libPacks = await (await fetch('/library.json')).json(); }
     catch (e) { $('libList').textContent = 'La bibliothèque ne peut pas être chargée.'; return; }
   }
+  // un bouton par thème (avec le nombre de quiz) : un clic n'affiche que ce thème, un 2e clic montre tout
+  const themes = {};
+  libPacks.forEach((p) => { themes[p.theme] = (themes[p.theme] || 0) + 1; });
+  const tbox = $('libThemes');
+  tbox.innerHTML = '';
+  Object.keys(themes).sort((a, b) => a.localeCompare(b, 'fr')).forEach((t) => {
+    const on = $('libSearch').value === t;
+    const b = el('button', 'chip' + (on ? ' on' : ''), t + ' (' + themes[t] + ')');
+    b.type = 'button';
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    b.onclick = () => { $('libSearch').value = on ? '' : t; openLibPage(); };
+    tbox.appendChild(b);
+  });
   const added = LS.get('wequizzer.libAdded', {});
   const box = $('libList');
   box.innerHTML = '';

@@ -250,6 +250,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 76. (fait) « Quoi de neuf ? » mis à jour (`NEWS` = 2026-11-01) : Copier le classement, pourcentages pour les examens blancs + 3 quiz FIMO, Fermer la salle, Terminer, bonne réponse sur le téléphone, quiz de révision.
 
+77. (fait) Bibliothèque : une rangée de boutons par thème avec le nombre de quiz (« Transport routier (FIMO) (13) »…) ; un clic n'affiche que ce thème (il remplit la recherche), un 2e clic remontre tout. `#libThemes` dans `library-stats.js`, style `.lib-themes`.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
