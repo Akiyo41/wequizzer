@@ -560,3 +560,7 @@ a.create-card { text-decoration: none; }
 /* Bouton plein écran (animateur), à gauche du bouton de son */
 .fs-btn { right: 60px; }
 body.has-fs .hostbar { padding-right: 112px; }
+/* QR code en grand (clic sur le QR de la salle d'attente) */
+#qr { cursor: zoom-in; }
+.qr-big { width: min(78vh, 88vw); height: auto; aspect-ratio: 1; background: #fff; border-radius: 20px; padding: 12px; }
+#qrBig .pin { font-size: 2.4rem; }

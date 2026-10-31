@@ -156,6 +156,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 29. (fait) « + 10 s » pendant une question chronométrée (bouton à côté de « Voir le résultat », touche **+**) : 10 secondes de plus pour tout le monde, 2 minutes en plus au maximum par question. Serveur : `addTime` dans `src/timer.js` (`g.extraTime`, remis à 0 à chaque question ; `qTime` en tient compte, donc les points de vitesse restent justes), événement `time:more` { time, left, more } vers l'animateur et les téléphones, qui relancent leur chrono.
 
+30. (fait) QR code en grand : clic (ou Entrée) sur le QR de la salle d'attente → plein écran avec le code et l'adresse (`#qrBig`, fin de `public/host/connection.js`), pour les élèves du fond de la salle ; clic ou Échap pour fermer.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

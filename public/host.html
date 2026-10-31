@@ -41,7 +41,7 @@
         <div class="join-mascot"><span data-mascot="accueil" data-size="md" id="hostJoinMascot"></span><div class="say up hidden" id="sayHostJoin"></div></div>
         <div class="join-main">
           <h2 class="join-title"><i class="ti ti-qrcode"></i> Scanne le QR code pour jouer</h2>
-          <img id="qr" class="qr hidden" alt="QR code pour rejoindre la partie">
+          <img id="qr" class="qr hidden" alt="QR code pour rejoindre la partie (touche pour l'agrandir)" title="Agrandir le QR code" role="button" tabindex="0">
           <p class="join-or">ou va sur <span class="url" id="joinUrl">…</span></p>
           <p class="join-code">Code : <span class="pin" id="pin">······</span></p>
           <div class="invite-row">
@@ -263,7 +263,7 @@
     <div class="card faq">
       <h3 class="set-sec"><i class="ti ti-player-play"></i> Pendant la partie</h3>
       <details id="faq-clavier"><summary>Il y a des raccourcis clavier ?</summary>
-        <p>Oui, pendant la partie (pratique quand ton ordinateur est branché au vidéoprojecteur) : <b>Espace</b> ou <b>Entrée</b> = « Voir le résultat » pendant une question, puis « Question suivante » ; <b>P</b> = pause ou reprise ; <b>+</b> = 10 secondes de plus (aussi avec le bouton « + 10 s » quand il y a un chrono) ; <b>F</b> = plein écran (aussi avec le bouton <i class="ti ti-maximize"></i> en haut à droite). Échap quitte le plein écran.</p></details>
+        <p>Oui, pendant la partie (pratique quand ton ordinateur est branché au vidéoprojecteur) : <b>Espace</b> ou <b>Entrée</b> = « Voir le résultat » pendant une question, puis « Question suivante » ; <b>P</b> = pause ou reprise ; <b>+</b> = 10 secondes de plus (aussi avec le bouton « + 10 s » quand il y a un chrono) ; <b>F</b> = plein écran ; dans la salle d'attente, un clic sur le QR code l'affiche en grand pour le fond de la salle (aussi avec le bouton <i class="ti ti-maximize"></i> en haut à droite). Échap quitte le plein écran.</p></details>
       <details id="faq-pause"><summary>Je peux faire une pause ?</summary>
         <p>Oui : le bouton « Pause » en haut arrête le chrono pour tout le monde. Les joueurs voient que la partie est en pause. « Reprendre » relance tout là où c'était.</p></details>
       <details id="faq-changer"><summary>Un joueur peut changer sa réponse ?</summary>
@@ -570,6 +570,13 @@
     <button id="kickCancel" class="btn ghost mini">Annuler</button>
   </div>
 
+  <!-- QR code en grand, pour que tout le monde puisse le scanner depuis le fond de la salle -->
+  <div id="qrBig" class="overlay hidden" role="dialog" aria-label="QR code en grand" style="z-index:58;cursor:zoom-out">
+    <img id="qrBigImg" class="qr-big" alt="QR code pour rejoindre la partie">
+    <p class="join-code">Code : <span class="pin" id="qrBigPin"></span></p>
+    <p id="qrBigUrl"></p>
+    <p class="hint">Touche l'écran ou appuie sur Échap pour fermer.</p>
+  </div>
   <div id="pauseOv" class="overlay hidden">
     <div class="big-emoji">⏸️</div>
     <h1>Partie en pause</h1>

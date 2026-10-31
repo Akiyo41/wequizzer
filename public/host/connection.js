@@ -52,3 +52,17 @@ socket.on('host:created', async (d) => {
   const screen = screens.find((s) => !$(s).classList.contains('hidden'));
   if (TourLogic.shouldOffer({ seen: LS.get('wequizzer.tourSeen', false), screen, rejoined: !!d.rejoined })) Tour.offer();
 });
+
+// ----- QR code en grand (pour le fond de la salle) : clic sur le QR ; Échap ou clic pour fermer -----
+function qrBigOpen() {
+  if (!$('qr').src) return;
+  $('qrBigImg').src = $('qr').src;
+  $('qrBigPin').textContent = $('pin').textContent;
+  $('qrBigUrl').textContent = 'ou va sur ' + $('joinUrl').textContent;
+  $('qrBig').classList.remove('hidden');
+}
+const qrBigClose = () => $('qrBig').classList.add('hidden');
+$('qr').onclick = qrBigOpen;
+$('qr').addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); qrBigOpen(); } });
+$('qrBig').onclick = qrBigClose;
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('qrBig').classList.contains('hidden')) qrBigClose(); });
