@@ -110,6 +110,17 @@ $('openStats').onclick = () => {
   show('statsPage');
 };
 $('statsSelect').onchange = renderStats;
+// Les questions les plus ratées (sous 60 %) dans un nouveau quiz « Révision - … », à rejouer un autre jour
+$('statsRevision').onclick = () => {
+  const id = $('statsSelect').value;
+  const r = revisionQuiz(library.find((q) => q.id === id), LS.get(STATS_KEY, {})[id]);
+  if (!r) { UI.toast('Aucune question sous 60 % de réussite : rien à réviser 👍'); return; }
+  const entry = { id: uid(), ...r, title: freeTitle(r.title, library.map((x) => x.title)) };
+  library.push(entry);
+  if (!saveLibrary()) return;
+  renderQuizSelect();
+  UI.toast('✔ Quiz « ' + entry.title + ' » ajouté à Mes quiz (' + entry.questions.length + ' question' + (entry.questions.length > 1 ? 's' : '') + ')');
+};
 $('statsReset').onclick = async () => {
   const sel = $('statsSelect');
   if (!LS.get(STATS_KEY, {})[sel.value]) return;

@@ -1,8 +1,18 @@
 // Test de la liste « Quiz choisi » : ordre alphabétique et noms affichés. Lancer avec : npm test
 const assert = require('assert');
-const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage } = require('../public/host/quiz-labels.js');
+const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage, revisionQuiz } = require('../public/host/quiz-labels.js');
 
 const tests = {
+  "quiz de révision : les questions sous 60 % de réussite, dans l'ordre du quiz"() {
+    const quiz = { id: 'q1', title: 'Capitales', questions: [{ type: 'single', text: 'France ?' }, { type: 'single', text: 'Pérou ?' }, { type: 'text', text: 'Japon ?' }, { type: 'single', text: 'Jamais jouée ?' }] };
+    const st = { games: 2, qs: { 'France ?': { ok: 9, total: 10 }, 'Pérou ?': { ok: 2, total: 10 }, 'Japon ?': { ok: 5, total: 10 } } };
+    const r = revisionQuiz(quiz, st);
+    assert.strictEqual(r.title, 'Révision - Capitales');
+    assert.deepStrictEqual(r.questions.map((q) => q.text), ['Pérou ?', 'Japon ?']);
+    assert.ok(!('id' in r), 'un nouvel id sera donné');
+    assert.strictEqual(revisionQuiz(quiz, { games: 1, qs: { 'France ?': { ok: 9, total: 10 } } }), null, 'rien à réviser');
+    assert.strictEqual(revisionQuiz({ kind: 'wheel', title: 'R', pairs: [] }, st), null, 'seulement les quiz classiques');
+  },
   'message des doublons'() {
     assert.strictEqual(twinsMessage([]), '');
     assert.strictEqual(twinsMessage([[1, 3]]), '⚠️ Les questions 1 et 3 sont identiques');

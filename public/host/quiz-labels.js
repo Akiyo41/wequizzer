@@ -69,10 +69,19 @@ function sameQuestions(questions) {
   });
   return out;
 }
+// Page Stats : nouveau quiz « Révision - … » avec les questions sous 60 % de réussite (quiz classique seulement),
+// dans l'ordre du quiz. null s'il n'y a rien à réviser. Les statistiques sont rangées par texte de question (120 caractères).
+function revisionQuiz(quiz, st) {
+  if (!quiz || quiz.kind || !st || !st.qs) return null;
+  const weak = (q) => { const s = st.qs[String(q.text || '').slice(0, 120)]; return s && s.total > 0 && (100 * s.ok) / s.total < 60; };
+  const questions = (quiz.questions || []).filter(weak).map((q) => JSON.parse(JSON.stringify(q)));
+  if (!questions.length) return null;
+  return { ...(quiz.flavor ? { flavor: quiz.flavor } : {}), title: ('Révision - ' + quiz.title).slice(0, 60), questions };
+}
 // Message pour l'animateur (vide s'il n'y a pas de doublon)
 function twinsMessage(twins, noun = 'questions') {
   if (!twins.length) return '';
   const more = twins.length - 1;
   return '⚠️ Les ' + noun + ' ' + twins[0][0] + ' et ' + twins[0][1] + ' sont identiques' + (more ? ' (et ' + more + ' autre' + (more > 1 ? 's' : '') + ' doublon' + (more > 1 ? 's' : '') + ')' : '');
 }
-if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage };
+if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage, revisionQuiz };
