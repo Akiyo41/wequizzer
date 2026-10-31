@@ -26,6 +26,9 @@ const AI_TYPES = [
   { id: 'mot', label: 'Jeu de mots : deviner un mot', on: false,
     rule: 'mot : Question = une définition ou une devinette. Colonne Réponse A = le mot à trouver (un seul mot, de 3 à 14 lettres, sans espace). Les autres colonnes restent vides.',
     ex: ['mot', 'Animal qui miaule et chasse les souris', 'chat', '', '', '', '', '', ''] },
+  { id: 'nuage', label: 'Nuage de mots : réponse libre, sans bonne réponse', on: false,
+    rule: 'nuage : une question ouverte où chacun répond par un mot ou une courte réponse (ex : un mot pour décrire l\'été). Il n\'y a pas de bonne réponse : colonnes A à D et colonne des bonnes réponses vides.',
+    ex: ['nuage', 'Un mot pour décrire l\'été ?', '', '', '', '', '', '', ''] },
 ];
 // exemple complet pour le modèle de tableur (une ligne par type)
 // (une roue demande au moins 3 lignes : deux de plus, pour que le modèle s'ouvre tel quel)
@@ -81,7 +84,7 @@ function aiExtract(text) {
   return (!hasHead && csvRemap(rows)) || { rows, hasHead };
 }
 
-const AI_TYPE_NAMES = 'choix, multiple, vrai/faux, texte, ordre, completer, roue, mot ou sondage';
+const AI_TYPE_NAMES = 'choix, multiple, vrai/faux, texte, ordre, completer, roue, mot, nuage ou sondage';
 // Transforme les lignes en quiz. Tout ou rien : s'il y a une seule erreur, rien n'est créé.
 function aiBuild(rows, hasHead) {
   const out = { normal: [], pairs: [], items: [], errors: [] };
@@ -108,6 +111,7 @@ function aiBuild(rows, hasHead) {
     else if (/^(sond|poll|avis)/.test(t)) type = 'poll';
     else if (/^(ordre|order|class|remett|chrono)/.test(t)) type = 'order';
     else if (/^(roue|wheel|relier|paire)/.test(t)) type = 'wheel';
+    else if (/^(nuage|cloud|mots libres)/.test(t)) type = 'words'; // avant « mot » (jeu de mots)
     else if (/^(mot|lettre|pendu|jeu)/.test(t)) type = 'word';
     else if (/^(choix|single|unique|qcm|simple)/.test(t)) type = 'single';
     else if (/^(zone|image|carte|touch)/.test(t)) return err('les questions « image à toucher » se créent dans l\'éditeur, pas avec une IA.');
@@ -152,6 +156,8 @@ function aiBuild(rows, hasHead) {
       if (/^(vrai|v|true|oui|1)$/.test(pc)) q.correct = 0;
       else if (/^(faux|f|false|non|0)$/.test(pc)) q.correct = 1;
       else return err('écris « vrai » ou « faux » dans la colonne des bonnes réponses.');
+    } else if (type === 'words') {
+      q.double = false; // nuage de mots : pas de bonne réponse, pas de points
     } else if (type === 'text') {
       q.answers = corr.split('|').map((x) => x.trim()).filter(Boolean).slice(0, 8);
       if (!q.answers.length) return err('écris la ou les réponses acceptées (séparées par « | »).');
