@@ -5635,6 +5635,48 @@
   ]
  },
  {
+  "pid": "fimo-urgences",
+  "theme": "Transport routier (FIMO)",
+  "level": "Facile",
+  "kind": "wheel",
+  "title": "FIMO : numéros d'urgence",
+  "category": "Reliez chaque numéro à son service",
+  "pairs": [
+   {
+    "q": "15",
+    "a": "SAMU (urgence médicale)"
+   },
+   {
+    "q": "17",
+    "a": "Police ou gendarmerie"
+   },
+   {
+    "q": "18",
+    "a": "Pompiers"
+   },
+   {
+    "q": "112",
+    "a": "Numéro d'urgence européen"
+   },
+   {
+    "q": "114",
+    "a": "Urgence par SMS"
+   },
+   {
+    "q": "115",
+    "a": "SAMU social"
+   },
+   {
+    "q": "119",
+    "a": "Enfance en danger"
+   },
+   {
+    "q": "196",
+    "a": "Secours en mer"
+   }
+  ]
+ },
+ {
   "pid": "calcul-mental",
   "theme": "Maths",
   "level": "Facile",

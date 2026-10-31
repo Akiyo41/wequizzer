@@ -244,6 +244,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 73. (fait) Bibliothèque : « FIMO : Vrai ou faux express » (Vrai/Faux en rafale, 10 affirmations, Moyen : temps de conduite 9 h / 10 h, pause 45 min et son fractionnement 15 + 30, 56 h par semaine, 90 h sur deux semaines, repos 11 h et 45 h, carte conducteur 5 ans, gilet, triangle à 30 m) → 38 quiz. Test `tests/library.js`.
 
+74. (fait) Bibliothèque : roue « FIMO : numéros d'urgence » (8 paires, Facile : 15, 17, 18, 112, 114 par SMS, 115, 119, 196) → 39 quiz. Réponses de la roue : 25 lettres au plus. Test `tests/library.js`.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
