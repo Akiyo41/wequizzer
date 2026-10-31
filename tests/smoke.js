@@ -122,6 +122,9 @@ const tests = {
     assert.deepStrictEqual(end.results.map((r) => [r.rank, r.name, r.score, r.correct, r.team]), [[1, 'Alice', 4, 4, null], [2, 'Bob', 0, 0, null]]);
     // une case par question notée (le sondage ne compte pas), dans l'ordre des statistiques
     assert.deepStrictEqual(end.results.map((r) => r.answers), [[true, true, true, true], [false, false, false, false]]);
+    // temps moyen des bonnes réponses (en secondes) ; rien quand aucune bonne réponse
+    assert.ok(typeof end.results[0].avgTime === 'number' && end.results[0].avgTime >= 0 && end.results[0].avgTime < 30, String(end.results[0].avgTime));
+    assert.strictEqual(end.results[1].avgTime, null);
     assert.strictEqual(endPlayers[0].rank, 1);
     // récap question par question sur le téléphone (le sondage ne compte pas)
     assert.deepStrictEqual(endPlayers.map((p) => p.answers), [[true, true, true, true], [false, false, false, false]]);

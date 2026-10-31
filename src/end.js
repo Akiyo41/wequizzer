@@ -50,6 +50,7 @@ function endGame(pin) {
     // tous les joueurs (le podium n'en montre que 10) : pour le tableur des résultats
     results: ranked.map((p, i) => ({
       answers: answerRow(g, p),
+      avgTime: p.correct ? Math.round((100 * p.timeSum) / p.correct) / 100 : null, // temps moyen des bonnes réponses, en secondes
       rank: i + 1, name: p.name, team: p.team === null || p.team === undefined ? null : teamInfo(g, p.team).teamName, score: p.score, correct: p.correct, alive: !p.eliminated, hearts: heartsOn(g) ? p.hearts : null,
     })),
     scoreMode: g.scoreMode,

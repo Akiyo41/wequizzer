@@ -48,6 +48,16 @@ const tests = {
     assert.deepStrictEqual(toReview([{ label: 'OK', ok: 6, total: 10 }]), []);
     assert.deepStrictEqual(toReview(undefined), []);
   },
+  'temps moyen des bonnes réponses : colonne en plus quand il est connu'() {
+    const l = lines(resultsCsv({
+      quizTitle: 'Q', questions: 2,
+      results: [{ rank: 1, name: 'A', score: 2, correct: 2, team: null, avgTime: 4.25 }, { rank: 2, name: 'B', score: 0, correct: 0, team: null, avgTime: null }],
+      qstats: [],
+    }, 'x'));
+    assert.strictEqual(l[3], 'Rang;Pseudo;Points;Bonnes réponses;Temps moyen (s)');
+    assert.strictEqual(l[4], '1;"A";2;2 / 2;4,3');
+    assert.strictEqual(l[5], '2;"B";0;0 / 2;');
+  },
   'équipes et cœurs : colonnes en plus'() {
     const csv = resultsCsv({
       quizTitle: 'Q', questions: 2, heartsMode: true,
