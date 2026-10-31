@@ -35,6 +35,7 @@ $('invCopy').onclick = () => { if (inviteUrl) copyText(inviteUrl, $('invCopy'));
 socket.on('host:created', async (d) => {
   LS.set(SESSION_KEY, { pin: d.pin, key: d.key });
   $('pin').textContent = d.pin;
+  $('barPinTxt').textContent = d.pin; // code aussi visible pendant la partie (barre du haut)
   $('joinUrl').textContent = d.joinUrl.replace(/^https?:\/\//, '');
   inviteUrl = d.joinUrl + '?pin=' + d.pin;
   if (d.qr) { $('qr').src = d.qr; $('qr').classList.remove('hidden'); }
@@ -63,6 +64,7 @@ function qrBigOpen() {
 }
 const qrBigClose = () => $('qrBig').classList.add('hidden');
 $('qr').onclick = qrBigOpen;
+$('barPin').onclick = qrBigOpen; // pendant la partie : pour un joueur en retard
 $('qr').addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); qrBigOpen(); } });
 $('qrBig').onclick = qrBigClose;
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('qrBig').classList.contains('hidden')) qrBigClose(); });

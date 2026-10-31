@@ -20,6 +20,7 @@
   <div id="hostBar" class="hostbar hidden">
     <button id="quitBtn" class="btn ghost mini" title="Quitter le quiz en cours"><i class="ti ti-logout"></i> <span class="lbl">Quitter</span></button>
     <span>
+      <button id="barPin" class="btn ghost mini" type="button" title="Afficher le QR code en grand (pour un joueur en retard)" aria-label="Code de la partie : afficher le QR code en grand"><i class="ti ti-qrcode"></i> <span id="barPinTxt"></span></button>
       <button id="pauseBtn" class="btn ghost mini" title="Raccourci : touche P"><i class="ti ti-player-pause"></i> <span class="lbl">Pause</span></button>
       <button id="playersBtn" class="btn ghost mini"><i class="ti ti-users"></i> <span id="barCount">0</span></button>
     </span>
@@ -274,7 +275,7 @@
       <details id="faq-changer"><summary>Un joueur peut changer sa réponse ?</summary>
         <p>Seulement si tu allumes « Changer sa réponse » dans les Réglages avancés. Alors la question ne se termine plus toute seule quand tout le monde a répondu : c'est toi qui passes à la suite, ou le chrono.</p></details>
       <details id="faq-retard"><summary>Et si quelqu'un arrive en retard ?</summary>
-        <p>Il peut entrer le code pendant la partie : il attend dans la file d'attente et joue dès la partie suivante (« Rejouer ce quiz » ou « Nouvelle partie »). Tout le monde garde le même code.</p></details>
+        <p>Il peut entrer le code pendant la partie : il attend dans la file d'attente et joue dès la partie suivante (« Rejouer ce quiz » ou « Nouvelle partie »). Tout le monde garde le même code. Pendant la partie, le code reste affiché en haut de l'écran : un clic dessus montre le QR code en grand.</p></details>
       <details id="faq-exclure"><summary>Comment exclure un joueur ?</summary>
         <p>Touche son nom dans la liste des joueurs (ou dans le bouton des joueurs en haut pendant la partie), puis choisis pour combien de temps : 5 minutes, 15 minutes, 1 heure, ou sans limite (jusqu'à ce que tu fermes la salle).</p></details>
       <details id="faq-coupure"><summary>Et si je perds la connexion ?</summary>

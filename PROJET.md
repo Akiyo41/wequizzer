@@ -176,6 +176,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 39. (fait) Protection contre les codes PIN devinés au hasard : après 8 codes faux en une minute sur une connexion (ou 40 depuis une même adresse, pour ne pas gêner une classe entière derrière la même box), « Trop d'essais de code : attends une minute avant de réessayer. ». `tooManyTries` / `countFail` en haut de `src/sockets.js` (pas de limite par adresse en local). L'adresse d'un appareil (`clientIp` dans `src/room.js`, testé par `tests/client-ip.js`) est la DERNIÈRE de l'en-tête `X-Forwarded-For` (ajoutée par le proxy de Render) : avant, la première était prise, et un client pouvait l'inventer pour contourner une exclusion. Une même adresse ne peut pas avoir plus de 10 salles ouvertes en même temps (`MAX_GAMES_PER_IP`, `g.hostIp`), pour qu'on ne puisse pas remplir le serveur (300 salles en tout). En-têtes de protection dans `server.js` : `X-Frame-Options: SAMEORIGIN` + `frame-ancestors 'self'` (pas d'affichage caché dans un autre site), `X-Content-Type-Options: nosniff`, `Referrer-Policy: same-origin`, sans `X-Powered-By`.
 
+40. (fait) Pendant la partie, le code PIN reste visible dans la barre du haut de l'animateur (`#barPin`) ; un clic affiche le QR code en grand (`qrBigOpen`), pour un joueur en retard. Expliqué dans l'Aide (`faq-retard`).
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
