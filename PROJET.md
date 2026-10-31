@@ -248,6 +248,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 75. (fait) Tableau des résultats : colonne « Réussite » (pourcentage de bonnes réponses de chaque joueur, ex. « 66 % »), juste après « Bonnes réponses » — pratique pour un examen blanc FIMO. `resultsCsv`, tests mis à jour. Sur le téléphone, à partir de 10 questions notées : « Bonnes réponses 33 / 50 · 66 % » (`scoreLine`) ; pareil sur le podium de l'animateur (`scoreText`) et dans « Copier le classement » (« 33 / 50 (66 %) », `boardText`, testé).
 
+76. (fait) « Quoi de neuf ? » mis à jour (`NEWS` = 2026-11-01) : Copier le classement, pourcentages pour les examens blancs + 3 quiz FIMO, Fermer la salle, Terminer, bonne réponse sur le téléphone, quiz de révision.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
