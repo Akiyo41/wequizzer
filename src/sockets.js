@@ -19,6 +19,7 @@ const { sendHostState, sendPlayerState } = require('./resume');
 const TRY_WINDOW = 60000;
 const TRY_SOCKET = 8;
 const TRY_IP = 40;
+const MAX_GAMES_PER_IP = 10;
 const ipTries = new Map();
 function triesOf(rec, now) {
   return rec && now - rec.since < TRY_WINDOW ? rec : { n: 0, since: now };
@@ -59,9 +60,15 @@ function setupSockets(io) {
       if (Object.keys(games).length >= MAX_GAMES) {
         return socket.emit('host:create:error', 'Le serveur est plein pour le moment. Réessaie dans quelques minutes.');
       }
+      // Une même adresse (une école, une maison) : 10 salles ouvertes en même temps au plus, pour qu'on ne puisse pas remplir le serveur
+      const hostIp = clientIp(socket);
+      if (hostIp && Object.values(games).filter((x) => x.hostIp === hostIp).length >= MAX_GAMES_PER_IP) {
+        return socket.emit('host:create:error', 'Déjà 10 salles ouvertes depuis cette connexion : ferme une ancienne partie avant d\'en créer une autre.');
+      }
       const pin = newPin();
       const g = {
         pin,
+        hostIp,
         hostKey: rid(12),
         host: socket.id,
         hostGoneAt: 0,

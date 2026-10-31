@@ -308,6 +308,22 @@ const tests = {
     close(game);
   },
 
+  async 'pas plus de 10 salles ouvertes en même temps depuis une même adresse'() {
+    const socks = [];
+    const errors = [];
+    for (let i = 0; i < 11; i++) {
+      const h = io(URL, { transports: ['websocket'], forceNew: true, extraHeaders: { 'x-forwarded-for': '203.0.113.7' } });
+      socks.push(h);
+      const done = Promise.race([once(h, 'host:created').then(() => null), once(h, 'host:create:error')]);
+      h.emit('host:create', { origin: URL });
+      const e = await done;
+      if (e) errors.push(e);
+    }
+    assert.strictEqual(errors.length, 1, errors.join(' | '));
+    assert.ok(/10 salles/.test(errors[0]), errors[0]);
+    socks.forEach((h) => { h.emit('host:close'); h.close(); });
+  },
+
   async 'codes PIN faux à la chaîne : il faut attendre'() {
     const s = connect();
     const errors = [];
