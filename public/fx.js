@@ -61,6 +61,7 @@ const FX = (() => {
     unlock() { const c = ac(); if (c && c.state === 'suspended') c.resume(); },
     click() { tone(660, 0.05, 'square', 0, 0.07); },
     tick() { tone(880, 0.06, 'square', 0, 0.08); },
+    join() { tone(988, 0.08, 'sine', 0, 0.12); tone(1319, 0.12, 'sine', 0.07, 0.12); }, // un joueur arrive dans la salle
     count() { tone(520, 0.16, 'triangle'); },
     go() { tone(784, 0.1, 'triangle'); tone(1047, 0.22, 'triangle', 0.1); },
     good() { [523, 659, 784].forEach((f, i) => tone(f, 0.16, 'triangle', i * 0.09)); },

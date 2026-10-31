@@ -9,7 +9,12 @@ function openKick(p) { kickTarget = p; $('kickName').textContent = p.name; $('ki
 function kick(p) {
   openKick(p);
 }
+// Joueurs déjà vus : un petit « ding » et une pastille qui grossit pour chaque nouvel arrivant dans la salle d'attente
+let seenPids = null;
 socket.on('host:players', (list) => {
+  const fresh = seenPids ? list.filter((p) => !seenPids.has(p.pid)).map((p) => p.pid) : [];
+  seenPids = new Set(list.map((p) => p.pid));
+  if (fresh.length && !$('lobby').classList.contains('hidden')) FX.join();
   lastPlayers = list;
   renderTeamAssign();
   const box = $('players');
@@ -24,6 +29,7 @@ socket.on('host:players', (list) => {
     if (!p.connected) chip.appendChild(el('small', '', 'hors ligne'));
     if (p.queued) chip.appendChild(el('small', '', 'prochaine partie'));
     chip.onclick = () => kick(p);
+    if (fresh.includes(p.pid)) chip.classList.add('just-in');
     box.appendChild(chip);
   });
   playerCount = inRoom.length;
