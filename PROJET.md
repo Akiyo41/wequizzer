@@ -246,7 +246,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 74. (fait) Bibliothèque : roue « FIMO : numéros d'urgence » (8 paires, Facile : 15, 17, 18, 112, 114 par SMS, 115, 119, 196) → 39 quiz. Réponses de la roue : 25 lettres au plus. Test `tests/library.js`.
 
-75. (fait) Tableau des résultats : colonne « Réussite » (pourcentage de bonnes réponses de chaque joueur, ex. « 66 % »), juste après « Bonnes réponses » — pratique pour un examen blanc FIMO. `resultsCsv`, tests mis à jour.
+75. (fait) Tableau des résultats : colonne « Réussite » (pourcentage de bonnes réponses de chaque joueur, ex. « 66 % »), juste après « Bonnes réponses » — pratique pour un examen blanc FIMO. `resultsCsv`, tests mis à jour. Sur le téléphone, à partir de 10 questions notées : « Bonnes réponses 33 / 50 · 66 % » (`scoreLine`).
 
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.

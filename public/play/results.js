@@ -88,7 +88,9 @@ socket.on('result', (r) => {
 function scoreLine(d) {
   if (d.scoreMode === 'points') return ['Score final', d.score];
   if (d.hasDouble) return ['Score', d.score];
-  return ['Bonnes réponses', d.score + ' / ' + d.questions];
+  // long quiz (examen blanc…) : le pourcentage en plus
+  const pct = d.questions >= 10 ? ' · ' + Math.round((100 * d.score) / d.questions) + ' %' : '';
+  return ['Bonnes réponses', d.score + ' / ' + d.questions + pct];
 }
 socket.on('end', (d) => {
   const again = sameAgain('end', d);
