@@ -218,6 +218,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 60. (fait) Page Stats : « 19 parties jouées (dernière le 31/10/2026) » — `st.last` enregistré à chaque partie terminée (`recordStats`), aussi en ligne « Dernière partie » du fichier Excel des stats (`statsCsv`, testé), et sous le quiz choisi dans l'onglet Jouer : « Joué la dernière fois le 31/10/2026. » (`lastPlayed`).
 
+61. (fait) Barre de l'animateur sur téléphone (≤ 480 px) : avec le bouton « Terminer » elle passait sur deux lignes et cachait le logo. Boutons resserrés, icône QR cachée devant le code, place des icônes plein écran / son ajustée → une seule ligne à 375 px (`style.css`).
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

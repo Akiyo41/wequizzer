@@ -316,6 +316,12 @@ input[type="range"] { width: 130px; accent-color: var(--accent); margin: 0; }
   .hostbar .lbl { display: none; }
   .avpick { grid-template-columns: repeat(8, 1fr); }
 }
+/* Barre de l'animateur sur téléphone : boutons serrés pour tenir sur une ligne (sinon elle passait sur le logo) */
+@media (max-width: 480px) {
+  .hostbar .btn.mini { padding: 8px 6px; margin: 0 1px; }
+  .hostbar #barPin .ti { display: none; }
+  html body.has-fs .hostbar { padding-right: 100px; } /* plus fort que la règle plus bas */
+}
 .screen > * { flex-shrink: 0; }
 body.in-game { padding-top: 58px; }
 
