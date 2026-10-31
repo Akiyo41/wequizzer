@@ -5941,5 +5941,79 @@
     "explain": ""
    }
   ]
+ },
+ {
+  "pid": "brise-glace",
+  "theme": "Vie de classe",
+  "level": "Facile",
+  "kind": "quiz",
+  "title": "Brise-glace : faisons connaissance",
+  "questions": [
+   {
+    "type": "words",
+    "text": "Un mot pour te décrire ?",
+    "image": "",
+    "choices": [],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "words",
+    "text": "Ton animal préféré ?",
+    "image": "",
+    "choices": [],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "poll",
+    "text": "Tu préfères…",
+    "image": "",
+    "choices": [
+     "La mer",
+     "La montagne",
+     "La ville",
+     "La campagne"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "words",
+    "text": "Ton plat préféré ?",
+    "image": "",
+    "choices": [],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "words",
+    "text": "Un métier qui te fait rêver ?",
+    "image": "",
+    "choices": [],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "words",
+    "text": "Un mot pour dire comment tu te sens aujourd'hui ?",
+    "image": "",
+    "choices": [],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
  }
 ]
