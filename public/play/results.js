@@ -124,6 +124,8 @@ socket.on('end', (d) => {
     stats.appendChild(stat('Rang', d.rank + ' / ' + d.total));
   }
   if (d.teamName) stats.appendChild(stat('Équipe', d.teamIcon + ' ' + d.teamName));
+  $('endStopped').classList.toggle('hidden', !d.stopped);
+  if (d.stopped) $('endStopped').textContent = "🏁 L'animateur a terminé la partie après " + d.stopped.asked + ' question' + (d.stopped.asked > 1 ? 's' : '') + ' sur ' + d.stopped.total + '.';
   // Récap question par question : ✅ juste, ❌ raté, ➖ pas jouée (arrivé en retard, éliminé…)
   const recap = $('endRecap');
   recap.innerHTML = '';

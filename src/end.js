@@ -32,6 +32,7 @@ function endPayloadFor(g, p, ranked, titles, tboard) {
     teamCount: tboard ? tboard.length : 0,
     quizTitle: g.quiz ? g.quiz.title : '',
     answers: answerRow(g, p),
+    stopped: (g.endData && g.endData.stopped) || null, // partie terminée avant la fin par l'animateur
   };
 }
 
