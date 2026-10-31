@@ -12,6 +12,19 @@ function openTfEditor(q) {
   show('tfEditor');
 }
 $('tfCancel').onclick = () => leaveEditor('tf');
+// Exemple prêt à modifier (seulement si la liste est vide)
+$('tfExample').onclick = () => {
+  if ($('tfItems').value.trim()) { $('tfError').textContent = 'Il y a déjà des affirmations : efface-les d\'abord si tu veux mettre l\'exemple.'; return; }
+  $('tfError').textContent = '';
+  if (!$('tfTitle').value.trim()) $('tfTitle').value = 'Vrai ou faux : les animaux';
+  $('tfItems').value = [
+    'La baleine est un mammifère ; vrai ; Elle respire de l\'air et allaite ses petits.',
+    'L\'araignée est un insecte ; faux ; Elle a 8 pattes : c\'est un arachnide.',
+    'Le colibri peut voler en arrière ; vrai',
+    'Les manchots vivent au pôle Nord ; faux ; Ils vivent dans l\'hémisphère Sud.',
+    'La pieuvre a trois cœurs ; vrai',
+  ].join('\n');
+};
 $('tfSave').onclick = () => {
   const title = $('tfTitle').value.trim() || 'Vrai/Faux sans titre';
   const questions = [];

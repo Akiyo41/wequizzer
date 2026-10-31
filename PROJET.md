@@ -188,6 +188,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 45. (fait) Temps propre à une question : ligne « Temps » sous chaque question de l'éditeur (« comme les réglages de la partie » ou 10 à 60 s ; `Q_TIMES` dans `quiz-list.js`, gardé par `normQ`, envoyé par `quizPayload`). Serveur : `q.time` accepté s'il fait partie de `TIME_CHOICES` (`cleanQuiz`), gardé par « Rejouer les questions ratées » (`missedQuiz`), utilisé par `qTime` (`src/timer.js`) quand « Limiter le temps » est activé. Aide : `faq-temps`. La durée estimée (`gameMinutes(total, réglages, temps)`) compte ces temps propres quand le chrono est activé. Import de tableur : une colonne « Temps » / « Time limit (sec) » (Kahoot) est reprise (`csvRemap` l'ajoute en 10e colonne, `aiBuild` l'arrondit au plus proche de 10 à 60 s). Le « modèle de tableur » téléchargeable a cette 10e colonne « Temps (secondes, facultatif) », et 3 lignes de roue au lieu d'une (avant, le modèle rouvert tel quel était refusé : « La roue a besoin d'au moins 3 questions »).
 
+46. (fait) Éditeur Vrai/Faux en rafale : bouton « Remplir avec un exemple » (5 affirmations sur les animaux, avec explications ; seulement si la liste est vide), comme les éditeurs de roue et de jeu de mots (`tfExample`, `tf-editor.js`).
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
