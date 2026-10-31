@@ -457,7 +457,7 @@ socket.on('reaction', ({ emoji, name }) => {
 
 // ----- Fin -----
 function scoreText(p, d) {
-  if (d.scoreMode === 'points' || d.hasDouble) return p.score + ' pts';
+  if (d.scoreMode === 'points' || d.hasDouble) return p.score + (p.score > 1 ? ' pts' : ' pt'); // « 1 pt », « 0 pt » (pluriel à partir de 2)
   return p.score + ' / ' + d.questions;
 }
 const aliveText = (p) => (p.hearts ? '❤️'.repeat(p.hearts) : 'En jeu');
@@ -495,7 +495,7 @@ socket.on('end', (d) => {
         hv.innerHTML = Hangman.svg(t.errors, t.color, 56);
         row.appendChild(hv);
         row.appendChild(el('span', '', t.out ? '💀 pendue (' + t.errors + ')' : '✅ en vie (' + t.errors + ' erreur' + (t.errors > 1 ? 's' : '') + ')'));
-      } else row.appendChild(el('span', '', 'moyenne : ' + t.score + (d.scoreMode === 'points' || d.hasDouble ? ' pts' : '')));
+      } else row.appendChild(el('span', '', 'moyenne : ' + t.score + (d.scoreMode === 'points' || d.hasDouble ? (t.score > 1 ? ' pts' : ' pt') : '')));
       tb.appendChild(row);
     });
   }
