@@ -47,6 +47,7 @@ const tests = {
     assert.deepStrictEqual(toReview(qs), [{ label: 'Ratée', pct: 0 }, { label: 'Dure', pct: 10 }, { label: 'Un peu dure', pct: 30 }]);
     assert.deepStrictEqual(toReview([{ label: 'OK', ok: 6, total: 10 }]), []);
     assert.deepStrictEqual(toReview(undefined), []);
+    assert.deepStrictEqual(toReview([{ label: 'Q', ok: 0, total: 3, answer: 'B – Paris' }]), [{ label: 'Q', pct: 0, answer: 'B – Paris' }], 'la bonne réponse suit');
   },
   'temps moyen des bonnes réponses : colonne en plus quand il est connu'() {
     const l = lines(resultsCsv({

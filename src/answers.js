@@ -105,6 +105,13 @@ function correctText(g, q) {
   return lab(g, q.correct);
 }
 
+// Bonne réponse écrite en entier pour le téléphone (« B – Paris » plutôt que « B »)
+function goodAnswerText(g, q) {
+  if (q.type === 'text' && !q.letters) return q.answers[0]; // la réponse principale, pas toutes les orthographes acceptées
+  if (q.wheel || !['single', 'tf', 'multi'].includes(q.type)) return correctText(g, q);
+  const ids = Array.isArray(q.correct) ? q.correct : [q.correct];
+  return ids.map((i) => (g.settings.labels === 'numbers' ? String(i + 1) : 'ABCD'[i]) + ' – ' + q.choices[i]).join(' + ');
+}
 function cleanAnswer(q, data) {
   data = data || {};
   if (q.type === 'zone') {
@@ -148,4 +155,4 @@ function answerGroups(list, max = 8) {
   });
   return [...groups.values()].sort((a, b) => b.count - a.count).slice(0, max);
 }
-module.exports = { mistakeEntry, isCorrect, shownAnswer, correctText, cleanAnswer, answerGroups };
+module.exports = { mistakeEntry, isCorrect, shownAnswer, correctText, goodAnswerText, cleanAnswer, answerGroups };

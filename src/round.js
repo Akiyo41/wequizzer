@@ -1,6 +1,6 @@
 // Une question : compte à rebours, lecture, réponses, correction, question suivante
 const { COUNTDOWN, HANG_MAX } = require('./config');
-const { answerGroups, correctText, isCorrect, mistakeEntry, shownAnswer } = require('./answers');
+const { answerGroups, correctText, goodAnswerText, isCorrect, mistakeEntry, shownAnswer } = require('./answers');
 const { activePlayers, heartsOn, teamBoard } = require('./rules');
 const { allPeople, games, toAll, toHost, toPlayer } = require('./send');
 const { clearTimer, qTime, schedule } = require('./timer');
@@ -266,13 +266,6 @@ function endQuestion(pin) {
   if (autoIn) schedule(g, autoIn * 1000, () => advance(pin));
 }
 
-// Bonne réponse écrite en entier pour le téléphone (« B – Paris » plutôt que « B »)
-function goodAnswerText(g, q) {
-  if (q.type === 'text' && !q.letters) return q.answers[0]; // la réponse principale, pas toutes les orthographes acceptées
-  if (q.wheel || !['single', 'tf', 'multi'].includes(q.type)) return correctText(g, q);
-  const ids = Array.isArray(q.correct) ? q.correct : [q.correct];
-  return ids.map((i) => (g.settings.labels === 'numbers' ? String(i + 1) : 'ABCD'[i]) + ' – ' + q.choices[i]).join(' + ');
-}
 function resultFor(g, q, p) {
   return {
     type: q.type,

@@ -548,7 +548,9 @@ socket.on('end', (d) => {
   review.forEach((q) => {
     const row = el('div', 'review-row');
     row.appendChild(el('span', 'review-pct', q.pct + ' %'));
-    row.appendChild(el('span', '', q.label));
+    const txt = el('span', '', q.label);
+    if (q.answer) txt.appendChild(el('small', 'review-answer', '✅ ' + q.answer)); // la bonne réponse, pour en parler avec la classe
+    row.appendChild(txt);
     $('reviewList').appendChild(row);
   });
   d.titles.forEach((t) => {

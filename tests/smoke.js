@@ -118,6 +118,9 @@ const tests = {
     assert.strictEqual(end.questions, 4);
     assert.deepStrictEqual(end.board.map((b) => [b.name, b.score]), [['Alice', 4], ['Bob', 0]]);
     assert.strictEqual(end.missedCount, 4);
+    // statistiques par question avec la bonne réponse (pour « À revoir avec la classe »)
+    assert.ok(/Paris/.test(end.qstats[0].answer), end.qstats[0].answer);
+    assert.strictEqual(end.qstats.find((q) => /Joconde/.test(q.label)).answer, 'Vinci');
     // tous les joueurs, pour le tableur des résultats
     assert.deepStrictEqual(end.results.map((r) => [r.rank, r.name, r.score, r.correct, r.team]), [[1, 'Alice', 4, 4, null], [2, 'Bob', 0, 0, null]]);
     // une case par question notée (le sondage ne compte pas), dans l'ordre des statistiques

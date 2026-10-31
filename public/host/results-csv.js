@@ -45,7 +45,7 @@ function resultsCsv(d, date) {
 function toReview(qstats) {
   return (qstats || [])
     .filter((q) => q.total > 0)
-    .map((q) => ({ label: q.label, pct: Math.round((100 * q.ok) / q.total) }))
+    .map((q) => ({ label: q.label, pct: Math.round((100 * q.ok) / q.total), ...(q.answer ? { answer: q.answer } : {}) }))
     .filter((q) => q.pct < 60)
     .sort((a, b) => a.pct - b.pct)
     .slice(0, 3);

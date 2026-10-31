@@ -2,6 +2,7 @@
 const { computeTitles, heartsOn, isTeamMode, rankedPlayers, resetPlayerStats, teamBoard, teamInfo } = require('./rules');
 const { allPeople, games, toHost, toPlayer } = require('./send');
 const { clearTimer } = require('./timer');
+const { goodAnswerText } = require('./answers');
 const { lobbyPayload, queuedPayload, sendHostPlayers } = require('./room');
 
 // Pour chaque question notée (dans l'ordre) : true, false, ou null si le joueur n'y a pas joué
@@ -63,7 +64,7 @@ function endGame(pin, stopped = null) {
     missedCount: Object.keys(g.missed || {}).length,
     qstats: Object.keys(g.qstats || {}).map(Number).sort((a, b) => a - b).map((i) => {
       const q = g.questions[i];
-      return { label: (q.wheel ? q.category + ' : ' + q.text : q.match ? q.category + ' : ' + q.left.join(', ') : q.text).slice(0, 120), ok: g.qstats[i].ok, total: g.qstats[i].total };
+      return { label: (q.wheel ? q.category + ' : ' + q.text : q.match ? q.category + ' : ' + q.left.join(', ') : q.text).slice(0, 120), ok: g.qstats[i].ok, total: g.qstats[i].total, answer: goodAnswerText(g, q) };
     }),
     titles,
     clouds: Object.keys(g.clouds || {}).map(Number).sort((a, b) => a - b).map((k) => g.clouds[k]),
