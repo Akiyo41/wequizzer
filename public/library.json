@@ -5334,5 +5334,254 @@
     "explain": ""
    }
   ]
+ },
+ {
+  "pid": "calcul-mental",
+  "theme": "Maths",
+  "level": "Facile",
+  "kind": "quiz",
+  "title": "Calcul mental",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Combien font 8 + 7 ?",
+    "image": "",
+    "choices": [
+     "14",
+     "15",
+     "16",
+     "13"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Combien font 6 × 7 ?",
+    "image": "",
+    "choices": [
+     "42",
+     "36",
+     "48",
+     "49"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Astuce : 6 × 7 = 6 × 6 + 6."
+   },
+   {
+    "type": "single",
+    "text": "Combien font 100 − 37 ?",
+    "image": "",
+    "choices": [
+     "73",
+     "67",
+     "63",
+     "53"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Combien font 9 × 9 ?",
+    "image": "",
+    "choices": [
+     "18",
+     "72",
+     "91",
+     "81"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quelle est la moitié de 50 ?",
+    "image": "",
+    "choices": [
+     "20",
+     "25",
+     "30",
+     "15"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Combien font 12 × 10 ?",
+    "image": "",
+    "choices": [
+     "120",
+     "112",
+     "1 200",
+     "22"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Multiplier par 10 : on ajoute un zéro."
+   },
+   {
+    "type": "single",
+    "text": "Combien font 45 + 55 ?",
+    "image": "",
+    "choices": [
+     "90",
+     "95",
+     "100",
+     "110"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Combien font 56 ÷ 8 ?",
+    "image": "",
+    "choices": [
+     "6",
+     "8",
+     "9",
+     "7"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Car 7 × 8 = 56."
+   },
+   {
+    "type": "single",
+    "text": "Quel est le double de 35 ?",
+    "image": "",
+    "choices": [
+     "60",
+     "70",
+     "75",
+     "65"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "3 × 4 = 4 × 3",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "On peut changer l'ordre dans une multiplication."
+   }
+  ]
+ },
+ {
+  "pid": "paires-tables",
+  "theme": "Maths",
+  "level": "Facile",
+  "kind": "wheel",
+  "title": "Les tables de multiplication",
+  "category": "Trouve le résultat",
+  "pairs": [
+   {
+    "q": "3 × 4",
+    "a": "12"
+   },
+   {
+    "q": "6 × 8",
+    "a": "48"
+   },
+   {
+    "q": "7 × 7",
+    "a": "49"
+   },
+   {
+    "q": "9 × 6",
+    "a": "54"
+   },
+   {
+    "q": "8 × 8",
+    "a": "64"
+   },
+   {
+    "q": "7 × 9",
+    "a": "63"
+   },
+   {
+    "q": "5 × 6",
+    "a": "30"
+   },
+   {
+    "q": "4 × 9",
+    "a": "36"
+   }
+  ]
+ },
+ {
+  "pid": "paires-anglais",
+  "theme": "Anglais",
+  "level": "Facile",
+  "kind": "wheel",
+  "title": "Anglais : mots du quotidien",
+  "category": "Traduis en anglais",
+  "pairs": [
+   {
+    "q": "Chat",
+    "a": "Cat"
+   },
+   {
+    "q": "Chien",
+    "a": "Dog"
+   },
+   {
+    "q": "Maison",
+    "a": "House"
+   },
+   {
+    "q": "Rouge",
+    "a": "Red"
+   },
+   {
+    "q": "Pomme",
+    "a": "Apple"
+   },
+   {
+    "q": "Livre",
+    "a": "Book"
+   },
+   {
+    "q": "Eau",
+    "a": "Water"
+   },
+   {
+    "q": "Soleil",
+    "a": "Sun"
+   },
+   {
+    "q": "École",
+    "a": "School"
+   },
+   {
+    "q": "Ami",
+    "a": "Friend"
+   }
+  ]
  }
 ]
