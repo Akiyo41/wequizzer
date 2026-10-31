@@ -261,7 +261,9 @@ function aiCreate(replyText, titleIn, themeIn) {
   renderQuizSelect();
   pushQuiz();
   const msg = parts.join(' ; ');
-  return { ok: true, message: msg.charAt(0).toUpperCase() + msg.slice(1) + '.' };
+  const twins = sameQuestions(o.normal); // une question collée deux fois dans le texte de l'IA ou du tableur
+  const warn = twins.length ? ' ⚠️ Les questions ' + twins[0][0] + ' et ' + twins[0][1] + ' sont identiques' + (twins.length > 1 ? ' (et ' + (twins.length - 1) + ' autre' + (twins.length > 2 ? 's' : '') + ')' : '') + " : tu peux en enlever une dans l'éditeur." : '';
+  return { ok: true, message: msg.charAt(0).toUpperCase() + msg.slice(1) + '.' + warn };
 }
 
 function aiPromptText() {

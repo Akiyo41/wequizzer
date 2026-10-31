@@ -198,7 +198,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 50. (fait) Bouton « 🏁 Terminer » dans la barre de l'animateur pendant la partie : après confirmation, les questions restantes ne sont pas posées et le podium s'affiche tout de suite avec les scores actuels (pratique quand la sonnerie arrive). Aide : `faq-terminer`. Le podium dit « 🏁 Partie terminée après 3 questions sur 10 » (`stopped` dans `endData`, `#endStopped`) et le Tableau des résultats ajoute « Questions posées ; 3 / 10 (partie terminée avant la fin) ». Les téléphones disent aussi « 🏁 L'animateur a terminé la partie après 3 questions sur 10 » (`stopped` dans `endPayloadFor`). Serveur : événement `host:finish` (seulement en `countdown` / `reading` / `question` / `results`) → `endGame`. Test smoke.
 
-51. (fait) Doublons dans un quiz : en enregistrant, si deux questions ont le même texte (sans tenir compte des majuscules, accents, ponctuation) et la même image, un message prévient « ⚠️ Les questions 1 et 3 sont identiques » (le quiz est enregistré quand même). `sameQuestions` dans `quiz-labels.js`, testé.
+51. (fait) Doublons dans un quiz : en enregistrant, si deux questions ont le même texte (sans tenir compte des majuscules, accents, ponctuation) et la même image, un message prévient « ⚠️ Les questions 1 et 3 sont identiques » (le quiz est enregistré quand même). Même avertissement après « Créer avec une IA » ou un tableur importé (`aiCreate`). `sameQuestions` dans `quiz-labels.js`, testé.
 
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
