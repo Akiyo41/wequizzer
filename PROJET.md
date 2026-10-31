@@ -182,6 +182,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 42. (fait) Bibliothèque : 3 nouveaux quiz, « Calcul mental » (Maths, 10 questions), roue « Les tables de multiplication » (Maths) et roue « Anglais : mots du quotidien » (nouveau thème Anglais), puis « Conjugaison au présent » (Français), roue « Les grands inventeurs » (Histoire) et « Continents et océans » (Géographie) → 35 quiz. La page Bibliothèque a une case « 🔍 Chercher (titre ou thème) » (`#libSearch`, même recherche souple `quizMatches`). Chaque quiz a aussi un bouton « Tester » (aperçu `startPreview(pack, 'libPage')`, sans l'ajouter à Mes quiz). `tests/library.js` vérifie que chaque quiz de `public/library.json` est accepté par le serveur (`cleanQuiz`) et que les identifiants sont uniques.
 
+43. (fait) Pseudo déjà pris : le serveur propose un pseudo libre (« Léa 2 », « Léa 3 »… ; `freeName` en haut de `src/sockets.js`), l'envoie au téléphone (`join:suggest`) qui le met dans la case : il suffit de retoucher « Rejoindre ». Message : « Ce pseudo est déjà pris. Essaie « Léa 2 » ! ».
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

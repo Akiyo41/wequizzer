@@ -18,6 +18,8 @@ $('pin').addEventListener('keydown', (e) => {
   if ($('name').value.trim()) join(); else $('name').focus();
 });
 socket.on('join:error', (msg) => { $('joinError').textContent = msg; });
+// Pseudo déjà pris : le pseudo libre proposé est mis dans la case, il suffit de toucher « Rejoindre »
+socket.on('join:suggest', (name) => { $('name').value = String(name || '').slice(0, 16); $('name').focus(); });
 
 // Connexion perdue : le professeur répare le câble (affiché seulement si la coupure dure plus d'1,5 s)
 let connTimer = null;

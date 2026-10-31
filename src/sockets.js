@@ -41,6 +41,17 @@ function countFail(socket) {
   ipTries.set(ip, rec);
 }
 
+// Pseudo libre proche d'un pseudo déjà pris : « Léa 2 », « Léa 3 »… (16 caractères au plus)
+function freeName(g, name) {
+  const taken = new Set(allPeople(g).map((p) => p.name.toLowerCase()));
+  for (let n = 2; n < 100; n++) {
+    const tag = ' ' + n;
+    const cand = name.slice(0, 16 - tag.length).trim() + tag;
+    if (!taken.has(cand.toLowerCase())) return cand;
+  }
+  return '';
+}
+
 function setupSockets(io) {
   io.on('connection', (socket) => {
     // ---------- Animateur ----------
@@ -248,8 +259,12 @@ function setupSockets(io) {
       if (!name) return socket.emit('join:error', 'Choisis un pseudo.');
       if (isBlocked(name)) return socket.emit('join:error', 'Ce pseudo n\'est pas autorisé. Choisis-en un autre.');
       if (allPeople(g).length >= MAX_PLAYERS) return socket.emit('join:error', 'La partie est complète.');
-      if (allPeople(g).some((p) => p.name.toLowerCase() === name.toLowerCase())) {
-        return socket.emit('join:error', 'Ce pseudo est déjà pris.');
+      const same = allPeople(g).find((p) => p.name.toLowerCase() === name.toLowerCase());
+      if (same) {
+        // on propose un pseudo libre (« Léa 2 ») que le téléphone met dans la case
+        const free = freeName(g, same.name);
+        if (free) socket.emit('join:suggest', free);
+        return socket.emit('join:error', free ? 'Ce pseudo est déjà pris. Essaie « ' + free + ' » !' : 'Ce pseudo est déjà pris.');
       }
       const p = {
         pid: rid(6),
