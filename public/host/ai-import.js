@@ -28,7 +28,12 @@ const AI_TYPES = [
     ex: ['mot', 'Animal qui miaule et chasse les souris', 'chat', '', '', '', '', '', ''] },
 ];
 // exemple complet pour le modèle de tableur (une ligne par type)
-const CSV_SAMPLE = AI_TYPES.map((t) => t.ex).concat([['sondage', 'Ton fruit préféré ?', 'Pomme', 'Banane', 'Fraise', 'Mangue', '', '', '']]);
+// (une roue demande au moins 3 lignes : deux de plus, pour que le modèle s'ouvre tel quel)
+const CSV_SAMPLE = AI_TYPES.map((t) => t.ex).concat([
+  ['roue', 'Capitale de l\'Espagne ?', 'Madrid', 'Séville', 'Barcelone', 'Valence', '', '', ''],
+  ['roue', 'Capitale du Portugal ?', 'Lisbonne', 'Porto', 'Faro', 'Braga', '', '', ''],
+  ['sondage', 'Ton fruit préféré ?', 'Pomme', 'Banane', 'Fraise', 'Mangue', '', '', ''],
+]);
 
 function parseCsv(text) {
   text = text.replace(/^﻿/, '');
@@ -344,6 +349,8 @@ $('csvFile').onchange = () => {
 };
 $('aiTemplate').onclick = () => {
   const esc = (c) => '"' + String(c).replace(/"/g, '""') + '"';
-  const csv = [CSV_HEAD, ...CSV_SAMPLE].map((r) => r.map(esc).join(';')).join('\r\n');
+  // modèle pour un tableur fait à la main : 10e colonne facultative, le temps de la question (vide = celui des réglages)
+  const rows = [CSV_HEAD.concat(['Temps (secondes, facultatif)']), ...CSV_SAMPLE.map((r, i) => r.concat([i === 0 ? '30' : '']))];
+  const csv = rows.map((r) => r.map(esc).join(';')).join('\r\n');
   download('modele-wequizzer.csv', '﻿' + csv, 'text/csv');
 };
