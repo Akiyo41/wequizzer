@@ -322,6 +322,10 @@ input[type="range"] { width: 130px; accent-color: var(--accent); margin: 0; }
   .hostbar #barPin .ti { display: none; }
   html body.has-fs .hostbar { padding-right: 100px; } /* plus fort que la règle plus bas */
 }
+/* Très petit téléphone : la barre passe sur deux lignes, on laisse la place au-dessus du jeu */
+@media (max-width: 360px) {
+  body.with-bar { padding-top: 104px; }
+}
 .screen > * { flex-shrink: 0; }
 body.in-game { padding-top: 58px; }
 
