@@ -1,10 +1,15 @@
 // Test des phrases du Professeur et du tirage au sort (sans navigateur). Lancer avec : npm test
 const assert = require('assert');
-const { LINES, pickLine } = require('../public/lines.js');
+const { LINES, pickLine, rankText } = require('../public/lines.js');
 
 const KEYS = ['attente', 'file', 'compte', 'envoye', 'elimine', 'bravo', 'serie', 'rate', 'tropTard', 'sondage', 'finGagne', 'finPodium', 'finAutre', 'animCompte', 'animTous', 'animMoitie', 'animPersonne', 'animSondage', 'animPodium', 'dernier', 'lecture', 'animLecture', 'pause', 'pauseCoupure', 'animPause', 'animPauseCoupure', 'animAccueil', 'animFinZero'];
 
 const tests = {
+  'rang en toutes lettres : 1er, puis 2e, 3e…'() {
+    assert.strictEqual(rankText(1), '1er');
+    assert.strictEqual(rankText(2), '2e');
+    assert.strictEqual(rankText(11), '11e');
+  },
   'les 28 situations, 3 à 5 phrases chacune'() {
     assert.deepStrictEqual(Object.keys(LINES).sort(), KEYS.slice().sort());
     KEYS.forEach((k) => assert.ok(LINES[k].length >= 3 && LINES[k].length <= 5, k));

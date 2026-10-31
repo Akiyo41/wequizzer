@@ -102,20 +102,20 @@ socket.on('end', (d) => {
   let head;
   if (teamy && d.teamRank) {
     medal = d.teamRank === 1 ? '🏆' : d.teamRank === 2 ? '🥈' : d.teamRank === 3 ? '🥉' : '🎮';
-    head = d.teamRank === 1 ? 'Ton équipe a gagné !' : 'Ton équipe : ' + d.teamRank + 'e sur ' + d.teamCount;
+    head = d.teamRank === 1 ? 'Ton équipe a gagné !' : 'Ton équipe : ' + rankText(d.teamRank) + ' sur ' + d.teamCount;
   } else if (!d.questions) {
     // partie sans question notée (nuages de mots, sondages) : pas de rang
     medal = '☁️';
     head = 'Merci d\'avoir participé !';
   } else if (zero) {
     medal = '🎮';
-    head = d.rank + 'e sur ' + d.total;
+    head = rankText(d.rank) + ' sur ' + d.total;
   } else if (elim) {
     medal = d.alive ? '🏆' : '💀';
-    head = d.alive ? 'Toujours en jeu !' : d.rank + 'e sur ' + d.total;
+    head = d.alive ? 'Toujours en jeu !' : rankText(d.rank) + ' sur ' + d.total;
   } else {
     medal = d.rank === 1 ? '🏆' : d.rank === 2 ? '🥈' : d.rank === 3 ? '🥉' : '🎮';
-    head = d.rank === 1 ? 'Tu as gagné !' : d.rank + 'e sur ' + d.total;
+    head = d.rank === 1 ? 'Tu as gagné !' : rankText(d.rank) + ' sur ' + d.total;
   }
   $('endIcon').textContent = medal;
   $('endTitle').textContent = head;
@@ -185,7 +185,7 @@ $('shareBtn').onclick = () => {
     quiz: d.quizTitle,
     emoji: d.avatar,
     headline: d.name,
-    sub: scored ? d.rank + 'e sur ' + d.total : '☁️ a participé',
+    sub: scored ? rankText(d.rank) + ' sur ' + d.total : '☁️ a participé',
     rows: scored ? [{ left: '★', mid: l, right: String(v) }, { left: '#', mid: 'Rang', right: d.rank + ' / ' + d.total }] : [],
     badges,
   }, 'mon-resultat-wequizzer.png');

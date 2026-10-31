@@ -156,4 +156,8 @@ function consigneFor(q) {
   if (q.type === 'zone') return 'zone';
   return null;
 }
-if (typeof module !== 'undefined') module.exports = { LINES, pickLine, resultLine, endLine, CONSIGNES, consigneFor };
+// Rang écrit à la française : « 1er », « 2e », « 3e »…
+function rankText(n) {
+  return n === 1 ? '1er' : n + 'e';
+}
+if (typeof module !== 'undefined') module.exports = { LINES, pickLine, resultLine, endLine, CONSIGNES, consigneFor, rankText };
