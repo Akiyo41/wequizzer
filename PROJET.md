@@ -216,6 +216,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 59. (fait) Page Stats : bouton « Créer un quiz de révision » → nouveau quiz « Révision - Titre » dans « Mes quiz » avec les questions réussies à moins de 60 % sur toutes les parties (quiz classiques et Vrai/Faux en rafale ; bouton caché pour la roue, le jeu de mots et un quiz sans statistiques). `revisionQuiz` dans `quiz-labels.js`, testé. Aide `faq-resultats`.
 
+60. (fait) Page Stats : « 19 parties jouées (dernière le 31/10/2026) » — `st.last` enregistré à chaque partie terminée (`recordStats`).
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

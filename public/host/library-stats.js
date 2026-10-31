@@ -65,6 +65,7 @@ function recordStats(d) {
   const all = LS.get(STATS_KEY, {});
   const st = all[selectedId] || { games: 0, players: 0, qs: {} };
   st.games += 1;
+  st.last = Date.now(); // date de la dernière partie, affichée dans la page Stats
   st.players += d.total || 0;
   d.qstats.forEach((q) => {
     const c = st.qs[q.label] || { ok: 0, total: 0 };
@@ -85,7 +86,8 @@ function renderStats() {
   const quiz = library.find((q) => q.id === id);
   $('statsRevision').classList.toggle('hidden', !st || !quiz || !!quiz.kind); // pas de révision pour la roue ni le jeu de mots
   if (!st) { $('statsInfo').textContent = 'Pas encore de partie terminée avec ce quiz.'; return; }
-  $('statsInfo').textContent = st.games + ' partie' + (st.games > 1 ? 's' : '') + ' jouée' + (st.games > 1 ? 's' : '') + ' · les questions les plus ratées en premier';
+  const last = st.last ? ' (dernière le ' + new Date(st.last).toLocaleDateString('fr-FR') + ')' : '';
+  $('statsInfo').textContent = st.games + ' partie' + (st.games > 1 ? 's' : '') + ' jouée' + (st.games > 1 ? 's' : '') + last + ' · les questions les plus ratées en premier';
   Object.keys(st.qs)
     .map((k) => ({ label: k, pct: st.qs[k].total ? Math.round((100 * st.qs[k].ok) / st.qs[k].total) : 0, total: st.qs[k].total, answer: st.qs[k].answer }))
     .sort((a, b) => a.pct - b.pct)
