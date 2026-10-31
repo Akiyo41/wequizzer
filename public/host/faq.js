@@ -10,7 +10,7 @@ function openFaq(id) {
 }
 // « Quoi de neuf ? » : pastille sur le bouton Aide tant que l'animateur n'a pas lu les dernières nouveautés.
 // Changer NEWS quand on met à jour la liste « faq-nouveau » de host.html.
-const NEWS = '2026-10-31';
+const NEWS = '2026-10-31b';
 const NEWS_KEY = 'wequizzer.newsSeen';
 if (LS.get(NEWS_KEY, '') !== NEWS) $('openFaq').appendChild(el('span', 'news-dot', 'nouveau'));
 $('openFaq').onclick = () => {
