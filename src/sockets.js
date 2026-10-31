@@ -11,7 +11,7 @@ const { allPeople, games, newPin, toHost, toPlayer } = require('./send');
 const { addTime, elapsed, qTime, setPaused } = require('./timer');
 const { banLeft, banMessage, clientIp, closeGame, joinInfo, pickAvatar, removePlayer, sendHostPlayers, settingsPayload } = require('./room');
 const { advance, beginRound, endQuestion, maybeEndEarly, progressPayload } = require('./round');
-const { resetGame } = require('./end');
+const { endGame, resetGame } = require('./end');
 const { sendHostState, sendPlayerState } = require('./resume');
 
 // Codes PIN faux à la chaîne (quelqu'un qui devine au hasard) : au plus 8 par connexion et 40 par adresse
@@ -216,6 +216,13 @@ function setupSockets(io) {
     socket.on('host:skip', () => {
       const g = hostGame();
       if (g && !g.paused) endQuestion(g.pin);
+    });
+    // terminer la partie avant la dernière question : podium avec les scores actuels
+    socket.on('host:finish', () => {
+      const g = hostGame();
+      if (!g || !['countdown', 'reading', 'question', 'results'].includes(g.state)) return;
+      g.paused = false;
+      endGame(g.pin);
     });
     socket.on('host:moreTime', () => {
       const g = hostGame();

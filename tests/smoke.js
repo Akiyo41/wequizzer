@@ -312,6 +312,25 @@ const tests = {
     close(game);
   },
 
+  async 'terminer la partie avant la fin : podium avec les scores actuels'() {
+    const game = await setupGame({ mode: 'standard', limitTime: false }, QUIZ);
+    const res = once(game.host, 'results');
+    const q = once(game.players[0], 'question', 15000);
+    game.host.emit('host:start');
+    const qq = await q;
+    game.players[0].emit('player:answer', { index: qq.choices.indexOf('Paris') });
+    game.players[1].emit('player:answer', { index: qq.choices.indexOf('Lyon') });
+    await res;
+    const end = once(game.host, 'end');
+    const endP = once(game.players[0], 'end');
+    game.host.emit('host:finish');
+    const e = await end;
+    assert.strictEqual(e.questions, 1);
+    assert.deepStrictEqual(e.board.map((b) => [b.name, b.score]), [['Alice', 1], ['Bob', 0]]);
+    assert.strictEqual((await endP).rank, 1);
+    close(game);
+  },
+
   async 'temps propre à une question'() {
     const quiz = { title: 'Temps', questions: [
       { type: 'single', text: 'Difficile', choices: ['a', 'b'], correct: 0, time: 60 },

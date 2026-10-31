@@ -76,6 +76,11 @@ $('quitBtn').onclick = async () => {
   replayPending = false;
   socket.emit('host:reset');
 };
+// Terminer avant la dernière question : le podium s'affiche avec les scores du moment
+$('finishBtn').onclick = async () => {
+  const ok = await UI.confirm({ title: 'Terminer la partie maintenant ?', text: "Les questions restantes ne seront pas posées. Le podium s'affiche avec les scores actuels.", ok: 'Voir le podium', cancel: 'Continuer', pose: 'question' });
+  if (ok) socket.emit('host:finish');
+};
 $('pauseBtn').onclick = () => socket.emit('host:pause', !isPaused);
 $('resumeBtn').onclick = () => socket.emit('host:pause', false);
 $('nextBtn').onclick = () => { FX.click(); socket.emit('host:next'); };
