@@ -1,6 +1,6 @@
 // Test du tableur des résultats de fin de partie (sans navigateur). Lancer avec : npm test
 const assert = require('assert');
-const { resultsCsv, toReview, statsCsv, plainAnswer } = require('../public/host/results-csv.js');
+const { resultsCsv, toReview, statsCsv, plainAnswer, boardText } = require('../public/host/results-csv.js');
 
 const lines = (csv) => csv.replace(/^﻿/, '').split('\r\n');
 
@@ -116,6 +116,13 @@ const tests = {
     const last = new Date(2026, 9, 31, 10, 0).getTime();
     const l = lines(statsCsv({ games: 2, last, qs: {} }, 'T', 'x'));
     assert.deepStrictEqual(l.slice(2, 5), ['Parties jouées;2', 'Dernière partie;31/10/2026', '']);
+  },
+  'classement à copier (message, ENT) : titre, date, une ligne par joueur'() {
+    const d = { quizTitle: 'Capitales', questions: 3, scoreMode: 'count', hasDouble: false, results: [
+      { rank: 1, name: 'Alice', score: 3, correct: 3 }, { rank: 2, name: 'Bob', score: 1, correct: 1 }, { rank: 3, name: 'Zoé', score: 0, correct: 0 }] };
+    assert.strictEqual(boardText(d, '31/10/2026'), 'Quiz « Capitales » – 31/10/2026\n1. Alice : 3 / 3\n2. Bob : 1 / 3\n3. Zoé : 0 / 3');
+    const pts = { ...d, scoreMode: 'points', results: [{ rank: 1, name: 'Alice', score: 2450, correct: 3 }, { rank: 2, name: 'Bob', score: 1, correct: 1 }] };
+    assert.strictEqual(boardText(pts, 'x').split('\n').slice(1).join('|'), '1. Alice : 2450 pts (3 / 3)|2. Bob : 1 pt (1 / 3)');
   },
   'formules de tableur neutralisées dans les pseudos'() {
     const l = lines(resultsCsv({ quizTitle: '=1+1', questions: 1, results: [{ rank: 1, name: '=HYPERLINK("x")', score: 0, correct: 0, team: null }], qstats: [] }, 'x'));

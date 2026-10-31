@@ -64,8 +64,19 @@ function statsCsv(st, title, date) {
     .forEach((q) => L.push(csvText(q.label) + ';' + q.ok + ' / ' + q.total + ';' + q.pct + ' %' + (ans ? ';' + csvText(q.answer) : '')));
   return '﻿' + L.join('\r\n');
 }
+// Classement en texte, à coller dans un message ou l'ENT : « 1. Alice : 3 / 3 » (ou « 2450 pts (3 / 3) » avec les points)
+function boardText(d, date) {
+  const pts = d.scoreMode === 'points' || d.hasDouble;
+  const L = ['Quiz « ' + (d.quizTitle || '') + ' » – ' + date];
+  (d.results || []).forEach((r) => {
+    const good = r.correct + ' / ' + (d.questions || 0);
+    if (!d.questions) L.push('• ' + r.name);
+    else L.push(r.rank + '. ' + r.name + ' : ' + (pts ? r.score + (r.score > 1 ? ' pts' : ' pt') + ' (' + good + ')' : good));
+  });
+  return L.join('\n');
+}
 // Bonne réponse sans la lettre du choix (« C – Canberra » → « Canberra ») : les choix sont mélangés à chaque partie
 function plainAnswer(a) {
   return String(a || '').split(' + ').map((x) => x.replace(/^[A-D1-4] – /, '')).join(' + ');
 }
-if (typeof module !== 'undefined') module.exports = { resultsCsv, toReview, statsCsv, plainAnswer };
+if (typeof module !== 'undefined') module.exports = { resultsCsv, toReview, statsCsv, plainAnswer, boardText };

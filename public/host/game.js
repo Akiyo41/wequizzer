@@ -590,6 +590,8 @@ socket.on('end', (d) => {
   show('end');
   if (!zero) setTimeout(() => { FX.fanfare(); FX.confetti(90); }, 1500);
 });
+// Classement en texte (boardText dans results-csv.js) : à coller dans un message ou sur l'ENT
+$('copyBoardBtn').onclick = () => { if (lastEnd) copyText(boardText(lastEnd, new Date().toLocaleDateString('fr-FR')), $('copyBoardBtn')); };
 $('shareBtn').onclick = () => {
   if (!lastEnd) return;
   const d = lastEnd;
