@@ -31,8 +31,9 @@ function resultsCsv(d, date) {
     L.push(row.join(';'));
   });
   if (d.qstats && d.qstats.length) {
-    L.push('', 'Question;Bonnes réponses;Réussite');
-    d.qstats.forEach((q, i) => L.push(txt((nq ? 'Q' + (i + 1) + ' – ' : '') + q.label) + ';' + q.ok + ' / ' + q.total + ';' + (q.total ? Math.round((100 * q.ok) / q.total) : 0) + ' %'));
+    const ans = d.qstats.some((q) => q.answer); // la bonne réponse de chaque question (parties récentes)
+    L.push('', 'Question;Bonnes réponses;Réussite' + (ans ? ';Bonne réponse' : ''));
+    d.qstats.forEach((q, i) => L.push(txt((nq ? 'Q' + (i + 1) + ' – ' : '') + q.label) + ';' + q.ok + ' / ' + q.total + ';' + (q.total ? Math.round((100 * q.ok) / q.total) : 0) + ' %' + (ans ? ';' + txt(q.answer || '') : '')));
   }
   // nuages de mots : les réponses données à chaque question
   if (d.clouds && d.clouds.length) {

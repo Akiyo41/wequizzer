@@ -100,6 +100,10 @@ const tests = {
     const l = lines(resultsCsv({ quizTitle: 'Q', questions: 1, stopped: { asked: 3, total: 10 }, results: [], qstats: [] }, 'x'));
     assert.deepStrictEqual(l.slice(0, 4), ['Quiz;"Q"', 'Date;x', 'Questions posées;3 / 10 (partie terminée avant la fin)', '']);
   },
+  'réussite par question : la bonne réponse en plus quand elle est connue'() {
+    const l = lines(resultsCsv({ quizTitle: 'Q', questions: 1, results: [], qstats: [{ label: 'Capitale ?', ok: 1, total: 2, answer: 'B – Paris' }] }, 'x'));
+    assert.deepStrictEqual(l.slice(-2), ['Question;Bonnes réponses;Réussite;Bonne réponse', '"Capitale ?";1 / 2;50 %;"B – Paris"']);
+  },
   'formules de tableur neutralisées dans les pseudos'() {
     const l = lines(resultsCsv({ quizTitle: '=1+1', questions: 1, results: [{ rank: 1, name: '=HYPERLINK("x")', score: 0, correct: 0, team: null }], qstats: [] }, 'x'));
     assert.strictEqual(l[0], 'Quiz;"\'=1+1"');
