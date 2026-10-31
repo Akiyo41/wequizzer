@@ -576,3 +576,6 @@ body.has-fs .hostbar { padding-right: 112px; }
 .answers-given .given.bad { background: rgba(216, 27, 80, .28); }
 .answers-given .given.later { background: rgba(255, 196, 0, .3); }
 .answers-given .accept-next { margin: 0 0 0 6px; min-height: 28px; padding: 2px 8px; }
+/* Récap question par question sur l'écran de fin du téléphone */
+.recap { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin: 10px auto 0; max-width: 340px; font-size: 1.35rem; }
+.recap-q { line-height: 1; }

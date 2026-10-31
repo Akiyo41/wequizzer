@@ -20,7 +20,7 @@ if (typeof module !== 'undefined') module.exports = { hostKey };
 else {
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
-    if (document.querySelector('.cbx-back') || !$('kickDlg').classList.contains('hidden') || (typeof Tour !== 'undefined' && Tour.active && Tour.active())) return; // fenêtre ouverte
+    if (document.querySelector('.cbx-back:not(.hidden)') || !$('kickDlg').classList.contains('hidden') || (typeof Tour !== 'undefined' && Tour.active && Tour.active())) return; // fenêtre ouverte
     const screen = screens.find((s) => !$(s).classList.contains('hidden'));
     const action = hostKey(e.key, screen, document.activeElement ? document.activeElement.tagName : 'BODY');
     if (action === 'fullscreen') { if (UI.toggleFullscreen()) e.preventDefault(); return; }

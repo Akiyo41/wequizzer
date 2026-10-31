@@ -109,6 +109,16 @@ socket.on('end', (d) => {
   stats.appendChild(stat(l, v));
   stats.appendChild(stat('Rang', d.rank + ' / ' + d.total));
   if (d.teamName) stats.appendChild(stat('Équipe', d.teamIcon + ' ' + d.teamName));
+  // Récap question par question : ✅ juste, ❌ raté, ➖ pas jouée (arrivé en retard, éliminé…)
+  const recap = $('endRecap');
+  recap.innerHTML = '';
+  const row = d.answers || [];
+  recap.classList.toggle('hidden', row.length < 2);
+  row.forEach((a, i) => {
+    const s = el('span', 'recap-q ' + (a === true ? 'ok' : a === false ? 'bad' : 'none'), a === true ? '✅' : a === false ? '❌' : '➖');
+    s.title = 'Question ' + (i + 1) + (a === true ? ' : juste' : a === false ? ' : ratée' : ' : pas jouée');
+    recap.appendChild(s);
+  });
   const badge = $('endBadge');
   badge.innerHTML = '';
   badge.classList.toggle('hidden', !d.title);

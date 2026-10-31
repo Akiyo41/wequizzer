@@ -4,6 +4,10 @@ const { allPeople, games, toHost, toPlayer } = require('./send');
 const { clearTimer } = require('./timer');
 const { lobbyPayload, queuedPayload, sendHostPlayers } = require('./room');
 
+// Pour chaque question notée (dans l'ordre) : true, false, ou null si le joueur n'y a pas joué
+function answerRow(g, p) {
+  return Object.keys(g.qstats || {}).map(Number).sort((a, b) => a - b).map((k) => (p.hist && k in p.hist ? p.hist[k] : null));
+}
 function endPayloadFor(g, p, ranked, titles, tboard) {
   const myTitle = titles.find((t) => t.pid === p.pid) || null;
   return {
@@ -27,6 +31,7 @@ function endPayloadFor(g, p, ranked, titles, tboard) {
     teamRank: tboard && p.team !== null ? tboard.findIndex((t) => t.team === p.team) + 1 : null,
     teamCount: tboard ? tboard.length : 0,
     quizTitle: g.quiz ? g.quiz.title : '',
+    answers: answerRow(g, p),
   };
 }
 
@@ -44,7 +49,7 @@ function endGame(pin) {
     total: ranked.length,
     // tous les joueurs (le podium n'en montre que 10) : pour le tableur des résultats
     results: ranked.map((p, i) => ({
-      answers: Object.keys(g.qstats || {}).map(Number).sort((a, b) => a - b).map((k) => (p.hist && k in p.hist ? p.hist[k] : null)),
+      answers: answerRow(g, p),
       rank: i + 1, name: p.name, team: p.team === null || p.team === undefined ? null : teamInfo(g, p.team).teamName, score: p.score, correct: p.correct, alive: !p.eliminated, hearts: heartsOn(g) ? p.hearts : null,
     })),
     scoreMode: g.scoreMode,

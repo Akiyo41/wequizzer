@@ -168,6 +168,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 35. (fait) Joueurs sur ordinateur : répondre au clavier, A B C D… ou 1 2 3 4… (jusqu'à 8 réponses), Entrée valide un choix multiple ; pas pendant qu'on écrit ni quand « Mes réglages » est ouvert, et une case cachée qui garde le focus (le pseudo après « Rejoindre ») ne bloque pas. `public/play/keys.js` (`playerKey`, testé par `tests/play-keys.js`).
 
+36. (fait) Écran de fin du téléphone : récap question par question sous le score (✅ juste, ❌ ratée, ➖ pas jouée ; affiché à partir de 2 questions notées). Le serveur envoie `answers` à chaque joueur (`answerRow` dans `src/end.js`, partagé avec le tableau des résultats). Les touches de l'animateur ne sont bloquées que par une fenêtre visible (`.cbx-back:not(.hidden)`).
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

@@ -123,6 +123,8 @@ const tests = {
     // une case par question notée (le sondage ne compte pas), dans l'ordre des statistiques
     assert.deepStrictEqual(end.results.map((r) => r.answers), [[true, true, true, true], [false, false, false, false]]);
     assert.strictEqual(endPlayers[0].rank, 1);
+    // récap question par question sur le téléphone (le sondage ne compte pas)
+    assert.deepStrictEqual(endPlayers.map((p) => p.answers), [[true, true, true, true], [false, false, false, false]]);
     assert.strictEqual(endPlayers[1].mistakes.length, 4);
     const replay = once(game.host, 'host:replayQuiz');
     game.host.emit('host:replayMissed');
