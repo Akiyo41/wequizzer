@@ -12,7 +12,11 @@ async function openLibPage() {
   const box = $('libList');
   box.innerHTML = '';
   let theme = '';
-  libPacks.slice().sort((a, b) => a.theme.localeCompare(b.theme, 'fr')).forEach((p) => {
+  // recherche : les mots tapés doivent se trouver dans le titre ou le thème
+  const query = $('libSearch').value;
+  const shown = libPacks.filter((p) => quizMatches({ title: p.title + ' ' + p.theme }, query));
+  $('libNone').classList.toggle('hidden', shown.length > 0);
+  shown.sort((a, b) => a.theme.localeCompare(b.theme, 'fr')).forEach((p) => {
     if (p.theme !== theme) { theme = p.theme; box.appendChild(el('h3', '', theme)); }
     const n = p.kind === 'wheel' ? p.pairs.length : p.kind === 'letters' ? p.items.length : p.questions.length;
     const kindTxt = p.kind === 'wheel' ? 'paires' : p.kind === 'letters' ? 'mots' : p.flavor === 'tfrush' ? 'affirmations' : 'questions';
@@ -43,7 +47,8 @@ async function openLibPage() {
     box.appendChild(row);
   });
 }
-$('openLib').onclick = openLibPage;
+$('openLib').onclick = () => { $('libSearch').value = ''; openLibPage(); };
+$('libSearch').oninput = openLibPage;
 $('libBack').onclick = () => show('lobby');
 
 // ----- Statistiques : gardées dans ce navigateur, par quiz -----
