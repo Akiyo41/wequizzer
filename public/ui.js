@@ -84,6 +84,16 @@ const UI = (() => {
     document.body.classList.add('has-snd');
     apply();
   }
+  // Petit message qui s'affiche 2,5 s en bas de l'écran (lu aussi par les lecteurs d'écran)
+  let toastEl = null; let toastT = null;
+  function toast(text) {
+    if (!toastEl) { toastEl = document.createElement('div'); toastEl.className = 'toast'; document.body.appendChild(toastEl); }
+    toastEl.textContent = text;
+    toastEl.classList.remove('show'); void toastEl.offsetWidth; toastEl.classList.add('show');
+    clearTimeout(toastT);
+    toastT = setTimeout(() => toastEl.classList.remove('show'), 2500);
+    announce(text);
+  }
   // Plein écran (vidéoprojecteur) : bouton rond à gauche du bouton de son, et touche F côté animateur.
   // toggleFullscreen() → false si le navigateur ne sait pas le faire (iPhone…)
   const fsOn = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
@@ -144,5 +154,5 @@ const UI = (() => {
     });
   }
   nameRows();
-  return { confirm: confirmBox, soundButton, soundInit, soundSlider, fullscreenButton, toggleFullscreen, announce, nameRows };
+  return { confirm: confirmBox, soundButton, soundInit, soundSlider, fullscreenButton, toggleFullscreen, announce, toast, nameRows };
 })();

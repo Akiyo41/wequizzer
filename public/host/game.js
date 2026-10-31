@@ -68,7 +68,7 @@ socket.on('time:more', ({ time, left, more }) => {
   currentQ.time = time;
   if (!isPaused && !$('question').classList.contains('hidden')) startTimer(time, left);
   $('moreTimeBtn').classList.toggle('hidden', !more);
-  UI.announce('10 secondes de plus');
+  UI.toast('⏱️ 10 secondes de plus !');
 });
 $('quitBtn').onclick = async () => {
   const ok = await UI.confirm({ title: 'Quitter le quiz en cours ?', text: "Les scores seront effacés. Les joueurs restent connectés et reviennent dans la salle d'attente.", ok: 'Quitter le quiz', cancel: 'Continuer', pose: 'question' });

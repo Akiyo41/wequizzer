@@ -159,7 +159,7 @@ socket.on('time:more', ({ time, left }) => {
   curQ.time = time;
   if (curScreen === 'question') startTimer(time, left);
   else if (curScreen === 'wheel') wheelTimer(time, left);
-  UI.announce('10 secondes de plus');
+  UI.toast('⏱️ 10 secondes de plus !');
 });
 socket.on('paused', ({ paused, reason, left }) => {
   $('pauseOv').classList.toggle('hidden', !paused);
