@@ -591,3 +591,5 @@ body.big-text .say-bubble, body.big-text .hint { font-size: 1.15rem; }
 .review-pct { min-width: 54px; text-align: right; font-weight: 800; color: #ff8fab; }
 /* Téléphone, salle d'attente : nom du quiz qui va être joué */
 .wait-quiz { margin: 4px 0 0; font-weight: 800; font-size: 1.15rem; color: #fff; }
+/* Téléphone : pas de bouton de son en haut à droite, l'icône plein écran prend sa place */
+body:not(.has-snd) .fs-btn { right: 10px; }

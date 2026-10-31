@@ -135,13 +135,9 @@ const BIG_KEY = 'wequizzer.bigText';
 const applyBig = () => document.body.classList.toggle('big-text', LS.get(BIG_KEY, false) === true);
 applyBig();
 $('setBig').onchange = () => { LS.set(BIG_KEY, $('setBig').checked); applyBig(); };
-// Plein écran (Mes réglages) : caché si le téléphone ne sait pas le faire (iPhone : passer par « Sur l'écran d'accueil »)
-const fullOn = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
-const paintFull = () => { $('setFullTxt').textContent = fullOn() ? 'Quitter le plein écran' : 'Plein écran'; };
-if (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen) $('setFull').classList.remove('hidden');
-$('setFull').onclick = () => { if (UI.toggleFullscreen()) $('setPanel').classList.add('hidden'); };
-document.addEventListener('fullscreenchange', paintFull);
-document.addEventListener('webkitfullscreenchange', paintFull);
+// Plein écran : icône ronde en haut à droite, comme chez l'animateur (absente si le téléphone ne sait pas le faire :
+// sur iPhone, on passe par « Sur l'écran d'accueil »)
+UI.fullscreenButton();
 $('setVib').onchange = () => { LS.set(VIB_KEY, $('setVib').checked); if ($('setVib').checked && navigator.vibrate) navigator.vibrate(35); };
 $('setSave').onclick = () => {
   $('setErr').textContent = '';
