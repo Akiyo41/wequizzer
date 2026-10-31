@@ -17,6 +17,9 @@ const tests = {
     assert.strictEqual(new Set(ids).size, ids.length, 'deux quiz ont le même identifiant');
     packs.forEach((p) => assert.ok(p.pid && p.theme && p.level && p.title, JSON.stringify(p.title)));
   },
+  'FIMO : un quiz sur la signalisation'() {
+    assert.ok(packs.some((p) => p.pid === 'fimo-signalisation' && p.questions.length >= 10), 'signalisation');
+  },
   'il y a des quiz de maths et d\'anglais'() {
     assert.ok(packs.some((p) => p.theme === 'Maths' && p.kind === 'quiz'), 'quiz de maths');
     assert.ok(packs.some((p) => p.theme === 'Anglais'), 'anglais');

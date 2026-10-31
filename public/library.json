@@ -5336,6 +5336,165 @@
   ]
  },
  {
+  "pid": "fimo-signalisation",
+  "theme": "Transport routier (FIMO)",
+  "level": "Facile",
+  "kind": "quiz",
+  "title": "FIMO : signalisation",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Un panneau en forme de triangle, bordé de rouge, pointe en haut, annonce…",
+    "image": "",
+    "choices": [
+     "Une interdiction",
+     "Un danger",
+     "Une obligation",
+     "Une indication"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Triangle pointe en haut = danger."
+   },
+   {
+    "type": "single",
+    "text": "Un panneau rond, bordé de rouge, indique…",
+    "image": "",
+    "choices": [
+     "Une interdiction",
+     "Une obligation",
+     "Une indication",
+     "Un danger"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Rond à bord rouge = interdiction."
+   },
+   {
+    "type": "single",
+    "text": "Un panneau rond à fond bleu indique…",
+    "image": "",
+    "choices": [
+     "Une indication",
+     "Un danger",
+     "Une obligation",
+     "Une fin d'interdiction"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Rond bleu = obligation (direction, vitesse minimale…)."
+   },
+   {
+    "type": "single",
+    "text": "Le panneau octogonal rouge « STOP » impose…",
+    "image": "",
+    "choices": [
+     "De ralentir",
+     "De céder le passage sans s'arrêter",
+     "De klaxonner",
+     "De marquer l'arrêt puis de céder le passage"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": "Arrêt obligatoire à la limite de la chaussée, même si personne n'arrive."
+   },
+   {
+    "type": "single",
+    "text": "Le triangle pointe en bas, bordé de rouge, signifie…",
+    "image": "",
+    "choices": [
+     "Cédez le passage",
+     "Route prioritaire",
+     "Danger",
+     "Fin de route prioritaire"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Le losange jaune bordé de blanc indique…",
+    "image": "",
+    "choices": [
+     "Une fin de priorité",
+     "Un chantier",
+     "Une route à caractère prioritaire",
+     "Un parking pour poids lourds"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Barré de noir, il annonce la fin de la route prioritaire."
+   },
+   {
+    "type": "single",
+    "text": "Un panneau ou un marquage au sol de couleur jaune signale…",
+    "image": "",
+    "choices": [
+     "Une route touristique",
+     "Une signalisation temporaire (travaux, déviation)",
+     "Une zone pour poids lourds",
+     "Une route à péage"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "La signalisation temporaire jaune passe avant la signalisation habituelle."
+   },
+   {
+    "type": "single",
+    "text": "Au feu orange fixe, le conducteur doit…",
+    "image": "",
+    "choices": [
+     "Accélérer pour passer",
+     "Klaxonner",
+     "S'arrêter, sauf si l'arrêt est impossible sans danger",
+     "Passer s'il n'y a personne"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Hors agglomération, un véhicule de plus de 3,5 t ou de plus de 7 m qui en suit un autre de même catégorie doit laisser au moins…",
+    "image": "",
+    "choices": [
+     "20 mètres",
+     "50 mètres",
+     "100 mètres",
+     "2 secondes seulement"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Article R412-12 du Code de la route."
+   },
+   {
+    "type": "single",
+    "text": "Une ligne continue au sol…",
+    "image": "",
+    "choices": [
+     "Ne doit jamais être franchie ni chevauchée",
+     "Peut être franchie pour doubler un camion lent",
+     "Peut être chevauchée si la route est libre",
+     "Ne concerne que les voitures"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
+ },
+ {
   "pid": "calcul-mental",
   "theme": "Maths",
   "level": "Facile",

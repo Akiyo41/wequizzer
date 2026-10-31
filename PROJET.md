@@ -240,6 +240,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 71. (fait) Podium : bouton « Copier le classement » → texte à coller dans un message ou l'ENT (« Quiz « Capitales » – 31/10/2026 », puis « 1. Alice : 3 / 3 » ou « 2450 pts (3 / 3) » avec les points ; « • Nom » pour une partie sans question notée). `boardText` dans `results-csv.js`, testé ; copie avec `copyText`. Aide `faq-resultats`.
 
+72. (fait) Bibliothèque : « FIMO : signalisation » (10 questions, Facile : formes des panneaux, STOP, cédez le passage, route prioritaire, signalisation temporaire jaune, feu orange, 50 m entre poids lourds hors agglomération (R412-12), ligne continue) → 37 quiz. Test `tests/library.js`.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
