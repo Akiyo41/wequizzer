@@ -164,6 +164,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 33. (fait) « Mes quiz » : case « 🔍 Chercher un quiz… » à partir de 8 quiz (`QUIZ_SEARCH_FROM`), qui filtre la liste de cet onglet (mots dans n'importe quel ordre, accents et majuscules ignorés : `quizMatches` dans `quiz-labels.js`) ; si le quiz choisi ne correspond plus, le premier qui correspond est choisi. La liste de l'onglet Jouer reste complète.
 
+34. (fait) Téléphone : avec l'option « Vibrations », le téléphone vibre aussi au résultat (80 ms si c'est juste, deux fois si c'est raté ; pas de nouvelle vibration si le même résultat revient après une coupure). `buzz(motif)` dans `public/play/connection.js`.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

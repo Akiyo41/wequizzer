@@ -26,6 +26,7 @@ socket.on('result', (r) => {
     t.style.fontSize = '';
     sub.textContent = r.double ? '⚡ Question bonus réussie !' : '';
     FX.good();
+    if (!again) buzz(80); // pas de nouvelle vibration si le même résultat revient après une coupure
   } else if (!r.answered) {
     icon.textContent = '⏱️';
     t.textContent = 'Pas de réponse';
@@ -38,6 +39,7 @@ socket.on('result', (r) => {
     t.className = 'big-num bad';
     t.style.fontSize = '';
     FX.bad();
+    if (!again) buzz([120, 90, 120]);
   }
   if (r.lostHeart && !r.outNow) sub.textContent = '💔 Tu perds un cœur… il t\'en reste ' + r.hearts + ' !';
   if (r.keptHeart) sub.textContent = '😮‍💨 Ouf ! Tout le monde s\'est trompé : tu gardes ton dernier cœur.';

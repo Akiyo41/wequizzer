@@ -91,6 +91,8 @@ socket.on('host:left', () => {
 // ----- Mes réglages (pseudo, avatar, vibration, son) -----
 const VIB_KEY = 'wequizzer.vibrate';
 const vibOn = () => LS.get(VIB_KEY, false) === true;
+// Vibration (si le joueur l'a choisie) : courte quand on répond, au résultat 1 vibration si c'est juste, 2 si c'est raté
+const buzz = (pattern) => { if (vibOn() && navigator.vibrate) { try { navigator.vibrate(pattern); } catch (e) { /* ignoré */ } } };
 const rawEmit = socket.emit.bind(socket);
 socket.emit = (ev, ...args) => {
   if (ev === 'player:answer' && vibOn() && navigator.vibrate) { try { navigator.vibrate(35); } catch (e) { /* ignoré */ } }
