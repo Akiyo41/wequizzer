@@ -43,7 +43,7 @@ function buildFromEditor() {
     if (!text) return fail(pre + (q.type === 'gap' ? 'écris ta phrase (avec ___ à la place du mot manquant). Ex : Le ___ miaule.' : 'écris la question.'));
     const image = (q.image || '').trim();
     if (image && !/^https?:\/\//i.test(image) && !image.startsWith('data:image/')) return fail(pre + "l'adresse de l'image doit commencer par http.");
-    const clean = { type: q.type, text, image, choices: [], correct: 0, answers: [], double: q.type === 'poll' ? false : q.double, explain: (q.explain || '').trim() };
+    const clean = { type: q.type, text, image, choices: [], correct: 0, answers: [], double: q.type === 'poll' || q.type === 'words' ? false : q.double, explain: (q.explain || '').trim() };
     if (q.type === 'gap') {
       if (/[\[\]]/.test(text)) return fail(pre + 'enlève les crochets [ ] de ta phrase : tape ___ à la place du mot manquant, et écris le mot dans la case « bonne réponse ».');
       const blanks = text.match(/_{2,}/g) || [];
@@ -72,6 +72,8 @@ function buildFromEditor() {
     } else if (q.type === 'tf') {
       clean.choices = ['Vrai', 'Faux'];
       clean.correct = q.correct === 1 ? 1 : 0;
+    } else if (q.type === 'words') {
+      // nuage de mots : rien d'autre à vérifier que le texte de la question
     } else if (q.type === 'text') {
       clean.answers = q.answers.map((a) => a.trim()).filter(Boolean);
       if (!clean.answers.length) return fail(pre + 'écris au moins une réponse acceptée.');

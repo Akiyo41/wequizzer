@@ -288,7 +288,7 @@ socket.on('question', (q) => {
 
   const box = $('choices');
   box.innerHTML = '';
-  const isText = q.type === 'text';
+  const isText = q.type === 'text' || q.type === 'words'; // nuage de mots : la même case pour écrire
   const isZone = q.type === 'zone';
   box.classList.toggle('hidden', isText || isZone);
   $('textAns').classList.toggle('hidden', !isText);

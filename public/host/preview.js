@@ -74,6 +74,10 @@ function renderPreview() {
     paint();
     box.appendChild(v.wrap);
     box.appendChild(res);
+  } else if (q.type === 'words') {
+    const d = el('div', 'textbox');
+    d.appendChild(document.createTextNode('☁️ Les joueurs écrivent un mot ou une courte réponse (pas de bonne réponse)'));
+    box.appendChild(d);
   } else if (q.type === 'text') {
     const d = el('div', 'textbox');
     d.appendChild(el('i', 'ti ti-pencil'));
@@ -93,7 +97,7 @@ function renderPreview() {
   $('pvHint').textContent = pv.shown && q.explain ? '💡 ' + q.explain : q.type === 'multi' ? 'Plusieurs bonnes réponses : le joueur doit toutes les cocher.' : q.type === 'poll' ? 'Sondage : pas de bonne réponse, pas de points.' : '';
   $('pvPrev').disabled = pv.i === 0;
   $('pvNext').disabled = pv.i === n - 1;
-  $('pvReveal').classList.toggle('hidden', q.type === 'poll');
+  $('pvReveal').classList.toggle('hidden', q.type === 'poll' || q.type === 'words');
   $('pvReveal').innerHTML = pv.shown ? '<i class="ti ti-eye-off"></i> Masquer la réponse' : '<i class="ti ti-eye"></i> Voir la réponse';
 }
 $('pvReveal').onclick = () => { pv.shown = !pv.shown; renderPreview(); };

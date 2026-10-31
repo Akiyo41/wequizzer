@@ -287,6 +287,21 @@ const tests = {
     }
   },
 
+  async 'nuage de mots : réponses libres regroupées, sans points'() {
+    const quiz = { title: 'Nuage', questions: [{ type: 'words', text: 'Un mot pour décrire l\'été ?' }, { type: 'single', text: 'Q ?', choices: ['a', 'b'], correct: 0 }] };
+    const game = await setupGame({ mode: 'standard', limitTime: false }, quiz);
+    const res = once(game.host, 'results');
+    const q = once(game.players[0], 'question', 15000);
+    game.host.emit('host:start');
+    assert.strictEqual((await q).type, 'words');
+    game.players[0].emit('player:answer', { text: 'Soleil' });
+    game.players[1].emit('player:answer', { text: 'soleil' });
+    const r = await res;
+    assert.deepStrictEqual(r.texts, [{ text: 'Soleil', count: 2, ok: false }]);
+    assert.strictEqual(r.okCount, 0);
+    close(game);
+  },
+
   async 'temps propre à une question'() {
     const quiz = { title: 'Temps', questions: [
       { type: 'single', text: 'Difficile', choices: ['a', 'b'], correct: 0, time: 60 },

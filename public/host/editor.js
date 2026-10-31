@@ -70,7 +70,7 @@ function switchType(q, type) {
   if (type === 'multi') q.correct = Array.isArray(q.correct) ? q.correct : [Number.isInteger(q.correct) ? q.correct : 0];
   else if (type === 'tf') q.correct = Array.isArray(q.correct) ? 0 : q.correct === 1 ? 1 : 0;
   else q.correct = Array.isArray(q.correct) ? (q.correct[0] || 0) : (Number.isInteger(q.correct) ? q.correct : 0);
-  if (type === 'poll') q.double = false;
+  if (type === 'poll' || type === 'words') q.double = false;
   if (type === 'order') { q.correct = 0; while (q.choices.length < 6) q.choices.push(''); }
   else if (q.choices.length > 4) q.choices = q.choices.slice(0, 4);
   if (type === 'gap') { q.choices = ['', q.choices[1] || '', q.choices[2] || '', q.choices[3] || '']; q.correct = 0; }
@@ -263,6 +263,8 @@ function renderEditor() {
       }
     } else if (q.type === 'zone') {
       // la bonne réponse est la zone placée sur l'image, plus haut
+    } else if (q.type === 'words') {
+      card.appendChild(el('p', 'hint', '☁️ Chacun écrit librement un mot ou une courte réponse : pas de bonne réponse, pas de points. Au résultat, tu vois les réponses regroupées, les plus fréquentes en premier.'));
     } else if (q.type === 'text') {
       card.appendChild(el('p', 'hint', 'Écris la bonne réponse. Si plusieurs réponses sont acceptées, sépare-les par un point-virgule « ; ». Les accents, majuscules et petites fautes sont tolérés :'));
       card.appendChild(textField(q.answers.join('; '), 'Ex : Pacifique; Océan Pacifique', (v) => { q.answers = v.split(';'); }));
@@ -299,7 +301,7 @@ function renderEditor() {
     const ex = textField(q.explain || '', 'Explication après la réponse (facultatif)', (v) => { q.explain = v; });
     ex.maxLength = 300;
     card.appendChild(ex);
-    if (q.type !== 'poll') {
+    if (q.type !== 'poll' && q.type !== 'words') {
       const bonus = el('label', 'ans bonus');
       const cb = el('input');
       cb.type = 'checkbox';

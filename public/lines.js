@@ -112,7 +112,7 @@ function pickLine(key, vars, last) {
 // Éliminé (ou pendu de l'équipe complet) passe avant tout : pas de « la prochaine est pour toi » à ce moment-là.
 function resultLine(r) {
   if (r.outNow || (r.hangErrors !== null && r.hangErrors !== undefined && r.hangErrors >= r.hangMax)) return { key: 'elimine', pose: 'desole' };
-  if (r.type === 'poll') return { key: 'sondage', pose: 'question' };
+  if (r.type === 'poll' || r.type === 'words') return { key: 'sondage', pose: 'question' };
   if (r.correct) return { key: r.streak >= 3 ? 'serie' : 'bravo', pose: 'bravo' };
   if (r.last) return { key: 'dernier', pose: 'desole' };
   return { key: r.answered ? 'rate' : 'tropTard', pose: 'desole' };
@@ -140,6 +140,7 @@ const CONSIGNES = {
   sondage: 'Sondage : pas de bonne réponse.',
   texte: 'Écris ta réponse : les accents et les petites fautes sont pardonnés !',
   zone: 'Touche le bon endroit sur l\'image, puis valide.',
+  nuage: 'Nuage de mots : écris un mot ou une courte réponse, il n\'y a pas de mauvaise réponse !',
 };
 // Question → clé de sa consigne (ou null)
 function consigneFor(q) {
@@ -149,6 +150,7 @@ function consigneFor(q) {
   if (q.order || q.type === 'order') return 'ordre';
   if (q.type === 'multi') return 'multi';
   if (q.type === 'poll') return 'sondage';
+  if (q.type === 'words') return 'nuage';
   if (q.type === 'text') return 'texte';
   if (q.type === 'zone') return 'zone';
   return null;

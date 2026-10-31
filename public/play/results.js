@@ -6,7 +6,7 @@ socket.on('result', (r) => {
   const again = sameAgain('result', r);
   clearInterval(timerInt);
   const icon = $('resIcon');
-  Brand.setPose($('resMascot'), r.correct ? 'bravo' : (r.type === 'poll' ? 'question' : 'desole'));
+  Brand.setPose($('resMascot'), r.correct ? 'bravo' : (r.type === 'poll' || r.type === 'words' ? 'question' : 'desole'));
   const t = $('resTitle');
   const sub = $('resSub');
   sub.textContent = '';
@@ -14,9 +14,9 @@ socket.on('result', (r) => {
     show('spectate');
     return;
   }
-  if (r.type === 'poll') {
-    icon.textContent = r.answered ? '🗳️' : '⏱️';
-    t.textContent = r.answered ? 'Merci pour ton vote !' : 'Pas de vote';
+  if (r.type === 'poll' || r.type === 'words') {
+    icon.textContent = r.answered ? (r.type === 'words' ? '☁️' : '🗳️') : '⏱️';
+    t.textContent = r.answered ? (r.type === 'words' ? 'Merci pour ta réponse !' : 'Merci pour ton vote !') : 'Pas de réponse';
     t.className = 'big-num';
     t.style.fontSize = '2rem';
   } else if (r.correct) {
@@ -66,7 +66,7 @@ socket.on('result', (r) => {
   }
   const stats = $('resStats');
   stats.innerHTML = '';
-  if (r.type !== 'poll' && r.myTotal) stats.appendChild(stat('Tes bonnes réponses', r.myCorrect + ' / ' + r.myTotal));
+  if (r.type !== 'poll' && r.type !== 'words' && r.myTotal) stats.appendChild(stat('Tes bonnes réponses', r.myCorrect + ' / ' + r.myTotal));
   if (r.streak >= 2) stats.appendChild(stat('Série', '🔥 ' + r.streak));
   $('resNext').textContent = r.last ? 'Les résultats arrivent…' : 'Prochaine question bientôt…';
   show('result');

@@ -71,7 +71,7 @@ const tests = {
   'éditeur : type proposé, zone gardée, vérifiée et envoyée'() {
     assert.ok(/zone: '📍 Image à toucher'/.test(read('public/host/base.js')), 'TYPE_LABEL');
     const ql = read('public/host/quiz-list.js');
-    assert.ok(/'zone'\]\.includes\(q\.type\)/.test(ql), 'normQ accepte zone');
+    assert.ok(/'zone'[^\]]*\]\.includes\(q\.type\)/.test(ql), 'normQ accepte zone');
     assert.ok(/zone: x\.zone/.test(ql), 'quizPayload envoie zone');
     const chk = read('public/host/editor-check.js');
     assert.ok(chk.includes('il faut une image pour une question « image à toucher ».') && chk.includes('touche l\\\'image pour placer la bonne zone.'), 'messages');

@@ -91,9 +91,9 @@ function cleanQuiz(input) {
     if (!raw || typeof raw !== 'object') return { error: `Question ${n} invalide.` };
     const text = String(raw.text || '').trim().slice(0, 200);
     if (!text) return { error: `Question ${n} : le texte est vide.` };
-    const type = ['single', 'tf', 'multi', 'text', 'poll', 'order', 'zone'].includes(raw.type) ? raw.type : 'single';
+    const type = ['single', 'tf', 'multi', 'text', 'poll', 'order', 'zone', 'words'].includes(raw.type) ? raw.type : 'single';
     const image = cleanImage(raw.image);
-    const double = raw.double === true && type !== 'poll';
+    const double = raw.double === true && type !== 'poll' && type !== 'words';
     const q = { type, text, image, double, choices: [], correct: null, answers: [], explain: String(raw.explain || '').trim().slice(0, 300) };
     // temps propre à la question (sinon celui des réglages de la partie)
     if (TIME_CHOICES.includes(raw.time)) q.time = raw.time;
@@ -103,6 +103,8 @@ function cleanQuiz(input) {
       if (!image) return { error: `Question ${n} : il faut une image pour une question « image à toucher ».` };
       if (!zoneValid(raw.zone)) return { error: `Question ${n} : touche l'image pour placer la bonne zone.` };
       q.zone = { x: raw.zone.x, y: raw.zone.y, r: raw.zone.r, ar: raw.zone.ar };
+    } else if (type === 'words') {
+      // Nuage de mots : chacun écrit librement, pas de bonne réponse (comme un sondage)
     } else if (type === 'tf') {
       q.choices = ['Vrai', 'Faux'];
       if (raw.correct !== 0 && raw.correct !== 1) return { error: `Question ${n} : choisis Vrai ou Faux.` };

@@ -101,7 +101,7 @@ function correctText(g, q) {
   if (q.type === 'order') return q.items.join(' → ');
   if (q.type === 'text') return q.answers.join(' / ');
   if (q.type === 'multi') return q.correct.map((i) => lab(g, i)).join(' + ');
-  if (q.type === 'poll') return null;
+  if (q.type === 'poll' || q.type === 'words') return null;
   return lab(g, q.correct);
 }
 
@@ -112,7 +112,7 @@ function cleanAnswer(q, data) {
     const ok = (v) => typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 1;
     return p && ok(p.x) && ok(p.y) ? { x: p.x, y: p.y } : null;
   }
-  if (q.type === 'text') {
+  if (q.type === 'text' || q.type === 'words') {
     const t = String(data.text || '').trim().slice(0, 100);
     return t ? t : null;
   }

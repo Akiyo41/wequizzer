@@ -178,10 +178,10 @@ socket.on('reading', (q) => {
 // ----- Question -----
 function renderChoices(box, q, opts) {
   box.innerHTML = '';
-  if (q.type === 'text') {
+  if (q.type === 'text' || q.type === 'words') {
     const d = el('div', 'textbox');
     d.appendChild(el('i', 'ti ti-pencil'));
-    d.appendChild(document.createTextNode(' Les joueurs écrivent leur réponse sur leur téléphone'));
+    d.appendChild(document.createTextNode(q.type === 'words' ? ' ☁️ Nuage de mots : les joueurs écrivent un mot ou une courte réponse' : ' Les joueurs écrivent leur réponse sur leur téléphone'));
     box.appendChild(d);
     return;
   }
@@ -293,10 +293,10 @@ function renderStatus(r) {
   const bad = $('badList');
   good.innerHTML = '';
   bad.innerHTML = '';
-  const poll = r.type === 'poll';
+  const poll = r.type === 'poll' || r.type === 'words';
   $('badCol').classList.toggle('hidden', poll);
   $('colsBox').classList.toggle('one', poll);
-  $('goodHead').innerHTML = poll ? '<i class="ti ti-chart-bar"></i> Ont voté' : '<i class="ti ti-circle-check"></i> Bonne réponse';
+  $('goodHead').innerHTML = poll ? '<i class="ti ti-chart-bar"></i> ' + (r.type === 'words' ? 'Ont répondu' : 'Ont voté') : '<i class="ti ti-circle-check"></i> Bonne réponse';
   $('goodHead').className = poll ? '' : 'good';
   r.players.forEach((p) => {
     const chip = el('span', 'chip static' + (p.status === 'none' ? ' faded' : ''));
@@ -334,7 +334,8 @@ socket.on('results', (r) => {
   labelMode = r.labels || labelMode;
   const q = { type: r.type, choices: r.choices, correct: r.correct };
   $('rText').textContent = r.text || (currentQ ? currentQ.text : '');
-  const ct = r.order ? 'Bon ordre : ' + r.correctText : r.match ? 'Bonnes liaisons : ' + r.correctText : r.type === 'text' ? 'Réponse(s) acceptée(s) : ' + r.correctText : r.correctText ? 'Bonne réponse : ' + r.correctText : 'Voici les votes';
+  const poll = r.type === 'poll' || r.type === 'words'; // sondage ou nuage de mots : pas de bonne réponse
+  const ct = r.order ? 'Bon ordre : ' + r.correctText : r.match ? 'Bonnes liaisons : ' + r.correctText : r.type === 'text' ? 'Réponse(s) acceptée(s) : ' + r.correctText : r.type === 'words' ? '☁️ Nuage de mots' : r.correctText ? 'Bonne réponse : ' + r.correctText : 'Voici les votes';
   $('rCorrect').textContent = ct;
   // Le petit Professeur parle dans la carte (la mascotte du coin garde bravo / désolé) : l'explication s'il y en a une,
   // sinon une réaction selon la part de bonnes réponses ; rien si personne n'a participé
@@ -345,14 +346,14 @@ socket.on('results', (r) => {
     $('rExplain').classList.add('hidden');
   } else {
     const share = r.okCount / r.partCount;
-    const [key, pose] = r.type === 'poll' ? ['animSondage', 'question'] : share >= 0.8 ? ['animTous', 'bravo'] : share >= 0.3 ? ['animMoitie', 'question'] : ['animPersonne', 'desole'];
+    const [key, pose] = poll ? ['animSondage', 'question'] : share >= 0.8 ? ['animTous', 'bravo'] : share >= 0.3 ? ['animMoitie', 'question'] : ['animPersonne', 'desole'];
     if (!again) Brand.speak($('rExplain'), null, key, pose);
   }
-  $('rScore').classList.toggle('hidden', r.type === 'poll' || !r.partCount);
+  $('rScore').classList.toggle('hidden', poll || !r.partCount);
   $('rScore').innerHTML = '<i class="ti ti-circle-check"></i> ' + r.okCount + ' / ' + r.partCount + ' ont bien répondu';
   if (r.wheel || r.match || r.order) $('rChoices').innerHTML = '';
-  else renderChoices($('rChoices'), q, r.type === 'text' ? null : { counts: r.counts });
-  if (r.type === 'text' || r.type === 'match' || r.type === 'order' || r.type === 'zone') {
+  else renderChoices($('rChoices'), q, r.type === 'text' || r.type === 'words' ? null : { counts: r.counts });
+  if (r.type === 'text' || r.type === 'words' || r.type === 'match' || r.type === 'order' || r.type === 'zone') {
     const box = $('rChoices');
     box.innerHTML = '';
     if (r.type === 'zone' && r.image) {
@@ -363,16 +364,19 @@ socket.on('results', (r) => {
       box.appendChild(v.wrap);
     }
     const d = el('div', 'textbox');
-    d.textContent = '✅ ' + r.counts[0] + ' bonne(s) réponse(s)   ·   ❌ ' + r.counts[1] + ' mauvaise(s)';
+    d.textContent = r.type === 'words' ? '☁️ ' + r.counts[1] + ' réponse(s)' : '✅ ' + r.counts[0] + ' bonne(s) réponse(s)   ·   ❌ ' + r.counts[1] + ' mauvaise(s)';
     box.appendChild(d);
     // réponse écrite : ce que les joueurs ont écrit, regroupé (sans les noms), pour parler des erreurs fréquentes
     if (r.texts && r.texts.length) {
       const list = el('div', 'textbox answers-given');
       list.appendChild(el('b', '', 'Réponses données :'));
       r.texts.forEach((t) => {
-        const chip = el('span', 'given ' + (t.ok ? 'ok' : 'bad'), (t.ok ? '✅ ' : '❌ ') + t.text + (t.count > 1 ? ' × ' + t.count : ''));
+        // nuage de mots : pas de juste ni de faux, les plus fréquentes plus grandes
+        const words = r.type === 'words';
+        const chip = el('span', 'given ' + (words ? 'word' : t.ok ? 'ok' : 'bad'), (words ? '' : t.ok ? '✅ ' : '❌ ') + t.text + (t.count > 1 ? ' × ' + t.count : ''));
+        if (words) chip.style.fontSize = Math.min(2, 1 + (t.count - 1) * 0.25) + 'rem';
         // réponse refusée mais juste en fait : l'ajouter au quiz pour les prochaines parties (les points de celle-ci ne changent pas)
-        if (!t.ok) {
+        if (!t.ok && !words) {
           const b = el('button', 'btn ghost mini accept-next');
           b.type = 'button';
           b.title = 'Accepter cette réponse la prochaine fois';

@@ -121,7 +121,7 @@ function endQuestion(pin) {
   g.state = 'results';
   const q = g.questions[g.index];
   const time = qTime(g);
-  const pollQ = q.type === 'poll';
+  const pollQ = q.type === 'poll' || q.type === 'words'; // sondage ou nuage de mots : pas de points
   const participants = Object.values(g.players).filter((p) => p.activeNow);
 
   // Notation
@@ -198,7 +198,7 @@ function endQuestion(pin) {
 
   // Compteurs par réponse
   let counts = null;
-  if (q.type === 'text' || q.type === 'match' || q.type === 'order' || q.type === 'zone') counts = [participants.filter((p) => p.lastCorrect).length, participants.filter((p) => p.answered && !p.lastCorrect).length];
+  if (q.type === 'text' || q.type === 'words' || q.type === 'match' || q.type === 'order' || q.type === 'zone') counts = [participants.filter((p) => p.lastCorrect).length, participants.filter((p) => p.answered && !p.lastCorrect).length];
   else {
     counts = q.choices.map(() => 0);
     participants.forEach((p) => {
@@ -227,7 +227,7 @@ function endQuestion(pin) {
     choices: q.choices,
     counts,
     // réponse écrite : les réponses données, regroupées et sans les noms (pas pour le jeu de mots)
-    texts: q.type === 'text' && !q.letters ? answerGroups(participants.filter((p) => typeof p.answer === 'string').map((p) => ({ text: p.answer, ok: !!p.lastCorrect }))) : null,
+    texts: (q.type === 'text' && !q.letters) || q.type === 'words' ? answerGroups(participants.filter((p) => typeof p.answer === 'string').map((p) => ({ text: p.answer, ok: !!p.lastCorrect }))) : null,
     // image à toucher : la bonne zone et un point par joueur (sans nom, dans le désordre)
     zone: q.type === 'zone' ? q.zone : null,
     image: q.type === 'zone' ? q.image : null,
