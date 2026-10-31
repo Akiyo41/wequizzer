@@ -31,4 +31,13 @@ function resultsCsv(d, date) {
   }
   return '﻿' + L.join('\r\n');
 }
-if (typeof module !== 'undefined') module.exports = { resultsCsv };
+// « À revoir » sur le podium : les questions sous 60 % de bonnes réponses, les moins réussies d'abord, 3 au plus
+function toReview(qstats) {
+  return (qstats || [])
+    .filter((q) => q.total > 0)
+    .map((q) => ({ label: q.label, pct: Math.round((100 * q.ok) / q.total) }))
+    .filter((q) => q.pct < 60)
+    .sort((a, b) => a.pct - b.pct)
+    .slice(0, 3);
+}
+if (typeof module !== 'undefined') module.exports = { resultsCsv, toReview };

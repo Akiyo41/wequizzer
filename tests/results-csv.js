@@ -1,6 +1,6 @@
 // Test du tableur des résultats de fin de partie (sans navigateur). Lancer avec : npm test
 const assert = require('assert');
-const { resultsCsv } = require('../public/host/results-csv.js');
+const { resultsCsv, toReview } = require('../public/host/results-csv.js');
 
 const lines = (csv) => csv.replace(/^﻿/, '').split('\r\n');
 
@@ -38,6 +38,15 @@ const tests = {
     assert.strictEqual(l[3], 'Rang;Pseudo;Points;Bonnes réponses;Q1;Q2');
     assert.strictEqual(l[4], '1;"A";2;2 / 2;Juste;Juste');
     assert.strictEqual(l[5], '2;"B";0;0 / 2;;Faux');
+  },
+  'à revoir : les questions sous 60 % de réussite, les moins réussies d\'abord, 3 au plus'() {
+    const qs = [
+      { label: 'Facile', ok: 9, total: 10 }, { label: 'Dure', ok: 1, total: 10 }, { label: 'Moyenne', ok: 5, total: 10 },
+      { label: 'Ratée', ok: 0, total: 10 }, { label: 'Un peu dure', ok: 3, total: 10 }, { label: 'Personne', ok: 0, total: 0 },
+    ];
+    assert.deepStrictEqual(toReview(qs), [{ label: 'Ratée', pct: 0 }, { label: 'Dure', pct: 10 }, { label: 'Un peu dure', pct: 30 }]);
+    assert.deepStrictEqual(toReview([{ label: 'OK', ok: 6, total: 10 }]), []);
+    assert.deepStrictEqual(toReview(undefined), []);
   },
   'équipes et cœurs : colonnes en plus'() {
     const csv = resultsCsv({

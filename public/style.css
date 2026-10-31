@@ -585,3 +585,7 @@ body.big-text .choice { font-size: 1.45rem; min-height: 84px; }
 body.big-text .choice .badge { font-size: 1.3rem; }
 body.big-text #textInput { font-size: 1.5rem; }
 body.big-text .say-bubble, body.big-text .hint { font-size: 1.15rem; }
+/* Podium : « À revoir avec la classe » */
+.review-list { display: flex; flex-direction: column; gap: 6px; text-align: left; }
+.review-row { display: flex; gap: 10px; align-items: baseline; font-size: 1.2rem; font-weight: 700; }
+.review-pct { min-width: 54px; text-align: right; font-weight: 800; color: #ff8fab; }

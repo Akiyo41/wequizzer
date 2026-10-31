@@ -494,6 +494,16 @@ socket.on('end', (d) => {
   const tbox = $('titles');
   tbox.innerHTML = '';
   $('titlesBox').classList.toggle('hidden', !d.titles.length);
+  // « À revoir » : les questions les moins réussies (sous 60 %), pour savoir quoi reprendre
+  const review = toReview(d.qstats);
+  $('reviewBox').classList.toggle('hidden', !review.length);
+  $('reviewList').innerHTML = '';
+  review.forEach((q) => {
+    const row = el('div', 'review-row');
+    row.appendChild(el('span', 'review-pct', q.pct + ' %'));
+    row.appendChild(el('span', '', q.label));
+    $('reviewList').appendChild(row);
+  });
   d.titles.forEach((t) => {
     const c = el('div', 'title-card');
     c.appendChild(el('i', 'ti ' + t.icon));
