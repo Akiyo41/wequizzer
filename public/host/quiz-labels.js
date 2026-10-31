@@ -41,4 +41,17 @@ function quizMatches(q, query) {
   const t = QUIZ_PLAIN(q.title);
   return QUIZ_PLAIN(query).split(/\s+/).filter(Boolean).every((w) => t.includes(w));
 }
-if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches };
+// Réponse écrite refusée que l'animateur veut accepter la prochaine fois : ajoutée à la question du quiz enregistré
+// (retrouvée par son texte). → 'added' | 'already' (déjà acceptée) | 'full' (8 au maximum) | 'missing'
+const ANSWER_PLAIN = (s) => QUIZ_PLAIN(s).replace(/[^a-z0-9]+/g, ' ').trim();
+function addAccepted(quiz, qText, answer) {
+  const q = quiz && (quiz.questions || []).find((x) => x.type === 'text' && x.text === qText);
+  if (!q) return 'missing';
+  const a = String(answer || '').trim();
+  q.answers = q.answers || [];
+  if (q.answers.some((x) => ANSWER_PLAIN(x) === ANSWER_PLAIN(a))) return 'already';
+  if (q.answers.length >= 8) return 'full';
+  q.answers.push(a);
+  return 'added';
+}
+if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted };

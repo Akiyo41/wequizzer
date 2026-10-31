@@ -1,6 +1,6 @@
 // Test de la liste « Quiz choisi » : ordre alphabétique et noms affichés. Lancer avec : npm test
 const assert = require('assert');
-const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches } = require('../public/host/quiz-labels.js');
+const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted } = require('../public/host/quiz-labels.js');
 
 const tests = {
   'fichier enregistré : le Vrai/Faux en rafale garde son genre'() {
@@ -43,6 +43,17 @@ const tests = {
     assert.strictEqual(quizMatches(q, 'EUROPE capi'), true);
     assert.strictEqual(quizMatches({ title: 'Étoiles' }, 'etoi'), true);
     assert.strictEqual(quizMatches(q, 'asie'), false);
+  },
+  'accepter une réponse écrite pour la prochaine fois'() {
+    const quiz = { title: 'Art', questions: [{ type: 'single', text: 'Autre', choices: ['a', 'b'], correct: 0 }, { type: 'text', text: 'Qui a peint la Joconde ?', answers: ['Vinci'] }] };
+    assert.strictEqual(addAccepted(quiz, 'Qui a peint la Joconde ?', ' Léonard '), 'added');
+    assert.deepStrictEqual(quiz.questions[1].answers, ['Vinci', 'Léonard']);
+    assert.strictEqual(addAccepted(quiz, 'Qui a peint la Joconde ?', 'leonard'), 'already');
+    assert.strictEqual(addAccepted(quiz, 'Question disparue ?', 'x'), 'missing');
+    assert.strictEqual(addAccepted(null, 'Qui a peint la Joconde ?', 'x'), 'missing');
+    // 8 réponses acceptées au maximum (comme dans l'éditeur)
+    quiz.questions[1].answers = ['1', '2', '3', '4', '5', '6', '7', '8'];
+    assert.strictEqual(addAccepted(quiz, 'Qui a peint la Joconde ?', 'neuf'), 'full');
   },
   'nom du fichier : accents gardés lisibles'() {
     assert.strictEqual(exportName('Étoiles et planètes'), 'Etoiles_et_planetes.json');

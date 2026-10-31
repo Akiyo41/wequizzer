@@ -369,7 +369,25 @@ socket.on('results', (r) => {
     if (r.texts && r.texts.length) {
       const list = el('div', 'textbox answers-given');
       list.appendChild(el('b', '', 'Réponses données :'));
-      r.texts.forEach((t) => list.appendChild(el('span', 'given ' + (t.ok ? 'ok' : 'bad'), (t.ok ? '✅ ' : '❌ ') + t.text + (t.count > 1 ? ' × ' + t.count : ''))));
+      r.texts.forEach((t) => {
+        const chip = el('span', 'given ' + (t.ok ? 'ok' : 'bad'), (t.ok ? '✅ ' : '❌ ') + t.text + (t.count > 1 ? ' × ' + t.count : ''));
+        // réponse refusée mais juste en fait : l'ajouter au quiz pour les prochaines parties (les points de celle-ci ne changent pas)
+        if (!t.ok) {
+          const b = el('button', 'btn ghost mini accept-next');
+          b.type = 'button';
+          b.title = 'Accepter cette réponse la prochaine fois';
+          b.setAttribute('aria-label', 'Accepter « ' + t.text + ' » la prochaine fois');
+          b.appendChild(el('i', 'ti ti-check'));
+          b.onclick = () => {
+            const res = addAccepted(currentQuiz(), r.text, t.text);
+            if (res === 'added' && !saveLibrary()) return;
+            if (res === 'added' || res === 'already') { chip.className = 'given later'; b.remove(); }
+            UI.toast(res === 'added' ? '✔ « ' + t.text + ' » sera acceptée la prochaine fois' : res === 'already' ? 'Cette réponse est déjà acceptée' : res === 'full' ? 'Déjà 8 réponses acceptées pour cette question' : 'Cette question n\'est pas dans le quiz choisi');
+          };
+          chip.appendChild(b);
+        }
+        list.appendChild(chip);
+      });
       box.appendChild(list);
     }
   }
