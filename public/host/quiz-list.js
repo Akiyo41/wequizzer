@@ -155,9 +155,10 @@ $('copyQuiz').onclick = () => {
   copy.title = copyTitle(q.title, library.map((x) => x.title));
   library.splice(library.indexOf(q) + 1, 0, copy);
   selectedId = copy.id;
-  saveLibrary();
+  if (!saveLibrary()) return;
   renderQuizSelect();
   pushQuiz();
+  UI.toast('📄 Copie créée : « ' + copy.title + ' »');
 };
 $('deleteQuiz').onclick = async () => {
   const q = currentQuiz();
@@ -218,13 +219,13 @@ $('importFile').onchange = () => {
     try {
       const data = JSON.parse(r.result);
       const all = backupItems(data);
+      const before = library.length;
       if (!all) {
         const quiz = readQuiz(data, f.name.replace(/\.json$/i, ''));
         library.push(quiz);
         selectedId = quiz.id;
       } else {
         // sauvegarde complète : chaque quiz valide est ajouté, les autres sont signalés
-        const before = library.length;
         const bad = [];
         all.forEach((d, i) => { try { library.push(readQuiz(d, 'Quiz ' + (i + 1))); } catch (e) { bad.push((d && d.title) || 'Quiz ' + (i + 1)); } });
         if (library.length === before) throw new Error('Aucun quiz valide dans cette sauvegarde.');
@@ -235,6 +236,8 @@ $('importFile').onchange = () => {
       renderQuizSelect();
       pushQuiz();
       if (badMsg) $('quizError').textContent = badMsg; // après pushQuiz, qui efface les messages
+      const added = library.length - before;
+      UI.toast(added > 1 ? '✔ ' + added + ' quiz ajoutés' : '✔ Quiz ajouté : « ' + library[before].title + ' »');
     } catch (e) {
       $('quizError').textContent = e.message && (e.message.startsWith('Question') || e.message.startsWith('Aucun')) ? e.message : "Ce fichier n'est pas un quiz valide.";
     }
