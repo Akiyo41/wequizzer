@@ -91,6 +91,10 @@ socket.on('end', (d) => {
   if (teamy && d.teamRank) {
     medal = d.teamRank === 1 ? '🏆' : d.teamRank === 2 ? '🥈' : d.teamRank === 3 ? '🥉' : '🎮';
     head = d.teamRank === 1 ? 'Ton équipe a gagné !' : 'Ton équipe : ' + d.teamRank + 'e sur ' + d.teamCount;
+  } else if (!d.questions) {
+    // partie sans question notée (nuages de mots, sondages) : pas de rang
+    medal = '☁️';
+    head = 'Merci d\'avoir participé !';
   } else if (zero) {
     medal = '🎮';
     head = d.rank + 'e sur ' + d.total;
@@ -105,9 +109,11 @@ socket.on('end', (d) => {
   $('endTitle').textContent = head;
   const stats = $('endStats');
   stats.innerHTML = '';
-  const [l, v] = scoreLine(d);
-  stats.appendChild(stat(l, v));
-  stats.appendChild(stat('Rang', d.rank + ' / ' + d.total));
+  if (d.questions || teamy) {
+    const [l, v] = scoreLine(d);
+    stats.appendChild(stat(l, v));
+    stats.appendChild(stat('Rang', d.rank + ' / ' + d.total));
+  }
   if (d.teamName) stats.appendChild(stat('Équipe', d.teamIcon + ' ' + d.teamName));
   // Récap question par question : ✅ juste, ❌ raté, ➖ pas jouée (arrivé en retard, éliminé…)
   const recap = $('endRecap');
@@ -133,7 +139,7 @@ socket.on('end', (d) => {
   // Le Professeur félicite : 1er (ou 1re équipe), podium (2e / 3e), ou les autres (lines.js)
   if (!again) profSay('sayEnd', 'endMascot', endLine(d), 'bravo', { pseudo: d.name });
   show('end');
-  if (!zero && (teamy ? d.teamRank : d.rank) <= 3) { FX.fanfare(); FX.confetti((teamy ? d.teamRank : d.rank) === 1 ? 100 : 50); }
+  if (!zero && (d.questions || teamy) && (teamy ? d.teamRank : d.rank) <= 3) { FX.fanfare(); FX.confetti((teamy ? d.teamRank : d.rank) === 1 ? 100 : 50); }
 });
 $('reviewBtn').onclick = () => {
   const box = $('reviewList');

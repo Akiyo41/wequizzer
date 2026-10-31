@@ -125,6 +125,7 @@ function endLine(d) {
   const place = teamy ? d.teamRank : d.rank;
   const count = teamy ? d.teamCount : d.total;
   if (!teamy && d.questions > 0 && d.correct === 0) return 'finAutre'; // aucune bonne réponse : pas de « première place »
+  if (!teamy && d.questions === 0) return 'finAutre'; // partie sans question notée (nuages de mots, sondages) : pas de classement
   if (place === 1) return 'finGagne';
   if (count && place >= count) return 'finAutre'; // le dernier n'est pas « sur le podium », même à 2 ou 3
   return place && place <= 3 ? 'finPodium' : 'finAutre';

@@ -64,6 +64,7 @@ const tests = {
     assert.strictEqual(endLine({ mode: 'standard', rank: 1 }), 'finGagne');
     assert.strictEqual(endLine({ mode: 'standard', rank: 3 }), 'finPodium');
     assert.strictEqual(endLine({ mode: 'standard', rank: 5 }), 'finAutre');
+    assert.strictEqual(endLine({ mode: 'standard', rank: 1, total: 4, questions: 0, correct: 0 }), 'finAutre'); // partie sans question notée : pas de « tu as gagné »
     assert.strictEqual(endLine({ mode: 'elimination', alive: true, rank: 1 }), 'finGagne');
     assert.strictEqual(endLine({ mode: 'elimination', alive: true, rank: 2 }), 'finPodium'); // plusieurs survivants
     assert.strictEqual(endLine({ mode: 'elimination', alive: false, rank: 2 }), 'finPodium');
@@ -88,7 +89,7 @@ const tests = {
     const { endLine } = require('../public/lines.js');
     assert.strictEqual(endLine({ mode: 'standard', rank: 1, total: 2, correct: 0, questions: 6 }), 'finAutre');
     assert.strictEqual(endLine({ mode: 'standard', rank: 1, total: 2, correct: 1, questions: 6 }), 'finGagne');
-    assert.strictEqual(endLine({ mode: 'standard', rank: 1, total: 2, correct: 0, questions: 0 }), 'finGagne'); // que des sondages
+    assert.strictEqual(endLine({ mode: 'standard', rank: 1, total: 2, correct: 0, questions: 0 }), 'finAutre'); // que des sondages / nuages de mots : pas de gagnant
     assert.strictEqual(endLine({ mode: 'teams', teamRank: 1, teamCount: 2, rank: 2, correct: 0, questions: 6 }), 'finGagne'); // l'équipe a gagné
     assert.ok(LINES.animFinZero.length >= 3 && LINES.animFinZero.every((s) => !/\{gagnant\}/.test(s)));
     const src = require('fs').readFileSync(require('path').join(__dirname, '..', 'public/host/game.js'), 'utf8');

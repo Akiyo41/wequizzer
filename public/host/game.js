@@ -495,6 +495,19 @@ socket.on('end', (d) => {
     li.appendChild(el('span', '', elim && p.alive ? aliveText(p) : scoreText(p, d)));
     rest.appendChild(li);
   });
+  // Partie sans question notée (nuages de mots, sondages) : pas de podium ni de rang, juste les participants
+  if (!teamy && !d.questions) {
+    $('endHead').textContent = 'Merci à tous !';
+    pod.innerHTML = '';
+    rest.innerHTML = '';
+    board.forEach((p) => {
+      const li = el('li');
+      li.appendChild(el('span', 'av', p.avatar));
+      li.appendChild(el('span', 'nm', p.name));
+      rest.appendChild(li);
+    });
+    if (d.total > board.length) rest.appendChild(el('li', '', '… et ' + (d.total - board.length) + ' autres'));
+  }
   const tbox = $('titles');
   tbox.innerHTML = '';
   $('titlesBox').classList.toggle('hidden', !d.titles.length);
@@ -521,7 +534,8 @@ socket.on('end', (d) => {
   if (!again) {
     // personne n'a eu une seule bonne réponse : le Professeur remercie tout le monde au lieu d'applaudir un « gagnant » à 0
     const zero = !teamy && d.questions > 0 && board[0] && board[0].correct === 0;
-    if (winner && zero) Brand.speak($('sayHostEnd'), $('hostEndMascot'), 'animFinZero', 'desole');
+    if (!teamy && !d.questions && winner) Brand.speak($('sayHostEnd'), $('hostEndMascot'), 'animSondage', 'question'); // rien à gagner : pas de « bravo au gagnant »
+    else if (winner && zero) Brand.speak($('sayHostEnd'), $('hostEndMascot'), 'animFinZero', 'desole');
     else if (winner) Brand.speak($('sayHostEnd'), $('hostEndMascot'), 'animPodium', 'bravo', { gagnant: winner });
     else { $('sayHostEnd').classList.add('hidden'); $('hostEndMascot').classList.remove('hidden'); }
   }
