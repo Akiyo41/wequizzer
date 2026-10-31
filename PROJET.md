@@ -170,6 +170,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 36. (fait) Écran de fin du téléphone : récap question par question sous le score (✅ juste, ❌ ratée, ➖ pas jouée ; affiché à partir de 2 questions notées). Le même récap est ajouté à l'image « Partager mon résultat » (`Share.recapLine` dans `public/share.js`, 20 questions au plus puis « … », testé par `tests/share.js`). Le serveur envoie `answers` à chaque joueur (`answerRow` dans `src/end.js`, partagé avec le tableau des résultats). Les touches de l'animateur ne sont bloquées que par une fenêtre visible (`.cbx-back:not(.hidden)`).
 
+37. (fait) Téléphone : « Gros texte » dans « Mes réglages » (questions, réponses, case de réponse et bulles plus grandes ; classe `body.big-text` dans `style.css`), réglage personnel gardé dans le téléphone (`wequizzer.bigText`, `connection.js`).
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

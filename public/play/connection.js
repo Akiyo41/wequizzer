@@ -119,6 +119,7 @@ $('setBtn').onclick = () => {
   $('setName').disabled = locked();
   $('setLock').classList.toggle('hidden', !locked());
   $('setVib').checked = vibOn();
+  $('setBig').checked = LS.get(BIG_KEY, false) === true;
   $('setErr').textContent = '';
   $('setSound').innerHTML = '';
   $('setSound').appendChild(UI.soundSlider());
@@ -127,6 +128,11 @@ $('setBtn').onclick = () => {
 };
 $('setCancel').onclick = () => $('setPanel').classList.add('hidden');
 $('setPanel').addEventListener('click', (e) => { if (e.target === $('setPanel')) $('setPanel').classList.add('hidden'); });
+// Gros texte : réglage personnel, gardé dans ce téléphone
+const BIG_KEY = 'wequizzer.bigText';
+const applyBig = () => document.body.classList.toggle('big-text', LS.get(BIG_KEY, false) === true);
+applyBig();
+$('setBig').onchange = () => { LS.set(BIG_KEY, $('setBig').checked); applyBig(); };
 $('setVib').onchange = () => { LS.set(VIB_KEY, $('setVib').checked); if ($('setVib').checked && navigator.vibrate) navigator.vibrate(35); };
 $('setSave').onclick = () => {
   $('setErr').textContent = '';
