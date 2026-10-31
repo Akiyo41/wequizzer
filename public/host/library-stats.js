@@ -30,7 +30,26 @@ async function openLibPage() {
   const shown = libPacks.filter((p) => quizMatches({ title: p.title + ' ' + p.theme }, query));
   $('libNone').classList.toggle('hidden', shown.length > 0);
   shown.sort((a, b) => a.theme.localeCompare(b.theme, 'fr')).forEach((p) => {
-    if (p.theme !== theme) { theme = p.theme; box.appendChild(el('h3', '', theme)); }
+    if (p.theme !== theme) {
+      theme = p.theme;
+      box.appendChild(el('h3', '', theme));
+      // « Ajouter les N quiz » : tout le thème d'un coup (ceux pas encore ajoutés), utile pour une formation entière
+      const todo = libPacks.filter((x) => x.theme === theme && !added[x.pid]);
+      if (todo.length >= 3) {
+        const all = el('button', 'btn ghost mini', '');
+        all.type = 'button';
+        all.innerHTML = '<i class="ti ti-plus"></i> Ajouter les ' + todo.length + ' quiz de ce thème';
+        all.onclick = () => {
+          todo.forEach((x) => addPack(x, added));
+          LS.set('wequizzer.libAdded', added);
+          if (!saveLibrary()) return;
+          renderQuizSelect();
+          UI.toast('✔ ' + todo.length + ' quiz ajoutés à Mes quiz');
+          openLibPage();
+        };
+        box.appendChild(all);
+      }
+    }
     const n = p.kind === 'wheel' ? p.pairs.length : p.kind === 'letters' ? p.items.length : p.questions.length;
     const kindTxt = p.kind === 'wheel' ? 'paires' : p.kind === 'letters' ? 'mots' : p.flavor === 'tfrush' ? 'affirmations' : 'questions';
     const row = el('div', 'prow');
@@ -49,14 +68,7 @@ async function openLibPage() {
     const label = () => (added[p.pid] ? '<i class="ti ti-check"></i> Ajouté (en rajouter une copie)' : '<i class="ti ti-plus"></i> Ajouter');
     b.innerHTML = label();
     b.onclick = () => {
-      const copy = JSON.parse(JSON.stringify(p));
-      delete copy.pid; delete copy.theme; delete copy.level;
-      copy.id = uid();
-      if (copy.kind === 'quiz') delete copy.kind;
-      copy.title = freeTitle(p.title, library.map((x) => x.title));
-      library.push(copy);
-      selectedId = copy.id;
-      added[p.pid] = true;
+      selectedId = addPack(p, added).id;
       LS.set('wequizzer.libAdded', added);
       saveLibrary();
       renderQuizSelect();
@@ -66,6 +78,17 @@ async function openLibPage() {
     row.appendChild(b);
     box.appendChild(row);
   });
+}
+// Copie d'un quiz de la Bibliothèque dans « Mes quiz » (nom libre, nouvel identifiant)
+function addPack(p, added) {
+  const copy = JSON.parse(JSON.stringify(p));
+  delete copy.pid; delete copy.theme; delete copy.level;
+  copy.id = uid();
+  if (copy.kind === 'quiz') delete copy.kind;
+  copy.title = freeTitle(p.title, library.map((x) => x.title));
+  library.push(copy);
+  added[p.pid] = true;
+  return copy;
 }
 $('openLib').onclick = () => { $('libSearch').value = ''; openLibPage(); };
 $('libSearch').oninput = openLibPage;
