@@ -28,6 +28,8 @@ app.use('/icons', express.static(path.join(__dirname, 'node_modules/@tabler/icon
 app.get('/api/sample-quiz', (req, res) => {
   res.json({ title: 'Culture générale', questions: sampleQuestions });
 });
+// Adresse inconnue : page « introuvable » en français, avec des liens vers l'accueil et vers la page joueur
+app.use((req, res) => res.status(404).sendFile(path.join(__dirname, 'public', '404.html')));
 
 init(io);
 setupSockets(io);

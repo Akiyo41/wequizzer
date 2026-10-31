@@ -224,6 +224,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 63. (fait) Aperçu du lien : `index.html`, `play.html` et `host.html` ont une description et des balises `og:` (titre, description, image `icon-512.png`) pour un joli aperçu quand on partage le lien dans une messagerie ou un ENT. Testé dans `tests/a11y.js`.
 
+64. (fait) Adresse inconnue (lien mal copié) : au lieu de « Cannot GET » en anglais, une page « introuvable » en français (`public/404.html`, statut 404) avec le Professeur et deux liens : Accueil, Rejoindre une partie. Dernier `app.use` dans `server.js`. Test smoke.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

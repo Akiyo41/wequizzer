@@ -107,6 +107,14 @@ function quizAnswer(q, i) {
 }
 
 const tests = {
+  async 'adresse inconnue : page « introuvable » en français'() {
+    const r = await fetch(URL + '/nimporte-quoi');
+    assert.strictEqual(r.status, 404);
+    const html = await r.text();
+    assert.ok(/lang="fr"/.test(html) && /introuvable/i.test(html), 'page en français');
+    assert.ok(/href="\/"/.test(html), "lien vers l'accueil");
+  },
+
   async 'quiz classique (5 types de questions)'() {
     const game = await setupGame({ mode: 'standard', limitTime: false }, QUIZ);
     assert.strictEqual(game.info.count, 5);
