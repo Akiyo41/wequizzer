@@ -4,7 +4,7 @@ const { AVATARS, DEFAULTS, HOST_GRACE_MS, LOBBY_GRACE_MS, MAX_GAMES, MAX_PLAYERS
 const { lanUrl, rid } = require('./utils');
 const { isBlocked } = require('./names');
 const { sanitize } = require('./settings');
-const { buildQuestions, cleanQuiz, missedQuiz, quizCount } = require('./quiz');
+const { buildQuestions, cleanQuiz, missedQuiz, quizCount, restQuiz } = require('./quiz');
 const { cleanAnswer } = require('./answers');
 const { assignTeams, bonusOn, heartsOn, isTeamMode, resetPlayerStats } = require('./rules');
 const { allPeople, games, newPin, toHost, toPlayer } = require('./send');
@@ -244,6 +244,13 @@ function setupSockets(io) {
       g.quiz = res.quiz;
       socket.emit('host:replayQuiz', mq);
       resetGame(g.pin);
+    });
+    // Partie terminée en avance : garder les questions pas posées dans un nouveau quiz (sans relancer)
+    socket.on('host:keepRest', () => {
+      const g = hostGame();
+      if (!g || g.state !== 'end') return;
+      const rq = restQuiz(g);
+      if (rq && !cleanQuiz(rq).error) socket.emit('host:restQuiz', rq);
     });
     socket.on('host:reset', () => {
       const g = hostGame();

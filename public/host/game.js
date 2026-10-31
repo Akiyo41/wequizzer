@@ -87,16 +87,31 @@ $('nextBtn').onclick = () => { FX.click(); socket.emit('host:next'); };
 $('replayBtn').onclick = () => { replayPending = true; socket.emit('host:reset'); };
 $('replayMissedBtn').onclick = () => { replayPending = true; socket.emit('host:replayMissed'); };
 // Le nouveau quiz des questions ratées est gardé dans la bibliothèque
-socket.on('host:replayQuiz', (q) => {
-  const entry = q.kind === 'wheel'
+// Quiz renvoyé par le serveur (questions ratées, suite d'une partie terminée en avance) → entrée de « Mes quiz »
+function libraryEntry(q) {
+  return q.kind === 'wheel'
     ? { id: uid(), kind: 'wheel', title: q.title, category: q.category, pairs: q.pairs, questions: [] }
     : q.kind === 'letters'
     ? { id: uid(), kind: 'letters', title: q.title, items: q.items, questions: [] }
     : { id: uid(), title: q.title, questions: q.questions.map(normQ) };
+}
+socket.on('host:replayQuiz', (q) => {
+  const entry = libraryEntry(q);
   library.push(entry);
   selectedId = entry.id;
   saveLibrary();
   renderQuizSelect();
+});
+// Partie terminée en avance : les questions pas posées vont dans « Mes quiz » pour la prochaine fois
+$('keepRestBtn').onclick = () => socket.emit('host:keepRest');
+socket.on('host:restQuiz', (q) => {
+  const entry = libraryEntry(q);
+  entry.title = freeTitle(entry.title, library.map((x) => x.title));
+  library.push(entry);
+  if (!saveLibrary()) return;
+  renderQuizSelect();
+  $('keepRestBtn').classList.add('hidden');
+  UI.toast('✔ Quiz « ' + entry.title + ' » ajouté à Mes quiz');
 });
 $('otherBtn').onclick = () => { replayPending = false; socket.emit('host:reset'); };
 socket.on('lobby', () => {
@@ -450,6 +465,9 @@ socket.on('end', (d) => {
   const again = hostAgain('end', JSON.stringify(d));
   recordStats(d);
   $('replayMissedBtn').classList.toggle('hidden', !(d.missedCount > 0));
+  const left = d.stopped ? d.stopped.total - d.stopped.asked : 0;
+  $('keepRestBtn').classList.toggle('hidden', !left);
+  $('keepRestLabel').textContent = 'Garder les ' + left + ' question' + (left > 1 ? 's' : '') + ' restante' + (left > 1 ? 's' : '') + ' pour la prochaine fois';
   $('missedLabel').textContent = 'Rejouer les questions ratées (' + d.missedCount + ')';
   lastEnd = d;
   clearInterval(autoInt);

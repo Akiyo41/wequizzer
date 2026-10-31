@@ -232,9 +232,17 @@ function buildQuestions(g) {
 
 // Nouveau quiz fait des questions ratées par au moins un joueur
 function missedQuiz(g) {
-  const idx = Object.keys(g.missed).map(Number).sort((a, b) => a - b);
+  return subQuiz(g, Object.keys(g.missed).map(Number).sort((a, b) => a - b), 'Questions ratées - ');
+}
+// Partie terminée en avance : les questions pas encore posées, pour une prochaine fois
+function restQuiz(g) {
+  const from = g.endData && g.endData.stopped ? g.endData.stopped.asked : g.questions.length;
+  return subQuiz(g, g.questions.map((_, i) => i).filter((i) => i >= from), 'Suite - ');
+}
+// Nouveau quiz fait de certaines questions de la partie (numéros dans g.questions)
+function subQuiz(g, idx, prefix) {
   if (!idx.length) return null;
-  const title = ('Questions ratées - ' + (g.quiz.title || '')).slice(0, 60);
+  const title = (prefix + (g.quiz.title || '')).slice(0, 60);
   if (g.quiz.kind === 'letters') {
     return { kind: 'letters', title, items: idx.map((i) => ({ q: g.questions[i].item.q, word: g.questions[i].item.word, image: g.questions[i].item.image || '' })) };
   }
@@ -254,4 +262,4 @@ function missedQuiz(g) {
   return { title, questions };
 }
 
-module.exports = { wordLetters, quizCount, cleanQuiz, buildQuestions, missedQuiz };
+module.exports = { wordLetters, quizCount, cleanQuiz, buildQuestions, missedQuiz, restQuiz };

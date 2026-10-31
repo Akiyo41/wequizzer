@@ -358,6 +358,12 @@ const tests = {
     const ep = await endP;
     assert.strictEqual(ep.rank, 1);
     assert.deepStrictEqual(ep.stopped, { asked: 1, total: QUIZ.questions.length }, 'le téléphone le sait aussi');
+    // garder les questions pas posées pour la prochaine fois
+    const rest = once(game.host, 'host:restQuiz');
+    game.host.emit('host:keepRest');
+    const rq = await rest;
+    assert.strictEqual(rq.title, 'Suite - Test');
+    assert.strictEqual(rq.questions.length, QUIZ.questions.length - 1);
     close(game);
   },
 

@@ -206,6 +206,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 54. (fait) Téléphone : après une réponse ratée (ou pas de réponse), l'écran de résultat montre « ✅ Bonne réponse : B – Paris » (`goodAnswer` dans `resultFor`, `goodAnswerText` écrit la lettre et le texte du choix ; pour une réponse écrite, seulement la réponse principale, pas toutes les orthographes acceptées ; pareil dans « Revoir mes erreurs », `mistakeEntry`). Pas pour un sondage, un nuage de mots ni l'image à toucher. Test smoke. Aide : `faq-telephone`.
 
+55. (fait) Après « Terminer » : bouton « Garder les N questions restantes pour la prochaine fois » sur le podium → nouveau quiz « Suite - Titre » dans « Mes quiz » (pas sélectionné, pas lancé) avec les questions pas encore posées. Serveur : `host:keepRest` → `restQuiz` (même fabrication que `missedQuiz`, via `subQuiz`) → `host:restQuiz`. Client : `libraryEntry` partagé avec « Rejouer les questions ratées », nom libre (`freeTitle`). Test smoke, Aide `faq-terminer`.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
