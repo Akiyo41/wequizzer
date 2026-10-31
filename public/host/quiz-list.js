@@ -133,7 +133,7 @@ let quizOk = null;
 function showQuizInfo() {
   if (!quizOk) return;
   const { title, count, kind } = quizOk;
-  setInfo('« ' + title + ' » : ' + count + (kind === 'wheel' ? ' paire' : kind === 'letters' ? ' mot' : ' question') + (count > 1 ? 's' : '') + ', ≈ ' + gameMinutes(count, readSettings()) + ' min de jeu. Enregistré dans ce navigateur.');
+  setInfo('« ' + title + ' » : ' + count + (kind === 'wheel' ? ' paire' : kind === 'letters' ? ' mot' : ' question') + (count > 1 ? 's' : '') + ', ≈ ' + gameMinutes(count, readSettings(), ((currentQuiz() || {}).questions || []).map((q) => q.time)) + ' min de jeu. Enregistré dans ce navigateur.');
 }
 socket.on('host:quiz:ok', (d) => {
   quizReady = true;

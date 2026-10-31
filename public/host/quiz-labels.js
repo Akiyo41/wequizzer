@@ -30,10 +30,13 @@ function backupItems(data) {
 }
 // Durée estimée de la partie, en minutes : par question, compte à rebours (3 s) + lecture + réponse
 // (le chrono, ou 25 s sans chrono) + résultat (le délai automatique, ou 10 s quand l'animateur passe à la main)
-function gameMinutes(total, s) {
+// times : temps propres des questions (dans l'ordre, vide si aucun), comptés seulement avec le chrono
+function gameMinutes(total, s, times) {
   const n = s.count > 0 ? Math.min(s.count, total) : total;
-  const per = 3.3 + (s.readDelay ? s.readSeconds || 0 : 0) + (s.limitTime ? s.time || 20 : 25) + (s.autoNext ? s.autoDelay || 10 : 10);
-  return Math.max(1, Math.round((n * per) / 60));
+  const per = 3.3 + (s.readDelay ? s.readSeconds || 0 : 0) + (s.autoNext ? s.autoDelay || 10 : 10);
+  let answer = 0;
+  for (let i = 0; i < n; i++) answer += s.limitTime ? (times && times[i]) || s.time || 20 : 25;
+  return Math.max(1, Math.round((n * per + answer) / 60));
 }
 // Recherche dans « Mes quiz » : chaque mot tapé doit se trouver dans le titre (accents et majuscules ignorés)
 const QUIZ_PLAIN = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');

@@ -33,6 +33,11 @@ const tests = {
     assert.strictEqual(gameMinutes(10, { limitTime: true, time: 20, readDelay: true, readSeconds: 5, autoNext: true, autoDelay: 5, count: 0 }), 6);
     // sans chrono : on compte 25 s par question
     assert.strictEqual(gameMinutes(4, { limitTime: false, count: 0 }), 3);
+    // temps propres aux questions : 2 questions à 60 s, les autres au temps des réglages (20 s)
+    // 10 × (3,3 + 10) + 2 × 60 + 8 × 20 = 413 s ≈ 7 min
+    assert.strictEqual(gameMinutes(10, { limitTime: true, time: 20, readDelay: false, autoNext: false, count: 0 }, [60, 60]), 7);
+    // sans chrono, les temps propres ne comptent pas
+    assert.strictEqual(gameMinutes(4, { limitTime: false, count: 0 }, [60, 60]), 3);
     // jamais moins d'une minute
     assert.strictEqual(gameMinutes(1, { limitTime: true, time: 10, count: 0 }), 1);
   },
