@@ -129,6 +129,7 @@ function endQuestion(pin) {
   participants.forEach((p) => {
     const ok = !pollQ && isCorrect(q, p.answer);
     p.lastCorrect = ok;
+    if (!pollQ) (p.hist || (p.hist = {}))[g.index] = ok; // pour le tableau des résultats (une colonne par question)
     if (ok) {
       const base = g.scoreMode === 'points' && time ? Math.round(500 + 500 * Math.max(0, 1 - p.answeredAt / time)) : 1;
       p.lastPoints = base * mult;

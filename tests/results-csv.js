@@ -29,6 +29,16 @@ const tests = {
       '"Capitale du Pérou ; facile ?";0 / 2;0 %',
     ]);
   },
+  'une colonne par question : Juste, Faux, ou vide (pas encore arrivé)'() {
+    const l = lines(resultsCsv({
+      quizTitle: 'Q', questions: 2,
+      results: [{ rank: 1, name: 'A', score: 2, correct: 2, team: null, answers: [true, true] }, { rank: 2, name: 'B', score: 0, correct: 0, team: null, answers: [null, false] }],
+      qstats: [{ label: 'Un ?', ok: 1, total: 1 }, { label: 'Deux ?', ok: 1, total: 2 }],
+    }, 'x'));
+    assert.strictEqual(l[3], 'Rang;Pseudo;Points;Bonnes réponses;Q1;Q2');
+    assert.strictEqual(l[4], '1;"A";2;2 / 2;Juste;Juste');
+    assert.strictEqual(l[5], '2;"B";0;0 / 2;;Faux');
+  },
   'équipes et cœurs : colonnes en plus'() {
     const csv = resultsCsv({
       quizTitle: 'Q', questions: 2, heartsMode: true,

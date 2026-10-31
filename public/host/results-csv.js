@@ -11,19 +11,23 @@ function resultsCsv(d, date) {
   const teams = res.some((r) => r.team);
   const hearts = !!d.heartsMode;
   const elim = !hearts && d.mode === 'elimination';
+  // une colonne par question notée (Q1, Q2…) : Juste, Faux, ou vide si le joueur n'y a pas joué
+  const nq = res.reduce((n, r) => Math.max(n, (r.answers || []).length), 0);
+  const qcols = Array.from({ length: nq }, (_, i) => 'Q' + (i + 1));
   const L = ['Quiz;' + txt(d.quizTitle), 'Date;' + date, ''];
-  L.push(['Rang', 'Pseudo'].concat(teams ? ['Équipe'] : [], ['Points', 'Bonnes réponses'], hearts ? ['Cœurs'] : [], elim ? ['En jeu'] : []).join(';'));
+  L.push(['Rang', 'Pseudo'].concat(teams ? ['Équipe'] : [], ['Points', 'Bonnes réponses'], hearts ? ['Cœurs'] : [], elim ? ['En jeu'] : [], qcols).join(';'));
   res.forEach((r) => {
     const row = [r.rank, txt(r.name)];
     if (teams) row.push(txt(r.team));
     row.push(r.score, r.correct + ' / ' + (d.questions || 0));
     if (hearts) row.push(r.alive ? (r.hearts || 0) : 'Éliminé');
     if (elim) row.push(r.alive ? 'Oui' : 'Éliminé');
+    qcols.forEach((_, i) => { const a = (r.answers || [])[i]; row.push(a === true ? 'Juste' : a === false ? 'Faux' : ''); });
     L.push(row.join(';'));
   });
   if (d.qstats && d.qstats.length) {
     L.push('', 'Question;Bonnes réponses;Réussite');
-    d.qstats.forEach((q) => L.push(txt(q.label) + ';' + q.ok + ' / ' + q.total + ';' + (q.total ? Math.round((100 * q.ok) / q.total) : 0) + ' %'));
+    d.qstats.forEach((q, i) => L.push(txt((nq ? 'Q' + (i + 1) + ' – ' : '') + q.label) + ';' + q.ok + ' / ' + q.total + ';' + (q.total ? Math.round((100 * q.ok) / q.total) : 0) + ' %'));
   }
   return '﻿' + L.join('\r\n');
 }

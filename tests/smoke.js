@@ -120,6 +120,8 @@ const tests = {
     assert.strictEqual(end.missedCount, 4);
     // tous les joueurs, pour le tableur des résultats
     assert.deepStrictEqual(end.results.map((r) => [r.rank, r.name, r.score, r.correct, r.team]), [[1, 'Alice', 4, 4, null], [2, 'Bob', 0, 0, null]]);
+    // une case par question notée (le sondage ne compte pas), dans l'ordre des statistiques
+    assert.deepStrictEqual(end.results.map((r) => r.answers), [[true, true, true, true], [false, false, false, false]]);
     assert.strictEqual(endPlayers[0].rank, 1);
     assert.strictEqual(endPlayers[1].mistakes.length, 4);
     const replay = once(game.host, 'host:replayQuiz');

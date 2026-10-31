@@ -98,6 +98,7 @@ function teamBoard(g) {
 
 function resetPlayerStats(p) {
   p.score = 0;
+  p.hist = {};
   p.streak = 0;
   p.bestStreak = 0;
   p.correct = 0;
