@@ -335,6 +335,8 @@
     <h1><i class="ti ti-edit"></i> <span id="edHead">Nouveau quiz</span></h1>
     <div class="card" style="margin-top:14px">
       <input id="edTitle" aria-label="Titre du quiz" maxlength="60" placeholder="Titre du quiz">
+      <input id="edTheme" aria-label="Thème du quiz (facultatif)" maxlength="60" placeholder="Thème (facultatif, pour ranger tes quiz : Maths, FIMO…)" list="edThemes" style="margin-top:6px">
+      <datalist id="edThemes"></datalist>
     </div>
     <div id="edQuestions" style="width:100%"></div>
     <button id="addQ" class="btn ghost"><i class="ti ti-plus"></i> Ajouter une question</button>

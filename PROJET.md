@@ -256,6 +256,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 79. (fait) Liste « Quiz choisi » rangée par thème : les quiz ajoutés depuis la Bibliothèque gardent leur `theme` ; dès qu'il y en a un, la liste a des groupes (« Mes quiz » pour les tiens, puis Maths, Transport routier (FIMO)…). Sans thème, liste simple comme avant. `quizGroups` dans `quiz-labels.js`, testé. Le thème est gardé dans les fichiers (`exportPayload`, `readQuiz`) et retrouvé par le titre pour les quiz ajoutés avant (à l'ouverture de la Bibliothèque, seulement ceux notés dans `wequizzer.libAdded`). Même rangement dans la liste de la page Stats.
 
+80. (fait) Éditeur de quiz : case « Thème » (facultative, avec les thèmes déjà utilisés proposés) pour ranger aussi ses propres quiz dans la liste « Quiz choisi ». Vide = groupe « Mes quiz ». `#edTheme` / `#edThemes`, `buildFromEditor`.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

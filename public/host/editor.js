@@ -37,14 +37,19 @@ function openEditor(quiz) {
     ? {
         id: quiz.id,
         title: quiz.title,
+        theme: quiz.theme || '',
         questions: quiz.questions.map(editorQ),
       }
-    : { id: uid(), title: '', questions: [blankQ()] };
+    : { id: uid(), title: '', theme: '', questions: [blankQ()] };
   $('edHead').textContent = quiz ? 'Modifier le quiz' : 'Nouveau quiz';
   $('edTitle').value = editing.title;
+  // thème : range la liste « Quiz choisi » ; les thèmes déjà utilisés sont proposés
+  $('edTheme').value = editing.theme;
+  $('edThemes').innerHTML = '';
+  [...new Set(library.map((q) => q.theme).filter(Boolean))].sort().forEach((t) => $('edThemes').appendChild(new Option(t)));
   $('edError').textContent = '';
   renderEditor();
-  leaveGuard.arm('editor', () => [$('edTitle').value, editing.questions]);
+  leaveGuard.arm('editor', () => [$('edTitle').value, $('edTheme').value, editing.questions]);
   show('editor');
 }
 function miniBtn(icon, fn, label) {

@@ -95,7 +95,8 @@ function buildFromEditor() {
     out.push(clean);
   }
   $('edError').textContent = '';
-  return { id: editing.id, title, questions: out };
+  const theme = $('edTheme').value.trim().slice(0, 60);
+  return { id: editing.id, title, ...(theme ? { theme } : {}), questions: out };
 }
 $('edSave').onclick = () => {
   const quiz = buildFromEditor();
