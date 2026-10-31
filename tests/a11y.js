@@ -20,6 +20,14 @@ const token = (name) => { const m = css.match(new RegExp('--' + name + ':\\s*(#[
 const gradient = (sel) => { const m = css.match(new RegExp(sel.replace(/[.]/g, '\\.') + '\\s*\\{\\s*background:\\s*linear-gradient\\(180deg,\\s*(#[0-9a-f]{6}),\\s*(#[0-9a-f]{6})\\)')); assert.ok(m, sel); return [m[1], m[2]]; };
 
 const tests = {
+  'aperçu du lien (messageries, moteurs de recherche) : description et image sur chaque page'() {
+    ['index.html', 'play.html', 'host.html'].forEach((f) => {
+      const h = read(f);
+      assert.ok(/<meta name="description" content="[^"]{30,}">/.test(h), f + ' : description');
+      assert.ok(/<meta property="og:title" content="[^"]+">/.test(h), f + ' : og:title');
+      assert.ok(/<meta property="og:image" content="https:\/\/[^"]+\.png">/.test(h), f + ' : og:image');
+    });
+  },
   'bouton orange : texte lisible sur tout le dégradé'() {
     const on = token('on-accent');
     const m = css.match(/--btn-orange: linear-gradient\(180deg, (#[0-9a-f]{6}) 0%, (#[0-9a-f]{6}) 100%\)/);
