@@ -14,6 +14,9 @@ socket.on('result', (r) => {
     show('spectate');
     return;
   }
+  // raté ou pas de réponse : la bonne réponse
+  $('resGood').classList.toggle('hidden', !r.goodAnswer);
+  $('resGood').textContent = r.goodAnswer ? '✅ Bonne réponse : ' + r.goodAnswer : '';
   // nuage de mots : les réponses de la classe, les plus fréquentes en plus gros
   const cloud = $('resCloud');
   cloud.innerHTML = '';

@@ -204,6 +204,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 53. (fait) Résultat d'un sondage / nuage de mots sur l'écran de l'animateur : ceux qui n'ont pas répondu apparaissent aussi (grisés, « pas de réponse »), après ceux qui ont répondu. Avant, ils étaient dans la colonne « Mauvaise réponse », cachée pour un sondage, donc invisibles.
 
+54. (fait) Téléphone : après une réponse ratée (ou pas de réponse), l'écran de résultat montre « ✅ Bonne réponse : B – Paris » (`goodAnswer` dans `resultFor`, `goodAnswerText` écrit la lettre et le texte du choix). Pas pour un sondage, un nuage de mots ni l'image à toucher. Test smoke.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

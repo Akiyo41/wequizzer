@@ -312,6 +312,20 @@ const tests = {
     close(game);
   },
 
+  async 'raté : le téléphone montre la bonne réponse'() {
+    const game = await setupGame({ mode: 'standard', limitTime: false }, QUIZ);
+    const ra = once(game.players[0], 'result');
+    const rb = once(game.players[1], 'result');
+    const q = once(game.players[0], 'question', 15000);
+    game.host.emit('host:start');
+    const qq = await q;
+    game.players[0].emit('player:answer', { index: qq.choices.indexOf('Paris') });
+    game.players[1].emit('player:answer', { index: qq.choices.indexOf('Lyon') });
+    assert.strictEqual((await ra).goodAnswer, null, 'juste : rien à corriger');
+    assert.ok(/Paris/.test((await rb).goodAnswer), 'raté : la bonne réponse');
+    close(game);
+  },
+
   async 'terminer la partie avant la fin : podium avec les scores actuels'() {
     const game = await setupGame({ mode: 'standard', limitTime: false }, QUIZ);
     const res = once(game.host, 'results');

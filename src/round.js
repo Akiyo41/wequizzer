@@ -266,6 +266,12 @@ function endQuestion(pin) {
   if (autoIn) schedule(g, autoIn * 1000, () => advance(pin));
 }
 
+// Bonne réponse écrite en entier pour le téléphone (« B – Paris » plutôt que « B »)
+function goodAnswerText(g, q) {
+  if (q.wheel || !['single', 'tf', 'multi'].includes(q.type)) return correctText(g, q);
+  const ids = Array.isArray(q.correct) ? q.correct : [q.correct];
+  return ids.map((i) => (g.settings.labels === 'numbers' ? String(i + 1) : 'ABCD'[i]) + ' – ' + q.choices[i]).join(' + ');
+}
 function resultFor(g, q, p) {
   return {
     type: q.type,
@@ -280,6 +286,8 @@ function resultFor(g, q, p) {
     hangErrors: g.settings.mode === 'hangman' && p.team !== null ? g.hang[p.team] : null,
     hangMax: HANG_MAX,
     correct: p.lastCorrect,
+    // raté ou pas de réponse : la bonne réponse sur le téléphone (pas pour un sondage, un nuage, ni l'image à toucher)
+    goodAnswer: !p.lastCorrect && p.activeNow && !['poll', 'words', 'zone'].includes(q.type) ? goodAnswerText(g, q) : null,
     answered: p.answered,
     streak: p.streak,
     double: !!q.double,
