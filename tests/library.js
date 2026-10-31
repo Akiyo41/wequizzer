@@ -20,6 +20,10 @@ const tests = {
   'FIMO : un quiz sur la signalisation'() {
     assert.ok(packs.some((p) => p.pid === 'fimo-signalisation' && p.questions.length >= 10), 'signalisation');
   },
+  'FIMO : un Vrai/Faux express'() {
+    const p = packs.find((x) => x.pid === 'fimo-vrai-faux');
+    assert.ok(p && p.flavor === 'tfrush' && p.questions.length >= 10 && p.questions.every((q) => q.type === 'tf'), 'Vrai/Faux FIMO');
+  },
   'il y a des quiz de maths et d\'anglais'() {
     assert.ok(packs.some((p) => p.theme === 'Maths' && p.kind === 'quiz'), 'quiz de maths');
     assert.ok(packs.some((p) => p.theme === 'Anglais'), 'anglais');

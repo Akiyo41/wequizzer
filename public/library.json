@@ -5495,6 +5495,146 @@
   ]
  },
  {
+  "pid": "fimo-vrai-faux",
+  "theme": "Transport routier (FIMO)",
+  "level": "Moyen",
+  "kind": "quiz",
+  "flavor": "tfrush",
+  "title": "FIMO : Vrai ou faux express",
+  "questions": [
+   {
+    "type": "tf",
+    "text": "La conduite journalière est limitée à 9 h, et peut aller jusqu'à 10 h deux fois par semaine.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Règlement (CE) 561/2006."
+   },
+   {
+    "type": "tf",
+    "text": "Après 4 h 30 de conduite, une pause d'au moins 45 minutes est obligatoire.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "La pause de 45 minutes peut être coupée en 30 minutes puis 15 minutes.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "C'est l'inverse : au moins 15 minutes, puis au moins 30 minutes."
+   },
+   {
+    "type": "tf",
+    "text": "La conduite ne doit pas dépasser 56 h sur une semaine.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Sur deux semaines de suite, la conduite peut aller jusqu'à 100 h.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "90 h au maximum sur deux semaines consécutives."
+   },
+   {
+    "type": "tf",
+    "text": "Le repos journalier normal est d'au moins 11 heures.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": "Il peut être réduit à 9 h, trois fois au plus entre deux repos hebdomadaires."
+   },
+   {
+    "type": "tf",
+    "text": "Le repos hebdomadaire normal est d'au moins 45 heures.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "La carte conducteur est valable 10 ans.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Elle est valable 5 ans."
+   },
+   {
+    "type": "tf",
+    "text": "En cas d'arrêt d'urgence, il faut enfiler le gilet de haute visibilité avant de sortir du véhicule.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "Le triangle de présignalisation se place juste derrière le véhicule, à 1 mètre.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Il se place à au moins 30 mètres en amont, sans se mettre en danger."
+   }
+  ]
+ },
+ {
   "pid": "calcul-mental",
   "theme": "Maths",
   "level": "Facile",
