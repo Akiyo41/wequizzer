@@ -475,7 +475,7 @@ socket.on('reaction', ({ emoji, name }) => {
 // ----- Fin -----
 function scoreText(p, d) {
   if (d.scoreMode === 'points' || d.hasDouble) return p.score + (p.score > 1 ? ' pts' : ' pt'); // « 1 pt », « 0 pt » (pluriel à partir de 2)
-  return p.score + ' / ' + d.questions;
+  return p.score + ' / ' + d.questions + (d.questions >= 10 ? ' · ' + Math.round((100 * p.score) / d.questions) + ' %' : ''); // long quiz : le pourcentage en plus
 }
 const aliveText = (p) => (p.hearts ? '❤️'.repeat(p.hearts) : 'En jeu');
 socket.on('end', (d) => {

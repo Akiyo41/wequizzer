@@ -71,7 +71,7 @@ function boardText(d, date) {
   (d.results || []).forEach((r) => {
     const good = r.correct + ' / ' + (d.questions || 0);
     if (!d.questions) L.push('• ' + r.name);
-    else L.push(r.rank + '. ' + r.name + ' : ' + (pts ? r.score + (r.score > 1 ? ' pts' : ' pt') + ' (' + good + ')' : good));
+    else L.push(r.rank + '. ' + r.name + ' : ' + (pts ? r.score + (r.score > 1 ? ' pts' : ' pt') + ' (' + good + ')' : good + (d.questions >= 10 ? ' (' + Math.round((100 * r.correct) / d.questions) + ' %)' : '')));
   });
   return L.join('\n');
 }

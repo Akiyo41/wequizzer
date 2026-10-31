@@ -124,6 +124,10 @@ const tests = {
     const pts = { ...d, scoreMode: 'points', results: [{ rank: 1, name: 'Alice', score: 2450, correct: 3 }, { rank: 2, name: 'Bob', score: 1, correct: 1 }] };
     assert.strictEqual(boardText(pts, 'x').split('\n').slice(1).join('|'), '1. Alice : 2450 pts (3 / 3)|2. Bob : 1 pt (1 / 3)');
   },
+  'classement copié d’un long quiz (10 questions ou plus) : le pourcentage en plus'() {
+    const d = { quizTitle: 'Examen', questions: 50, scoreMode: 'count', hasDouble: false, results: [{ rank: 1, name: 'Léo', score: 33, correct: 33 }] };
+    assert.strictEqual(boardText(d, 'x').split('\n')[1], '1. Léo : 33 / 50 (66 %)');
+  },
   'formules de tableur neutralisées dans les pseudos'() {
     const l = lines(resultsCsv({ quizTitle: '=1+1', questions: 1, results: [{ rank: 1, name: '=HYPERLINK("x")', score: 0, correct: 0, team: null }], qstats: [] }, 'x'));
     assert.strictEqual(l[0], 'Quiz;"\'=1+1"');
