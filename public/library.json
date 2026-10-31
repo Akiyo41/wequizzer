@@ -5583,5 +5583,363 @@
     "a": "Friend"
    }
   ]
+ },
+ {
+  "pid": "conjugaison-present",
+  "theme": "Français",
+  "level": "Facile",
+  "kind": "quiz",
+  "title": "Conjugaison au présent",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Nous ___ (être) contents.",
+    "image": "",
+    "choices": [
+     "sommes",
+     "êtes",
+     "sont",
+     "suis"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Vous ___ (avoir) un chat.",
+    "image": "",
+    "choices": [
+     "avons",
+     "ont",
+     "avez",
+     "as"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Ils ___ (aller) à l'école.",
+    "image": "",
+    "choices": [
+     "allons",
+     "vont",
+     "vas",
+     "allez"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Je ___ (finir) mes devoirs.",
+    "image": "",
+    "choices": [
+     "finit",
+     "finis",
+     "finissons",
+     "finissent"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "Avec « je », les verbes en -ir comme finir prennent un -s."
+   },
+   {
+    "type": "single",
+    "text": "Tu ___ (faire) du vélo.",
+    "image": "",
+    "choices": [
+     "fait",
+     "fais",
+     "faites",
+     "font"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Elle ___ (prendre) le bus.",
+    "image": "",
+    "choices": [
+     "prends",
+     "prenons",
+     "prend",
+     "prennent"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Nous ___ (manger) une pomme.",
+    "image": "",
+    "choices": [
+     "mangons",
+     "mangeons",
+     "mangeont",
+     "mangez"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "On garde le « e » pour que le « g » se prononce « je »."
+   },
+   {
+    "type": "single",
+    "text": "Ils ___ (pouvoir) venir.",
+    "image": "",
+    "choices": [
+     "peuvent",
+     "pouvent",
+     "peut",
+     "pouvons"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Vous ___ (dire) la vérité.",
+    "image": "",
+    "choices": [
+     "disez",
+     "dites",
+     "dit",
+     "disons"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "« Vous dites » et « vous faites » sont des exceptions."
+   },
+   {
+    "type": "single",
+    "text": "Je ___ (vouloir) jouer.",
+    "image": "",
+    "choices": [
+     "veut",
+     "voulons",
+     "veux",
+     "veulent"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
+ },
+ {
+  "pid": "paires-inventeurs",
+  "theme": "Histoire",
+  "level": "Moyen",
+  "kind": "wheel",
+  "title": "Les grands inventeurs",
+  "category": "Qui a inventé…",
+  "pairs": [
+   {
+    "q": "L'imprimerie",
+    "a": "Gutenberg"
+   },
+   {
+    "q": "Le téléphone",
+    "a": "Bell"
+   },
+   {
+    "q": "L'ampoule",
+    "a": "Edison"
+   },
+   {
+    "q": "Le vaccin contre la rage",
+    "a": "Pasteur"
+   },
+   {
+    "q": "Le cinématographe",
+    "a": "Les frères Lumière"
+   },
+   {
+    "q": "L'écriture pour aveugles",
+    "a": "Braille"
+   },
+   {
+    "q": "La radio",
+    "a": "Marconi"
+   },
+   {
+    "q": "La dynamite",
+    "a": "Nobel"
+   }
+  ]
+ },
+ {
+  "pid": "continents-oceans",
+  "theme": "Géographie",
+  "level": "Facile",
+  "kind": "quiz",
+  "title": "Continents et océans",
+  "questions": [
+   {
+    "type": "single",
+    "text": "Quel est le plus grand océan ?",
+    "image": "",
+    "choices": [
+     "Atlantique",
+     "Indien",
+     "Pacifique",
+     "Arctique"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Sur quel continent se trouve l'Égypte ?",
+    "image": "",
+    "choices": [
+     "Asie",
+     "Afrique",
+     "Europe",
+     "Océanie"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Combien y a-t-il de continents (en comptant l'Antarctique) ?",
+    "image": "",
+    "choices": [
+     "5",
+     "6",
+     "7",
+     "8"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": "Afrique, Amérique du Nord, Amérique du Sud, Antarctique, Asie, Europe, Océanie."
+   },
+   {
+    "type": "single",
+    "text": "Quel océan sépare l'Europe de l'Amérique ?",
+    "image": "",
+    "choices": [
+     "Pacifique",
+     "Atlantique",
+     "Indien",
+     "Austral"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Sur quel continent se trouve le Brésil ?",
+    "image": "",
+    "choices": [
+     "Amérique du Sud",
+     "Afrique",
+     "Amérique du Nord",
+     "Asie"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel est le plus grand continent ?",
+    "image": "",
+    "choices": [
+     "Afrique",
+     "Amérique",
+     "Europe",
+     "Asie"
+    ],
+    "correct": 3,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Sur quel continent vivent les manchots empereurs ?",
+    "image": "",
+    "choices": [
+     "Arctique",
+     "Antarctique",
+     "Océanie",
+     "Europe"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": "L'Arctique n'est pas un continent : c'est un océan glacé."
+   },
+   {
+    "type": "single",
+    "text": "Dans quel océan se trouve Madagascar ?",
+    "image": "",
+    "choices": [
+     "Atlantique",
+     "Pacifique",
+     "Indien",
+     "Arctique"
+    ],
+    "correct": 2,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "tf",
+    "text": "L'Australie est à la fois un pays et une partie de l'Océanie.",
+    "image": "",
+    "choices": [
+     "Vrai",
+     "Faux"
+    ],
+    "correct": 0,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   },
+   {
+    "type": "single",
+    "text": "Quel continent est traversé par l'équateur et le Sahara ?",
+    "image": "",
+    "choices": [
+     "Europe",
+     "Afrique",
+     "Antarctique",
+     "Océanie"
+    ],
+    "correct": 1,
+    "answers": [],
+    "double": false,
+    "explain": ""
+   }
+  ]
  }
 ]
