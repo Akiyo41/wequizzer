@@ -112,6 +112,11 @@ const tests = {
     const l = lines(statsCsv({ games: 1, players: 2, qs: { 'Capitale ?': { ok: 1, total: 2, answer: 'Canberra' } } }, 'T', 'x'));
     assert.deepStrictEqual(l.slice(-2), ['Question;Bonnes réponses;Réussite;Bonne réponse', '"Capitale ?";1 / 2;50 %;"Canberra"']);
   },
+  'statistiques cumulées : date de la dernière partie sous le nombre de parties'() {
+    const last = new Date(2026, 9, 31, 10, 0).getTime();
+    const l = lines(statsCsv({ games: 2, last, qs: {} }, 'T', 'x'));
+    assert.deepStrictEqual(l.slice(2, 5), ['Parties jouées;2', 'Dernière partie;31/10/2026', '']);
+  },
   'formules de tableur neutralisées dans les pseudos'() {
     const l = lines(resultsCsv({ quizTitle: '=1+1', questions: 1, results: [{ rank: 1, name: '=HYPERLINK("x")', score: 0, correct: 0, team: null }], qstats: [] }, 'x'));
     assert.strictEqual(l[0], 'Quiz;"\'=1+1"');

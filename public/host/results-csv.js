@@ -54,7 +54,9 @@ function toReview(qstats) {
 // Page Stats : réussite de chaque question sur toutes les parties d'un quiz, les moins réussies d'abord
 function statsCsv(st, title, date) {
   const ans = Object.values(st.qs).some((q) => q.answer);
-  const L = ['Quiz;' + csvText(title), 'Date;' + date, 'Parties jouées;' + st.games, '', 'Question;Bonnes réponses;Réussite' + (ans ? ';Bonne réponse' : '')];
+  const L = ['Quiz;' + csvText(title), 'Date;' + date, 'Parties jouées;' + st.games];
+  if (st.last) L.push('Dernière partie;' + new Date(st.last).toLocaleDateString('fr-FR'));
+  L.push('', 'Question;Bonnes réponses;Réussite' + (ans ? ';Bonne réponse' : ''));
   Object.keys(st.qs)
     .map((k) => ({ label: k, ok: st.qs[k].ok, total: st.qs[k].total, answer: st.qs[k].answer || '' }))
     .map((q) => ({ ...q, pct: q.total ? Math.round((100 * q.ok) / q.total) : 0 }))
