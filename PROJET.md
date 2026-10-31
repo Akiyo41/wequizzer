@@ -252,7 +252,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 77. (fait) Bibliothèque : une rangée de boutons par thème avec le nombre de quiz (« Transport routier (FIMO) (13) »…) ; un clic n'affiche que ce thème (il remplit la recherche), un 2e clic remontre tout. `#libThemes` dans `library-stats.js`, style `.lib-themes`.
 
-78. (fait) Bibliothèque : sous chaque thème qui a encore au moins 3 quiz pas ajoutés, un bouton « Ajouter les N quiz de ce thème » (ex. les 13 quiz FIMO d'un coup, pour toute une formation). `addPack` partagé avec le bouton « Ajouter » d'un quiz.
+78. (fait) Bibliothèque : sous chaque thème qui a encore au moins 3 quiz pas ajoutés, un bouton « Ajouter les N quiz de ce thème » (ex. les 13 quiz FIMO d'un coup, pour toute une formation). `addPack` partagé avec le bouton « Ajouter » d'un quiz. Aide : `faq-bibliotheque` (« Il y a des quiz tout prêts ? »).
 
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
