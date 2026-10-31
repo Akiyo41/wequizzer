@@ -467,7 +467,7 @@ socket.on('end', (d) => {
   $('replayMissedBtn').classList.toggle('hidden', !(d.missedCount > 0));
   const left = d.stopped ? d.stopped.total - d.stopped.asked : 0;
   $('keepRestBtn').classList.toggle('hidden', !left);
-  $('keepRestLabel').textContent = 'Garder les ' + left + ' question' + (left > 1 ? 's' : '') + ' restante' + (left > 1 ? 's' : '') + ' pour la prochaine fois';
+  $('keepRestLabel').textContent = 'Garder les ' + left + ' question' + (left > 1 ? 's' : '') + ' restante' + (left > 1 ? 's' : '');
   $('missedLabel').textContent = 'Rejouer les questions ratées (' + d.missedCount + ')';
   lastEnd = d;
   clearInterval(autoInt);
