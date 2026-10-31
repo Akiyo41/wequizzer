@@ -200,7 +200,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 51. (fait) Doublons dans un quiz : en enregistrant, si deux questions ont le même texte (sans tenir compte des majuscules, accents, ponctuation) et la même image, un message prévient « ⚠️ Les questions 1 et 3 sont identiques » (le quiz est enregistré quand même). Même avertissement après « Créer avec une IA » ou un tableur importé (`aiCreate`). `sameQuestions` dans `quiz-labels.js`, testé.
 
-52. (fait) Podium de l'animateur quand personne n'a eu une seule bonne réponse : plus de couronne sur le 1er ni de fanfare / confettis (comme sur les téléphones), le Professeur remercie tout le monde.
+52. (fait) Podium de l'animateur quand personne n'a eu une seule bonne réponse : plus de couronne sur le 1er ni de fanfare / confettis (comme sur les téléphones), le Professeur remercie tout le monde. L'« Image des résultats » dit « Merci à tous ! Un quiz coriace : on retente ? » au lieu de « X a gagné la partie ! ».
 
 53. (fait) Résultat d'un sondage / nuage de mots sur l'écran de l'animateur : ceux qui n'ont pas répondu apparaissent aussi (grisés, « pas de réponse »), après ceux qui ont répondu. Avant, ils étaient dans la colonne « Mauvaise réponse », cachée pour un sondage, donc invisibles.
 

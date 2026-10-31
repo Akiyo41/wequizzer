@@ -568,8 +568,11 @@ $('shareBtn').onclick = () => {
     sub = d.total + ' participant' + (d.total > 1 ? 's' : '');
     rows.splice(0, rows.length, ...d.board.slice(0, 5).map((p) => ({ left: '•', mid: p.avatar + ' ' + p.name, right: '' })));
   }
+  // personne n'a eu une seule bonne réponse : pas de « gagnant » à 0 (comme sur le podium)
+  const zero = !d.teams && d.questions > 0 && top && top.correct === 0;
+  if (zero) { headline = 'Merci à tous !'; sub = 'Un quiz coriace : on retente ?'; }
   if (d.teams && d.teams[0]) { headline = d.teams[0].icon + ' Équipe ' + d.teams[0].name; sub = 'remporte la partie !'; }
-  Share.share({ quiz: d.quizTitle, emoji: !d.questions && !d.teams ? '☁️' : '🏆', headline, sub, rows, badges }, 'wequizzer-resultats.png');
+  Share.share({ quiz: d.quizTitle, emoji: !d.questions && !d.teams ? '☁️' : zero ? '🎮' : '🏆', headline, sub, rows, badges }, 'wequizzer-resultats.png');
 };
 $('csvResultsBtn').onclick = () => {
   if (!lastEnd || !lastEnd.results) return;
