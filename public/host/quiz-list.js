@@ -120,9 +120,17 @@ function pushQuiz() {
   if (!q) { quizReady = false; setInfo('Crée ton premier quiz dans l\'onglet « Mes quiz ».'); updateStart(); return; }
   socket.emit('host:quiz', quizPayload(q));
 }
-socket.on('host:quiz:ok', ({ title, count, kind }) => {
+let quizOk = null;
+// « Culture générale » : 8 questions, ≈ 5 min de jeu (la durée suit les réglages)
+function showQuizInfo() {
+  if (!quizOk) return;
+  const { title, count, kind } = quizOk;
+  setInfo('« ' + title + ' » : ' + count + (kind === 'wheel' ? ' paire' : kind === 'letters' ? ' mot' : ' question') + (count > 1 ? 's' : '') + ', ≈ ' + gameMinutes(count, readSettings()) + ' min de jeu. Enregistré dans ce navigateur.');
+}
+socket.on('host:quiz:ok', (d) => {
   quizReady = true;
-  setInfo('« ' + title + ' » : ' + count + (kind === 'wheel' ? ' paire' : kind === 'letters' ? ' mot' : ' question') + (count > 1 ? 's' : '') + '. Enregistré dans ce navigateur.');
+  quizOk = d;
+  showQuizInfo();
   updateStart();
 });
 socket.on('host:quiz:error', (msg) => {

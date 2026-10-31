@@ -166,6 +166,7 @@ function pushSettings() {
   const s = readSettings();
   LS.set('wequizzer.settings', s);
   socket.emit('host:settings', s);
+  if (typeof showQuizInfo === 'function') showQuizInfo(); // la durée estimée suit les réglages
 }
 document.querySelectorAll('[data-key]').forEach((input) => {
   const evt = input.type === 'range' ? 'input' : 'change';

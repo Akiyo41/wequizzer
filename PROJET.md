@@ -158,6 +158,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 30. (fait) QR code en grand : clic (ou Entrée) sur le QR de la salle d'attente → plein écran avec le code et l'adresse (`#qrBig`, fin de `public/host/connection.js`), pour les élèves du fond de la salle ; clic ou Échap pour fermer.
 
+31. (fait) Durée estimée de la partie sous le quiz choisi (« 8 questions, ≈ 4 min de jeu »), recalculée à chaque changement de réglage : `gameMinutes` dans `public/host/quiz-labels.js` (par question : 3,3 s de compte à rebours + lecture + chrono ou 25 s + résultat automatique ou 10 s ; tient compte de « nombre de questions »), affichée par `showQuizInfo` (`quiz-list.js`, appelé aussi par `pushSettings`).
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

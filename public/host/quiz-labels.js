@@ -28,4 +28,11 @@ function backupPayload(list) {
 function backupItems(data) {
   return data && data.wequizzer === 'sauvegarde' && Array.isArray(data.quizzes) ? data.quizzes : null;
 }
-if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems };
+// Durée estimée de la partie, en minutes : par question, compte à rebours (3 s) + lecture + réponse
+// (le chrono, ou 25 s sans chrono) + résultat (le délai automatique, ou 10 s quand l'animateur passe à la main)
+function gameMinutes(total, s) {
+  const n = s.count > 0 ? Math.min(s.count, total) : total;
+  const per = 3.3 + (s.readDelay ? s.readSeconds || 0 : 0) + (s.limitTime ? s.time || 20 : 25) + (s.autoNext ? s.autoDelay || 10 : 10);
+  return Math.max(1, Math.round((n * per) / 60));
+}
+if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes };

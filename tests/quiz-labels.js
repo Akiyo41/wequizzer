@@ -1,6 +1,6 @@
 // Test de la liste « Quiz choisi » : ordre alphabétique et noms affichés. Lancer avec : npm test
 const assert = require('assert');
-const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems } = require('../public/host/quiz-labels.js');
+const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes } = require('../public/host/quiz-labels.js');
 
 const tests = {
   'fichier enregistré : le Vrai/Faux en rafale garde son genre'() {
@@ -23,6 +23,18 @@ const tests = {
     // un quiz seul (ancien format) n'est pas une sauvegarde
     assert.strictEqual(backupItems({ title: 'Quiz', questions: [] }), null);
     assert.strictEqual(backupItems({ wequizzer: 'sauvegarde', quizzes: 'non' }), null);
+  },
+  'durée estimée de la partie'() {
+    // 10 questions, chrono 20 s, sans lecture, résultat 10 s : 10 × (3,3 + 20 + 10) = 333 s ≈ 6 min
+    assert.strictEqual(gameMinutes(10, { limitTime: true, time: 20, readDelay: false, autoNext: false, count: 0 }), 6);
+    // « nombre de questions » réglé à 5 : seulement 5 jouées
+    assert.strictEqual(gameMinutes(10, { limitTime: true, time: 20, readDelay: false, autoNext: false, count: 5 }), 3);
+    // lecture 5 s et résultat automatique après 5 s
+    assert.strictEqual(gameMinutes(10, { limitTime: true, time: 20, readDelay: true, readSeconds: 5, autoNext: true, autoDelay: 5, count: 0 }), 6);
+    // sans chrono : on compte 25 s par question
+    assert.strictEqual(gameMinutes(4, { limitTime: false, count: 0 }), 3);
+    // jamais moins d'une minute
+    assert.strictEqual(gameMinutes(1, { limitTime: true, time: 10, count: 0 }), 1);
   },
   'nom du fichier : accents gardés lisibles'() {
     assert.strictEqual(exportName('Étoiles et planètes'), 'Etoiles_et_planetes.json');
