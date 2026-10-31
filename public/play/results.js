@@ -165,12 +165,13 @@ $('shareBtn').onclick = () => {
   if (d.title) badges.push((TITLE_EMOJI[d.title.title] || '🏅') + ' ' + d.title.title);
   if (d.teamName) badges.push(d.teamIcon + ' Équipe ' + d.teamName);
   if (d.answers && d.answers.length >= 2) badges.unshift(Share.recapLine(d.answers)); // ✅❌✅… question par question
+  const scored = d.questions > 0 || d.mode === 'teams' || d.mode === 'hangman'; // sinon : nuages de mots / sondages, pas de rang
   Share.share({
     quiz: d.quizTitle,
     emoji: d.avatar,
     headline: d.name,
-    sub: d.rank + 'e sur ' + d.total,
-    rows: [{ left: '★', mid: l, right: String(v) }, { left: '#', mid: 'Rang', right: d.rank + ' / ' + d.total }],
+    sub: scored ? d.rank + 'e sur ' + d.total : '☁️ a participé',
+    rows: scored ? [{ left: '★', mid: l, right: String(v) }, { left: '#', mid: 'Rang', right: d.rank + ' / ' + d.total }] : [],
     badges,
   }, 'mon-resultat-wequizzer.png');
 };
