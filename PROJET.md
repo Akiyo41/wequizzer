@@ -238,7 +238,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 70. (fait) Cache : les images (`/img`, `/ico`, environ 2 Mo) sont gardées un jour par le navigateur (`Cache-Control: max-age=86400`, `setHeaders` dans `server.js`) → moins d'allers-retours quand toute la classe charge le jeu sur le Wi-Fi de l'école. Pages, scripts et styles restent à `max-age=0` (toujours à jour). Si on remplace une image, changer son nom pour qu'elle se voie tout de suite. Icônes Tabler (`/icons`, 700 Ko) gardées une semaine (`maxAge: 7d`). La compression (brotli) est déjà faite par Render/Cloudflare : rien à ajouter. Test smoke.
 
-71. (fait) Podium : bouton « Copier le classement » → texte à coller dans un message ou l'ENT (« Quiz « Capitales » – 31/10/2026 », puis « 1. Alice : 3 / 3 » ou « 2450 pts (3 / 3) » avec les points ; « • Nom » pour une partie sans question notée). `boardText` dans `results-csv.js`, testé ; copie avec `copyText`.
+71. (fait) Podium : bouton « Copier le classement » → texte à coller dans un message ou l'ENT (« Quiz « Capitales » – 31/10/2026 », puis « 1. Alice : 3 / 3 » ou « 2450 pts (3 / 3) » avec les points ; « • Nom » pour une partie sans question notée). `boardText` dans `results-csv.js`, testé ; copie avec `copyText`. Aide `faq-resultats`.
 
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
