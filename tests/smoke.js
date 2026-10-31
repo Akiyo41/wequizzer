@@ -342,6 +342,23 @@ const tests = {
     close(game);
   },
 
+  async "revoir mes erreurs : avec l'explication de la question"() {
+    const quiz = { title: 'E', questions: [{ type: 'single', text: 'Capitale de la France ?', choices: ['Paris', 'Lyon'], correct: 0, explain: 'Paris est la capitale depuis longtemps.' }] };
+    const game = await setupGame({ mode: 'standard', limitTime: false }, quiz);
+    const endB = once(game.players[1], 'end', 15000);
+    const q = once(game.players[0], 'question', 15000);
+    game.host.emit('host:start');
+    const qq = await q;
+    game.players[0].emit('player:answer', { index: qq.choices.indexOf('Paris') });
+    game.players[1].emit('player:answer', { index: qq.choices.indexOf('Lyon') });
+    await once(game.host, 'results');
+    game.host.emit('host:next');
+    const m = (await endB).mistakes;
+    assert.strictEqual(m.length, 1);
+    assert.strictEqual(m[0].explain, 'Paris est la capitale depuis longtemps.');
+    close(game);
+  },
+
   async 'terminer la partie avant la fin : podium avec les scores actuels'() {
     const game = await setupGame({ mode: 'standard', limitTime: false }, QUIZ);
     const res = once(game.host, 'results');

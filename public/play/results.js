@@ -166,6 +166,7 @@ $('reviewBtn').onclick = () => {
     const b = el('div', 'note ok', '✅ Bonne réponse : ' + m.correct);
     card.appendChild(a);
     card.appendChild(b);
+    if (m.explain) card.appendChild(el('div', 'note', '💡 ' + m.explain));
     box.appendChild(card);
   });
   show('review');

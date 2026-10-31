@@ -210,6 +210,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 56. (fait) « À revoir avec la classe » sur le podium : sous chaque question peu réussie, la bonne réponse (« ✅ C – Canberra ») pour en parler tout de suite. `answer` dans `endData.qstats` (`goodAnswerText`, déplacé dans `answers.js` et partagé avec le téléphone), gardé par `toReview`. Le Tableau des résultats ajoute une colonne « Bonne réponse » à la réussite par question. Aide `faq-resultats` à jour. Tests smoke + results-csv.
 
+57. (fait) « Revoir mes erreurs » sur le téléphone : sous la bonne réponse, l'explication de la question (« 💡 … ») quand il y en a une et que « Afficher l'explication » est coché. `explain` ajouté à chaque erreur dans `round.js`. Test smoke.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

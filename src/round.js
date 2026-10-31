@@ -140,7 +140,7 @@ function endQuestion(pin) {
       p.timeSum += p.answeredAt;
     } else if (!pollQ) {
       p.streak = 0;
-      p.mistakes.push(mistakeEntry(q, p.answer));
+      p.mistakes.push({ ...mistakeEntry(q, p.answer), explain: g.settings.showExplain ? q.explain || '' : '' }); // l'explication aide à comprendre l'erreur
       g.missed[g.index] = (g.missed[g.index] || 0) + 1;
     }
   });
