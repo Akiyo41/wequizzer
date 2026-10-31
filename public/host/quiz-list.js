@@ -134,7 +134,12 @@ let quizOk = null;
 function showQuizInfo() {
   if (!quizOk) return;
   const { title, count, kind } = quizOk;
-  setInfo('« ' + title + ' » : ' + count + (kind === 'wheel' ? ' paire' : kind === 'letters' ? ' mot' : ' question') + (count > 1 ? 's' : '') + ', ≈ ' + gameMinutes(count, readSettings(), ((currentQuiz() || {}).questions || []).map((q) => q.time)) + ' min de jeu. Enregistré dans ce navigateur.');
+  setInfo('« ' + title + ' » : ' + count + (kind === 'wheel' ? ' paire' : kind === 'letters' ? ' mot' : ' question') + (count > 1 ? 's' : '') + ', ≈ ' + gameMinutes(count, readSettings(), ((currentQuiz() || {}).questions || []).map((q) => q.time)) + ' min de jeu. Enregistré dans ce navigateur.' + lastPlayed());
+}
+// « Joué la dernière fois le … » (statistiques du quiz choisi), pour ne pas refaire le même quiz trop tôt
+function lastPlayed() {
+  const st = selectedId && LS.get(STATS_KEY, {})[selectedId];
+  return st && st.last ? ' Joué la dernière fois le ' + new Date(st.last).toLocaleDateString('fr-FR') + '.' : '';
 }
 socket.on('host:quiz:ok', (d) => {
   quizReady = true;
