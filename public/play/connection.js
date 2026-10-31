@@ -123,8 +123,6 @@ $('setBtn').onclick = () => {
   $('setVib').checked = vibOn();
   $('setBig').checked = LS.get(BIG_KEY, false) === true;
   $('setErr').textContent = '';
-  $('setSound').innerHTML = '';
-  $('setSound').appendChild(UI.soundSlider());
   drawSetAvatars();
   $('setPanel').classList.remove('hidden');
 };
@@ -137,6 +135,7 @@ applyBig();
 $('setBig').onchange = () => { LS.set(BIG_KEY, $('setBig').checked); applyBig(); };
 // Plein écran : icône ronde en haut à droite, comme chez l'animateur (absente si le téléphone ne sait pas le faire :
 // sur iPhone, on passe par « Sur l'écran d'accueil »)
+UI.soundButton(); // 🔊 en haut à droite, comme chez l'animateur
 UI.fullscreenButton();
 $('setVib').onchange = () => { LS.set(VIB_KEY, $('setVib').checked); if ($('setVib').checked && navigator.vibrate) navigator.vibrate(35); };
 $('setSave').onclick = () => {
