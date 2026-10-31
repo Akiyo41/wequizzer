@@ -254,7 +254,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 78. (fait) Bibliothèque : sous chaque thème qui a encore au moins 3 quiz pas ajoutés, un bouton « Ajouter les N quiz de ce thème » (ex. les 13 quiz FIMO d'un coup, pour toute une formation). `addPack` partagé avec le bouton « Ajouter » d'un quiz. Aide : `faq-bibliotheque` (« Il y a des quiz tout prêts ? »).
 
-79. (fait) Liste « Quiz choisi » rangée par thème : les quiz ajoutés depuis la Bibliothèque gardent leur `theme` ; dès qu'il y en a un, la liste a des groupes (« Mes quiz » pour les tiens, puis Maths, Transport routier (FIMO)…). Sans thème, liste simple comme avant. `quizGroups` dans `quiz-labels.js`, testé.
+79. (fait) Liste « Quiz choisi » rangée par thème : les quiz ajoutés depuis la Bibliothèque gardent leur `theme` ; dès qu'il y en a un, la liste a des groupes (« Mes quiz » pour les tiens, puis Maths, Transport routier (FIMO)…). Sans thème, liste simple comme avant. `quizGroups` dans `quiz-labels.js`, testé. Le thème est gardé dans les fichiers (`exportPayload`, `readQuiz`) et retrouvé par le titre pour les quiz ajoutés avant (à l'ouverture de la Bibliothèque, seulement ceux notés dans `wequizzer.libAdded`).
 
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.

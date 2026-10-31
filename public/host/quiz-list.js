@@ -219,6 +219,11 @@ $('exportQuiz').onclick = () => {
 };
 // Un quiz lu dans un fichier → quiz prêt à ranger (pas encore enregistré) ; erreur s'il n'est pas valide
 function readQuiz(data, fallbackTitle) {
+  const quiz = readQuizBody(data, fallbackTitle);
+  if (data && typeof data.theme === 'string' && data.theme.trim()) quiz.theme = data.theme.trim().slice(0, 60); // rangement par thème
+  return quiz;
+}
+function readQuizBody(data, fallbackTitle) {
   if (data && data.kind === 'wheel' && Array.isArray(data.pairs) && data.pairs.length) {
     return { id: uid(), kind: 'wheel', title: freeTitle(String(data.title || 'Roue importée').slice(0, 60), library.map((x) => x.title)), category: String(data.category || '').slice(0, 80), pairs: data.pairs.map((p) => (Array.isArray(p.w) && p.w.length ? { q: String(p.q || ''), a: String(p.a || ''), w: p.w.map(String).slice(0, 3) } : { q: String(p.q || ''), a: String(p.a || '') })), questions: [] };
   }

@@ -21,7 +21,12 @@ async function openLibPage() {
     b.onclick = () => { $('libSearch').value = on ? '' : t; openLibPage(); };
     tbox.appendChild(b);
   });
+  // quiz ajoutés avant que le thème soit gardé : on le retrouve par le titre, pour ranger la liste « Quiz choisi »
+  // (seulement les quiz de la Bibliothèque déjà ajoutés, pas les quiz de départ qui portent le même nom)
   const added = LS.get('wequizzer.libAdded', {});
+  let found = false;
+  library.forEach((q) => { if (!q.theme) { const p = libPacks.find((x) => added[x.pid] && x.title === q.title); if (p) { q.theme = p.theme; found = true; } } });
+  if (found && saveLibrary()) renderQuizSelect();
   const box = $('libList');
   box.innerHTML = '';
   let theme = '';

@@ -22,9 +22,10 @@ function quizGroups(list) {
 }
 // « Enregistrer ce quiz dans un fichier » : ce qu'on écrit (sans l'identifiant interne) et le nom du fichier
 function exportPayload(q) {
-  if (q.kind === 'wheel') return { kind: 'wheel', title: q.title, category: q.category, pairs: q.pairs };
-  if (q.kind === 'letters') return { kind: 'letters', title: q.title, items: q.items };
-  return q.flavor === 'tfrush' ? { flavor: 'tfrush', title: q.title, questions: q.questions } : { title: q.title, questions: q.questions };
+  const theme = q.theme ? { theme: q.theme } : {}; // thème d'un quiz de la Bibliothèque : gardé pour ranger la liste
+  if (q.kind === 'wheel') return { kind: 'wheel', title: q.title, ...theme, category: q.category, pairs: q.pairs };
+  if (q.kind === 'letters') return { kind: 'letters', title: q.title, ...theme, items: q.items };
+  return q.flavor === 'tfrush' ? { flavor: 'tfrush', title: q.title, ...theme, questions: q.questions } : { title: q.title, ...theme, questions: q.questions };
 }
 function exportName(title) {
   const base = String(title || '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w-]+/g, '_').replace(/^_+|_+$/g, '');

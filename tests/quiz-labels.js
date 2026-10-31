@@ -3,6 +3,11 @@ const assert = require('assert');
 const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage, revisionQuiz, backupReminder, quizGroups } = require('../public/host/quiz-labels.js');
 
 const tests = {
+  'fichier enregistré : le thème (quiz de la Bibliothèque) est gardé'() {
+    const qs = [{ type: 'tf', text: 'Vrai ?', correct: 0 }];
+    assert.deepStrictEqual(exportPayload({ id: 'x', title: 'FIMO', theme: 'Transport routier (FIMO)', questions: qs }), { title: 'FIMO', theme: 'Transport routier (FIMO)', questions: qs });
+    assert.strictEqual(exportPayload({ id: 'x', kind: 'wheel', title: 'R', category: 'C', pairs: [], theme: 'Maths' }).theme, 'Maths');
+  },
   'liste Mes quiz rangée par thème (seulement quand des quiz de la Bibliothèque ont un thème)'() {
     const t = (title, theme) => ({ title, ...(theme ? { theme } : {}) });
     assert.deepStrictEqual(quizGroups([t('B'), t('a')]), [{ label: '', quizzes: [t('a'), t('B')] }], 'sans thème : une seule liste');
