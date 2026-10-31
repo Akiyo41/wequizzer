@@ -186,6 +186,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 44. (fait, demandé par l'utilisateur) Plein écran aussi sur le téléphone : icône ronde en haut à droite, comme chez l'animateur (`UI.fullscreenButton()` appelé dans `play/connection.js` ; `body:not(.has-snd) .fs-btn` la met au bord). L'utilisateur ne la voulait pas dans « Mes réglages ». Le volume du téléphone aussi : icône 🔊 en haut à droite (`UI.soundButton()`), retirée de « Mes réglages » (comme prévu par la décision « un bouton 🔊 sur chaque appareil »). Caché si le navigateur ne sait pas le faire : sur iPhone (Safari), le plein écran passe par « Sur l'écran d'accueil » (appli installée, `display: fullscreen` du manifeste).
 
+45. (fait) Temps propre à une question : ligne « Temps » sous chaque question de l'éditeur (« comme les réglages de la partie » ou 10 à 60 s ; `Q_TIMES` dans `quiz-list.js`, gardé par `normQ`, envoyé par `quizPayload`). Serveur : `q.time` accepté s'il fait partie de `TIME_CHOICES` (`cleanQuiz`), gardé par « Rejouer les questions ratées » (`missedQuiz`), utilisé par `qTime` (`src/timer.js`) quand « Limiter le temps » est activé. Aide : `faq-temps`.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

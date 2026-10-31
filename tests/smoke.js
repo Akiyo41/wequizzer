@@ -284,6 +284,23 @@ const tests = {
     }
   },
 
+  async 'temps propre à une question'() {
+    const quiz = { title: 'Temps', questions: [
+      { type: 'single', text: 'Difficile', choices: ['a', 'b'], correct: 0, time: 60 },
+      { type: 'single', text: 'Normale', choices: ['a', 'b'], correct: 0 },
+      { type: 'single', text: 'Temps refusé', choices: ['a', 'b'], correct: 0, time: 999 },
+    ] };
+    const game = await setupGame({ mode: 'standard', limitTime: true, time: 20, readDelay: false }, quiz);
+    const times = [];
+    game.host.on('question', (q) => { times.push(q.time); setTimeout(() => game.host.emit('host:skip'), 50); });
+    game.host.on('results', () => setTimeout(() => game.host.emit('host:next'), 50));
+    const end = once(game.host, 'end', 30000);
+    game.host.emit('host:start');
+    await end;
+    assert.deepStrictEqual(times, [60, 20, 20]);
+    close(game);
+  },
+
   async '+10 s pendant une question chronométrée'() {
     const game = await setupGame({ mode: 'standard', limitTime: true, time: 20, readDelay: false }, QUIZ);
     const q = once(game.host, 'question', 15000);

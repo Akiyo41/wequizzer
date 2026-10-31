@@ -1,7 +1,10 @@
 // Mes quiz : lecture, enregistrement, choix du quiz
 // ----- Bibliothèque de quiz -----
 // Question enregistrée → question de l'éditeur (« Compléter la phrase » devient le type 'gap')
+// Temps propres à une question (les mêmes que dans les réglages de la partie)
+const Q_TIMES = [10, 15, 20, 25, 30, 40, 50, 60];
 function normQ(q) {
+  const tm = Q_TIMES.includes(q.time) ? { time: q.time } : {};
   let type = ['single', 'tf', 'multi', 'text', 'poll', 'order', 'gap', 'zone'].includes(q.type) ? q.type : 'single';
   if (type === 'single' && q.gapSrc) type = 'gap';
   let choices = (q.choices || []).slice(0, type === 'order' ? 6 : 4).map(String);
@@ -12,13 +15,13 @@ function normQ(q) {
   else if (!Number.isInteger(correct)) correct = 0;
   if (type === 'gap' && !q.gapSrc) {
     // déjà au format de l'éditeur (anciens imports) : phrase avec ___, bonne réponse en premier
-    return { type, text: String(q.text || ''), image: q.image || '', choices, correct: 0, answers: [], double: q.double === true, explain: String(q.explain || '') };
+    return { type, text: String(q.text || ''), image: q.image || '', choices, correct: 0, answers: [], double: q.double === true, explain: String(q.explain || ''), ...tm };
   }
   if (type === 'gap') {
     // en édition : phrase avec ___, bonne réponse dans la case 1, mauvaises réponses dans les cases 2 à 4
     const src = String(q.gapSrc || '');
     const mm = src.match(/\[([^\[\]]+)\]/);
-    return { type, text: mm ? src.replace(mm[0], '___') : src, image: q.image || '', choices: [mm ? mm[1].trim() : '', ...choices.filter((c, i) => i !== (Number.isInteger(q.correct) ? q.correct : 0)).slice(0, 3)], correct: 0, answers: [], double: q.double === true, explain: String(q.explain || '') };
+    return { type, text: mm ? src.replace(mm[0], '___') : src, image: q.image || '', choices: [mm ? mm[1].trim() : '', ...choices.filter((c, i) => i !== (Number.isInteger(q.correct) ? q.correct : 0)).slice(0, 3)], correct: 0, answers: [], double: q.double === true, explain: String(q.explain || ''), ...tm };
   }
   return {
     type,
@@ -29,6 +32,7 @@ function normQ(q) {
     answers: Array.isArray(q.answers) ? q.answers.map(String) : [],
     double: q.double === true,
     explain: String(q.explain || ''),
+    ...tm,
     ...(type === 'zone' ? { zone: q.zone && typeof q.zone === 'object' ? { ...q.zone } : null } : {}),
   };
 }
@@ -114,7 +118,7 @@ function quizPayload(q) {
   return {
     title: q.title,
     questions: q.questions.map((x) => ({
-      type: x.type, text: x.text, image: x.image || '', choices: x.choices, correct: x.correct, answers: x.answers, double: x.double, explain: x.explain || '', zone: x.zone,
+      type: x.type, text: x.text, image: x.image || '', choices: x.choices, correct: x.correct, answers: x.answers, double: x.double, explain: x.explain || '', zone: x.zone, time: x.time,
     })),
   };
 }

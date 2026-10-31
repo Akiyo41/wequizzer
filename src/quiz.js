@@ -1,5 +1,5 @@
 // Vérification des quiz et préparation des questions d'une partie
-const { MAX_PAIRS, WHEEL_A_MAX, WHEEL_MAX, WHEEL_Q_MAX } = require('./config');
+const { MAX_PAIRS, TIME_CHOICES, WHEEL_A_MAX, WHEEL_MAX, WHEEL_Q_MAX } = require('./config');
 const { shuffle } = require('./utils');
 const { zoneValid } = require('../public/zone.js');
 
@@ -95,6 +95,8 @@ function cleanQuiz(input) {
     const image = cleanImage(raw.image);
     const double = raw.double === true && type !== 'poll';
     const q = { type, text, image, double, choices: [], correct: null, answers: [], explain: String(raw.explain || '').trim().slice(0, 300) };
+    // temps propre à la question (sinon celui des réglages de la partie)
+    if (TIME_CHOICES.includes(raw.time)) q.time = raw.time;
 
     if (type === 'zone') {
       // Image à toucher : une image et la bonne zone (cercle), voir public/zone.js
@@ -242,9 +244,10 @@ function missedQuiz(g) {
   }
   const questions = idx.map((i) => {
     const q = g.questions[i];
-    if (q.type === 'order') return { type: 'order', text: q.text, image: q.image || '', double: false, choices: q.items, correct: null, answers: [], explain: q.explain || '' };
-    if (q.type === 'zone') return { type: 'zone', text: q.text, image: q.image || '', double: !!q.double, zone: q.zone, explain: q.explain || '' };
-    return { type: q.type, text: q.text, image: q.image || '', double: !!q.double, choices: q.choices, correct: q.correct, answers: q.answers, explain: q.explain || '' };
+    const time = q.time ? { time: q.time } : {};
+    if (q.type === 'order') return { type: 'order', text: q.text, image: q.image || '', double: false, choices: q.items, correct: null, answers: [], explain: q.explain || '', ...time };
+    if (q.type === 'zone') return { type: 'zone', text: q.text, image: q.image || '', double: !!q.double, zone: q.zone, explain: q.explain || '', ...time };
+    return { type: q.type, text: q.text, image: q.image || '', double: !!q.double, choices: q.choices, correct: q.correct, answers: q.answers, explain: q.explain || '', ...time };
   });
   return { title, questions };
 }

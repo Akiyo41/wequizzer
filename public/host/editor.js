@@ -308,6 +308,18 @@ function renderEditor() {
       bonus.appendChild(el('span', '', 'Question bonus (points doublés)'));
       card.appendChild(bonus);
     }
+    // Temps propre à la question (utilisé quand « Limiter le temps » est activé)
+    const tRow = el('label', 'ans');
+    tRow.appendChild(el('i', 'ti ti-clock'));
+    tRow.appendChild(el('span', '', 'Temps :'));
+    const tSel = el('select');
+    tSel.setAttribute('aria-label', 'Temps pour la question ' + (i + 1));
+    tSel.appendChild(new Option('comme les réglages de la partie', ''));
+    Q_TIMES.forEach((s) => tSel.appendChild(new Option(s + ' secondes', String(s))));
+    tSel.value = q.time ? String(q.time) : '';
+    tSel.onchange = () => { if (tSel.value) q.time = Number(tSel.value); else delete q.time; };
+    tRow.appendChild(tSel);
+    card.appendChild(tRow);
     box.appendChild(card);
   });
 }

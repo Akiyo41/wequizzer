@@ -21,7 +21,9 @@ function schedule(g, ms, fn) {
 
 // Temps de la question en cours, avec les secondes ajoutées par l'animateur (« +10 s »)
 function qTime(g) {
-  return g.settings.limitTime ? g.settings.time + (g.extraTime || 0) : null;
+  if (!g.settings.limitTime) return null;
+  const q = g.questions && g.questions[g.index];
+  return ((q && q.time) || g.settings.time) + (g.extraTime || 0); // temps de la question s'il en a un
 }
 const MORE_TIME = 10;
 const MORE_TIME_MAX = 120;

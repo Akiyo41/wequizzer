@@ -89,6 +89,7 @@ function buildFromEditor() {
         clean.correct = list;
       }
     }
+    if (q.time) clean.time = q.time; // temps propre à la question
     out.push(clean);
   }
   $('edError').textContent = '';
