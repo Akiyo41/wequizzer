@@ -23,7 +23,7 @@ function mistakeEntry(q, answer) {
   if (q.type === 'zone') correct = ZONE_OK;
   else if (q.type === 'match') correct = q.pairs.map((p) => p.q + ' → ' + p.a).join(' · ');
   else if (q.type === 'order') correct = q.items.join(' → ');
-  else if (q.type === 'text') correct = q.answers.join(' / ');
+  else if (q.type === 'text') correct = q.answers[0]; // la réponse principale, pas toutes les orthographes acceptées
   else if (q.type === 'multi') correct = q.correct.map((i) => c[i]).join(' + ');
   else correct = c[q.correct];
   return { text: q.wheel ? q.category + ' : ' + q.text : q.match ? q.category + ' : relier ' + q.left.join(', ') : q.text, yours, correct };

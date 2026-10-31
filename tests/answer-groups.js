@@ -1,8 +1,12 @@
 // Test des réponses écrites regroupées pour l'écran de l'animateur. Lancer avec : npm test
 const assert = require('assert');
-const { answerGroups } = require('../src/answers.js');
+const { answerGroups, mistakeEntry } = require('../src/answers.js');
 
 const tests = {
+  'revoir mes erreurs : réponse écrite ratée, seulement la réponse principale'() {
+    const q = { type: 'text', text: 'Capitale du Japon ?', answers: ['Tokyo', 'Tokio', 'Tōkyō'] };
+    assert.deepStrictEqual(mistakeEntry(q, 'Kyoto'), { text: 'Capitale du Japon ?', yours: 'Kyoto', correct: 'Tokyo' });
+  },
   'mêmes réponses regroupées (accents, majuscules), les plus fréquentes d\'abord'() {
     const g = answerGroups([
       { text: 'Picasso', ok: false }, { text: 'Vinci', ok: true }, { text: 'picasso ', ok: false },
