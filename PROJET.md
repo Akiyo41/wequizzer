@@ -162,6 +162,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 32. (fait) Réponse écrite : l'écran de résultat de l'animateur montre « Réponses données : ❌ Picasso × 2  ✅ vinci  ❌ Monet », regroupées sans les noms (8 au plus, les plus fréquentes d'abord), pour parler des erreurs fréquentes. Serveur : `answerGroups` dans `src/answers.js` (testé par `tests/answer-groups.js`), champ `texts` du résultat (pas pour le jeu de mots).
 
+33. (fait) « Mes quiz » : case « 🔍 Chercher un quiz… » à partir de 8 quiz (`QUIZ_SEARCH_FROM`), qui filtre la liste de cet onglet (mots dans n'importe quel ordre, accents et majuscules ignorés : `quizMatches` dans `quiz-labels.js`) ; si le quiz choisi ne correspond plus, le premier qui correspond est choisi. La liste de l'onglet Jouer reste complète.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

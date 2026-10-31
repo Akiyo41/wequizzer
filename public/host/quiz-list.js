@@ -84,10 +84,14 @@ async function initLibrary() {
   renderQuizSelect();
   pushQuiz();
 }
+const QUIZ_SEARCH_FROM = 8; // la case de recherche apparaît à partir de 8 quiz
 function renderQuizSelect() {
+  const search = library.length >= QUIZ_SEARCH_FROM ? $('quizSearch').value : '';
+  $('quizSearch').classList.toggle('hidden', library.length < QUIZ_SEARCH_FROM);
   [$('quizSelect'), $('quizSelect2')].forEach((sel) => {
     sel.innerHTML = '';
-    quizOrder(library).forEach((q) => {
+    // « Mes quiz » : seulement les quiz qui correspondent à la recherche
+    quizOrder(library).filter((q) => sel.id !== 'quizSelect2' || quizMatches(q, search)).forEach((q) => {
       const o = el('option', '', quizLabel(q));
       o.value = q.id;
       sel.appendChild(o);
@@ -144,6 +148,16 @@ const onPick = (sel) => () => {
   applyKind(); pushQuiz(); pushSettings();
 };
 $('quizSelect').onchange = onPick($('quizSelect'));
+// Recherche : si le quiz choisi ne correspond plus, on choisit le premier qui correspond
+$('quizSearch').oninput = () => {
+  const hits = quizOrder(library).filter((q) => quizMatches(q, $('quizSearch').value));
+  $('quizSearchNone').classList.toggle('hidden', hits.length > 0);
+  if (hits.length && !hits.some((q) => q.id === selectedId)) {
+    selectedId = hits[0].id;
+    renderQuizSelect();
+    onPick($('quizSelect2'))();
+  } else renderQuizSelect();
+};
 $('quizSelect2').onchange = onPick($('quizSelect2'));
 
 // Une copie à modifier sans toucher à l'original (ex. : une version plus facile pour une autre classe)

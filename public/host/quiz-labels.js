@@ -35,4 +35,10 @@ function gameMinutes(total, s) {
   const per = 3.3 + (s.readDelay ? s.readSeconds || 0 : 0) + (s.limitTime ? s.time || 20 : 25) + (s.autoNext ? s.autoDelay || 10 : 10);
   return Math.max(1, Math.round((n * per) / 60));
 }
-if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes };
+// Recherche dans « Mes quiz » : chaque mot tapé doit se trouver dans le titre (accents et majuscules ignorés)
+const QUIZ_PLAIN = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+function quizMatches(q, query) {
+  const t = QUIZ_PLAIN(q.title);
+  return QUIZ_PLAIN(query).split(/\s+/).filter(Boolean).every((w) => t.includes(w));
+}
+if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches };

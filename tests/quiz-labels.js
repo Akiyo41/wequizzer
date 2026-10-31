@@ -1,6 +1,6 @@
 // Test de la liste « Quiz choisi » : ordre alphabétique et noms affichés. Lancer avec : npm test
 const assert = require('assert');
-const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes } = require('../public/host/quiz-labels.js');
+const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches } = require('../public/host/quiz-labels.js');
 
 const tests = {
   'fichier enregistré : le Vrai/Faux en rafale garde son genre'() {
@@ -35,6 +35,14 @@ const tests = {
     assert.strictEqual(gameMinutes(4, { limitTime: false, count: 0 }), 3);
     // jamais moins d'une minute
     assert.strictEqual(gameMinutes(1, { limitTime: true, time: 10, count: 0 }), 1);
+  },
+  'recherche d\'un quiz : mots dans n\'importe quel ordre, sans accents ni majuscules'() {
+    const q = { title: 'Les capitales d\'Europe' };
+    assert.strictEqual(quizMatches(q, ''), true);
+    assert.strictEqual(quizMatches(q, 'europe'), true);
+    assert.strictEqual(quizMatches(q, 'EUROPE capi'), true);
+    assert.strictEqual(quizMatches({ title: 'Étoiles' }, 'etoi'), true);
+    assert.strictEqual(quizMatches(q, 'asie'), false);
   },
   'nom du fichier : accents gardés lisibles'() {
     assert.strictEqual(exportName('Étoiles et planètes'), 'Etoiles_et_planetes.json');
