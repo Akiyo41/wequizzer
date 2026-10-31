@@ -137,4 +137,15 @@ function cleanAnswer(q, data) {
   return null;
 }
 
-module.exports = { mistakeEntry, isCorrect, shownAnswer, correctText, cleanAnswer };
+// Réponses écrites regroupées (sans les noms) pour l'animateur : « Picasso × 3 », les plus fréquentes d'abord, 8 au plus
+function answerGroups(list) {
+  const groups = new Map();
+  list.forEach(({ text, ok }) => {
+    const k = normAnswer(text || '');
+    if (!k) return;
+    if (!groups.has(k)) groups.set(k, { text: String(text).trim(), count: 0, ok: !!ok });
+    groups.get(k).count++;
+  });
+  return [...groups.values()].sort((a, b) => b.count - a.count).slice(0, 8);
+}
+module.exports = { mistakeEntry, isCorrect, shownAnswer, correctText, cleanAnswer, answerGroups };

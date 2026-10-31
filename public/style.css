@@ -568,3 +568,9 @@ body.has-fs .hostbar { padding-right: 112px; }
 .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); z-index: 70; background: #0b1a66; color: #fff; border: 2px solid var(--accent);
   border-radius: 999px; padding: 10px 22px; font-weight: 800; font-size: 1.15rem; box-shadow: 0 8px 20px rgba(0, 0, 0, .4); opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
+/* Réponses écrites regroupées sur l'écran de résultat de l'animateur */
+.answers-given { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; justify-content: center; }
+.answers-given b { width: 100%; }
+.answers-given .given { padding: 4px 12px; border-radius: 999px; font-weight: 800; background: rgba(255, 255, 255, .12); }
+.answers-given .given.ok { background: rgba(47, 191, 95, .3); }
+.answers-given .given.bad { background: rgba(216, 27, 80, .28); }

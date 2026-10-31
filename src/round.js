@@ -1,6 +1,6 @@
 // Une question : compte à rebours, lecture, réponses, correction, question suivante
 const { COUNTDOWN, HANG_MAX } = require('./config');
-const { correctText, isCorrect, mistakeEntry, shownAnswer } = require('./answers');
+const { answerGroups, correctText, isCorrect, mistakeEntry, shownAnswer } = require('./answers');
 const { activePlayers, heartsOn, teamBoard } = require('./rules');
 const { allPeople, games, toAll, toHost, toPlayer } = require('./send');
 const { clearTimer, qTime, schedule } = require('./timer');
@@ -225,6 +225,8 @@ function endQuestion(pin) {
     correct: q.correct,
     choices: q.choices,
     counts,
+    // réponse écrite : les réponses données, regroupées et sans les noms (pas pour le jeu de mots)
+    texts: q.type === 'text' && !q.letters ? answerGroups(participants.filter((p) => typeof p.answer === 'string').map((p) => ({ text: p.answer, ok: !!p.lastCorrect }))) : null,
     // image à toucher : la bonne zone et un point par joueur (sans nom, dans le désordre)
     zone: q.type === 'zone' ? q.zone : null,
     image: q.type === 'zone' ? q.image : null,

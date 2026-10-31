@@ -365,6 +365,13 @@ socket.on('results', (r) => {
     const d = el('div', 'textbox');
     d.textContent = '✅ ' + r.counts[0] + ' bonne(s) réponse(s)   ·   ❌ ' + r.counts[1] + ' mauvaise(s)';
     box.appendChild(d);
+    // réponse écrite : ce que les joueurs ont écrit, regroupé (sans les noms), pour parler des erreurs fréquentes
+    if (r.texts && r.texts.length) {
+      const list = el('div', 'textbox answers-given');
+      list.appendChild(el('b', '', 'Réponses données :'));
+      r.texts.forEach((t) => list.appendChild(el('span', 'given ' + (t.ok ? 'ok' : 'bad'), (t.ok ? '✅ ' : '❌ ') + t.text + (t.count > 1 ? ' × ' + t.count : ''))));
+      box.appendChild(list);
+    }
   }
   const out = r.outNow && r.outNow.length;
   $('rOut').classList.toggle('hidden', !out && r.survivors === null);

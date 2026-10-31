@@ -112,6 +112,9 @@ const tests = {
     assert.strictEqual(game.info.count, 5);
     const { results, end, endPlayers } = await play(game, quizAnswer);
     assert.deepStrictEqual(results.map((r) => r.okCount), [1, 1, 1, 1, 0]);
+    // réponses écrites regroupées pour l'animateur (sans les noms)
+    assert.deepStrictEqual(results[2].texts, [{ text: 'vinci', count: 1, ok: true }, { text: 'Picasso', count: 1, ok: false }]);
+    assert.strictEqual(results[0].texts, null);
     assert.strictEqual(end.questions, 4);
     assert.deepStrictEqual(end.board.map((b) => [b.name, b.score]), [['Alice', 4], ['Bob', 0]]);
     assert.strictEqual(end.missedCount, 4);
