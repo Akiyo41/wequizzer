@@ -1,8 +1,15 @@
 // Test de la liste « Quiz choisi » : ordre alphabétique et noms affichés. Lancer avec : npm test
 const assert = require('assert');
-const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage, revisionQuiz, backupReminder } = require('../public/host/quiz-labels.js');
+const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage, revisionQuiz, backupReminder, quizGroups } = require('../public/host/quiz-labels.js');
 
 const tests = {
+  'liste Mes quiz rangée par thème (seulement quand des quiz de la Bibliothèque ont un thème)'() {
+    const t = (title, theme) => ({ title, ...(theme ? { theme } : {}) });
+    assert.deepStrictEqual(quizGroups([t('B'), t('a')]), [{ label: '', quizzes: [t('a'), t('B')] }], 'sans thème : une seule liste');
+    const g = quizGroups([t('Zèbre'), t('FIMO : tachy', 'Transport routier (FIMO)'), t('Capitales', 'Géographie'), t('FIMO : santé', 'Transport routier (FIMO)')]);
+    assert.deepStrictEqual(g.map((x) => [x.label, x.quizzes.map((q) => q.title)]), [
+      ['Mes quiz', ['Zèbre']], ['Géographie', ['Capitales']], ['Transport routier (FIMO)', ['FIMO : santé', 'FIMO : tachy']]]);
+  },
   'rappel de sauvegarde : après une semaine de modifications pas enregistrées dans un fichier'() {
     const day = 86400000;
     const now = new Date(2026, 9, 31).getTime();

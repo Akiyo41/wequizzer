@@ -82,7 +82,7 @@ async function openLibPage() {
 // Copie d'un quiz de la Bibliothèque dans « Mes quiz » (nom libre, nouvel identifiant)
 function addPack(p, added) {
   const copy = JSON.parse(JSON.stringify(p));
-  delete copy.pid; delete copy.theme; delete copy.level;
+  delete copy.pid; delete copy.level; // le thème reste : la liste « Quiz choisi » est rangée par thème
   copy.id = uid();
   if (copy.kind === 'quiz') delete copy.kind;
   copy.title = freeTitle(p.title, library.map((x) => x.title));

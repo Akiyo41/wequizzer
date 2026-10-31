@@ -10,6 +10,16 @@ const QUIZ_COLLATOR = new Intl.Collator('fr', { sensitivity: 'base', numeric: tr
 function quizOrder(list) {
   return list.slice().sort((a, b) => QUIZ_COLLATOR.compare(a.title, b.title));
 }
+// Liste « Quiz choisi » rangée par thème : les quiz ajoutés depuis la Bibliothèque gardent leur thème.
+// Sans aucun thème, une seule liste (label vide) ; sinon « Mes quiz » (ceux sans thème) d'abord, puis les thèmes.
+function quizGroups(list) {
+  const sorted = quizOrder(list);
+  if (!sorted.some((q) => q.theme)) return [{ label: '', quizzes: sorted }];
+  const groups = {};
+  sorted.forEach((q) => { const k = q.theme || ''; (groups[k] = groups[k] || []).push(q); });
+  return Object.keys(groups).sort((a, b) => (a === '' ? -1 : b === '' ? 1 : QUIZ_COLLATOR.compare(a, b)))
+    .map((k) => ({ label: k || 'Mes quiz', quizzes: groups[k] }));
+}
 // « Enregistrer ce quiz dans un fichier » : ce qu'on écrit (sans l'identifiant interne) et le nom du fichier
 function exportPayload(q) {
   if (q.kind === 'wheel') return { kind: 'wheel', title: q.title, category: q.category, pairs: q.pairs };
@@ -95,4 +105,4 @@ function twinsMessage(twins, noun = 'questions') {
   const more = twins.length - 1;
   return '⚠️ Les ' + noun + ' ' + twins[0][0] + ' et ' + twins[0][1] + ' sont identiques' + (more ? ' (et ' + more + ' autre' + (more > 1 ? 's' : '') + ' doublon' + (more > 1 ? 's' : '') + ')' : '');
 }
-if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage, revisionQuiz, backupReminder };
+if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions, twinsMessage, revisionQuiz, backupReminder, quizGroups };

@@ -96,10 +96,15 @@ function renderQuizSelect() {
   [$('quizSelect'), $('quizSelect2')].forEach((sel) => {
     sel.innerHTML = '';
     // « Mes quiz » : seulement les quiz qui correspondent à la recherche
-    quizOrder(library).filter((q) => sel.id !== 'quizSelect2' || quizMatches(q, search)).forEach((q) => {
-      const o = el('option', '', quizLabel(q));
-      o.value = q.id;
-      sel.appendChild(o);
+    // rangés par thème quand des quiz viennent de la Bibliothèque (quizGroups)
+    quizGroups(library.filter((q) => sel.id !== 'quizSelect2' || quizMatches(q, search))).forEach((g) => {
+      const box = g.label ? el('optgroup') : sel;
+      if (g.label) { box.label = g.label; sel.appendChild(box); }
+      g.quizzes.forEach((q) => {
+        const o = el('option', '', quizLabel(q));
+        o.value = q.id;
+        box.appendChild(o);
+      });
     });
     if (selectedId) sel.value = selectedId;
   });
