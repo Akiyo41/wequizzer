@@ -308,6 +308,18 @@ const tests = {
     close(game);
   },
 
+  async 'codes PIN faux à la chaîne : il faut attendre'() {
+    const s = connect();
+    const errors = [];
+    s.on('join:error', (m) => errors.push(m));
+    for (let i = 0; i < 9; i++) s.emit('player:join', { pin: '00000' + i, name: 'Robot', device: 'test-robot' });
+    await new Promise((r) => setTimeout(r, 500));
+    assert.strictEqual(errors.length, 9);
+    assert.ok(errors.slice(0, 8).every((m) => m === 'Code PIN introuvable.'), errors.join(' | '));
+    assert.ok(/Trop d.essais/.test(errors[8]), errors[8]);
+    s.close();
+  },
+
   async 'code PIN collé avec des espaces ou des tirets'() {
     const game = await setupGame({ mode: 'standard' }, QUIZ);
     const s = connect();

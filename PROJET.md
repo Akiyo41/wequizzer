@@ -174,6 +174,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 38. (fait) Podium de l'animateur : encadré « 📚 À revoir avec la classe » = les questions sous 60 % de bonnes réponses, les moins réussies d'abord, 3 au plus (`toReview` dans `public/host/results-csv.js`, testé par `tests/results-csv.js`).
 
+39. (fait) Protection contre les codes PIN devinés au hasard : après 8 codes faux en une minute sur une connexion (ou 40 depuis une même adresse, pour ne pas gêner une classe entière derrière la même box), « Trop d'essais de code : attends une minute avant de réessayer. ». `tooManyTries` / `countFail` en haut de `src/sockets.js` (pas de limite par adresse en local).
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.

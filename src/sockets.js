@@ -14,6 +14,32 @@ const { advance, beginRound, endQuestion, maybeEndEarly, progressPayload } = req
 const { resetGame } = require('./end');
 const { sendHostState, sendPlayerState } = require('./resume');
 
+// Codes PIN faux à la chaîne (quelqu'un qui devine au hasard) : au plus 8 par connexion et 40 par adresse
+// (une classe entière derrière la même box) en une minute ; ensuite, il faut attendre
+const TRY_WINDOW = 60000;
+const TRY_SOCKET = 8;
+const TRY_IP = 40;
+const ipTries = new Map();
+function triesOf(rec, now) {
+  return rec && now - rec.since < TRY_WINDOW ? rec : { n: 0, since: now };
+}
+function tooManyTries(socket) {
+  const now = Date.now();
+  const ip = clientIp(socket);
+  return triesOf(socket.data.tries, now).n >= TRY_SOCKET || (!!ip && triesOf(ipTries.get(ip), now).n >= TRY_IP);
+}
+function countFail(socket) {
+  const now = Date.now();
+  socket.data.tries = triesOf(socket.data.tries, now);
+  socket.data.tries.n++;
+  const ip = clientIp(socket);
+  if (!ip) return;
+  if (ipTries.size > 5000) ipTries.clear(); // garde la mémoire du serveur petite
+  const rec = triesOf(ipTries.get(ip), now);
+  rec.n++;
+  ipTries.set(ip, rec);
+}
+
 function setupSockets(io) {
   io.on('connection', (socket) => {
     // ---------- Animateur ----------
@@ -205,8 +231,9 @@ function setupSockets(io) {
     socket.on('player:join', ({ pin, name, avatar, device } = {}) => {
       pin = String(pin || '').replace(/\D/g, ''); // « 427 111 », « 427-111 » collés : on garde les chiffres
       name = String(name || '').trim().replace(/\s+/g, ' ').slice(0, 16);
+      if (tooManyTries(socket)) return socket.emit('join:error', 'Trop d\'essais de code : attends une minute avant de réessayer.');
       const g = games[pin];
-      if (!g) return socket.emit('join:error', 'Code PIN introuvable.');
+      if (!g) { countFail(socket); return socket.emit('join:error', 'Code PIN introuvable.'); }
       device = typeof device === 'string' ? device.slice(0, 40) : '';
       const left = banLeft(g, socket, device);
       if (left) return socket.emit('join:error', banMessage(left));
