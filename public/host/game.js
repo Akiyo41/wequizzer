@@ -89,6 +89,7 @@ socket.on('host:lock', (on) => {
   roomLocked = on;
   document.querySelectorAll('.lock-label').forEach((l) => { l.textContent = on ? 'Rouvrir la salle' : 'Fermer la salle'; });
   document.querySelectorAll('.lock-btn').forEach((b) => b.classList.toggle('on', on));
+  $('lockNote').classList.toggle('hidden', !on); // près du QR code : on voit tout de suite pourquoi personne n'entre
 });
 $('pauseBtn').onclick = () => socket.emit('host:pause', !isPaused);
 $('resumeBtn').onclick = () => socket.emit('host:pause', false);

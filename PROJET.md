@@ -232,7 +232,7 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 67. (fait) Rappel de sauvegarde dans « Mes quiz » : si des quiz ont été modifiés depuis la dernière sauvegarde, au plus tôt une semaine après, un message propose « Enregistrer tous mes quiz dans un fichier » (les quiz ne vivent que dans le navigateur). `backupReminder` (`quiz-labels.js`, testé) ; `saveLibrary` note `wequizzer.lastEdit` / `firstEdit` seulement quand les quiz changent vraiment ; le bouton note `wequizzer.lastBackup`.
 
-68. (fait) « Fermer la salle » (salle d'attente et liste des joueurs pendant la partie) : plus de nouveaux joueurs, ceux déjà là peuvent revenir après une coupure. Serveur : `host:lock` → `g.locked`, refus dans `player:join`, état renvoyé à la reconnexion (`sendHostState`). Test smoke. Aide `faq-exclure` ; ajouté à « Quoi de neuf ? » (`NEWS` = 2026-10-31b).
+68. (fait) « Fermer la salle » (salle d'attente et liste des joueurs pendant la partie) : plus de nouveaux joueurs, ceux déjà là peuvent revenir après une coupure. Serveur : `host:lock` → `g.locked`, refus dans `player:join`, état renvoyé à la reconnexion (`sendHostState`). Test smoke. Aide `faq-exclure` ; ajouté à « Quoi de neuf ? » (`NEWS` = 2026-10-31b). Salle fermée : message « 🔒 Salle fermée » sous le QR code (`#lockNote`).
 
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
