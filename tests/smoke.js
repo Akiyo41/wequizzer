@@ -308,6 +308,15 @@ const tests = {
     close(game);
   },
 
+  async 'en-têtes de protection du site'() {
+    const res = await fetch(URL + '/host.html');
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(res.headers.get('x-content-type-options'), 'nosniff');
+    assert.strictEqual(res.headers.get('x-frame-options'), 'SAMEORIGIN');
+    assert.strictEqual(res.headers.get('referrer-policy'), 'same-origin');
+    assert.strictEqual(res.headers.get('x-powered-by'), null);
+  },
+
   async 'pas plus de 10 salles ouvertes en même temps depuis une même adresse'() {
     const socks = [];
     const errors = [];
