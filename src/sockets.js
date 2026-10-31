@@ -225,6 +225,13 @@ function setupSockets(io) {
       const asked = g.state === 'results' ? g.index + 1 : g.index; // questions dont le résultat a été montré
       endGame(g.pin, { asked, total: g.questions.length });
     });
+    // Fermer la salle : plus de nouveaux joueurs (ceux déjà là peuvent revenir après une coupure)
+    socket.on('host:lock', (on) => {
+      const g = hostGame();
+      if (!g) return;
+      g.locked = !!on;
+      toHost(g, 'host:lock', g.locked);
+    });
     socket.on('host:moreTime', () => {
       const g = hostGame();
       if (g) addTime(g);
@@ -272,6 +279,7 @@ function setupSockets(io) {
         countFail(socket);
         return socket.emit('join:error', pin.length !== 6 ? "Le code a 6 chiffres : vérifie-le sur l'écran de l'animateur." : "Aucune partie avec ce code. Vérifie les 6 chiffres sur l'écran de l'animateur.");
       }
+      if (g.locked) return socket.emit('join:error', "La salle est fermée : l'animateur n'accepte plus de nouveaux joueurs.");
       device = typeof device === 'string' ? device.slice(0, 40) : '';
       const left = banLeft(g, socket, device);
       if (left) return socket.emit('join:error', banMessage(left));

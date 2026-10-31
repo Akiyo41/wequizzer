@@ -43,6 +43,7 @@ function sendPlayerState(g, p) {
 
 function sendHostState(g) {
   sendHostPlayers(g);
+  toHost(g, 'host:lock', !!g.locked); // salle fermée ou non (bouton de l'animateur)
   const left = g.state === 'question' && qTime(g) ? Math.max(0, qTime(g) - elapsed(g)) : undefined;
   switch (g.state) {
     case 'lobby':

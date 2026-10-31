@@ -81,6 +81,15 @@ $('finishBtn').onclick = async () => {
   const ok = await UI.confirm({ title: 'Terminer la partie maintenant ?', text: "Les questions restantes ne seront pas posées. Le podium s'affiche avec les scores actuels.", ok: 'Voir le podium', cancel: 'Continuer', pose: 'question' });
   if (ok) socket.emit('host:finish');
 };
+// Fermer la salle : plus de nouveaux joueurs (bouton dans la salle d'attente et dans la liste des joueurs)
+let roomLocked = false;
+document.querySelectorAll('.lock-btn').forEach((b) => { b.onclick = () => socket.emit('host:lock', !roomLocked); });
+socket.on('host:lock', (on) => {
+  if (on !== roomLocked) UI.toast(on ? '🔒 Salle fermée : plus de nouveaux joueurs' : '🔓 Salle rouverte');
+  roomLocked = on;
+  document.querySelectorAll('.lock-label').forEach((l) => { l.textContent = on ? 'Rouvrir la salle' : 'Fermer la salle'; });
+  document.querySelectorAll('.lock-btn').forEach((b) => b.classList.toggle('on', on));
+});
 $('pauseBtn').onclick = () => socket.emit('host:pause', !isPaused);
 $('resumeBtn').onclick = () => socket.emit('host:pause', false);
 $('nextBtn').onclick = () => { FX.click(); socket.emit('host:next'); };

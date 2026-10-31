@@ -617,6 +617,24 @@ const tests = {
     close(game);
   },
 
+  async 'salle fermée : plus de nouveaux joueurs, puis rouverte'() {
+    const game = await setupGame({ mode: 'standard' }, QUIZ);
+    const st = once(game.host, 'host:lock');
+    game.host.emit('host:lock', true);
+    assert.strictEqual(await st, true);
+    const s = connect();
+    const err = once(s, 'join:error');
+    s.emit('player:join', { pin: game.pin, name: 'Intrus' });
+    assert.ok(/fermée/.test(await err), 'refusé');
+    game.host.emit('host:lock', false);
+    await once(game.host, 'host:lock');
+    const ok = once(s, 'join:ok');
+    s.emit('player:join', { pin: game.pin, name: 'Charlie' });
+    await ok;
+    s.close();
+    close(game);
+  },
+
   async 'PIN inconnu'() {
     const s = connect();
     const e1 = once(s, 'join:error');
