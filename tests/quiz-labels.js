@@ -1,8 +1,16 @@
 // Test de la liste « Quiz choisi » : ordre alphabétique et noms affichés. Lancer avec : npm test
 const assert = require('assert');
-const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted } = require('../public/host/quiz-labels.js');
+const { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions } = require('../public/host/quiz-labels.js');
 
 const tests = {
+  'questions en double : repérées malgré majuscules, accents et ponctuation, pas avec une autre image'() {
+    const qs = [
+      { text: 'Capitale de la France ?' }, { text: 'Quel est ce drapeau ?', image: 'a' }, { text: 'capitale  de la france' },
+      { text: 'Quel est ce drapeau ?', image: 'b' }, { text: 'Capitale de la FRANCE !' }, { text: '' }, { text: '' },
+    ];
+    assert.deepStrictEqual(sameQuestions(qs), [[1, 3], [1, 5]]);
+    assert.deepStrictEqual(sameQuestions([{ text: 'a' }, { text: 'b' }]), []);
+  },
   'fichier enregistré : le Vrai/Faux en rafale garde son genre'() {
     const qs = [{ type: 'tf', text: 'Le chat miaule', correct: 0 }];
     assert.deepStrictEqual(exportPayload({ id: 'x', flavor: 'tfrush', title: 'Rafale', questions: qs }), { flavor: 'tfrush', title: 'Rafale', questions: qs });

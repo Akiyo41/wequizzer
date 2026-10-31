@@ -107,6 +107,9 @@ $('edSave').onclick = () => {
   renderQuizSelect();
   pushQuiz();
   show('lobby');
+  // enregistré quand même, mais on prévient : une question copiée deux fois par erreur
+  const twins = sameQuestions(quiz.questions);
+  if (twins.length) UI.toast('⚠️ Les questions ' + twins[0][0] + ' et ' + twins[0][1] + ' sont identiques' + (twins.length > 1 ? ' (et ' + (twins.length - 1) + ' autre' + (twins.length > 2 ? 's' : '') + ' doublon' + (twins.length > 2 ? 's' : '') + ')' : ''));
 };
 $('edTest').onclick = () => {
   const quiz = buildFromEditor();

@@ -57,4 +57,16 @@ function addAccepted(quiz, qText, answer) {
   q.answers.push(a);
   return 'added';
 }
-if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted };
+// Questions écrites deux fois dans un quiz (même texte, même image) → [[n° de la 1re, n° du doublon], …], numéros à partir de 1
+function sameQuestions(questions) {
+  const first = {};
+  const out = [];
+  (questions || []).forEach((q, i) => {
+    const t = ANSWER_PLAIN(q.text || '');
+    if (!t) return;
+    const key = t + '|' + (q.image || '');
+    if (key in first) out.push([first[key] + 1, i + 1]); else first[key] = i;
+  });
+  return out;
+}
+if (typeof module !== 'undefined') module.exports = { quizLabel, quizOrder, exportPayload, exportName, backupPayload, backupItems, gameMinutes, quizMatches, addAccepted, sameQuestions };
