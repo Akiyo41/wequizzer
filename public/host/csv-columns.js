@@ -21,6 +21,7 @@ function csvColumns(row) {
     else if (/^type\b/.test(n)) col.type = k;
     else if (/^(bonus|points? doubles?|double)\b/.test(n)) col.bonus = k;
     else if (/^(explication|explanation|commentaire|feedback)\b/.test(n)) col.explain = k;
+    else if (/^(temps|time|duree|chrono)\b/.test(n)) col.time = k; // Kahoot : « Time limit (sec) »
   });
   if (col.question === undefined || !answers.some((a) => a !== undefined)) return null;
   col.answers = answers;
@@ -44,6 +45,7 @@ function csvRemap(rows) {
     }
     if (!type && CSV_LIST.test(corr)) type = 'multiple';
     const line = [type, get(r, col.question), ...ans, corr, get(r, col.bonus), get(r, col.explain)];
+    if (col.time !== undefined) line.push(get(r, col.time)); // 10e colonne : temps de la question, en secondes
     if (line.some(Boolean)) out.push(line);
   });
   return { rows: out, hasHead: true };

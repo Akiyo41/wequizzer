@@ -198,6 +198,9 @@ function aiBuild(rows, hasHead) {
     }
     const bad = validateQ(q);
     if (bad) return err(bad + '.');
+    // 10e colonne (tableur Kahoot…) : temps de la question, arrondi au plus proche des temps possibles
+    const secs = Number(cell(9).replace(',', '.'));
+    if (secs > 0) q.time = Q_TIMES.reduce((best, t) => (Math.abs(t - secs) < Math.abs(best - secs) ? t : best), Q_TIMES[0]);
     out.normal.push(q);
   });
   if (out.normal.length > 100) out.errors.push('Il y a ' + out.normal.length + ' questions de quiz : 100 au maximum.');

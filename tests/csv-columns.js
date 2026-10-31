@@ -22,9 +22,9 @@ const tests = {
     ]);
     assert.ok(o);
     assert.strictEqual(o.rows.length, 3);
-    assert.deepStrictEqual(o.rows[1], ['', '2 + 2 ?', '3', '4', '5', '22', '2', '', '']);
+    assert.deepStrictEqual(o.rows[1], ['', '2 + 2 ?', '3', '4', '5', '22', '2', '', '', '20']);
     // plusieurs bonnes réponses sans colonne Type : c'est un choix multiple
-    assert.deepStrictEqual(o.rows[2], ['multiple', 'Nombres pairs ?', '1', '2', '3', '4', '2,4', '', '']);
+    assert.deepStrictEqual(o.rows[2], ['multiple', 'Nombres pairs ?', '1', '2', '3', '4', '2,4', '', '', '20']);
   },
   'la bonne réponse écrite en toutes lettres devient la lettre'() {
     const o = csvRemap([
@@ -39,6 +39,15 @@ const tests = {
       ['Car 1+1=2', 'A', '2', '3', '1 + 1 ?', 'oui', 'choix'],
     ]);
     assert.deepStrictEqual(o.rows[1], ['choix', '1 + 1 ?', '2', '3', '', '', 'A', 'oui', 'Car 1+1=2']);
+  },
+  'colonne de temps (Kahoot « Time limit ») : ajoutée en 10e colonne'() {
+    const o = csvRemap([
+      ['Question', 'Answer 1', 'Answer 2', 'Time limit (sec)', 'Correct answer(s)'],
+      ['2 + 2 ?', '4', '5', '30', '1'],
+      ['3 + 3 ?', '6', '7', '', '1'],
+    ]);
+    assert.deepStrictEqual(o.rows[1], ['', '2 + 2 ?', '4', '5', '', '', '1', '', '', '30']);
+    assert.strictEqual(o.rows[2][9], '');
   },
   'pas d\'en-tête reconnu : rien ne change'() {
     assert.strictEqual(csvRemap([['choix', 'Capitale ?', 'Paris', 'Lyon', '', '', 'A']]), null);
