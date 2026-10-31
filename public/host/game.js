@@ -303,7 +303,8 @@ function renderStatus(r) {
   $('colsBox').classList.toggle('one', poll);
   $('goodHead').innerHTML = poll ? '<i class="ti ti-chart-bar"></i> ' + (r.type === 'words' ? 'Ont répondu' : 'Ont voté') : '<i class="ti ti-circle-check"></i> Bonne réponse';
   $('goodHead').className = poll ? '' : 'good';
-  r.players.forEach((p) => {
+  // sondage / nuage : ceux qui ont répondu d'abord
+  (poll ? [...r.players].sort((a, b) => (a.status === 'none') - (b.status === 'none')) : r.players).forEach((p) => {
     const chip = el('span', 'chip static' + (p.status === 'none' ? ' faded' : ''));
     chip.appendChild(el('span', 'av', p.avatar));
     chip.appendChild(document.createTextNode(p.name));
@@ -314,7 +315,8 @@ function renderStatus(r) {
     if (p.status === 'none') chip.appendChild(el('small', '', 'pas de réponse'));
     if (p.out) chip.appendChild(el('small', '', '💀 éliminé'));
     else if (p.hearts !== null && p.hearts !== undefined) chip.appendChild(el('small', '', '❤️' + p.hearts));
-    ((p.status === 'correct' || p.status === 'voted') ? good : bad).appendChild(chip);
+    // sondage / nuage : une seule colonne, ceux qui n'ont pas répondu y restent (grisés, « pas de réponse »)
+    ((p.status === 'correct' || p.status === 'voted' || poll) ? good : bad).appendChild(chip);
   });
   const nOk = r.players.filter((p) => p.status === 'correct' || p.status === 'voted').length;
   Brand.setPose($('resMascot'), nOk * 2 >= r.players.length ? 'bravo' : 'desole');

@@ -202,6 +202,8 @@ Quiz complet (5 types), 3 modes, QR + PIN, réglages, pause, exclusion, filtre d
 
 52. (fait) Podium de l'animateur quand personne n'a eu une seule bonne réponse : plus de couronne sur le 1er ni de fanfare / confettis (comme sur les téléphones), le Professeur remercie tout le monde.
 
+53. (fait) Résultat d'un sondage / nuage de mots sur l'écran de l'animateur : ceux qui n'ont pas répondu apparaissent aussi (grisés, « pas de réponse »), après ceux qui ont répondu. Avant, ils étaient dans la colonne « Mauvaise réponse », cachée pour un sondage, donc invisibles.
+
 ## Lancer en local
 `npm install` puis `node server.js` (port 3000, ou variable `PORT`). Animateur : `/host.html`. Joueurs : `/play.html`. Tests : `npm test`.
 - **Réponses toujours mélangées** (plus de réglage « Mélanger les réponses ») : à chaque partie pour choix unique, multiple et sondage ; Vrai/Faux garde son ordre ; le bouton « Tester » mélange aussi. Une bonne réponse n'est donc plus jamais figée en A.
