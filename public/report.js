@@ -110,10 +110,18 @@ const Report = (() => {
     btns.appendChild(close);
     btns.appendChild(sendBtn);
     inner.appendChild(btns);
+    // après l'envoi : un message de remerciement à la place du formulaire, puis la fenêtre se ferme toute seule
+    const done = make('div', 'report-done');
+    done.setAttribute('role', 'status');
+    done.appendChild(make('div', 'report-done-icon', '✅'));
+    done.appendChild(make('p', 'report-done-title', 'Merci, ton message a bien été transmis !'));
+    done.appendChild(make('p', 'hint', "L'équipe WeQuizzer va le lire avec attention pour améliorer le jeu."));
+    inner.appendChild(done);
     box.appendChild(inner);
     document.body.appendChild(box);
 
-    const hide = () => box.classList.add('hidden');
+    let timer = null;
+    const hide = () => { clearTimeout(timer); box.classList.add('hidden'); };
     close.onclick = hide;
     box.addEventListener('click', (e) => { if (e.target === box) hide(); });
     box.addEventListener('keydown', (e) => { if (e.key === 'Escape') hide(); });
@@ -133,14 +141,17 @@ const Report = (() => {
       if (ok) {
         saveTimes(times.concat(now));
         ta.value = '';
-        msg.classList.add('ok');
-        msg.textContent = 'Merci ! Ton message est bien parti.';
+        msg.textContent = '';
+        inner.classList.add('sent');
+        timer = setTimeout(hide, 3500);
       } else {
         msg.classList.add('error');
         msg.textContent = 'Impossible d\'envoyer pour le moment. Réessaie plus tard.';
       }
     };
     box.open = () => {
+      clearTimeout(timer);
+      inner.classList.remove('sent');
       msg.className = 'report-msg';
       msg.textContent = '';
       box.classList.remove('hidden');

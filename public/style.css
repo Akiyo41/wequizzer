@@ -622,3 +622,8 @@ body:not(.has-snd) .fs-btn { right: 10px; }
 .report-msg { min-height: 1.2em; margin: 8px 0 0; font-weight: 700; }
 .report-msg.ok { color: #8ff0b5; }
 #reportPlay { margin-top: 10px; }
+.report-done { display: none; text-align: center; padding: 10px 0 4px; }
+.report-box.sent > :not(h3):not(.report-done) { display: none; }
+.report-box.sent .report-done { display: block; }
+.report-done-icon { font-size: 2.6rem; }
+.report-done-title { font-size: 1.2rem; font-weight: 800; margin: 6px 0; }
