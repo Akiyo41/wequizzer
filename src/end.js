@@ -82,6 +82,7 @@ function endGame(pin, stopped = null) {
 function resetGame(pin) {
   const g = games[pin];
   clearTimer(g);
+  if (g.prestart) { clearTimeout(g.prestart); g.prestart = null; } // décompte avant la partie annulé
   g.paused = false;
   g.pauseReason = null;
   g.state = 'lobby';

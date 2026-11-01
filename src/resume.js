@@ -16,6 +16,8 @@ function sendPlayerState(g, p) {
   switch (g.state) {
     case 'lobby':
       toPlayer(p, 'lobby', lobbyPayload(g, p));
+      // décompte avant la partie en cours : il le voit aussi
+      if (g.prestart) toPlayer(p, 'prestart', { seconds: Math.max(1, Math.ceil((g.prestartEnd - Date.now()) / 1000)) });
       break;
     case 'countdown':
       toPlayer(p, 'countdown', {

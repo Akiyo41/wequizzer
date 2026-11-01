@@ -1,15 +1,15 @@
 // Événements Socket.IO de l'animateur et des joueurs
 const QRCode = require('qrcode');
-const { AVATARS, DEFAULTS, HOST_GRACE_MS, LOBBY_GRACE_MS, MAX_GAMES, MAX_PLAYERS, REACTIONS } = require('./config');
+const { AVATARS, DEFAULTS, HOST_GRACE_MS, LOBBY_GRACE_MS, MAX_GAMES, MAX_PLAYERS, PRESTART_MS, REACTIONS } = require('./config');
 const { lanUrl, rid } = require('./utils');
 const { isBlocked } = require('./names');
 const { sanitize } = require('./settings');
 const { buildQuestions, cleanQuiz, missedQuiz, quizCount, restQuiz } = require('./quiz');
 const { cleanAnswer } = require('./answers');
 const { assignTeams, bonusOn, heartsOn, isTeamMode, resetPlayerStats } = require('./rules');
-const { allPeople, games, newPin, toHost, toPlayer } = require('./send');
+const { allPeople, games, newPin, toAll, toHost, toPlayer } = require('./send');
 const { addTime, elapsed, qTime, setPaused } = require('./timer');
-const { banLeft, banMessage, clientIp, closeGame, joinInfo, pickAvatar, removePlayer, queuedPayload, sendHostPlayers, settingsPayload } = require('./room');
+const { banLeft, banMessage, clientIp, closeGame, joinInfo, pickAvatar, removePlayer, sendHostPlayers, settingsPayload } = require('./room');
 const { advance, beginRound, endQuestion, maybeEndEarly, progressPayload } = require('./round');
 const { endGame, resetGame } = require('./end');
 const { sendHostState, sendPlayerState } = require('./resume');
@@ -50,6 +50,29 @@ function freeName(g, name) {
     if (!taken.has(cand.toLowerCase())) return cand;
   }
   return '';
+}
+
+// Début de la partie (à la fin du décompte) : tous les joueurs de la salle jouent, prêts ou pas
+function startGame(g) {
+  if (!games[g.pin] || g.state !== 'lobby' || !g.quiz || Object.keys(g.players).length === 0) { toAll(g, 'prestart:cancel', {}); return; }
+  if (g.quiz.kind === 'wheel' || g.quiz.kind === 'letters') g.settings = { ...g.settings, changeAnswer: false, display: 'both' };
+  g.questions = buildQuestions(g);
+  if (g.questions.length === 0) { toAll(g, 'prestart:cancel', {}); return; }
+  g.scoreMode = bonusOn(g) ? 'points' : 'count';
+  g.index = 0;
+  g.scored = 0;
+  g.lastFlag = false;
+  g.paused = false;
+  g.missed = {};
+  g.qstats = {};
+  g.clouds = {}; // réponses des nuages de mots, pour le tableau des résultats
+  Object.values(g.players).forEach(resetPlayerStats);
+  if (heartsOn(g)) Object.values(g.players).forEach((p) => (p.hearts = g.settings.lives));
+  g.startPlayers = Object.keys(g.players).length;
+  if (isTeamMode(g)) assignTeams(g);
+  Object.values(g.players).forEach((p) => toPlayer(p, 'game:settings', { ...settingsPayload(g), team: p.team }));
+  Object.values(g.players).forEach((p) => toPlayer(p, 'join:ok', { ...joinInfo(g, p), pid: p.pid, token: p.token, pin: g.pin }));
+  beginRound(g.pin);
 }
 
 function setupSockets(io) {
@@ -185,37 +208,20 @@ function setupSockets(io) {
       }
     });
 
-    socket.on('host:start', ({ onlyReady } = {}) => {
+    // Lancer : décompte de quelques secondes sur tous les écrans (l'animateur peut annuler), puis tout le monde joue
+    socket.on('host:start', () => {
       const g = hostGame();
-      if (!g || g.state !== 'lobby' || !g.quiz || Object.keys(g.players).length === 0) return;
-      // « Lancer sans eux » : ceux qui n'ont pas appuyé sur « Je suis prêt » attendent la prochaine partie
-      const later = onlyReady ? Object.values(g.players).filter((p) => !p.ready) : [];
-      if (later.length === Object.keys(g.players).length) return;
-      later.forEach((p) => {
-        p.queued = true;
-        g.queue[p.pid] = p;
-        delete g.players[p.pid];
-      });
-      if (g.quiz.kind === 'wheel' || g.quiz.kind === 'letters') g.settings = { ...g.settings, changeAnswer: false, display: 'both' };
-      g.questions = buildQuestions(g);
-      if (g.questions.length === 0) return;
-      g.scoreMode = bonusOn(g) ? 'points' : 'count';
-      g.index = 0;
-      g.scored = 0;
-      g.lastFlag = false;
-      g.paused = false;
-      g.missed = {};
-      g.qstats = {};
-      g.clouds = {}; // réponses des nuages de mots, pour le tableau des résultats
-      Object.values(g.players).forEach(resetPlayerStats);
-      if (heartsOn(g)) Object.values(g.players).forEach((p) => (p.hearts = g.settings.lives));
-      g.startPlayers = Object.keys(g.players).length;
-      if (isTeamMode(g)) assignTeams(g);
-      Object.values(g.players).forEach((p) => toPlayer(p, 'game:settings', { ...settingsPayload(g), team: p.team }));
-      Object.values(g.players).forEach((p) => toPlayer(p, 'join:ok', { ...joinInfo(g, p), pid: p.pid, token: p.token, pin: g.pin }));
-      beginRound(g.pin);
-      later.forEach((p) => toPlayer(p, 'queued', queuedPayload(g)));
-      if (later.length) sendHostPlayers(g);
+      if (!g || g.state !== 'lobby' || g.prestart || !g.quiz || Object.keys(g.players).length === 0) return;
+      g.prestartEnd = Date.now() + PRESTART_MS;
+      g.prestart = setTimeout(() => { g.prestart = null; startGame(g); }, PRESTART_MS);
+      toAll(g, 'prestart', { seconds: Math.ceil(PRESTART_MS / 1000) });
+    });
+    socket.on('host:cancelStart', () => {
+      const g = hostGame();
+      if (!g || !g.prestart) return;
+      clearTimeout(g.prestart);
+      g.prestart = null;
+      toAll(g, 'prestart:cancel', {});
     });
 
     // « Je suis prêt » (salle d'attente) : l'animateur le voit dans la liste des joueurs

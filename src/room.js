@@ -90,6 +90,8 @@ function removePlayer(g, p, reason, minutes) {
 // Ferme complètement une salle : les joueurs sont prévenus
 function closeGame(g) {
   clearTimer(g);
+  clearTimeout(g.prestart); // décompte avant la partie
+  g.prestart = null;
   allPeople(g).forEach((p) => toPlayer(p, 'host:left'));
   delete games[g.pin];
 }

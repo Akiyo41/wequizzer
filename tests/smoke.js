@@ -11,7 +11,7 @@ const URL = `http://localhost:${PORT}`;
 function startServer() {
   return new Promise((resolve, reject) => {
     const srv = spawn(process.execPath, [path.join(__dirname, '..', 'server.js')], {
-      env: { ...process.env, PORT: String(PORT), WEB3FORMS_KEY: 'cle-de-test' }, // fausse clé : jamais la vraie dans les tests
+      env: { ...process.env, PORT: String(PORT), WEB3FORMS_KEY: 'cle-de-test', PRESTART_MS: '400' }, // fausse clé : jamais la vraie dans les tests ; décompte court
       stdio: ['ignore', 'pipe', 'inherit'],
     });
     srv.stdout.on('data', (d) => {
@@ -116,7 +116,7 @@ const tests = {
     assert.ok(/max-age=0/.test(page.headers.get('cache-control') || ''), 'page : ' + page.headers.get('cache-control'));
   },
 
-  async 'je suis prêt : l’animateur le voit ; lancer sans les pas-prêts les met en attente'() {
+  async 'je suis prêt : seulement une information ; au lancement, tout le monde joue après le décompte'() {
     const game = await setupGame({ mode: 'standard', limitTime: false }, QUIZ);
     const [alice, bob] = game.players;
     // la liste peut arriver plusieurs fois : on attend celle où Alice est prête
@@ -124,26 +124,46 @@ const tests = {
     alice.emit('player:ready', true);
     const l = await list;
     assert.deepStrictEqual(l.map((p) => [p.name, p.ready]), [['Alice', true], ['Bob', false]]);
-    const bobQueued = once(bob, 'queued');
-    const aliceQ = once(alice, 'question', 15000);
-    game.host.emit('host:start', { onlyReady: true });
-    await bobQueued;
-    await aliceQ;
+    // décompte avant la partie, sur tous les écrans
+    const pre = Promise.all([once(game.host, 'prestart'), once(alice, 'prestart'), once(bob, 'prestart')]);
+    const qs = Promise.all([once(alice, 'question', 15000), once(bob, 'question', 15000)]);
+    let queued = false;
+    bob.on('queued', () => { queued = true; });
+    game.host.emit('host:start');
+    const [h] = await pre;
+    assert.ok(h.seconds >= 1, 'le décompte a une durée');
+    // pendant le décompte, Bob peut encore dire qu'il est prêt (sans conséquence)
+    const ready2 = new Promise((resolve) => game.host.on('host:players', (x) => { if (x.every((p) => p.ready)) resolve(); }));
+    bob.emit('player:ready', true);
+    await ready2;
+    await qs;
+    assert.strictEqual(queued, false, "personne n'est mis de côté");
     const res = once(game.host, 'results');
     alice.emit('player:answer', { index: 0 });
-    const r = await res;
-    assert.deepStrictEqual(r.players.map((p) => p.name), ['Alice'], 'Bob ne joue pas cette partie');
-    // retour à la salle : Bob revient, et plus personne n'est prêt
-    const back = once(game.host, 'host:players');
+    bob.emit('player:answer', { index: 0 });
+    assert.deepStrictEqual((await res).players.map((p) => p.name).sort(), ['Alice', 'Bob']);
+    // retour à la salle : plus personne n'est prêt
+    const back = new Promise((resolve) => game.host.on('host:players', (x) => { if (x.every((p) => !p.ready)) resolve(x); }));
     game.host.emit('host:reset');
-    const after = await back;
-    assert.deepStrictEqual(after.map((p) => [p.name, p.ready, p.queued]), [['Alice', false, false], ['Bob', false, false]]);
+    assert.deepStrictEqual((await back).map((p) => [p.name, p.ready]), [['Alice', false], ['Bob', false]]);
     close(game);
   },
 
-  async 'je suis prêt : lancer avec tout le monde (sans « onlyReady ») ne met personne de côté'() {
+  async "décompte avant la partie : « Annuler » ramène tout le monde à la salle d'attente"() {
     const game = await setupGame({ mode: 'standard', limitTime: false }, QUIZ);
-    const q = Promise.all(game.players.map((s) => once(s, 'question', 15000)));
+    const [alice] = game.players;
+    let started = false;
+    alice.on('question', () => { started = true; });
+    const pre = once(alice, 'prestart');
+    game.host.emit('host:start');
+    await pre;
+    const cancel = Promise.all([once(game.host, 'prestart:cancel'), once(alice, 'prestart:cancel')]);
+    game.host.emit('host:cancelStart');
+    await cancel;
+    await new Promise((r) => setTimeout(r, 1500));
+    assert.strictEqual(started, false, 'la partie ne démarre pas');
+    // on peut relancer ensuite
+    const q = once(alice, 'question', 15000);
     game.host.emit('host:start');
     await q;
     close(game);

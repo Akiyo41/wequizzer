@@ -2,6 +2,8 @@
 
 const PORT = process.env.PORT || 3000;
 const COUNTDOWN = 3; // secondes avant chaque question
+// décompte avant le début de la partie (« La partie démarre dans 5… »), raccourci dans les tests
+const PRESTART_MS = Number(process.env.PRESTART_MS) > 0 ? Number(process.env.PRESTART_MS) : 5000;
 const MAX_PLAYERS = 200;
 const MAX_GAMES = 300; // salles ouvertes en même temps sur le serveur (protège la mémoire)
 const AVATARS = ['🦊', '🐼', '🐸', '🦁', '🐙', '🐵', '🦄', '🐯', '🐧', '🐢', '🦉', '🐳', '🐰', '🐨', '🦖', '🐝'];
@@ -55,4 +57,4 @@ const DEFAULTS = {
   reviewErrors: true, // les joueurs peuvent revoir leurs erreurs à la fin
 };
 
-module.exports = { PORT, THEMES, TIME_CHOICES, AUTO_DELAYS, READ_DELAYS, MODES, WHEEL_Q_MAX, WHEEL_A_MAX, WHEEL_MAX, MAX_PAIRS, HANG_MAX, TEAMS, COUNTDOWN, AVATARS, MAX_PLAYERS, MAX_GAMES, REACTIONS, HOST_GRACE_MS, LOBBY_GRACE_MS, DEFAULTS };
+module.exports = { PORT, THEMES, TIME_CHOICES, AUTO_DELAYS, READ_DELAYS, MODES, WHEEL_Q_MAX, WHEEL_A_MAX, WHEEL_MAX, MAX_PAIRS, HANG_MAX, TEAMS, COUNTDOWN, PRESTART_MS, AVATARS, MAX_PLAYERS, MAX_GAMES, REACTIONS, HOST_GRACE_MS, LOBBY_GRACE_MS, DEFAULTS };

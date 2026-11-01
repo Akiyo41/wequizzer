@@ -4,7 +4,8 @@
 // Une pastille sur le bouton compte ce qui n'a pas encore été vu sur cet appareil.
 const News = (() => {
   const LIST = [
-    { id: 24, date: '2026-11-01', type: 'nouveau', for: 'animateur', text: "Salle d'attente : tu vois qui est prêt (✅) ou pas (⏳), et tu es prévenu au lancement. « Lancer sans eux » les fait attendre la prochaine partie." },
+    { id: 25, date: '2026-11-01', type: 'nouveau', for: 'tous', text: 'Au lancement, un décompte de 5 secondes sur tous les écrans : « La partie démarre dans 5… ».' },
+    { id: 24, date: '2026-11-01', type: 'nouveau', for: 'animateur', text: "Salle d'attente : tu vois qui est prêt (✅) ou pas (⏳). Au lancement, tu es prévenu, et tout le monde joue quand même. Tu peux annuler pendant le décompte." },
     { id: 23, date: '2026-11-01', type: 'nouveau', for: 'joueur', text: "Bouton « Je suis prêt » dans la salle d'attente : l'animateur sait quand tu es prêt à jouer." },
     { id: 22, date: '2026-11-01', type: 'nouveau', for: 'tous', text: 'Ce bouton « Nouveautés » : tout ce qui change dans WeQuizzer, au même endroit.' },
     { id: 21, date: '2026-11-01', type: 'nouveau', for: 'tous', text: '« Signaler un problème » : un bug, une question ou une idée, envoyé sans ton nom ni ton e-mail.' },

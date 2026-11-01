@@ -639,3 +639,6 @@ body:not(.has-snd) .fs-btn { right: 10px; }
 /* Salle d'attente : joueurs prêts */
 .chip.ready { box-shadow: 0 0 0 2px #2fbf71 inset; }
 #readyBtn { margin-top: 14px; }
+/* Décompte avant la partie */
+.prestart { margin: 12px 0; font-size: 1.4rem; font-weight: 800; }
+.prestart b { font-size: 2rem; color: var(--accent); }

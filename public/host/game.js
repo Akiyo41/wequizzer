@@ -69,25 +69,44 @@ $('kickCancel').onclick = () => { kickTarget = null; $('kickDlg').classList.add(
 $('playersBtn').onclick = () => { renderDrawer(); $('drawer').classList.toggle('hidden'); };
 $('drawerClose').onclick = () => $('drawer').classList.add('hidden');
 
-// Lancer : si des joueurs n'ont pas appuyé sur « Je suis prêt », l'animateur est prévenu.
-// Lancer sans eux : ils restent dans la salle d'attente et joueront à la prochaine partie.
+// Lancer : « Je suis prêt » n'est qu'une information. Si des joueurs ne sont pas prêts, l'animateur est prévenu
+// (Lancer / Fermer), puis tout le monde joue après un décompte de quelques secondes (qu'il peut annuler).
 $('startBtn').onclick = async () => {
   FX.unlock();
-  const inRoom = (lastPlayers || []).filter((p) => !p.queued);
-  const late = inRoom.filter((p) => !p.ready);
-  let opts = {};
-  if (late.length === inRoom.length && late.length) {
-    const ok = await UI.confirm({ title: "Personne n'est prêt", text: "Aucun joueur n'a encore appuyé sur « Je suis prêt ». Lancer quand même avec tout le monde ?", ok: 'Lancer avec tout le monde', cancel: 'Attendre', danger: false, pose: 'question' });
+  const late = (lastPlayers || []).filter((p) => !p.queued && !p.ready);
+  if (late.length) {
+    const names = late.slice(0, 8).map((p) => p.name).join(', ') + (late.length > 8 ? '…' : '');
+    const title = late.length + (late.length > 1 ? ' joueurs ne sont pas prêts' : " joueur n'est pas prêt");
+    const ok = await UI.confirm({ title, text: names, ok: 'Lancer', cancel: 'Fermer', danger: false, pose: 'question' });
     if (!ok) return;
-  } else if (late.length) {
-    const names = late.slice(0, 6).map((p) => p.name).join(', ') + (late.length > 6 ? '…' : '');
-    const ok = await UI.confirm({ title: late.length + (late.length > 1 ? ' joueurs ne sont pas prêts' : " joueur n'est pas prêt"), text: names + (late.length > 1 ? ' attendront' : ' attendra') + " la prochaine partie dans la salle d'attente.", ok: 'Lancer sans eux', cancel: 'Attendre', danger: false, pose: 'question' });
-    if (!ok) return;
-    opts = { onlyReady: true };
   }
-  FX.go();
-  socket.emit('host:start', opts);
+  socket.emit('host:start');
 };
+// Décompte avant la partie : « La partie démarre dans 5… », avec « Annuler »
+let prestartInt = null;
+function stopPrestart() {
+  clearInterval(prestartInt);
+  $('prestartBox').classList.add('hidden');
+  $('startBtn').classList.remove('hidden');
+}
+socket.on('prestart', ({ seconds }) => {
+  let left = seconds;
+  const draw = () => { $('prestartNum').textContent = String(left); };
+  clearInterval(prestartInt);
+  draw();
+  $('startBtn').classList.add('hidden');
+  $('prestartBox').classList.remove('hidden');
+  FX.count();
+  prestartInt = setInterval(() => {
+    left--;
+    if (left <= 0) { clearInterval(prestartInt); return; }
+    draw();
+    FX.count();
+  }, 1000);
+});
+socket.on('prestart:cancel', stopPrestart);
+socket.on('countdown', () => { if (!$('prestartBox').classList.contains('hidden')) { FX.go(); stopPrestart(); } });
+$('prestartCancel').onclick = () => socket.emit('host:cancelStart');
 $('skipBtn').onclick = () => socket.emit('host:skip');
 $('moreTimeBtn').onclick = () => socket.emit('host:moreTime');
 // 10 secondes de plus : le chrono repart avec le nouveau total

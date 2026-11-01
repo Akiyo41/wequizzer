@@ -77,6 +77,19 @@ function showReady(on) {
   b.setAttribute('aria-pressed', ready ? 'true' : 'false');
 }
 $('readyBtn').onclick = () => { showReady(!ready); socket.emit('player:ready', ready); if (ready) buzz(40); };
+// Décompte avant la partie (« La partie démarre dans 5… ») ; « Je suis prêt » reste utilisable, sans conséquence
+let waitStartInt = null;
+function stopWaitStart() { clearInterval(waitStartInt); $('waitStart').classList.add('hidden'); }
+socket.on('prestart', ({ seconds }) => {
+  let left = seconds;
+  const draw = () => { $('waitStartNum').textContent = String(left); };
+  clearInterval(waitStartInt);
+  draw();
+  $('waitStart').classList.remove('hidden');
+  waitStartInt = setInterval(() => { left--; if (left <= 0) { clearInterval(waitStartInt); return; } draw(); }, 1000);
+});
+socket.on('prestart:cancel', stopWaitStart);
+socket.on('countdown', stopWaitStart);
 socket.on('lobby', (d) => {
   showReady(d && d.ready);
   clearInterval(timerInt);

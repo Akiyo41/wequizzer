@@ -112,6 +112,10 @@
         <small>Touche un joueur pour l'exclure.</small><br>
         <button class="btn ghost mini lock-btn" type="button" title="Plus personne ne peut rejoindre (ceux qui sont déjà là peuvent revenir après une coupure)"><i class="ti ti-shield-check"></i> <span class="lock-label">Fermer la salle</span></button><br>
         <button id="startBtn" class="btn big" disabled><i class="ti ti-player-play"></i> Lancer le quiz</button>
+        <div id="prestartBox" class="prestart hidden" role="status" aria-live="assertive">
+          <p>La partie démarre dans <b id="prestartNum">5</b>…</p>
+          <button id="prestartCancel" class="btn ghost" type="button"><i class="ti ti-x"></i> Annuler</button>
+        </div>
         <p class="hint" id="startHint"></p>
       </div>
     </div>
