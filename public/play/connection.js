@@ -194,3 +194,5 @@ socket.on('paused', ({ paused, reason, left }) => {
     if (curScreen === 'countdown' && cdLeft >= 0) cdTimer = setTimeout(cdTick, 1000);
   }
 });
+// « Signaler un problème » dans Mes réglages : bouton caché si le serveur n'a pas la clé Web3Forms (report.js)
+Report.mount([$('reportPlay')], 'joueur');

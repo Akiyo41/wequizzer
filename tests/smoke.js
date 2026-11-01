@@ -11,7 +11,7 @@ const URL = `http://localhost:${PORT}`;
 function startServer() {
   return new Promise((resolve, reject) => {
     const srv = spawn(process.execPath, [path.join(__dirname, '..', 'server.js')], {
-      env: { ...process.env, PORT: String(PORT) },
+      env: { ...process.env, PORT: String(PORT), WEB3FORMS_KEY: 'cle-de-test' }, // fausse clé : jamais la vraie dans les tests
       stdio: ['ignore', 'pipe', 'inherit'],
     });
     srv.stdout.on('data', (d) => {
@@ -114,6 +114,12 @@ const tests = {
     assert.ok(/max-age=604800/.test(icons.headers.get('cache-control') || ''), 'icônes : ' + icons.headers.get('cache-control'));
     const page = await fetch(URL + '/host.html');
     assert.ok(/max-age=0/.test(page.headers.get('cache-control') || ''), 'page : ' + page.headers.get('cache-control'));
+  },
+
+  async 'Signaler un problème : la page reçoit la clé du serveur (variable WEB3FORMS_KEY)'() {
+    const r = await fetch(URL + '/api/report-config');
+    assert.deepStrictEqual(await r.json(), { enabled: true, key: 'cle-de-test' });
+    assert.ok(/no-store/.test(r.headers.get('cache-control') || ''), 'pas gardée en cache');
   },
 
   async 'adresse inconnue : page « introuvable » en français'() {

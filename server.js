@@ -8,6 +8,9 @@ const { PORT } = require('./src/config');
 const { lanUrl } = require('./src/utils');
 const { init } = require('./src/send');
 const setupSockets = require('./src/sockets');
+const { loadEnvFile, reportConfig } = require('./src/report');
+
+loadEnvFile(); // .env sur le PC (ignoré par git)
 
 const app = express();
 const server = http.createServer(app);
@@ -33,6 +36,11 @@ app.use(express.static(path.join(__dirname, 'public'), {
 app.use('/icons', express.static(path.join(__dirname, 'node_modules/@tabler/icons-webfont/dist'), { maxAge: '7d' }));
 app.get('/api/sample-quiz', (req, res) => {
   res.json({ title: 'Culture générale', questions: sampleQuestions });
+});
+// « Signaler un problème » : la page demande si le bouton est disponible (et la clé Web3Forms)
+app.get('/api/report-config', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.json(reportConfig(process.env));
 });
 // Adresse inconnue : page « introuvable » en français, avec des liens vers l'accueil et vers la page joueur
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, 'public', '404.html')));

@@ -223,17 +223,18 @@
     <h1><i class="ti ti-help-circle"></i> Aide</h1>
     <p class="hint" style="margin-top:6px">Touche une question pour lire la réponse.</p>
     <button id="faqTour" class="btn mini" type="button" style="margin-top:6px"><i class="ti ti-player-play"></i> Revoir la visite guidée</button>
+    <button id="reportHost" class="btn mini hidden" type="button" style="margin-top:6px"><i class="ti ti-help-circle"></i> Signaler un problème</button>
 
     <div class="card faq">
       <details id="faq-nouveau"><summary>✨ Quoi de neuf ?</summary>
         <ul>
+          <li><b>« Signaler un problème »</b> (ici dans l'Aide, et dans « Mes réglages » sur le téléphone) : un bug, une question ou une idée, sans donner ton nom ni ton e-mail.</li>
           <li><b>« Copier le classement »</b> sur le podium, à coller dans un message ou sur l'ENT.</li>
           <li>Examens blancs (10 questions ou plus) : le <b>pourcentage de réussite</b> sur le podium, les téléphones et le tableau des résultats ; 3 nouveaux quiz FIMO dans la Bibliothèque.</li>
           <li><b>« Fermer la salle »</b> : plus de nouveaux joueurs une fois la classe connectée.</li>
           <li><b>« Terminer »</b> pendant la partie : le podium tout de suite, et les questions pas posées gardées pour la prochaine fois.</li>
           <li>Sur le téléphone, après une erreur : <b>la bonne réponse</b>, et l'explication dans « Revoir mes erreurs ».</li>
-          <li>Page <b>Stats</b> d'un quiz : « Créer un quiz de révision » avec les questions les moins réussies.</li>
-        </ul></details>
+</details>
       <h3 class="set-sec"><i class="ti ti-trophy"></i> Les points</h3>
       <details id="faq-points"><summary>Comment on gagne des points ?</summary>
         <p>De base, c'est simple : <b>1 bonne réponse = 1 point</b>. Une mauvaise réponse ne fait rien perdre.</p>
@@ -651,6 +652,7 @@
   <script src="fx.js"></script>
   <script src="ui.js"></script>
   <script src="share.js"></script>
+  <script src="report.js"></script>
   <!-- Le code de l'écran animateur, dans l'ordre : chaque fichier peut utiliser ce que les précédents définissent -->
   <script src="host/store.js"></script>
   <script src="host/base.js"></script>

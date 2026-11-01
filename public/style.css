@@ -614,3 +614,11 @@ body:not(.has-snd) .fs-btn { right: 10px; }
 .lib-themes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .lib-themes .chip { cursor: pointer; font-family: inherit; border: 0; color: #fff; font-weight: 700; }
 .lib-themes .chip.on { background: var(--accent); color: #14213d; }
+/* « Signaler un problème » */
+.report-box { max-width: 460px; }
+.report-cats { display: flex; flex-direction: column; gap: 4px; margin: 8px 0; text-align: left; }
+.report-text { width: 100%; box-sizing: border-box; font: inherit; border-radius: 12px; padding: 10px; resize: vertical; }
+.report-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.report-msg { min-height: 1.2em; margin: 8px 0 0; font-weight: 700; }
+.report-msg.ok { color: #8ff0b5; }
+#reportPlay { margin-top: 10px; }
