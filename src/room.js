@@ -1,7 +1,7 @@
 // Salle d'attente, joueurs, exclusions, fermeture d'une salle
 const { AVATARS } = require('./config');
 const { isTeamMode, teamInfo } = require('./rules');
-const { allPeople, games, socketOf, toHost, toPlayer } = require('./send');
+const { allPeople, games, socketOf, toHost, toPlayer, toRemote } = require('./send');
 const { clearTimer } = require('./timer');
 
 function pickAvatar(g, wanted) {
@@ -93,6 +93,7 @@ function closeGame(g) {
   clearTimeout(g.prestart); // décompte avant la partie
   g.prestart = null;
   allPeople(g).forEach((p) => toPlayer(p, 'host:left'));
+  toRemote(g, 'host:left'); // la télécommande aussi
   delete games[g.pin];
 }
 

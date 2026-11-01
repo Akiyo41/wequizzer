@@ -169,6 +169,68 @@ const tests = {
     close(game);
   },
 
+  async 'télécommande : l’animateur accepte, elle voit la bonne réponse, les réponses et pilote la partie'() {
+    const game = await setupGame({ mode: 'standard', limitTime: false }, QUIZ);
+    const linkP = once(game.host, 'host:remoteLink');
+    game.host.emit('host:remoteLink');
+    const link = await linkP;
+    assert.ok(/\/remote\.html\?pin=\d{6}&t=\w+/.test(link.url) && /^data:image\/png/.test(link.qr), link.url);
+    const t = new globalThis.URL(link.url).searchParams.get('t');
+    assert.ok(!link.url.includes(game.hostKey), 'la clé de l’animateur ne sort pas');
+    const remote = connect();
+    const ask = once(game.host, 'host:remoteAsk');
+    const waiting = once(remote, 'remote:waiting');
+    remote.emit('remote:join', { pin: game.pin, t });
+    await Promise.all([ask, waiting]);
+    // avant l'accord, la télécommande ne peut rien faire
+    remote.emit('host:start');
+    await new Promise((r) => setTimeout(r, 600));
+    const ok = once(remote, 'remote:ok');
+    game.host.emit('host:remoteAnswer', true);
+    await ok;
+    const rq = once(remote, 'remote:question', 15000);
+    const q = once(game.players[0], 'question', 15000);
+    remote.emit('host:start');
+    const qq = await q;
+    assert.ok(/Paris/.test((await rq).answer), 'la bonne réponse, seulement sur la télécommande');
+    const live = new Promise((resolve) => remote.on('remote:live', (x) => { if (x.answered === 1) resolve(x); }));
+    game.players[0].emit('player:answer', { index: qq.choices.indexOf('Paris') });
+    const lv = await live;
+    assert.strictEqual(lv.total, 2);
+    assert.strictEqual(lv.counts[qq.choices.indexOf('Paris')], 1);
+    const res = once(game.host, 'results');
+    remote.emit('host:skip');
+    await res;
+    remote.close();
+    close(game);
+  },
+
+  async 'télécommande : refusée ou mauvais lien, elle ne pilote rien'() {
+    const game = await setupGame({ mode: 'standard', limitTime: false }, QUIZ);
+    const bad = connect();
+    const err = once(bad, 'remote:error');
+    bad.emit('remote:join', { pin: game.pin, t: 'faux' });
+    await err;
+    const linkP = once(game.host, 'host:remoteLink');
+    game.host.emit('host:remoteLink');
+    const t = new globalThis.URL((await linkP).url).searchParams.get('t');
+    const remote = connect();
+    const ask = once(game.host, 'host:remoteAsk');
+    remote.emit('remote:join', { pin: game.pin, t });
+    await ask;
+    const refused = once(remote, 'remote:refused');
+    game.host.emit('host:remoteAnswer', false);
+    await refused;
+    let started = false;
+    game.players[0].on('prestart', () => { started = true; });
+    remote.emit('host:start');
+    await new Promise((r) => setTimeout(r, 600));
+    assert.strictEqual(started, false);
+    bad.close();
+    remote.close();
+    close(game);
+  },
+
   async 'Signaler un problème : la page reçoit la clé du serveur (variable WEB3FORMS_KEY)'() {
     const r = await fetch(URL + '/api/report-config');
     assert.deepStrictEqual(await r.json(), { enabled: true, key: 'cle-de-test' });

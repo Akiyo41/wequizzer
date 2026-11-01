@@ -2,7 +2,7 @@
 const { COUNTDOWN, HANG_MAX } = require('./config');
 const { answerGroups, correctText, goodAnswerText, isCorrect, mistakeEntry, shownAnswer } = require('./answers');
 const { activePlayers, heartsOn, teamBoard } = require('./rules');
-const { allPeople, games, toAll, toHost, toPlayer } = require('./send');
+const { allPeople, games, setLiveHook, toAll, toHost, toPlayer, toRemote } = require('./send');
 const { clearTimer, qTime, schedule } = require('./timer');
 const { queuedPayload } = require('./room');
 const { endGame } = require('./end');
@@ -67,6 +67,38 @@ function questionPayload(g, p, left) {
   return out;
 }
 
+// Télécommande : la question en cours avec sa bonne réponse (jamais envoyé à l'écran projeté ni aux joueurs)
+function remoteQuestion(g) {
+  const q = g.questions[g.index];
+  if (!q) return null;
+  const poll = q.type === 'poll' || q.type === 'words';
+  return {
+    index: g.index, total: g.questions.length, type: q.type,
+    text: q.wheel || q.match ? q.category + ' : ' + (q.text || '') : q.text,
+    choices: q.choices || [], labels: g.settings.labels,
+    answer: poll ? null : goodAnswerText(g, q),
+    explain: q.explain || '',
+  };
+}
+// Télécommande : réponses en direct (combien par réponse, ou réponses écrites regroupées)
+function liveAnswers(g) {
+  const q = g.questions[g.index];
+  const act = activePlayers(g);
+  const out = { answered: act.filter((p) => p.answered).length, total: act.length, counts: null, texts: null };
+  if (!q || g.state !== 'question') return out;
+  if (['single', 'multi', 'tf', 'poll'].includes(q.type) && !q.wheel) {
+    out.counts = (q.choices || []).map(() => 0);
+    act.forEach((p) => {
+      if (p.answer === null || p.answer === undefined) return;
+      (Array.isArray(p.answer) ? p.answer : [p.answer]).forEach((i) => { if (out.counts[i] !== undefined) out.counts[i]++; });
+    });
+  } else if (q.type === 'text' || q.type === 'words') {
+    out.texts = answerGroups(act.filter((p) => typeof p.answer === 'string').map((p) => ({ text: p.answer, ok: false }))).map(({ text, count }) => ({ text, count }));
+  }
+  return out;
+}
+setLiveHook(liveAnswers);
+
 function progressPayload(g) {
   const act = activePlayers(g);
   return {
@@ -93,6 +125,7 @@ function startQuestion(pin) {
     p.activeNow = !p.eliminated;
   });
   toHost(g, 'question', questionPayload(g, null));
+  toRemote(g, 'remote:question', remoteQuestion(g));
   Object.values(g.players).forEach((p) => toPlayer(p, 'question', questionPayload(g, p)));
   Object.values(g.queue).forEach((p) => toPlayer(p, 'queued', queuedPayload(g)));
   toHost(g, 'progress', progressPayload(g));
@@ -305,4 +338,4 @@ function advance(pin) {
   }
 }
 
-module.exports = { readingPayload, questionPayload, progressPayload, beginRound, maybeEndEarly, endQuestion, advance };
+module.exports = { remoteQuestion, liveAnswers, readingPayload, questionPayload, progressPayload, beginRound, maybeEndEarly, endQuestion, advance };

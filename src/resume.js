@@ -1,8 +1,8 @@
 // Reprise après une coupure : renvoie l'état courant de la partie
-const { toHost, toPlayer } = require('./send');
+const { toHost, toPlayer, toSocket } = require('./send');
 const { elapsed, pausePayload, qTime } = require('./timer');
 const { joinInfo, lobbyPayload, queuedPayload, sendHostPlayers } = require('./room');
-const { progressPayload, questionPayload, readingPayload } = require('./round');
+const { liveAnswers, progressPayload, questionPayload, readingPayload, remoteQuestion } = require('./round');
 const { endPayloadFor } = require('./end');
 
 // Renvoie à un joueur l'état courant de la partie (connexion initiale ou retour après coupure)
@@ -43,16 +43,18 @@ function sendPlayerState(g, p) {
   if (g.paused) toPlayer(p, 'paused', pausePayload(g));
 }
 
-function sendHostState(g) {
+// onlySid : envoyer seulement à ce socket (la télécommande qui vient d'être acceptée)
+function sendHostState(g, onlySid) {
+  const send = onlySid ? (ev, data) => toSocket(onlySid, ev, data) : (ev, data) => toHost(g, ev, data);
   sendHostPlayers(g);
-  toHost(g, 'host:lock', !!g.locked); // salle fermée ou non (bouton de l'animateur)
+  send('host:lock', !!g.locked); // salle fermée ou non (bouton de l'animateur)
   const left = g.state === 'question' && qTime(g) ? Math.max(0, qTime(g) - elapsed(g)) : undefined;
   switch (g.state) {
     case 'lobby':
-      toHost(g, 'lobby', {});
+      send('lobby', {});
       break;
     case 'countdown':
-      toHost(g, 'countdown', {
+      send('countdown', {
         seconds: Math.max(1, Math.ceil((g.paused ? g.pauseLeft : g.timerDue - Date.now()) / 1000)),
         index: g.index,
         total: g.questions.length,
@@ -60,22 +62,26 @@ function sendHostState(g) {
       });
       break;
     case 'reading':
-      toHost(g, 'reading', readingPayload(g, null));
+      send('reading', readingPayload(g, null));
       break;
     case 'question':
-      toHost(g, 'question', questionPayload(g, null, left));
-      toHost(g, 'progress', progressPayload(g));
+      send('question', questionPayload(g, null, left));
+      send('progress', progressPayload(g));
       break;
     case 'results': {
       const autoIn = g.timerFn && !g.paused ? Math.max(1, Math.round((g.timerDue - Date.now()) / 1000)) : g.paused && g.timerFn ? Math.round(g.pauseLeft / 1000) : null;
-      toHost(g, 'results', { ...g.hostResults, autoIn });
+      send('results', { ...g.hostResults, autoIn });
       break;
     }
     case 'end':
-      toHost(g, 'end', g.endData);
+      send('end', g.endData);
       break;
   }
-  if (g.paused) toHost(g, 'paused', pausePayload(g));
+  if (g.paused) send('paused', pausePayload(g));
+  if (onlySid && ['question', 'results'].includes(g.state)) {
+    toSocket(onlySid, 'remote:question', remoteQuestion(g));
+    if (g.state === 'question') toSocket(onlySid, 'remote:live', liveAnswers(g));
+  }
 }
 
 module.exports = { sendPlayerState, sendHostState };

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr" data-theme="wequizzer">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#081246">
+  <meta name="robots" content="noindex">
+  <title>WeQuizzer – Télécommande</title>
+  <link rel="stylesheet" href="/icons/tabler-icons.min.css">
+  <link rel="stylesheet" href="/icons.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="remote-page">
+  <!-- Télécommande de l'animateur, sur son téléphone : ce que la classe ne doit pas voir (bonne réponse, réponses en direct) -->
+  <main class="narrow">
+    <div class="logo"><span data-logo></span></div>
+
+    <!-- Avant l'accord de l'animateur -->
+    <div id="rcWait" class="card" style="text-align:center">
+      <h2><i class="ti ti-device-tv"></i> Télécommande</h2>
+      <p id="rcWaitText">Connexion…</p>
+      <div id="rcSpin" class="spinner"></div>
+    </div>
+
+    <!-- Télécommande acceptée -->
+    <div id="rcMain" class="hidden">
+      <p id="rcStatus" class="rc-status"></p>
+      <div class="rc-tabs" role="tablist">
+        <button class="rc-tab on" type="button" role="tab" data-tab="rcQuestion">Question</button>
+        <button class="rc-tab" type="button" role="tab" data-tab="rcPlayers">Joueurs <span id="rcCount"></span></button>
+        <button class="rc-tab" type="button" role="tab" data-tab="rcAnswers">Réponses</button>
+      </div>
+
+      <section id="rcQuestion" class="card rc-pane">
+        <p id="rcQText" class="rc-qtext">Pas encore de question.</p>
+        <p id="rcGood" class="note ok hidden"></p>
+        <p id="rcExplain" class="hint hidden"></p>
+        <div id="rcBtns" class="rc-btns"></div>
+      </section>
+
+      <section id="rcPlayers" class="card rc-pane hidden">
+        <p id="rcPlayersHead" class="rc-head"></p>
+        <div id="rcPlayersList" class="rc-list"></div>
+      </section>
+
+      <section id="rcAnswers" class="card rc-pane hidden">
+        <p id="rcAnswersHead" class="rc-head">Pas encore de réponses.</p>
+        <div id="rcAnswersList" class="rc-list"></div>
+      </section>
+    </div>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/brand.js"></script>
+  <script src="/ui.js"></script>
+  <script src="/remote.js"></script>
+</body>
+</html>

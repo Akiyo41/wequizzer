@@ -642,3 +642,21 @@ body:not(.has-snd) .fs-btn { right: 10px; }
 /* Décompte avant la partie */
 .prestart { margin: 12px 0; font-size: 1.4rem; font-weight: 800; }
 .prestart b { font-size: 2rem; color: var(--accent); }
+/* Télécommande de l'animateur (remote.html) et sa fenêtre QR */
+.remote-dlg { max-width: 460px; text-align: center; }
+.remote-dlg img { display: block; margin: 8px auto; border-radius: 12px; background: #fff; padding: 6px; }
+.remote-page main { padding-bottom: 30px; }
+.rc-status { text-align: center; font-weight: 800; font-size: 1.1rem; margin: 8px 0; }
+.rc-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+.rc-tab { flex: 1; border: 0; border-radius: 12px; padding: 10px 6px; font: inherit; font-weight: 800; cursor: pointer; background: #ffffff22; color: #fff; }
+.rc-tab.on { background: var(--accent); color: #14213d; }
+.rc-qtext { font-size: 1.2rem; font-weight: 800; }
+.rc-btns { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.rc-btns .btn { width: 100%; }
+.rc-head { font-weight: 800; }
+.rc-list { display: flex; flex-direction: column; gap: 6px; text-align: left; }
+.rc-line { padding: 6px 8px; border-radius: 10px; background: #ffffff14; }
+.rc-bar { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; }
+.rc-bar .sbar { grid-column: 1 / -1; }
+.rc-bar-lab { font-weight: 700; }
+.rc-bar-n { font-weight: 800; }

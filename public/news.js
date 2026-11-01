@@ -4,6 +4,7 @@
 // Une pastille sur le bouton compte ce qui n'a pas encore été vu sur cet appareil.
 const News = (() => {
   const LIST = [
+    { id: 26, date: '2026-11-01', type: 'nouveau', for: 'animateur', text: '📱 Télécommande sur ton téléphone : bonne réponse, qui a répondu, réponses en direct et boutons pour piloter la partie, sans que la classe voie.' },
     { id: 25, date: '2026-11-01', type: 'nouveau', for: 'tous', text: 'Au lancement, un décompte de 5 secondes sur tous les écrans : « La partie démarre dans 5… ».' },
     { id: 24, date: '2026-11-01', type: 'nouveau', for: 'animateur', text: "Salle d'attente : tu vois qui est prêt (✅) ou pas (⏳). Au lancement, tu es prévenu, et tout le monde joue quand même. Tu peux annuler pendant le décompte." },
     { id: 23, date: '2026-11-01', type: 'nouveau', for: 'joueur', text: "Bouton « Je suis prêt » dans la salle d'attente : l'animateur sait quand tu es prêt à jouer." },

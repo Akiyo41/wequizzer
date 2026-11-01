@@ -670,3 +670,31 @@ window.addEventListener('beforeunload', (e) => {
 
 // Tous les fichiers de l'écran animateur sont chargés : on peut se connecter
 socket.connect();
+
+// ----- Télécommande (téléphone de l'animateur) -----
+// Le QR code ouvre remote.html ; rien ne marche tant que l'animateur n'a pas cliqué « Accepter » ici.
+let remoteOn = false;
+function drawRemote() {
+  $('remoteLabel').textContent = remoteOn ? 'Télécommande ✅' : 'Télécommande';
+  $('remoteState').textContent = remoteOn ? '✅ Une télécommande est connectée.' : '';
+  $('remoteStop').classList.toggle('hidden', !remoteOn);
+}
+$('openRemote').onclick = () => {
+  $('remoteQr').removeAttribute('src');
+  socket.emit('host:remoteLink');
+  drawRemote();
+  $('remoteDlg').classList.remove('hidden');
+};
+socket.on('host:remoteLink', ({ qr }) => { if (qr) $('remoteQr').src = qr; });
+$('remoteClose').onclick = () => $('remoteDlg').classList.add('hidden');
+$('remoteStop').onclick = () => socket.emit('host:remoteStop');
+socket.on('host:remoteAsk', async () => {
+  const ok = await UI.confirm({ title: 'Accepter cette télécommande ?', text: "Un téléphone vient de scanner le QR code de la télécommande. Accepte seulement si c'est le tien.", ok: 'Accepter', cancel: 'Refuser', danger: false, pose: 'question' });
+  socket.emit('host:remoteAnswer', ok);
+  if (ok) $('remoteDlg').classList.add('hidden');
+});
+socket.on('host:remote', ({ connected }) => {
+  if (connected !== remoteOn) UI.toast(connected ? '📱 Télécommande connectée' : '📱 Télécommande déconnectée');
+  remoteOn = !!connected;
+  drawRemote();
+});

@@ -82,6 +82,58 @@ function setupSockets(io) {
       const g = games[socket.data.hostPin];
       return g && g.host === socket.id ? g : null;
     };
+    // Télécommande acceptée par l'animateur : elle peut piloter la partie (pas la régler ni la fermer)
+    const remoteGame = () => {
+      const g = games[socket.data.remotePin];
+      return g && g.remote === socket.id ? g : null;
+    };
+
+    // Lien de la télécommande (QR code à scanner avec le téléphone de l'animateur) : un nouveau jeton à chaque fois
+    socket.on('host:remoteLink', async () => {
+      const g = hostGame();
+      if (!g || !g.info) return;
+      g.remoteToken = rid(12);
+      const url = g.info.joinUrl.replace(/\/play\.html$/, '') + '/remote.html?pin=' + g.pin + '&t=' + g.remoteToken;
+      let qr = null;
+      try { qr = await QRCode.toDataURL(url, { margin: 1, width: 240, color: { dark: '#14213d', light: '#ffffff' } }); } catch (e) { qr = null; }
+      socket.emit('host:remoteLink', { url, qr });
+    });
+    // Un téléphone ouvre le lien : l'animateur doit accepter sur son écran
+    socket.on('remote:join', ({ pin, t } = {}) => {
+      const g = games[String(pin || '')];
+      if (tooManyTries(socket)) return socket.emit('remote:error', "Trop d'essais : attends une minute.");
+      if (!g || !g.remoteToken || t !== g.remoteToken) {
+        countFail(socket);
+        return socket.emit('remote:error', "Ce lien de télécommande ne marche plus. Demande un nouveau QR code sur l'écran de l'animateur.");
+      }
+      g.remoteAsk = socket.id;
+      socket.data.remoteAskPin = g.pin;
+      socket.emit('remote:waiting');
+      toHost(g, 'host:remoteAsk', {});
+    });
+    socket.on('host:remoteAnswer', (yes) => {
+      const g = hostGame();
+      if (!g || !g.remoteAsk) return;
+      const sid = g.remoteAsk;
+      g.remoteAsk = null;
+      const rs = io.sockets.sockets.get(sid);
+      if (!rs) return;
+      if (!yes) { rs.emit('remote:refused'); return; }
+      if (g.remote && g.remote !== sid) io.to(g.remote).emit('remote:replaced');
+      g.remote = sid;
+      g.remoteToken = null; // le lien ne sert qu'une fois
+      rs.data.remotePin = g.pin;
+      rs.emit('remote:ok', { pin: g.pin, quizTitle: g.quiz ? g.quiz.title : '' });
+      sendHostState(g, sid); // l'état actuel de la partie, seulement pour la télécommande
+      socket.emit('host:remote', { connected: true });
+    });
+    socket.on('host:remoteStop', () => {
+      const g = hostGame();
+      if (!g || !g.remote) return;
+      io.to(g.remote).emit('remote:replaced');
+      g.remote = null;
+      socket.emit('host:remote', { connected: false });
+    });
 
     socket.on('host:create', async (data) => {
       const origin = data && typeof data.origin === 'string' ? data.origin : '';
@@ -210,14 +262,14 @@ function setupSockets(io) {
 
     // Lancer : décompte de quelques secondes sur tous les écrans (l'animateur peut annuler), puis tout le monde joue
     socket.on('host:start', () => {
-      const g = hostGame();
+      const g = hostGame() || remoteGame(); // aussi depuis la télécommande
       if (!g || g.state !== 'lobby' || g.prestart || !g.quiz || Object.keys(g.players).length === 0) return;
       g.prestartEnd = Date.now() + PRESTART_MS;
       g.prestart = setTimeout(() => { g.prestart = null; startGame(g); }, PRESTART_MS);
       toAll(g, 'prestart', { seconds: Math.ceil(PRESTART_MS / 1000) });
     });
     socket.on('host:cancelStart', () => {
-      const g = hostGame();
+      const g = hostGame() || remoteGame(); // aussi depuis la télécommande
       if (!g || !g.prestart) return;
       clearTimeout(g.prestart);
       g.prestart = null;
@@ -233,17 +285,17 @@ function setupSockets(io) {
       sendHostPlayers(g);
     });
     socket.on('host:pause', (on) => {
-      const g = hostGame();
+      const g = hostGame() || remoteGame(); // aussi depuis la télécommande
       if (!g) return;
       setPaused(g, !!on, 'host');
     });
     socket.on('host:skip', () => {
-      const g = hostGame();
+      const g = hostGame() || remoteGame(); // aussi depuis la télécommande
       if (g && !g.paused) endQuestion(g.pin);
     });
     // terminer la partie avant la dernière question : podium avec les scores actuels
     socket.on('host:finish', () => {
-      const g = hostGame();
+      const g = hostGame() || remoteGame(); // aussi depuis la télécommande
       if (!g || !['countdown', 'reading', 'question', 'results'].includes(g.state)) return;
       g.paused = false;
       const asked = g.state === 'results' ? g.index + 1 : g.index; // questions dont le résultat a été montré
@@ -251,17 +303,17 @@ function setupSockets(io) {
     });
     // Fermer la salle : plus de nouveaux joueurs (ceux déjà là peuvent revenir après une coupure)
     socket.on('host:lock', (on) => {
-      const g = hostGame();
+      const g = hostGame() || remoteGame(); // aussi depuis la télécommande
       if (!g) return;
       g.locked = !!on;
       toHost(g, 'host:lock', g.locked);
     });
     socket.on('host:moreTime', () => {
-      const g = hostGame();
+      const g = hostGame() || remoteGame(); // aussi depuis la télécommande
       if (g) addTime(g);
     });
     socket.on('host:next', () => {
-      const g = hostGame();
+      const g = hostGame() || remoteGame(); // aussi depuis la télécommande
       if (g) advance(g.pin);
     });
     // Rejouer seulement les questions ratées : crée un nouveau quiz et relance la salle
@@ -427,6 +479,12 @@ function setupSockets(io) {
     });
 
     socket.on('disconnect', () => {
+      const rg = games[socket.data.remotePin];
+      if (rg && rg.remote === socket.id) {
+        rg.remote = null;
+        if (rg.host) io.to(rg.host).emit('host:remote', { connected: false });
+        return;
+      }
       const hostPin = socket.data.hostPin;
       const hg = games[hostPin];
       if (hg && hg.host === socket.id) {

@@ -103,6 +103,7 @@
         <button id="openAdv" class="btn ghost mini" type="button" style="margin-top:10px"><i class="ti ti-settings-2"></i> Réglages avancés</button>
         <button id="openFaq" class="btn ghost mini" type="button" style="margin-top:10px"><i class="ti ti-help-circle"></i> Aide</button>
         <button id="openNews" class="btn ghost mini" type="button" style="margin-top:10px"><i class="ti ti-sparkles"></i> Nouveautés</button>
+        <button id="openRemote" class="btn ghost mini" type="button" style="margin-top:10px" title="Piloter la partie depuis ton téléphone, sans que la classe voie les réponses"><i class="ti ti-device-tv"></i> <span id="remoteLabel">Télécommande</span></button>
         <p class="hint" style="margin-top:10px"><i class="ti ti-device-floppy"></i> Tes réglages sont enregistrés automatiquement.</p>
       </div>
 
@@ -294,6 +295,9 @@
         <p>Après une erreur, le téléphone affiche la bonne réponse (sauf pour l'image à toucher : la zone se voit sur ton écran). À la fin, chacun voit son récap question par question (✅ ❌) et peut le partager en image.</p></details>
       <details id="faq-temps"><summary>Je peux donner plus de temps à une question difficile ?</summary>
         <p>Oui, de deux façons. À l'avance : dans l'éditeur, chaque question a une ligne <b>« Temps »</b> (10 à 60 secondes) ; sinon elle prend le temps des réglages de la partie. Pendant la partie : le bouton <b>« + 10 s »</b> (ou la touche +). Les deux servent seulement quand « Limiter le temps » est activé.</p></details>
+      <details id="faq-telecommande"><summary>Je peux piloter la partie depuis mon téléphone ?</summary>
+        <p>Oui : bouton <b>Télécommande</b> sur l'accueil, puis scanne le QR code avec <b>ton</b> téléphone et clique « Accepter » sur ton écran. Sur ton téléphone : la bonne réponse, qui a répondu ou pas, combien ont choisi chaque réponse, et les boutons Lancer, Voir le résultat, Question suivante, + 10 s, Pause et Terminer. La classe, elle, ne voit rien de tout ça sur l'écran projeté.</p>
+        <p>Si un élève scanne le QR code, rien ne se passe tant que tu n'as pas cliqué « Accepter ». « Déconnecter la télécommande » (même bouton) la coupe.</p></details>
       <details id="faq-pause"><summary>Je peux faire une pause ?</summary>
         <p>Oui : le bouton « Pause » en haut arrête le chrono pour tout le monde. Les joueurs voient que la partie est en pause. « Reprendre » relance tout là où c'était.</p></details>
       <details id="faq-terminer"><summary>La sonnerie arrive avant la fin du quiz : je fais comment ?</summary>
@@ -608,6 +612,18 @@
     <p class="hint">Tu peux exclure un joueur à tout moment.</p>
     <div id="drawerList"></div>
     <button class="btn ghost mini lock-btn" type="button"><i class="ti ti-shield-check"></i> <span class="lock-label">Fermer la salle</span></button>
+  </div>
+
+  <!-- Télécommande : QR code à scanner avec le téléphone de l'animateur -->
+  <div id="remoteDlg" class="cbx-back hidden" role="dialog" aria-modal="true">
+    <div class="cbx remote-dlg">
+      <h3><i class="ti ti-device-tv"></i> Télécommande sur ton téléphone</h3>
+      <p>Scanne ce QR code avec <b>ton</b> téléphone : tu y verras la bonne réponse, qui a répondu et les réponses, et tu pourras piloter la partie. La classe ne voit rien de tout ça.</p>
+      <p class="hint">Un élève a scanné ce code ? Pas de souci : rien ne se passe tant que tu n'as pas cliqué « Accepter » ici.</p>
+      <img id="remoteQr" alt="QR code de la télécommande" width="220" height="220">
+      <p id="remoteState" class="hint"></p>
+      <div class="cbx-btns"><button id="remoteStop" class="btn big hidden" type="button">Déconnecter la télécommande</button><button id="remoteClose" class="btn big green" type="button">Fermer</button></div>
+    </div>
   </div>
 
   <!-- Pause -->
