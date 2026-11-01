@@ -116,6 +116,39 @@ const tests = {
     assert.ok(/max-age=0/.test(page.headers.get('cache-control') || ''), 'page : ' + page.headers.get('cache-control'));
   },
 
+  async 'je suis prêt : l’animateur le voit ; lancer sans les pas-prêts les met en attente'() {
+    const game = await setupGame({ mode: 'standard', limitTime: false }, QUIZ);
+    const [alice, bob] = game.players;
+    // la liste peut arriver plusieurs fois : on attend celle où Alice est prête
+    const list = new Promise((resolve) => game.host.on('host:players', (x) => { if (x.some((p) => p.ready)) resolve(x); }));
+    alice.emit('player:ready', true);
+    const l = await list;
+    assert.deepStrictEqual(l.map((p) => [p.name, p.ready]), [['Alice', true], ['Bob', false]]);
+    const bobQueued = once(bob, 'queued');
+    const aliceQ = once(alice, 'question', 15000);
+    game.host.emit('host:start', { onlyReady: true });
+    await bobQueued;
+    await aliceQ;
+    const res = once(game.host, 'results');
+    alice.emit('player:answer', { index: 0 });
+    const r = await res;
+    assert.deepStrictEqual(r.players.map((p) => p.name), ['Alice'], 'Bob ne joue pas cette partie');
+    // retour à la salle : Bob revient, et plus personne n'est prêt
+    const back = once(game.host, 'host:players');
+    game.host.emit('host:reset');
+    const after = await back;
+    assert.deepStrictEqual(after.map((p) => [p.name, p.ready, p.queued]), [['Alice', false, false], ['Bob', false, false]]);
+    close(game);
+  },
+
+  async 'je suis prêt : lancer avec tout le monde (sans « onlyReady ») ne met personne de côté'() {
+    const game = await setupGame({ mode: 'standard', limitTime: false }, QUIZ);
+    const q = Promise.all(game.players.map((s) => once(s, 'question', 15000)));
+    game.host.emit('host:start');
+    await q;
+    close(game);
+  },
+
   async 'Signaler un problème : la page reçoit la clé du serveur (variable WEB3FORMS_KEY)'() {
     const r = await fetch(URL + '/api/report-config');
     assert.deepStrictEqual(await r.json(), { enabled: true, key: 'cle-de-test' });

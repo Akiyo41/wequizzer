@@ -2,7 +2,8 @@
 // ----- Joueurs -----
 function updateStart() {
   $('startBtn').disabled = !(quizReady && playerCount > 0);
-  $('startHint').textContent = !quizReady ? 'Choisis ou crée un quiz.' : playerCount === 0 ? 'Attends au moins un joueur.' : '';
+  const ready = (lastPlayers || []).filter((p) => !p.queued && p.ready).length;
+  $('startHint').textContent = !quizReady ? 'Choisis ou crée un quiz.' : playerCount === 0 ? 'Attends au moins un joueur.' : ready + ' / ' + playerCount + ' prêt' + (ready > 1 ? 's' : '');
 }
 let kickTarget = null;
 function openKick(p) { kickTarget = p; $('kickName').textContent = p.name; $('kickDlg').classList.remove('hidden'); }
@@ -29,6 +30,8 @@ socket.on('host:players', (list) => {
     chip.appendChild(document.createTextNode(p.name));
     if (!p.connected) chip.appendChild(el('small', '', 'hors ligne'));
     if (p.queued) chip.appendChild(el('small', '', 'prochaine partie'));
+    else if (p.ready) { chip.classList.add('ready'); chip.appendChild(el('small', '', '✅ prêt')); }
+    else chip.appendChild(el('small', '', '⏳ pas prêt'));
     chip.onclick = () => kick(p);
     if (fresh.includes(p.pid)) chip.classList.add('just-in');
     box.appendChild(chip);
@@ -66,7 +69,25 @@ $('kickCancel').onclick = () => { kickTarget = null; $('kickDlg').classList.add(
 $('playersBtn').onclick = () => { renderDrawer(); $('drawer').classList.toggle('hidden'); };
 $('drawerClose').onclick = () => $('drawer').classList.add('hidden');
 
-$('startBtn').onclick = () => { FX.unlock(); FX.go(); socket.emit('host:start'); };
+// Lancer : si des joueurs n'ont pas appuyé sur « Je suis prêt », l'animateur est prévenu.
+// Lancer sans eux : ils restent dans la salle d'attente et joueront à la prochaine partie.
+$('startBtn').onclick = async () => {
+  FX.unlock();
+  const inRoom = (lastPlayers || []).filter((p) => !p.queued);
+  const late = inRoom.filter((p) => !p.ready);
+  let opts = {};
+  if (late.length === inRoom.length && late.length) {
+    const ok = await UI.confirm({ title: "Personne n'est prêt", text: "Aucun joueur n'a encore appuyé sur « Je suis prêt ». Lancer quand même avec tout le monde ?", ok: 'Lancer avec tout le monde', cancel: 'Attendre', danger: false, pose: 'question' });
+    if (!ok) return;
+  } else if (late.length) {
+    const names = late.slice(0, 6).map((p) => p.name).join(', ') + (late.length > 6 ? '…' : '');
+    const ok = await UI.confirm({ title: late.length + (late.length > 1 ? ' joueurs ne sont pas prêts' : " joueur n'est pas prêt"), text: names + (late.length > 1 ? ' attendront' : ' attendra') + " la prochaine partie dans la salle d'attente.", ok: 'Lancer sans eux', cancel: 'Attendre', danger: false, pose: 'question' });
+    if (!ok) return;
+    opts = { onlyReady: true };
+  }
+  FX.go();
+  socket.emit('host:start', opts);
+};
 $('skipBtn').onclick = () => socket.emit('host:skip');
 $('moreTimeBtn').onclick = () => socket.emit('host:moreTime');
 // 10 secondes de plus : le chrono repart avec le nouveau total

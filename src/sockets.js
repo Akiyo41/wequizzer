@@ -9,7 +9,7 @@ const { cleanAnswer } = require('./answers');
 const { assignTeams, bonusOn, heartsOn, isTeamMode, resetPlayerStats } = require('./rules');
 const { allPeople, games, newPin, toHost, toPlayer } = require('./send');
 const { addTime, elapsed, qTime, setPaused } = require('./timer');
-const { banLeft, banMessage, clientIp, closeGame, joinInfo, pickAvatar, removePlayer, sendHostPlayers, settingsPayload } = require('./room');
+const { banLeft, banMessage, clientIp, closeGame, joinInfo, pickAvatar, removePlayer, queuedPayload, sendHostPlayers, settingsPayload } = require('./room');
 const { advance, beginRound, endQuestion, maybeEndEarly, progressPayload } = require('./round');
 const { endGame, resetGame } = require('./end');
 const { sendHostState, sendPlayerState } = require('./resume');
@@ -185,9 +185,17 @@ function setupSockets(io) {
       }
     });
 
-    socket.on('host:start', () => {
+    socket.on('host:start', ({ onlyReady } = {}) => {
       const g = hostGame();
       if (!g || g.state !== 'lobby' || !g.quiz || Object.keys(g.players).length === 0) return;
+      // « Lancer sans eux » : ceux qui n'ont pas appuyé sur « Je suis prêt » attendent la prochaine partie
+      const later = onlyReady ? Object.values(g.players).filter((p) => !p.ready) : [];
+      if (later.length === Object.keys(g.players).length) return;
+      later.forEach((p) => {
+        p.queued = true;
+        g.queue[p.pid] = p;
+        delete g.players[p.pid];
+      });
       if (g.quiz.kind === 'wheel' || g.quiz.kind === 'letters') g.settings = { ...g.settings, changeAnswer: false, display: 'both' };
       g.questions = buildQuestions(g);
       if (g.questions.length === 0) return;
@@ -206,8 +214,18 @@ function setupSockets(io) {
       Object.values(g.players).forEach((p) => toPlayer(p, 'game:settings', { ...settingsPayload(g), team: p.team }));
       Object.values(g.players).forEach((p) => toPlayer(p, 'join:ok', { ...joinInfo(g, p), pid: p.pid, token: p.token, pin: g.pin }));
       beginRound(g.pin);
+      later.forEach((p) => toPlayer(p, 'queued', queuedPayload(g)));
+      if (later.length) sendHostPlayers(g);
     });
 
+    // « Je suis prêt » (salle d'attente) : l'animateur le voit dans la liste des joueurs
+    socket.on('player:ready', (on) => {
+      const g = games[socket.data.pin];
+      const p = g && g.players[socket.data.pid];
+      if (!p || g.state !== 'lobby') return;
+      p.ready = !!on;
+      sendHostPlayers(g);
+    });
     socket.on('host:pause', (on) => {
       const g = hostGame();
       if (!g) return;

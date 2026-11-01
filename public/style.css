@@ -636,3 +636,6 @@ body:not(.has-snd) .fs-btn { right: 10px; }
 .news-tag.nouveau { background: #2fbf71; color: #fff; }
 .news-tag.correction { background: #f2b705; color: #14213d; }
 .news-btn { margin-top: 10px; }
+/* Salle d'attente : joueurs prêts */
+.chip.ready { box-shadow: 0 0 0 2px #2fbf71 inset; }
+#readyBtn { margin-top: 14px; }

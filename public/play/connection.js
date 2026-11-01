@@ -67,7 +67,18 @@ socket.on('join:ok', (d) => {
   applySettings(d);
 });
 socket.on('game:settings', applySettings);
+// « Je suis prêt » : l'animateur voit qui est prêt ; ceux qui ne le sont pas peuvent attendre la prochaine partie
+let ready = false;
+function showReady(on) {
+  ready = !!on;
+  const b = $('readyBtn');
+  b.textContent = ready ? '✅ Prêt ! (toucher pour annuler)' : '✋ Je suis prêt !';
+  b.className = 'btn big ' + (ready ? 'ghost' : 'green');
+  b.setAttribute('aria-pressed', ready ? 'true' : 'false');
+}
+$('readyBtn').onclick = () => { showReady(!ready); socket.emit('player:ready', ready); if (ready) buzz(40); };
 socket.on('lobby', (d) => {
+  showReady(d && d.ready);
   clearInterval(timerInt);
   clearInterval(readInt);
   $('pauseOv').classList.add('hidden');

@@ -94,7 +94,7 @@ function resetGame(pin) {
     g.players[p.pid] = p;
   });
   g.queue = {};
-  Object.values(g.players).forEach((p) => resetPlayerStats(p));
+  Object.values(g.players).forEach((p) => { resetPlayerStats(p); p.ready = false; }); // nouvelle partie : chacun redit « Je suis prêt »
   allPeople(g).forEach((p) => toPlayer(p, 'lobby', lobbyPayload(g, p)));
   toHost(g, 'lobby', {});
   sendHostPlayers(g);

@@ -19,6 +19,7 @@ function playerList(g) {
     avatar: p.avatar,
     connected: !!p.sid,
     queued: !!p.queued,
+    ready: !!p.ready, // « Je suis prêt » appuyé dans la salle d'attente
     eliminated: !!p.eliminated,
     team: g.state === 'lobby' && isTeamMode(g) && g.settings.teamAssign === 'manual' && g.teamOf && Number.isInteger(g.teamOf[p.pid]) ? g.teamOf[p.pid] : p.team,
   }));
@@ -43,7 +44,7 @@ function settingsPayload(g) {
   return { theme: g.settings.theme, sounds: g.settings.sounds, volume: g.settings.volume, reactions: g.settings.reactions, changeAnswer: g.settings.changeAnswer, quizTitle: g.quiz ? g.quiz.title : '' };
 }
 function lobbyPayload(g, p) {
-  return { ...settingsPayload(g), name: p.name, avatar: p.avatar };
+  return { ...settingsPayload(g), name: p.name, avatar: p.avatar, ready: !!p.ready };
 }
 function queuedPayload(g) {
   return { ...settingsPayload(g), state: g.state };
