@@ -8,18 +8,9 @@ function openFaq(id) {
   const q = id && $(id);
   if (q) q.scrollIntoView({ block: 'center' });
 }
-// « Quoi de neuf ? » : pastille sur le bouton Aide tant que l'animateur n'a pas lu les dernières nouveautés.
-// Changer NEWS quand on met à jour la liste « faq-nouveau » de host.html.
-const NEWS = '2026-11-01b';
-const NEWS_KEY = 'wequizzer.newsSeen';
-if (LS.get(NEWS_KEY, '') !== NEWS) $('openFaq').appendChild(el('span', 'news-dot', 'nouveau'));
-$('openFaq').onclick = () => {
-  const dot = $('openFaq').querySelector('.news-dot');
-  if (!dot) return openFaq(null);
-  dot.remove();
-  LS.set(NEWS_KEY, NEWS);
-  openFaq('faq-nouveau');
-};
+$('openFaq').onclick = () => openFaq(null);
+// « Nouveautés et corrections » : la liste est dans news.js (pastille = nombre pas encore vu)
+News.mount([$('openNews')], 'animateur');
 document.querySelectorAll('[data-faq]').forEach((b) => {
   b.onclick = (e) => { e.preventDefault(); e.stopPropagation(); openFaq(b.dataset.faq); };
 });

@@ -627,3 +627,12 @@ body:not(.has-snd) .fs-btn { right: 10px; }
 .report-box.sent .report-done { display: block; }
 .report-done-icon { font-size: 2.6rem; }
 .report-done-title { font-size: 1.2rem; font-weight: 800; margin: 6px 0; }
+/* « Nouveautés et corrections » */
+.cbx.news-box { width: min(560px, 94vw); max-width: 560px; }
+.news-list { max-height: 60vh; overflow-y: auto; text-align: left; margin: 8px 0; padding-right: 4px; }
+.news-day { margin: 12px 0 6px; font-size: 1rem; opacity: .85; }
+.news-row { display: flex; gap: 8px; align-items: baseline; margin: 6px 0; line-height: 1.35; }
+.news-tag { flex: none; font-size: .75rem; font-weight: 800; padding: 2px 8px; border-radius: 999px; }
+.news-tag.nouveau { background: #2fbf71; color: #fff; }
+.news-tag.correction { background: #f2b705; color: #14213d; }
+.news-btn { margin-top: 10px; }
